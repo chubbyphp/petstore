@@ -1,0 +1,4 @@
+hostname: petstore.development
+application: slim3
+network:
+    ip: 10.16.16.16

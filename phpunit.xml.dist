@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         bootstrap="tests/bootstrap.php"
+        >
+    <testsuites>
+        <testsuite name="Integration">
+            <directory>./tests/Integration</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <listeners>
+        <listener class="App\Tests\IntegrationTestListener" file="./tests/IntegrationTestListener.php" />
+    </listeners>
+    <filter>
+        <whitelist>
+            <directory>./app</directory>
+            <exclude>
+                <file>./app/app.php</file>
+                <file>./app/bootstrap.php</file>
+                <file>./app/console.php</file>
+                <file>./app/container.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="phpunit/coverage" />
+    </logging>
+</phpunit>

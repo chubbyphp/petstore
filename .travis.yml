@@ -1,0 +1,31 @@
+language: php
+
+matrix:
+  include:
+    - php: 7.0
+      env: dependencies=lowest
+    - php: 7.0
+      env: dependencies=highest
+    - php: 7.1
+      env: dependencies=lowest
+    - php: 7.1
+      env: dependencies=highest
+    - php: 7.2
+      env: dependencies=lowest
+    - php: 7.2
+      env: dependencies=highest
+
+before_script:
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
+  - echo 'Europe/Zurich' | sudo tee /etc/timezone
+  - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - composer self-update -q
+  - if [ -z "$dependencies" ]; then composer install; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
+
+script: vendor/bin/phpunit --testsuite=Unit --coverage-text --verbose && vendor/bin/phpunit --testsuite=Integration --verbose
+
+services:
+  - mysql

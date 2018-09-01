@@ -1,0 +1,27 @@
+build:
+    environment:
+        timezone: 'Europe/Zurich'
+        php:
+            version: '7.0'
+            ini:
+                'date.timezone': 'Europe/Zurich'
+    tests:
+        before:
+            -
+                command: echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+        override:
+            -
+                command: 'vendor/bin/phpunit --testsuite=Unit --coverage-clover=coverage/clover.xml'
+                coverage:
+                    file: 'coverage/clover.xml'
+                    format: 'php-clover'
+
+checks:
+    php: true
+
+coding_style:
+    php: {}
+
+filter:
+    excluded_paths:
+        - 'tests/*'

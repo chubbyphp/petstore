@@ -5,18 +5,18 @@
     "require": {
         "php": "~7.0",
         "chubbyphp/chubbyphp-api-http": "^2.1.0",
-        "chubbyphp/chubbyphp-config": "^1.1.1",
+        "chubbyphp/chubbyphp-config": "^1.1.2",
         "chubbyphp/chubbyphp-deserialization": "^2.7.1",
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.2.0",
         "chubbyphp/chubbyphp-lazy-middleware": "^1.1.0",
         "chubbyphp/chubbyphp-negotiation": "^1.2.4",
         "chubbyphp/chubbyphp-serialization": "^2.6.1",
-        "chubbyphp/chubbyphp-validation": "^3.2.1",
+        "chubbyphp/chubbyphp-validation": "^3.3.0",
         "doctrine/orm": "^2.5.14",
         "ocramius/proxy-manager": "^2.0.4",
         "ramsey/uuid": "^3.8.0",
         "slim/slim": "^3.11.0",
-        "swagger-api/swagger-ui": "3.19.0",
+        "swagger-api/swagger-ui": "^3.19.3",
         "symfony/console": "^3.4.15|^4.1.6"
     },
     "require-dev": {

@@ -19,6 +19,11 @@ abstract class AbstractCollection implements CollectionInterface
     protected $limit = self::LIMIT;
 
     /**
+     * @var string[]
+     */
+    protected $sort = [];
+
+    /**
      * @var ModelInterface[]
      */
     protected $items = [];
@@ -58,6 +63,22 @@ abstract class AbstractCollection implements CollectionInterface
     public function getLimit(): int
     {
         return $this->limit;
+    }
+
+    /**
+     * @param string[] $sort
+     */
+    public function setSort(array $sort)
+    {
+        $this->sort = $sort;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSort(): array
+    {
+        return $this->sort;
     }
 
     /**

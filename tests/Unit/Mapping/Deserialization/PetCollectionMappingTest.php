@@ -44,6 +44,7 @@ final class PetCollectionMappingTest extends TestCase
                 ->getMapping(),
             DenormalizationFieldMappingBuilder::createConvertType('limit', ConvertTypeFieldDenormalizer::TYPE_INT)
                 ->getMapping(),
+            DenormalizationFieldMappingBuilder::create('sort')->getMapping(),
         ], $fieldMappings);
     }
 }

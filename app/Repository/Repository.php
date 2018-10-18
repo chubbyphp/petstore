@@ -43,6 +43,11 @@ final class Repository implements RepositoryInterface
         $collection->setCount((int) $countQb->getQuery()->getSingleScalarResult());
 
         $itemsQb = clone $qb;
+
+        foreach ($collection->getSort() as $field => $order) {
+            $itemsQb->addOrderBy(sprintf('m.%s', $field), $order);
+        }
+
         $itemsQb->setFirstResult($collection->getOffset());
         $itemsQb->setMaxResults($collection->getLimit());
 

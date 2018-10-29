@@ -151,6 +151,10 @@ bin/console orm:schema-tool:update --dump-sql --force
  * [App\Mapping\Validation\PetCollectionMapping][116]
  * [App\Mapping\Validation\PetMapping][117]
 
+##### Constraint
+
+* [App\Mapping\Validation\Constraint\SortConstraint][118]
+
 ### Middleware
 
  * [App\Middleware\AcceptAndContentTypeMiddleware][130]
@@ -231,6 +235,7 @@ Dominik Zogg 2018
 [115]: app/Mapping/Serialization/PetMapping.php
 [116]: app/Mapping/Validation/PetCollectionMapping.php
 [117]: app/Mapping/Validation/PetMapping.php
+[118]: app/Mapping/Validation/Constraint/SortConstraint.php
 
 [130]: app/Middleware/AcceptAndContentTypeMiddleware.php
 

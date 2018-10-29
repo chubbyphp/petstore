@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mapping\Validation;
 
 use App\Collection\PetCollection;
+use App\Mapping\Validation\Constraint\SortConstraint;
 use Chubbyphp\Validation\Constraint\NotBlankConstraint;
 use Chubbyphp\Validation\Constraint\TypeConstraint;
 use Chubbyphp\Validation\Mapping\ValidationClassMappingInterface;
@@ -48,6 +49,9 @@ final class PetCollectionMapping implements ValidationMappingProviderInterface
             ValidationPropertyMappingBuilder::create('limit', [
                 new NotBlankConstraint(),
                 new TypeConstraint('integer'),
+            ])->getMapping(),
+            ValidationPropertyMappingBuilder::create('sort', [
+                new SortConstraint(['name']),
             ])->getMapping(),
         ];
     }

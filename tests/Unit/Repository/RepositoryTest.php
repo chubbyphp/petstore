@@ -35,6 +35,7 @@ final class RepositoryTest extends TestCase
         /** @var CollectionInterface|MockObject $collection */
         $collection = $this->getMockByCalls(CollectionInterface::class, [
             Call::create('setCount')->with(count($items)),
+            Call::create('getSort')->with()->willReturn(['name' => 'asc']),
             Call::create('getOffset')->with()->willReturn(0),
             Call::create('getLimit')->with()->willReturn(20),
             Call::create('setItems')->with($items),
@@ -63,6 +64,7 @@ final class RepositoryTest extends TestCase
             Call::create('expr')->with()->willReturn($expr),
             Call::create('select')->with($func),
             Call::create('getQuery')->with()->willReturn($countQuery),
+            Call::create('addOrderBy')->with('m.name', 'asc'),
             Call::create('setFirstResult')->with(0),
             Call::create('setMaxResults')->with(20),
             Call::create('getQuery')->with()->willReturn($itemsQuery),

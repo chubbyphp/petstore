@@ -7,7 +7,7 @@ info:
 servers:
   - url: http://petstore.development
 paths:
-  /pets:
+  /api/pets:
     get:
       summary: List all pets
       operationId: listPets
@@ -35,6 +35,18 @@ paths:
           schema:
             type: integer
             example: 20
+        - name: sort
+          in: query
+          description: How to sort the items
+          required: false
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: asc
+          style: deepObject
+          explode: true
       responses:
         '200':
           description: Pets
@@ -116,7 +128,7 @@ paths:
                 $ref: '#/components/schemas/ErrorValidation'
         '500':
           description: Server error
-  /pets/{id}:
+  /api/pets/{id}:
     get:
       summary: Read a pet
       operationId: readPet

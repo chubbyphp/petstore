@@ -29,6 +29,16 @@ interface CollectionInterface
     public function getLimit(): int;
 
     /**
+     * @param string[] $sort
+     */
+    public function setSort(array $sort);
+
+    /**
+     * @return string[]
+     */
+    public function getSort(): array;
+
+    /**
      * @param int $count
      */
     public function setCount(int $count);

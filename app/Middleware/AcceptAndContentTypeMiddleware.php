@@ -60,7 +60,7 @@ final class AcceptAndContentTypeMiddleware
 
         $request = $request->withAttribute('accept', $accept->getValue());
 
-        if (true === in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             if (null === $contentType = $this->contentTypeNegotiator->negotiate($request)) {
                 return $this->responseManager->createContentTypeNotSupported(
                     $request->getHeaderLine('Content-Type'),

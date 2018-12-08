@@ -35,7 +35,7 @@ $configProvider = new ConfigProvider(realpath(__DIR__.'/..'), [
     new ConfigMapping('prod', ProdConfig::class),
 ]);
 
-$container = new Container(['env' => $env ?? 'prod']);
+$container = new Container(['env' => $env ?? 'dev']);
 $container->register(new ApiHttpProvider());
 $container->register(new DeserializationProvider());
 $container->register(new DoctrineDbalServiceProvider());

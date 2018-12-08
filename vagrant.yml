@@ -10,3 +10,8 @@ nginx:
             root: /vagrant/public
             server_name: *hostname
             template: default
+php:
+    composer:
+        json:
+            require:
+                friendsofphp/php-cs-fixer: '^2.13.1'

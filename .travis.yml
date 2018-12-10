@@ -15,9 +15,10 @@ matrix:
     - php: 7.2
       env: dependencies=highest
     - php: 7.3
-      env: dependencies=lowest
-    - php: 7.3
       env: dependencies=highest
+  allow_failures:
+    - php: 7.3
+      env: dependencies=lowest
 
 before_script:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root

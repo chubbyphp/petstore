@@ -14,6 +14,11 @@ interface ModelFactoryInterface
     public function create(): ModelInterface;
 
     /**
+     * @return ModelInterface
+     */
+    public function reset(ModelInterface $model);
+
+    /**
      * @return string
      */
     public function getClass(): string;

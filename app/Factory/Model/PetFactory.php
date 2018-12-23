@@ -15,9 +15,28 @@ final class PetFactory implements ModelFactoryInterface
      */
     public function create(): ModelInterface
     {
-        $class = $this->getClass();
+        return new Pet();
+    }
 
-        return new $class();
+    /**
+     * @param ModelInterface $model
+     */
+    public function reset(ModelInterface $model)
+    {
+        if (!$model instanceof Pet) {
+            throw new \InvalidArgumentException(
+                sprintf('Model of class "%s" given, "%s" required', get_class($model), Pet::class)
+            );
+        }
+
+        $newModel = $this->create();
+
+        foreach (['name', 'tag'] as $property) {
+            $reflectionProperty = new \ReflectionProperty(Pet::class, $property);
+            $reflectionProperty->setAccessible(true);
+
+            $reflectionProperty->setValue($model, $reflectionProperty->getValue($newModel));
+        }
     }
 
     /**

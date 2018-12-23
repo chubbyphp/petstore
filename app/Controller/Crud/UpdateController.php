@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Crud;
 
 use App\ApiHttp\Factory\ErrorFactoryInterface;
+use App\Factory\ModelFactoryInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
@@ -21,6 +22,11 @@ final class UpdateController
      * @var ErrorFactoryInterface
      */
     private $errorFactory;
+
+    /**
+     * @var ModelFactoryInterface
+     */
+    private $factory;
 
     /**
      * @var RepositoryInterface
@@ -44,6 +50,7 @@ final class UpdateController
 
     /**
      * @param ErrorFactoryInterface    $errorFactory
+     * @param ModelFactoryInterface    $factory
      * @param RepositoryInterface      $repository
      * @param RequestManagerInterface  $requestManager
      * @param ResponseManagerInterface $responseManager
@@ -51,12 +58,14 @@ final class UpdateController
      */
     public function __construct(
         ErrorFactoryInterface $errorFactory,
+        ModelFactoryInterface $factory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
         ValidatorInterface $validator
     ) {
         $this->errorFactory = $errorFactory;
+        $this->factory = $factory;
         $this->repository = $repository;
         $this->requestManager = $requestManager;
         $this->responseManager = $responseManager;
@@ -78,9 +87,10 @@ final class UpdateController
             return $this->responseManager->createResourceNotFound(['model' => $id], $accept);
         }
 
+        $this->factory->reset($model);
+
         $context = DenormalizerContextBuilder::create()
             ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
-            ->setResetMissingFields(true)
             ->getContext();
 
         $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);

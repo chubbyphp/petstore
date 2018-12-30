@@ -66,7 +66,6 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         $container[UpdateController::class.Pet::class] = function () use ($container) {
             return new UpdateController(
                 $container[ErrorFactory::class],
-                $container[PetFactory::class],
                 $container[Repository::class.Pet::class],
                 $container['api-http.request.manager'],
                 $container['api-http.response.manager'],

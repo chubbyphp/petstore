@@ -102,4 +102,15 @@ class Pet implements ModelInterface
     {
         return $this->tag;
     }
+
+    public function reset(): void
+    {
+        foreach (get_object_vars(new self()) as $property => $value) {
+            if (in_array($property, ['id', 'createdAt'], true)) {
+                continue;
+            }
+
+            $this->$property = $value;
+        }
+    }
 }

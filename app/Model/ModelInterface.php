@@ -25,4 +25,6 @@ interface ModelInterface
      * @return \DateTime|null
      */
     public function getUpdatedAt(): ?\DateTime;
+
+    public function reset(): void;
 }

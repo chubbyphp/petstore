@@ -6,7 +6,6 @@ namespace App\Tests\Unit\Controller\Crud;
 
 use App\ApiHttp\Factory\ErrorFactoryInterface;
 use App\Controller\Crud\UpdateController;
-use App\Factory\ModelFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\Error\ErrorInterface;
@@ -49,9 +48,6 @@ class UpdateControllerTest extends TestCase
         /** @var ErrorFactoryInterface|MockObject $errorFactory */
         $errorFactory = $this->getMockByCalls(ErrorFactoryInterface::class);
 
-        /** @var ModelFactoryInterface|MockObject $factory */
-        $factory = $this->getMockByCalls(ModelFactoryInterface::class);
-
         /** @var RepositoryInterface|MockObject $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
             Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn(null),
@@ -72,7 +68,6 @@ class UpdateControllerTest extends TestCase
 
         $controller = new UpdateController(
             $errorFactory,
-            $factory,
             $repository,
             $requestManager,
             $responseManager,
@@ -108,11 +103,8 @@ class UpdateControllerTest extends TestCase
         ]);
 
         /** @var ModelInterface|MockObject $model */
-        $model = $this->getMockByCalls(ModelInterface::class);
-
-        /** @var ModelFactoryInterface|MockObject $factory */
-        $factory = $this->getMockByCalls(ModelFactoryInterface::class, [
-            Call::create('reset')->with($model),
+        $model = $this->getMockByCalls(ModelInterface::class, [
+            Call::create('reset')->with(),
         ]);
 
         /** @var RepositoryInterface|MockObject $repository */
@@ -151,7 +143,6 @@ class UpdateControllerTest extends TestCase
 
         $controller = new UpdateController(
             $errorFactory,
-            $factory,
             $repository,
             $requestManager,
             $responseManager,
@@ -178,12 +169,8 @@ class UpdateControllerTest extends TestCase
 
         /** @var ModelInterface|MockObject $model */
         $model = $this->getMockByCalls(ModelInterface::class, [
+            Call::create('reset')->with(),
             Call::create('setUpdatedAt')->with(new ArgumentInstanceOf(\DateTime::class)),
-        ]);
-
-        /** @var ModelFactoryInterface|MockObject $factory */
-        $factory = $this->getMockByCalls(ModelFactoryInterface::class, [
-            Call::create('reset')->with($model),
         ]);
 
         /** @var RepositoryInterface|MockObject $repository */
@@ -231,7 +218,6 @@ class UpdateControllerTest extends TestCase
 
         $controller = new UpdateController(
             $errorFactory,
-            $factory,
             $repository,
             $requestManager,
             $responseManager,

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class DevConfigTest extends TestCase
 {
-    public function testGetConfig()
+    public function testGetConfig(): void
     {
         $config = DevConfig::create('/path/to/root');
 
@@ -52,7 +52,7 @@ final class DevConfigTest extends TestCase
         ], $config->getConfig());
     }
 
-    public function testGetSlimSettings()
+    public function testGetSlimSettings(): void
     {
         $config = DevConfig::create('/path/to/root');
 
@@ -62,7 +62,7 @@ final class DevConfigTest extends TestCase
         ], $config->getSlimSettings());
     }
 
-    public function testGetDirectories()
+    public function testGetDirectories(): void
     {
         $config = DevConfig::create('/path/to/root');
 

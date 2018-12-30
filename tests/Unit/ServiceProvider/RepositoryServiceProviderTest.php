@@ -19,7 +19,7 @@ final class RepositoryServiceProviderTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'doctrine.orm.em' => $this->getMockByCalls(EntityManager::class),

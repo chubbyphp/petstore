@@ -14,7 +14,7 @@ final class FactoryServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container[PetCollectionFactory::class] = function () {
             return new PetCollectionFactory();

@@ -30,7 +30,7 @@ final class PhpServerTestListener implements TestListener
     /**
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
         if (null !== $this->serverPid) {
             return;
@@ -68,7 +68,7 @@ final class PhpServerTestListener implements TestListener
         return false;
     }
 
-    private function initialize()
+    private function initialize(): void
     {
         $consolePath = realpath(__DIR__.'/../bin/console');
 
@@ -83,7 +83,7 @@ final class PhpServerTestListener implements TestListener
         echo 'initialize: end'.PHP_EOL.PHP_EOL;
     }
 
-    private function startServer()
+    private function startServer(): void
     {
         $command = sprintf(
             'php -S localhost:%d -t %s %s',

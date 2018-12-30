@@ -19,7 +19,7 @@ class ErrorFactoryTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testCreateResponse()
+    public function testCreateResponse(): void
     {
         /** @var ValidationErrorInterface|MockObject $validationError */
         $validationError = $this->getMockByCalls(ValidationErrorInterface::class, [
@@ -56,6 +56,6 @@ class ErrorFactoryTest extends TestCase
                     ],
                 ],
             ],
-          ], $error->getArguments());
+        ], $error->getArguments());
     }
 }

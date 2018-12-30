@@ -20,7 +20,7 @@ final class ProxyManagerServiceProviderTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'doctrine.dbal.connection_registry' => $this->getMockByCalls(ConnectionRegistry::class, [

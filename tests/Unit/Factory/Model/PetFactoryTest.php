@@ -18,14 +18,14 @@ final class PetFactoryTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $factory = new PetFactory();
 
         self::assertInstanceOf(Pet::class, $factory->create());
     }
 
-    public function testResetWithInvalidModel()
+    public function testResetWithInvalidModel(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageRegExp('/^Model of class "[^"]+" given, "App\\\Model\\\Pet" required$/');
@@ -37,7 +37,7 @@ final class PetFactoryTest extends TestCase
         $factory->reset($model);
     }
 
-    public function testReset()
+    public function testReset(): void
     {
         $model = new Pet();
         $model->setName('name');
@@ -57,7 +57,7 @@ final class PetFactoryTest extends TestCase
         self::assertNull($reflectionTag->getValue($model));
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $factory = new PetFactory();
 

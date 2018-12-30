@@ -12,7 +12,7 @@ final class NegotiationServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container['negotiator.acceptNegotiator.values'] = function () use ($container) {
             return $container['serializer']->getContentTypes();

@@ -18,7 +18,7 @@ final class PetMappingTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         /** @var ClassMetadata|MockObject $classMetadata */
         $classMetadata = $this->getMockByCalls(ClassMetadata::class, [

@@ -34,7 +34,7 @@ final class ConsoleServiceProviderTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'config.cleanDirectories' => [

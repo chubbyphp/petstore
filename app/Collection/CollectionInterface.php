@@ -41,7 +41,7 @@ interface CollectionInterface
     /**
      * @param int $count
      */
-    public function setCount(int $count);
+    public function setCount(int $count): void;
 
     /**
      * @return int
@@ -51,7 +51,7 @@ interface CollectionInterface
     /**
      * @param array
      */
-    public function setItems(array $items);
+    public function setItems(array $items): void;
 
     /**
      * @return array

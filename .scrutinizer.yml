@@ -2,7 +2,7 @@ build:
     environment:
         timezone: 'Europe/Zurich'
         php:
-            version: '7.0'
+            version: '7.1'
             ini:
                 'date.timezone': 'Europe/Zurich'
     tests:

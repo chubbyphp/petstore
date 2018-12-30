@@ -6,7 +6,7 @@ namespace App\Tests\Integration;
 
 final class PetCrudControllerTest extends AbstractIntegrationTest
 {
-    public function testCreateWithUnsupportedAccept()
+    public function testCreateWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
             'POST',
@@ -27,7 +27,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
         self::assertNull($response['body']);
     }
 
-    public function testCreateWithUnsupportedContentType()
+    public function testCreateWithUnsupportedContentType(): void
     {
         $response = $this->httpRequest(
             'POST',
@@ -61,7 +61,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
         ], $error);
     }
 
-    public function testCreateWithValidationError()
+    public function testCreateWithValidationError(): void
     {
         $response = $this->httpRequest(
             'POST',
@@ -126,7 +126,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
     /**
      * @depends testCreate
      */
-    public function testListWithUnsupportedAccept()
+    public function testListWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
             'GET',
@@ -150,7 +150,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
     /**
      * @depends testCreate
      */
-    public function testList()
+    public function testList(): void
     {
         $response = $this->httpRequest(
             'GET',
@@ -205,7 +205,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testReadWithUnsupportedAccept(array $existingPet)
+    public function testReadWithUnsupportedAccept(array $existingPet): void
     {
         $response = $this->httpRequest(
             'GET',
@@ -231,7 +231,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testReadWithNotFound(array $existingPet)
+    public function testReadWithNotFound(array $existingPet): void
     {
         $response = $this->httpRequest(
             'GET',
@@ -264,7 +264,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testRead(array $existingPet)
+    public function testRead(array $existingPet): void
     {
         $response = $this->httpRequest(
             'GET',
@@ -288,7 +288,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testUpdateWithUnsupportedAccept(array $existingPet)
+    public function testUpdateWithUnsupportedAccept(array $existingPet): void
     {
         $response = $this->httpRequest(
             'PUT',
@@ -314,7 +314,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testUpdateWithUnsupportedContentType(array $existingPet)
+    public function testUpdateWithUnsupportedContentType(array $existingPet): void
     {
         $response = $this->httpRequest(
             'PUT',
@@ -353,7 +353,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testUpdateWithNotFound(array $existingPet)
+    public function testUpdateWithNotFound(array $existingPet): void
     {
         $response = $this->httpRequest(
             'PUT',
@@ -387,7 +387,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testUpdateWithValidationError(array $existingPet)
+    public function testUpdateWithValidationError(array $existingPet): void
     {
         $response = $this->httpRequest(
             'PUT',
@@ -428,7 +428,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testUpdateByCreateData(array $existingPet)
+    public function testUpdateByCreateData(array $existingPet): void
     {
         $response = $this->httpRequest(
             'PUT',
@@ -454,7 +454,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testUpdate(array $existingPet)
+    public function testUpdate(array $existingPet): void
     {
         $response = $this->httpRequest(
             'PUT',
@@ -482,7 +482,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testDeleteWithUnsupportedAccept(array $existingPet)
+    public function testDeleteWithUnsupportedAccept(array $existingPet): void
     {
         $response = $this->httpRequest(
             'DELETE',
@@ -508,7 +508,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testDeleteWithNotFound(array $existingPet)
+    public function testDeleteWithNotFound(array $existingPet): void
     {
         $response = $this->httpRequest(
             'DELETE',
@@ -541,7 +541,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      *
      * @param array $existingPet
      */
-    public function testDelete(array $existingPet)
+    public function testDelete(array $existingPet): void
     {
         $response = $this->httpRequest(
             'DELETE',
@@ -559,7 +559,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
      * @param array $expectedValues
      * @param bool  $updated
      */
-    private static function assertPet(array $pet, array $expectedValues, bool $updated)
+    private static function assertPet(array $pet, array $expectedValues, bool $updated): void
     {
         self::assertArrayHasKey('id', $pet);
         self::assertArrayHasKey('createdAt', $pet);

@@ -15,7 +15,7 @@ use Pimple\Container;
  */
 final class ApiHttpServiceProviderTest extends TestCase
 {
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container();
 

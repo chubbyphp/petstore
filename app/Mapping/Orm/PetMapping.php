@@ -14,7 +14,7 @@ final class PetMapping implements ClassMapMappingInterface
      *
      * @throws MappingException
      */
-    public function configureMapping(ClassMetadata $metadata)
+    public function configureMapping(ClassMetadata $metadata): void
     {
         $metadata->setPrimaryTable(['name' => 'pet']);
         $metadata->mapField([

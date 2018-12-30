@@ -15,14 +15,14 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetMappingTest extends TestCase
 {
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $mapping = new PetMapping();
 
         self::assertSame(Pet::class, $mapping->getClass());
     }
 
-    public function testGetDenormalizationFactory()
+    public function testGetDenormalizationFactory(): void
     {
         $mapping = new PetMapping();
 
@@ -33,7 +33,7 @@ final class PetMappingTest extends TestCase
         self::assertInstanceOf(Pet::class, $factory());
     }
 
-    public function testGetDenormalizationFieldMappings()
+    public function testGetDenormalizationFieldMappings(): void
     {
         $mapping = new PetMapping();
 

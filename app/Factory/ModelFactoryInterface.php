@@ -16,7 +16,7 @@ interface ModelFactoryInterface
     /**
      * @return ModelInterface
      */
-    public function reset(ModelInterface $model);
+    public function reset(ModelInterface $model): void;
 
     /**
      * @return string

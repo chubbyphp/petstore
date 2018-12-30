@@ -32,7 +32,7 @@ final class MappingConfig
     /**
      * @param string $dependency
      */
-    private function addDependency(string $dependency)
+    private function addDependency(string $dependency): void
     {
         $this->dependencies[] = $dependency;
     }

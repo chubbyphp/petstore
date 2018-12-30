@@ -14,21 +14,21 @@ A simple skeleton to build api's based on the [slimframework][1].
 
 ## Requirements
 
- * php: ~7.0
+ * php: ~7.1
  * [chubbyphp/chubbyphp-api-http][3]: ^2.1.0
  * [chubbyphp/chubbyphp-config][4]: ^1.1.2
- * [chubbyphp/chubbyphp-deserialization][5]: ^2.7.1
- * [chubbyphp/chubbyphp-doctrine-db-service-provider][6]: ^1.2.0
+ * [chubbyphp/chubbyphp-deserialization][5]: ^2.7.4
+ * [chubbyphp/chubbyphp-doctrine-db-service-provider][6]: ^1.2.1
  * [chubbyphp/chubbyphp-lazy-middleware][7]: ^1.1.0
  * [chubbyphp/chubbyphp-negotiation][8]: ^1.2.4
- * [chubbyphp/chubbyphp-serialization][9]: ^2.6.1
+ * [chubbyphp/chubbyphp-serialization][9]: ^2.7.0
  * [chubbyphp/chubbyphp-validation][10]: ^3.3.0
- * [doctrine/orm][11]: ^2.5.14
- * [ocramius/proxy-manager][12]: ^2.0.4
+ * [doctrine/orm][11]: ^2.6.3
+ * [ocramius/proxy-manager][12]: ^2.1.1
  * [ramsey/uuid][13]: ^3.8.0
  * [slim/slim][14]: ^3.11.0
- * [swagger-api/swagger-ui][15]: 3.19.4
- * [symfony/console][16]: ^3.4.17|^4.1.6
+ * [swagger-api/swagger-ui][15]: ^3.20.4
+ * [symfony/console][16]: ^4.2.1
 
 ## Environment
 

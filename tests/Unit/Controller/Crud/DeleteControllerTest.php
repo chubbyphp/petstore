@@ -21,7 +21,7 @@ class DeleteControllerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testCreateResourceNotFound()
+    public function testCreateResourceNotFound(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
@@ -49,7 +49,7 @@ class DeleteControllerTest extends TestCase
         self::assertSame($response, $controller($request));
     }
 
-    public function testSuccessful()
+    public function testSuccessful(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [

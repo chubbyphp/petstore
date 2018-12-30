@@ -25,7 +25,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container[CreateController::class.Pet::class] = function () use ($container) {
             return new CreateController(

@@ -18,7 +18,7 @@ final class DeserializationServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container['deserializer.mappingConfigs'] = [
             PetCollection::class => new MappingConfig(PetCollectionMapping::class),

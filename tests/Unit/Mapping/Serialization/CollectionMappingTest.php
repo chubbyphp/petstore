@@ -24,7 +24,7 @@ class CollectionMappingTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -34,7 +34,7 @@ class CollectionMappingTest extends TestCase
         self::assertSame($this->getClass(), $mapping->getClass());
     }
 
-    public function testGetNormalizationType()
+    public function testGetNormalizationType(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -44,7 +44,7 @@ class CollectionMappingTest extends TestCase
         self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
-    public function testGetNormalizationFieldMappings()
+    public function testGetNormalizationFieldMappings(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -61,7 +61,7 @@ class CollectionMappingTest extends TestCase
         ], $fieldMappings);
     }
 
-    public function testGetNormalizationEmbeddedFieldMappings()
+    public function testGetNormalizationEmbeddedFieldMappings(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -75,7 +75,7 @@ class CollectionMappingTest extends TestCase
         ], $fieldMappings);
     }
 
-    public function testGetNormalizationLinkMappings()
+    public function testGetNormalizationLinkMappings(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class, [
@@ -182,7 +182,13 @@ class CollectionMappingTest extends TestCase
      */
     protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
     {
-        return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
+        return new class(
+            $router,
+            $this->getClass(),
+            $this->getNormalizationType(),
+            $this->getListRoute(),
+            $this->getCreateRoute()
+        ) extends AbstractCollectionMapping {
             /**
              * @var string
              */

@@ -15,7 +15,7 @@ final class ProxyManagerServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container['proxymanager.factory'] = function () {
             return new LazyLoadingValueHolderFactory();

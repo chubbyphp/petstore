@@ -18,7 +18,7 @@ final class ValidationServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container['validator.mappingConfigs'] = [
             PetCollection::class => new MappingConfig(PetCollectionMapping::class),

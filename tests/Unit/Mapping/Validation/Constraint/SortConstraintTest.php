@@ -18,7 +18,7 @@ final class SortConstraintTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testValidateWithString()
+    public function testValidateWithString(): void
     {
         /** @var ValidatorContextInterface|MockObject $context */
         $context = $this->getMockByCalls(ValidatorContextInterface::class);
@@ -31,7 +31,7 @@ final class SortConstraintTest extends TestCase
         );
     }
 
-    public function testValidateWithStdClass()
+    public function testValidateWithStdClass(): void
     {
         /** @var ValidatorContextInterface|MockObject $context */
         $context = $this->getMockByCalls(ValidatorContextInterface::class);
@@ -44,7 +44,7 @@ final class SortConstraintTest extends TestCase
         );
     }
 
-    public function testValidateWithUnsupportedFieldAndUnsupportedOrder()
+    public function testValidateWithUnsupportedFieldAndUnsupportedOrder(): void
     {
         /** @var ValidatorContextInterface|MockObject $context */
         $context = $this->getMockByCalls(ValidatorContextInterface::class);
@@ -68,7 +68,7 @@ final class SortConstraintTest extends TestCase
         );
     }
 
-    public function testValidateWithUnsupportedFieldAndUnsupportedOrderType()
+    public function testValidateWithUnsupportedFieldAndUnsupportedOrderType(): void
     {
         /** @var ValidatorContextInterface|MockObject $context */
         $context = $this->getMockByCalls(ValidatorContextInterface::class);
@@ -92,7 +92,7 @@ final class SortConstraintTest extends TestCase
         );
     }
 
-    public function testValidate()
+    public function testValidate(): void
     {
         /** @var ValidatorContextInterface|MockObject $context */
         $context = $this->getMockByCalls(ValidatorContextInterface::class);

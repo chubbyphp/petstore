@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PetTest extends TestCase
 {
-    public function testGetSet()
+    public function testGetSet(): void
     {
         $pet = new Pet();
 
@@ -22,7 +22,6 @@ class PetTest extends TestCase
         self::assertRegExp('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $pet->getId());
         self::assertInstanceOf(\DateTime::class, $pet->getCreatedAt());
         self::assertNull($pet->getUpdatedAt());
-        self::assertNull($pet->getName());
         self::assertNull($pet->getTag());
 
         $now = new \DateTime();

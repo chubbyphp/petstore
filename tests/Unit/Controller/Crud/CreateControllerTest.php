@@ -29,7 +29,7 @@ class CreateControllerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testCreateWithValidationError()
+    public function testCreateWithValidationError(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
@@ -95,7 +95,7 @@ class CreateControllerTest extends TestCase
         self::assertSame($response, $controller($request));
     }
 
-    public function testSuccessful()
+    public function testSuccessful(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [

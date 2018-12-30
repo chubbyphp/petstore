@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ResponseFactoryTest extends TestCase
 {
-    public function testCreateResponse()
+    public function testCreateResponse(): void
     {
         $factory = new ResponseFactory();
 
@@ -25,7 +25,7 @@ class ResponseFactoryTest extends TestCase
         self::assertSame('OK', $response->getReasonPhrase());
     }
 
-    public function testCreateResponseWith307()
+    public function testCreateResponseWith307(): void
     {
         $factory = new ResponseFactory();
 
@@ -37,7 +37,7 @@ class ResponseFactoryTest extends TestCase
         self::assertSame('Temporary Redirect', $response->getReasonPhrase());
     }
 
-    public function testCreateResponseWith400AndReasonPhrase()
+    public function testCreateResponseWith400AndReasonPhrase(): void
     {
         $factory = new ResponseFactory();
 

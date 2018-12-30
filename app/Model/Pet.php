@@ -19,7 +19,7 @@ class Pet implements ModelInterface
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      */
     private $updatedAt;
 
@@ -58,7 +58,7 @@ class Pet implements ModelInterface
     /**
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt(\DateTime $updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -66,7 +66,7 @@ class Pet implements ModelInterface
     /**
      * @return \DateTime|null
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
@@ -74,15 +74,15 @@ class Pet implements ModelInterface
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -90,7 +90,7 @@ class Pet implements ModelInterface
     /**
      * @param string|null $tag
      */
-    public function setTag(string $tag = null)
+    public function setTag(?string $tag): void
     {
         $this->tag = $tag;
     }
@@ -98,7 +98,7 @@ class Pet implements ModelInterface
     /**
      * @return string|null
      */
-    public function getTag()
+    public function getTag(): ?string
     {
         return $this->tag;
     }

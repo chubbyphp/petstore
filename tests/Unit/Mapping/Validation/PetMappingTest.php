@@ -17,21 +17,21 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetMappingTest extends TestCase
 {
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $mapping = new PetMapping();
 
         self::assertSame(Pet::class, $mapping->getClass());
     }
 
-    public function testGetValidationClassMapping()
+    public function testGetValidationClassMapping(): void
     {
         $mapping = new PetMapping();
 
         self::assertNull($mapping->getValidationClassMapping('/path'));
     }
 
-    public function testGetValidationPropertyMappings()
+    public function testGetValidationPropertyMappings(): void
     {
         $mapping = new PetMapping();
 

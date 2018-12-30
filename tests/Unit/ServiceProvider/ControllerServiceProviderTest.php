@@ -38,7 +38,7 @@ final class ControllerServiceProviderTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'api-http.request.manager' => $this->getMockByCalls(RequestManagerInterface::class),

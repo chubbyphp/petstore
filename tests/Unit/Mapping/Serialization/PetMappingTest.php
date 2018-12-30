@@ -19,7 +19,7 @@ final class PetMappingTest extends ModelMappingTest
 {
     use MockByCallsTrait;
 
-    public function testGetNormalizationFieldMappings()
+    public function testGetNormalizationFieldMappings(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);

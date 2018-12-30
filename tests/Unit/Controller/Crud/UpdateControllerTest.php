@@ -31,7 +31,7 @@ class UpdateControllerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testCreateResourceNotFound()
+    public function testCreateResourceNotFound(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
@@ -82,7 +82,7 @@ class UpdateControllerTest extends TestCase
         self::assertSame($response, $controller($request));
     }
 
-    public function testCreateWithValidationError()
+    public function testCreateWithValidationError(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
@@ -161,7 +161,7 @@ class UpdateControllerTest extends TestCase
         self::assertSame($response, $controller($request));
     }
 
-    public function testSuccessful()
+    public function testSuccessful(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [

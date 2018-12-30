@@ -17,7 +17,7 @@ use Pimple\Container;
  */
 final class ValidationServiceProviderTest extends TestCase
 {
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'someService' => function () {

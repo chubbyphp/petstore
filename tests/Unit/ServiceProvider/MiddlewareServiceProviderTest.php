@@ -20,7 +20,7 @@ final class MiddlewareServiceProviderTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'api-http.response.manager' => $this->getMockByCalls(ResponseManagerInterface::class),

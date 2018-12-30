@@ -14,7 +14,7 @@ final class DoctrineServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container['doctrine.orm.em.options'] = [
             'mappings' => [

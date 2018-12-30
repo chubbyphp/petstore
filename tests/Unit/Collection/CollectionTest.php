@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CollectionTest extends TestCase
 {
-    public function testGetSet()
+    public function testGetSet(): void
     {
         $collection = $this->getCollection();
 

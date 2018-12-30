@@ -23,7 +23,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testWithoutAccept()
+    public function testWithoutAccept(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
@@ -55,7 +55,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         self::assertSame($response, $middleware($request, $response, $next));
     }
 
-    public function testWithAccept()
+    public function testWithAccept(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
@@ -91,7 +91,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         self::assertSame($response, $middleware($request, $response, $next));
     }
 
-    public function testWithoutContentType()
+    public function testWithoutContentType(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
@@ -135,7 +135,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         self::assertSame($response, $middleware($request, $response, $next));
     }
 
-    public function testWithContentType()
+    public function testWithContentType(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [

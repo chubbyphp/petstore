@@ -22,7 +22,7 @@ class ModelMappingTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -32,7 +32,7 @@ class ModelMappingTest extends TestCase
         self::assertSame($this->getClass(), $mapping->getClass());
     }
 
-    public function testGetNormalizationType()
+    public function testGetNormalizationType(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -42,7 +42,7 @@ class ModelMappingTest extends TestCase
         self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
-    public function testGetNormalizationFieldMappings()
+    public function testGetNormalizationFieldMappings(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -58,7 +58,7 @@ class ModelMappingTest extends TestCase
         ], $fieldMappings);
     }
 
-    public function testGetNormalizationEmbeddedFieldMappings()
+    public function testGetNormalizationEmbeddedFieldMappings(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class);
@@ -70,7 +70,7 @@ class ModelMappingTest extends TestCase
         self::assertEquals([], $fieldMappings);
     }
 
-    public function testGetNormalizationLinkMappings()
+    public function testGetNormalizationLinkMappings(): void
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class, [
@@ -192,7 +192,14 @@ class ModelMappingTest extends TestCase
      */
     protected function getModelMapping(RouterInterface $router): AbstractModelMapping
     {
-        return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getReadRoute(), $this->getUpdateRoute(), $this->getDeleteRoute()) extends AbstractModelMapping {
+        return new class(
+            $router,
+            $this->getClass(),
+            $this->getNormalizationType(),
+            $this->getReadRoute(),
+            $this->getUpdateRoute(),
+            $this->getDeleteRoute()
+        ) extends AbstractModelMapping {
             /**
              * @var string
              */

@@ -19,10 +19,10 @@ interface ModelInterface
     /**
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt(\DateTime $updatedAt);
+    public function setUpdatedAt(\DateTime $updatedAt): void;
 
     /**
      * @return \DateTime|null
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): ?\DateTime;
 }

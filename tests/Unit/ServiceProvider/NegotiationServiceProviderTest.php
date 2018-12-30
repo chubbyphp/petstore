@@ -19,7 +19,7 @@ final class NegotiationServiceProviderTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'deserializer' => $this->getMockByCalls(DeserializerInterface::class, [

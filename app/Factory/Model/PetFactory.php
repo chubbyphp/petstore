@@ -21,7 +21,7 @@ final class PetFactory implements ModelFactoryInterface
     /**
      * @param ModelInterface $model
      */
-    public function reset(ModelInterface $model)
+    public function reset(ModelInterface $model): void
     {
         if (!$model instanceof Pet) {
             throw new \InvalidArgumentException(

@@ -13,7 +13,7 @@ final class MiddlewareServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container[AcceptAndContentTypeMiddleware::class] = function () use ($container) {
             return new AcceptAndContentTypeMiddleware(

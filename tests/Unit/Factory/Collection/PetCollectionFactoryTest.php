@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetCollectionFactoryTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $factory = new PetCollectionFactory();
 

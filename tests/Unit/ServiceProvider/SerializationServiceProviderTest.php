@@ -18,7 +18,7 @@ final class SerializationServiceProviderTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $container = new Container([
             'router' => $this->getMockByCalls(RouterInterface::class),

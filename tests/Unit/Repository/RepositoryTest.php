@@ -25,7 +25,7 @@ final class RepositoryTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testResolveCollection()
+    public function testResolveCollection(): void
     {
         $model = $this->getModel();
         $modelClass = get_class($model);
@@ -84,7 +84,7 @@ final class RepositoryTest extends TestCase
         $repository->resolveCollection($collection);
     }
 
-    public function testFindById()
+    public function testFindById(): void
     {
         $model = $this->getModel();
         $modelClass = get_class($model);
@@ -101,7 +101,7 @@ final class RepositoryTest extends TestCase
         self::assertSame($model, $repository->findById('86c78085-edaf-4df9-95d0-563e45acf618'));
     }
 
-    public function testPersist()
+    public function testPersist(): void
     {
         $model = $this->getModel();
         $modelClass = get_class($model);
@@ -115,7 +115,7 @@ final class RepositoryTest extends TestCase
         $repository->persist($model);
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $model = $this->getModel();
         $modelClass = get_class($model);
@@ -129,7 +129,7 @@ final class RepositoryTest extends TestCase
         $repository->remove($model);
     }
 
-    public function testFlush()
+    public function testFlush(): void
     {
         $model = $this->getModel();
         $modelClass = get_class($model);

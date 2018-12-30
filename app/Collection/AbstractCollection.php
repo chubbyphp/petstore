@@ -84,7 +84,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param int $count
      */
-    public function setCount(int $count)
+    public function setCount(int $count): void
     {
         $this->count = $count;
     }
@@ -100,7 +100,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param ModelInterface[]
      */
-    public function setItems(array $items)
+    public function setItems(array $items): void
     {
         $this->items = $items;
     }

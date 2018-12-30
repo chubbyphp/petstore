@@ -20,7 +20,7 @@ final class SerializationServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container['serializer.mappingConfigs'] = [
             Error::class => new MappingConfig(ErrorMapping::class),

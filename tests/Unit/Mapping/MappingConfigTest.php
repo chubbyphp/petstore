@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class MappingConfigTest extends TestCase
 {
-    public function testMapping()
+    public function testMapping(): void
     {
         $mappingConfig = new MappingConfig(\stdClass::class, ['service1', 'service2']);
 

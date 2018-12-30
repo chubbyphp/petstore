@@ -12,24 +12,24 @@ interface RepositoryInterface
     /**
      * @param CollectionInterface $collection
      */
-    public function resolveCollection(CollectionInterface $collection);
+    public function resolveCollection(CollectionInterface $collection): void;
 
     /**
      * @param string $id
      *
      * @return ModelInterface|null
      */
-    public function findById(string $id);
+    public function findById(string $id): ?ModelInterface;
 
     /**
      * @param ModelInterface $model
      */
-    public function persist(ModelInterface $model);
+    public function persist(ModelInterface $model): void;
 
     /**
      * @param ModelInterface $model
      */
-    public function remove(ModelInterface $model);
+    public function remove(ModelInterface $model): void;
 
-    public function flush();
+    public function flush(): void;
 }

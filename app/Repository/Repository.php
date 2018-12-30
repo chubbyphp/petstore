@@ -33,7 +33,7 @@ final class Repository implements RepositoryInterface
     /**
      * @param CollectionInterface $collection
      */
-    public function resolveCollection(CollectionInterface $collection)
+    public function resolveCollection(CollectionInterface $collection): void
     {
         $qb = $this->entityManager->getRepository($this->modelClass)->createQueryBuilder('m');
 
@@ -59,7 +59,7 @@ final class Repository implements RepositoryInterface
      *
      * @return ModelInterface|null
      */
-    public function findById(string $id)
+    public function findById(string $id): ?ModelInterface
     {
         return $this->entityManager->find($this->modelClass, $id);
     }
@@ -67,7 +67,7 @@ final class Repository implements RepositoryInterface
     /**
      * @param ModelInterface $model
      */
-    public function persist(ModelInterface $model)
+    public function persist(ModelInterface $model): void
     {
         $this->entityManager->persist($model);
     }
@@ -75,12 +75,12 @@ final class Repository implements RepositoryInterface
     /**
      * @param ModelInterface $model
      */
-    public function remove(ModelInterface $model)
+    public function remove(ModelInterface $model): void
     {
         $this->entityManager->remove($model);
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->entityManager->flush();
     }

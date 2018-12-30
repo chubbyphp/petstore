@@ -23,7 +23,7 @@ class PingControllerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [

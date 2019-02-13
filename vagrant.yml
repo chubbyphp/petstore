@@ -11,7 +11,8 @@ nginx:
             server_name: *hostname
             template: default
 php:
+    version: 7.3
     composer:
         json:
             require:
-                friendsofphp/php-cs-fixer: '^2.13.1'
+                friendsofphp/php-cs-fixer: '^2.14.1'

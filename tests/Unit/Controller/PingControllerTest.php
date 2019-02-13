@@ -56,7 +56,7 @@ class PingControllerTest extends TestCase
             Call::create('encode')
                 ->with(
                     new ArgumentCallback(function ($data) {
-                        self::assertInternalType('array', $data);
+                        self::assertIsArray($data);
 
                         self::assertArrayHasKey('date', $data);
                     }),

@@ -18,10 +18,11 @@ class ProdConfig extends AbstractConfig
                     'cache.result' => ['type' => 'apcu'],
                 ],
                 'connection' => [
-                    'charset' => 'utf8mb4',
+                    'charset' => 'utf8',
                     'dbname' => 'petshop',
-                    'driver' => 'pdo_mysql',
+                    'driver' => 'pdo_pgsql',
                     'host' => 'localhost',
+                    'port' => 5432,
                     'password' => 'root',
                     'user' => 'root',
                 ],

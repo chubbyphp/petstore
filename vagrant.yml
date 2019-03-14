@@ -3,7 +3,7 @@ network:
     ip: 10.16.16.16
 role:
     nginx: true
-    mariadb: true
+    postgresql: true
 nginx:
     server:
         -

@@ -12,9 +12,9 @@ build:
     tests:
         before:
             -
-                command: psql -c "CREATE USER root WITH ENCRYPTED PASSWORD 'root';" -U postgres
+                command: psql --host=127.0.0.1 --port=5432 --username=scrutinizer --password=scrutinizer --command="CREATE USER root WITH ENCRYPTED PASSWORD 'root';"
             -
-                command: psql -c "GRANT admins TO root;" -U postgres
+                command: psql --host=127.0.0.1 --port=5432 --username=scrutinizer --password=scrutinizer --command="GRANT admins TO root;"
         override:
             -
                 command: 'vendor/bin/phpunit --testsuite=Unit --coverage-clover=coverage/clover.xml'

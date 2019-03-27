@@ -19,8 +19,8 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
         self::assertSame(406, $response['status']['code']);
 
         self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"'
-                .', "application/xml"',
+            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
+                . ', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -53,6 +53,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
                 'contentType' => 'text/html',
                 'supportedContentTypes' => [
                     'application/json',
+                    'application/x-jsonx',
                     'application/x-www-form-urlencoded',
                     'application/xml',
                 ],
@@ -139,8 +140,8 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
         self::assertSame(406, $response['status']['code']);
 
         self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"'
-                .', "application/xml"',
+            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
+                . ', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -218,8 +219,8 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
         self::assertSame(406, $response['status']['code']);
 
         self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"'
-                .', "application/xml"',
+            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
+                . ', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -301,8 +302,8 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
         self::assertSame(406, $response['status']['code']);
 
         self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"'
-                .', "application/xml"',
+            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
+                . ', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -340,6 +341,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
                 'contentType' => 'text/html',
                 'supportedContentTypes' => [
                     'application/json',
+                    'application/x-jsonx',
                     'application/x-www-form-urlencoded',
                     'application/xml',
                 ],
@@ -495,8 +497,8 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
         self::assertSame(406, $response['status']['code']);
 
         self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"'
-                .', "application/xml"',
+            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
+                . ', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 

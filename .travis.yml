@@ -19,7 +19,8 @@ matrix:
       env: dependencies=lowest
 
 before_script:
-  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - psql -c "CREATE USER root WITH ENCRYPTED PASSWORD 'root';" -U postgres
+  - psql -c "GRANT admins TO root;" -U postgres
   - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
   - echo 'Europe/Zurich' | sudo tee /etc/timezone
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -31,4 +32,4 @@ before_script:
 script: vendor/bin/phpunit --testsuite=Unit --coverage-text --verbose && vendor/bin/phpunit --testsuite=Integration --verbose
 
 services:
-  - mysql
+  - postgresql

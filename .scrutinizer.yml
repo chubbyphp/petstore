@@ -2,19 +2,32 @@ build:
     environment:
         timezone: 'Europe/Zurich'
         php:
-            version: '7.1'
+            version: '7.3'
             ini:
                 'date.timezone': 'Europe/Zurich'
+    nodes:
+        my-node:
+            services:
+                postgres: 11
     tests:
         before:
             -
-                command: echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+                command: psql -c "CREATE USER root WITH ENCRYPTED PASSWORD 'root';" -U postgres
+            -
+                command: psql -c "GRANT admins TO root;" -U postgres
         override:
             -
                 command: 'vendor/bin/phpunit --testsuite=Unit --coverage-clover=coverage/clover.xml'
                 coverage:
                     file: 'coverage/clover.xml'
                     format: 'php-clover'
+
+build:
+  nodes:
+    my-node:
+      services:
+        # For available tags, see https://hub.docker.com/_/postgres/
+        postgres: 10
 
 checks:
     php: true

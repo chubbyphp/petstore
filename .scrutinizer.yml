@@ -6,7 +6,7 @@ build:
             ini:
                 'date.timezone': 'Europe/Zurich'
     nodes:
-        my-node:
+        postgres:
             services:
                 postgres: 11
     tests:
@@ -21,6 +21,8 @@ build:
                 coverage:
                     file: 'coverage/clover.xml'
                     format: 'php-clover'
+            -
+                command: 'vendor/bin/phpunit --testsuite=Integration'
 
 checks:
     php: true

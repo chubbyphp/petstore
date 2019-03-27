@@ -182,13 +182,7 @@ class CollectionMappingTest extends TestCase
      */
     protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
     {
-        return new class(
-            $router,
-            $this->getClass(),
-            $this->getNormalizationType(),
-            $this->getListRoute(),
-            $this->getCreateRoute()
-        ) extends AbstractCollectionMapping {
+        return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
             /**
              * @var string
              */

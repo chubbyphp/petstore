@@ -192,14 +192,7 @@ class ModelMappingTest extends TestCase
      */
     protected function getModelMapping(RouterInterface $router): AbstractModelMapping
     {
-        return new class(
-            $router,
-            $this->getClass(),
-            $this->getNormalizationType(),
-            $this->getReadRoute(),
-            $this->getUpdateRoute(),
-            $this->getDeleteRoute()
-        ) extends AbstractModelMapping {
+        return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getReadRoute(), $this->getUpdateRoute(), $this->getDeleteRoute()) extends AbstractModelMapping {
             /**
              * @var string
              */

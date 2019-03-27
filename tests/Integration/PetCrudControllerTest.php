@@ -20,7 +20,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(
             'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                . ', "application/x-www-form-urlencoded", "application/xml"',
+                .', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -141,7 +141,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(
             'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                . ', "application/x-www-form-urlencoded", "application/xml"',
+                .', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -220,7 +220,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(
             'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                . ', "application/x-www-form-urlencoded", "application/xml"',
+                .', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -303,7 +303,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(
             'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                . ', "application/x-www-form-urlencoded", "application/xml"',
+                .', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 
@@ -498,7 +498,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(
             'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                . ', "application/x-www-form-urlencoded", "application/xml"',
+                .', "application/x-www-form-urlencoded", "application/xml"',
             $response['headers']['x-not-acceptable'][0]
         );
 

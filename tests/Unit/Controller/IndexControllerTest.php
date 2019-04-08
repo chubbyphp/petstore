@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Swagger;
+namespace App\Tests\Unit\Controller;
 
-use App\Controller\Swagger\IndexController;
-use Chubbyphp\Mock\Argument\ArgumentCallback;
+use App\Controller\IndexController;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -13,10 +13,9 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Stream;
 
 /**
- * @covers \App\Controller\Swagger\IndexController
+ * @covers \App\Controller\IndexController
  */
 class IndexControllerTest extends TestCase
 {
@@ -29,20 +28,7 @@ class IndexControllerTest extends TestCase
 
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Content-Type', 'text/html')->willReturnSelf(),
-            Call::create('withHeader')
-                ->with('Cache-Control', 'no-cache, no-store, must-revalidate')
-                ->willReturnSelf(),
-            Call::create('withHeader')->with('Pragma', 'no-cache')->willReturnSelf(),
-            Call::create('withHeader')->with('Expires', '0')->willReturnSelf(),
-            Call::create('withBody')
-                ->with(
-                    new ArgumentCallback(function ($body) {
-                        self::assertInstanceOf(Stream::class, $body);
-                        self::assertRegExp('/SwaggerUIBundle/', (string) $body);
-                    })
-                )
-                ->willReturnSelf(),
+            Call::create('withHeader')->with('Location', 'https://petstore/api')->willReturnSelf(),
         ]);
 
         /** @var ResponseFactoryInterface|MockObject $responseFactory */
@@ -50,7 +36,12 @@ class IndexControllerTest extends TestCase
             Call::create('createResponse')->with(200, '')->willReturn($response),
         ]);
 
-        $controller = new IndexController($responseFactory);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class, [
+            Call::create('generateUri')->with($request, 'swagger_index', [])->willReturn('https://petstore/api'),
+        ]);
+
+        $controller = new IndexController($responseFactory, $urlGenerator);
 
         self::assertSame($response, $controller->handle($request));
     }

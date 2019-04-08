@@ -10,13 +10,15 @@ use App\Controller\Crud\DeleteController;
 use App\Controller\Crud\ListController;
 use App\Controller\Crud\ReadController;
 use App\Controller\Crud\UpdateController;
+use App\Controller\IndexController;
 use App\Controller\PingController;
-use App\Controller\Swagger\IndexController;
-use App\Controller\Swagger\YamlController;
+use App\Controller\Swagger\IndexController as SwaggerIndexController;
+use App\Controller\Swagger\YamlController as SwaggerYamlController;
 use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
 use App\Model\Pet;
 use App\Repository\Repository;
+use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -73,12 +75,16 @@ final class ControllerServiceProvider implements ServiceProviderInterface
             );
         };
 
-        $container[IndexController::class] = function () use ($container) {
-            return new IndexController($container['api-http.response.factory']);
+        $container[SwaggerIndexController::class] = function () use ($container) {
+            return new SwaggerIndexController($container['api-http.response.factory']);
         };
 
-        $container[YamlController::class] = function () use ($container) {
-            return new YamlController($container['api-http.response.factory']);
+        $container[SwaggerYamlController::class] = function () use ($container) {
+            return new SwaggerYamlController($container['api-http.response.factory']);
+        };
+
+        $container[IndexController::class] = function () use ($container) {
+            return new IndexController($container['api-http.response.factory'], $container[UrlGenerator::class]);
         };
 
         $container[PingController::class] = function () use ($container) {

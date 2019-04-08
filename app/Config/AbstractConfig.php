@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Config;
 
 use Chubbyphp\Config\ConfigInterface;
-use Chubbyphp\Config\Slim\SlimSettingsInterface;
 
-abstract class AbstractConfig implements ConfigInterface, SlimSettingsInterface
+abstract class AbstractConfig implements ConfigInterface
 {
     /**
      * @var string

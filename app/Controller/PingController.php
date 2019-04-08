@@ -8,8 +8,9 @@ use Chubbyphp\Serialization\SerializerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class PingController
+class PingController implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -38,7 +39,7 @@ class PingController
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $accept = $request->getAttribute('accept');
 

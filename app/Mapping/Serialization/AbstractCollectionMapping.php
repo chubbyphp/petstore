@@ -12,21 +12,21 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Chubbyphp\Serialization\Normalizer\CallbackLinkNormalizer;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
-use Slim\Interfaces\RouterInterface;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
     /**
-     * @var RouterInterface
+     * @var UrlGeneratorInterface
      */
-    protected $router;
+    protected $urlGenerator;
 
     /**
-     * @param RouterInterface $router
+     * @param UrlGeneratorInterface $urlGenerator
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -68,9 +68,8 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                 function (string $path, CollectionInterface $collection, NormalizerContextInterface $context) {
                     return LinkBuilder
                         ::create(
-                            $this->router->pathFor(
+                            $this->urlGenerator->generatePath(
                                 $this->getListRouteName(),
-                                [],
                                 array_replace($context->getRequest()->getQueryParams(), [
                                     'offset' => $collection->getOffset(),
                                     'limit' => $collection->getLimit(),
@@ -83,7 +82,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
             )),
             new NormalizationLinkMapping('create', [], new CallbackLinkNormalizer(
                 function () {
-                    return LinkBuilder::create($this->router->pathFor($this->getCreateRouteName()))
+                    return LinkBuilder::create($this->urlGenerator->generatePath($this->getCreateRouteName()))
                         ->setAttributes(['method' => 'POST'])
                         ->getLink();
                 }

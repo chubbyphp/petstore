@@ -8,8 +8,9 @@ use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-final class DeleteController
+final class DeleteController implements RequestHandlerInterface
 {
     /**
      * @var RepositoryInterface
@@ -38,7 +39,7 @@ final class DeleteController
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getAttribute('id');
         $accept = $request->getAttribute('accept');

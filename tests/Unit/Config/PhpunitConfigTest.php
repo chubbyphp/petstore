@@ -22,6 +22,7 @@ final class PhpunitConfigTest extends TestCase
                 'cache' => '/path/to/root/var/cache/phpunit',
                 'log' => '/path/to/root/var/log/phpunit',
             ],
+            'debug' => true,
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => [
@@ -51,16 +52,6 @@ final class PhpunitConfigTest extends TestCase
                 'proxies.dir' => '/path/to/root/var/cache/phpunit/doctrine/proxies',
             ],
         ], $config->getConfig());
-    }
-
-    public function testGetSlimSettings(): void
-    {
-        $config = PhpunitConfig::create('/path/to/root');
-
-        self::assertSame([
-            'displayErrorDetails' => true,
-            'routerCacheFile' => false,
-        ], $config->getSlimSettings());
     }
 
     public function testGetDirectories(): void

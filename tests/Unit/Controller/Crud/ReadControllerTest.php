@@ -48,7 +48,7 @@ class ReadControllerTest extends TestCase
 
         $controller = new ReadController($repository, $responseManager);
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 
     public function testSuccessful(): void
@@ -86,6 +86,6 @@ class ReadControllerTest extends TestCase
 
         $controller = new ReadController($repository, $responseManager);
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 }

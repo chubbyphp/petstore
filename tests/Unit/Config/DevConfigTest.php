@@ -22,6 +22,7 @@ final class DevConfigTest extends TestCase
                 'cache' => '/path/to/root/var/cache/dev',
                 'log' => '/path/to/root/var/log/dev',
             ],
+            'debug' => true,
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => [
@@ -51,16 +52,6 @@ final class DevConfigTest extends TestCase
                 'proxies.dir' => '/path/to/root/var/cache/dev/doctrine/proxies',
             ],
         ], $config->getConfig());
-    }
-
-    public function testGetSlimSettings(): void
-    {
-        $config = DevConfig::create('/path/to/root');
-
-        self::assertSame([
-            'displayErrorDetails' => true,
-            'routerCacheFile' => false,
-        ], $config->getSlimSettings());
     }
 
     public function testGetDirectories(): void

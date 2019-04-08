@@ -15,8 +15,9 @@ use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateController
+final class UpdateController implements RequestHandlerInterface
 {
     /**
      * @var ErrorFactoryInterface
@@ -69,7 +70,7 @@ final class UpdateController
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getAttribute('id');
         $accept = $request->getAttribute('accept');

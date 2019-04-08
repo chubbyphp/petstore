@@ -13,6 +13,8 @@ class DevConfig extends ProdConfig
     {
         $config = parent::getConfig();
 
+        $config['debug'] = true;
+
         $config['doctrine.dbal.db.options']['configuration']['cache.result']['type'] = 'array';
 
         $config['doctrine.orm.em.options']['cache.hydration']['type'] = 'array';
@@ -20,19 +22,6 @@ class DevConfig extends ProdConfig
         $config['doctrine.orm.em.options']['cache.query']['type'] = 'array';
 
         return $config;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSlimSettings(): array
-    {
-        $slimSettings = parent::getSlimSettings();
-
-        $slimSettings['displayErrorDetails'] = true;
-        $slimSettings['routerCacheFile'] = false;
-
-        return $slimSettings;
     }
 
     /**

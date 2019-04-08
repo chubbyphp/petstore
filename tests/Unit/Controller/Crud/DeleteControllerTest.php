@@ -46,7 +46,7 @@ class DeleteControllerTest extends TestCase
 
         $controller = new DeleteController($repository, $responseManager);
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 
     public function testSuccessful(): void
@@ -79,6 +79,6 @@ class DeleteControllerTest extends TestCase
 
         $controller = new DeleteController($repository, $responseManager);
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 }

@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Collection\AbstractCollection;
 use App\Collection\CollectionInterface;
 use App\Mapping\Serialization\AbstractCollectionMapping;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
@@ -15,7 +16,6 @@ use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractCollectionMapping
@@ -26,30 +26,30 @@ class CollectionMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getCollectionMapping($router);
+        $mapping = $this->getCollectionMapping($urlGenerator);
 
         self::assertSame($this->getClass(), $mapping->getClass());
     }
 
     public function testGetNormalizationType(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getCollectionMapping($router);
+        $mapping = $this->getCollectionMapping($urlGenerator);
 
         self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getCollectionMapping($router);
+        $mapping = $this->getCollectionMapping($urlGenerator);
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
@@ -63,10 +63,10 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getCollectionMapping($router);
+        $mapping = $this->getCollectionMapping($urlGenerator);
 
         $fieldMappings = $mapping->getNormalizationEmbeddedFieldMappings('/');
 
@@ -77,17 +77,17 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationLinkMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class, [
-            Call::create('pathFor')
-                ->with($this->getListRoute(), [], ['offset' => 0, 'limit' => 20])
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class, [
+            Call::create('generatePath')
+                ->with($this->getListRoute(), ['offset' => 0, 'limit' => 20])
                 ->willReturn(sprintf('%s?offset=0&limit=20', $this->getCollectionPath())),
-            Call::create('pathFor')
-                ->with($this->getCreateRoute(), [], [])
+            Call::create('generatePath')
+                ->with($this->getCreateRoute(), [])
                 ->willReturn(sprintf('%s', $this->getCollectionPath())),
         ]);
 
-        $mapping = $this->getCollectionMapping($router);
+        $mapping = $this->getCollectionMapping($urlGenerator);
 
         $linkMappings = $mapping->getNormalizationLinkMappings('/');
 
@@ -176,13 +176,13 @@ class CollectionMappingTest extends TestCase
     }
 
     /**
-     * @param RouterInterface $router
+     * @param UrlGeneratorInterface $urlGenerator
      *
      * @return AbstractCollectionMapping
      */
-    protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
+    protected function getCollectionMapping(UrlGeneratorInterface $urlGenerator): AbstractCollectionMapping
     {
-        return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
+        return new class($urlGenerator, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
             /**
              * @var string
              */
@@ -204,20 +204,20 @@ class CollectionMappingTest extends TestCase
             private $createRouteName;
 
             /**
-             * @param RouterInterface $router
-             * @param string          $class
-             * @param string          $normalizationType
-             * @param string          $listRouteName
-             * @param string          $createRouteName
+             * @param UrlGeneratorInterface $urlGenerator
+             * @param string                $class
+             * @param string                $normalizationType
+             * @param string                $listRouteName
+             * @param string                $createRouteName
              */
             public function __construct(
-                RouterInterface $router,
+                UrlGeneratorInterface $urlGenerator,
                 string $class,
                 string $normalizationType,
                 string $listRouteName,
                 string $createRouteName
             ) {
-                parent::__construct($router);
+                parent::__construct($urlGenerator);
 
                 $this->class = $class;
                 $this->normalizationType = $normalizationType;

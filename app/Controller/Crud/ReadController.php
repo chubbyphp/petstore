@@ -9,8 +9,9 @@ use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-final class ReadController
+final class ReadController implements RequestHandlerInterface
 {
     /**
      * @var RepositoryInterface
@@ -39,7 +40,7 @@ final class ReadController
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getAttribute('id');
         $accept = $request->getAttribute('accept');

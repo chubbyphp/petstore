@@ -13,7 +13,7 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Slim\Interfaces\RouterInterface;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractModelMapping
@@ -24,30 +24,30 @@ class ModelMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getModelMapping($router);
+        $mapping = $this->getModelMapping($urlGenerator);
 
         self::assertSame($this->getClass(), $mapping->getClass());
     }
 
     public function testGetNormalizationType(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getModelMapping($router);
+        $mapping = $this->getModelMapping($urlGenerator);
 
         self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getModelMapping($router);
+        $mapping = $this->getModelMapping($urlGenerator);
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
@@ -60,10 +60,10 @@ class ModelMappingTest extends TestCase
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
 
-        $mapping = $this->getModelMapping($router);
+        $mapping = $this->getModelMapping($urlGenerator);
 
         $fieldMappings = $mapping->getNormalizationEmbeddedFieldMappings('/');
 
@@ -72,20 +72,20 @@ class ModelMappingTest extends TestCase
 
     public function testGetNormalizationLinkMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class, [
-            Call::create('pathFor')
-                ->with($this->getReadRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'], [])
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class, [
+            Call::create('generatePath')
+                ->with($this->getReadRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'])
                 ->willReturn(sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86')),
-            Call::create('pathFor')
-                ->with($this->getUpdateRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'], [])
+            Call::create('generatePath')
+                ->with($this->getUpdateRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'])
                 ->willReturn(sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86')),
-            Call::create('pathFor')
-                ->with($this->getDeleteRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'], [])
+            Call::create('generatePath')
+                ->with($this->getDeleteRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'])
                 ->willReturn(sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86')),
         ]);
 
-        $mapping = $this->getModelMapping($router);
+        $mapping = $this->getModelMapping($urlGenerator);
 
         $linkMappings = $mapping->getNormalizationLinkMappings('/');
 
@@ -186,13 +186,13 @@ class ModelMappingTest extends TestCase
     }
 
     /**
-     * @param RouterInterface $router
+     * @param UrlGeneratorInterface $urlGenerator
      *
      * @return AbstractModelMapping
      */
-    protected function getModelMapping(RouterInterface $router): AbstractModelMapping
+    protected function getModelMapping(UrlGeneratorInterface $urlGenerator): AbstractModelMapping
     {
-        return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getReadRoute(), $this->getUpdateRoute(), $this->getDeleteRoute()) extends AbstractModelMapping {
+        return new class($urlGenerator, $this->getClass(), $this->getNormalizationType(), $this->getReadRoute(), $this->getUpdateRoute(), $this->getDeleteRoute()) extends AbstractModelMapping {
             /**
              * @var string
              */
@@ -214,22 +214,22 @@ class ModelMappingTest extends TestCase
             private $createRouteName;
 
             /**
-             * @param RouterInterface $router
-             * @param string          $class
-             * @param string          $normalizationType
-             * @param string          $readRouteName
-             * @param string          $updateRouteName
-             * @param string          $deleteRouteName
+             * @param UrlGeneratorInterface $urlGenerator
+             * @param string                $class
+             * @param string                $normalizationType
+             * @param string                $readRouteName
+             * @param string                $updateRouteName
+             * @param string                $deleteRouteName
              */
             public function __construct(
-                RouterInterface $router,
+                UrlGeneratorInterface $urlGenerator,
                 string $class,
                 string $normalizationType,
                 string $readRouteName,
                 string $updateRouteName,
                 string $deleteRouteName
             ) {
-                parent::__construct($router);
+                parent::__construct($urlGenerator);
 
                 $this->class = $class;
                 $this->normalizationType = $normalizationType;

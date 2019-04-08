@@ -9,6 +9,7 @@ use App\Controller\Crud\DeleteController;
 use App\Controller\Crud\ListController;
 use App\Controller\Crud\ReadController;
 use App\Controller\Crud\UpdateController;
+use App\Controller\IndexController;
 use App\Controller\PingController;
 use App\Controller\Swagger\IndexController as SwaggerIndexController;
 use App\Controller\Swagger\YamlController as SwaggerYamlController;
@@ -16,9 +17,17 @@ use App\Middleware\AcceptAndContentTypeMiddleware;
 use App\Model\Pet;
 use App\ServiceProvider\ControllerServiceProvider;
 use App\ServiceProvider\MiddlewareServiceProvider;
-use Chubbyphp\Lazy\LazyMiddleware;
-use Slim\App;
-use Slim\Container;
+use Chubbyphp\Framework\Application;
+use Chubbyphp\Framework\Middleware\LazyMiddleware;
+use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
+use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
+use Chubbyphp\Framework\ResponseHandler\ExceptionResponseHandler;
+use Chubbyphp\Framework\Router\FastRoute\RouteDispatcher;
+use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
+use Chubbyphp\Framework\Router\RouteCollection;
+use Chubbyphp\Framework\Router\RouteInterface;
+use Pimple\Container;
+use Pimple\Psr11\Container as PsrContainer;
 
 require __DIR__.'/bootstrap.php';
 
@@ -27,30 +36,53 @@ $container = require __DIR__.'/container.php';
 $container->register(new ControllerServiceProvider());
 $container->register(new MiddlewareServiceProvider());
 
-$acceptAndContentTypeMiddleware = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
+$container[RouteCollection::class] = function () use ($container) {
+    $psrContainer = new PsrContainer($container);
 
-$app = new App($container);
+    $acceptAndContentTypeMiddleware = new LazyMiddleware($psrContainer, AcceptAndContentTypeMiddleware::class);
 
-$app->get('/', function ($request, $response) use ($app) {
-    return $response->withStatus(307)->withHeader(
-        'Location',
-        $app->getContainer()->get('router')->pathFor('swagger_index')
-    );
-});
+    return (new RouteCollection())
+        ->route('/', RouteInterface::GET, 'index', new LazyRequestHandler($psrContainer, IndexController::class))
+        ->group('/api')
+            ->route('', RouteInterface::GET, 'swagger_index',
+                new LazyRequestHandler($psrContainer, SwaggerIndexController::class)
+            )
+            ->route('/swagger.yml', RouteInterface::GET, 'swagger_yml',
+                new LazyRequestHandler($psrContainer, SwaggerYamlController::class)
+            )
+            ->route('/ping', RouteInterface::GET, 'ping',
+                new LazyRequestHandler($psrContainer, PingController::class),
+                [$acceptAndContentTypeMiddleware]
+            )
+            ->group('/pets', [$acceptAndContentTypeMiddleware])
+                ->route('', RouteInterface::GET, 'pet_list',
+                    new LazyRequestHandler($psrContainer, ListController::class.Pet::class)
+                )
+                ->route('', RouteInterface::POST, 'pet_create',
+                    new LazyRequestHandler($psrContainer, CreateController::class.Pet::class)
+                )
+                ->route('/{id}', RouteInterface::GET, 'pet_read',
+                    new LazyRequestHandler($psrContainer, ReadController::class.Pet::class)
+                )
+                ->route('/{id}', RouteInterface::PUT, 'pet_update',
+                    new LazyRequestHandler($psrContainer, UpdateController::class.Pet::class)
+                )
+                ->route('/{id}', RouteInterface::DELETE, 'pet_delete',
+                    new LazyRequestHandler($psrContainer, DeleteController::class.Pet::class)
+                )
+            ->end()
+        ->end()
+    ;
+};
 
-$app->group('/api', function () use ($app, $container, $acceptAndContentTypeMiddleware) {
-    $app->get('', SwaggerIndexController::class)->setName('swagger_index');
-    $app->get('/swagger.yml', SwaggerYamlController::class)->setName('swagger_yml');
+$container[UrlGenerator::class] = function () use ($container) {
+    return new UrlGenerator($container[RouteCollection::class]);
+};
 
-    $app->get('/ping', PingController::class)->add($acceptAndContentTypeMiddleware)->setName('ping');
-
-    $app->group('/pets', function () use ($app, $container) {
-        $app->get('', ListController::class.Pet::class)->setName('pet_list');
-        $app->post('', CreateController::class.Pet::class)->setName('pet_create');
-        $app->get('/{id}', ReadController::class.Pet::class)->setName('pet_read');
-        $app->put('/{id}', UpdateController::class.Pet::class)->setName('pet_update');
-        $app->delete('/{id}', DeleteController::class.Pet::class)->setName('pet_delete');
-    })->add($acceptAndContentTypeMiddleware);
-});
+$app = new Application(
+    new RouteDispatcher($container[RouteCollection::class]),
+    new MiddlewareDispatcher(),
+    new ExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
+);
 
 return $app;

@@ -14,8 +14,9 @@ use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-final class ListController
+final class ListController implements RequestHandlerInterface
 {
     /**
      * @var ErrorFactoryInterface
@@ -76,7 +77,7 @@ final class ListController
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $accept = $request->getAttribute('accept');
 

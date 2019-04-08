@@ -11,21 +11,21 @@ use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMapping;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Chubbyphp\Serialization\Normalizer\CallbackLinkNormalizer;
-use Slim\Interfaces\RouterInterface;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 
 abstract class AbstractModelMapping implements NormalizationObjectMappingInterface
 {
     /**
-     * @var RouterInterface
+     * @var UrlGeneratorInterface
      */
-    protected $router;
+    protected $urlGenerator;
 
     /**
-     * @param RouterInterface $router
+     * @param UrlGeneratorInterface $router
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -64,7 +64,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                 function (string $path, ModelInterface $model) {
                     return LinkBuilder
                         ::create(
-                            $this->router->pathFor($this->getReadRouteName(), ['id' => $model->getId()])
+                            $this->urlGenerator->generatePath($this->getReadRouteName(), ['id' => $model->getId()])
                         )
                         ->setAttributes(['method' => 'GET'])
                         ->getLink();
@@ -74,7 +74,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                 function (string $path, ModelInterface $model) {
                     return LinkBuilder
                         ::create(
-                            $this->router->pathFor($this->getUpdateRouteName(), ['id' => $model->getId()])
+                            $this->urlGenerator->generatePath($this->getUpdateRouteName(), ['id' => $model->getId()])
                         )
                         ->setAttributes(['method' => 'PUT'])
                         ->getLink();
@@ -84,7 +84,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                 function (string $path, ModelInterface $model) {
                     return LinkBuilder
                         ::create(
-                            $this->router->pathFor($this->getDeleteRouteName(), ['id' => $model->getId()])
+                            $this->urlGenerator->generatePath($this->getDeleteRouteName(), ['id' => $model->getId()])
                         )
                         ->setAttributes(['method' => 'DELETE'])
                         ->getLink();

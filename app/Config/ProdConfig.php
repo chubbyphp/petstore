@@ -13,6 +13,7 @@ class ProdConfig extends AbstractConfig
     {
         return [
             'config.cleanDirectories' => $this->getDirectories(),
+            'debug' => false,
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => ['type' => 'apcu'],
@@ -33,17 +34,6 @@ class ProdConfig extends AbstractConfig
                 'cache.query' => ['type' => 'apcu'],
                 'proxies.dir' => $this->getCacheDir().'/doctrine/proxies',
             ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getSlimSettings(): array
-    {
-        return [
-            'displayErrorDetails' => false,
-            'routerCacheFile' => $this->getCacheDir().'/routes.php',
         ];
     }
 

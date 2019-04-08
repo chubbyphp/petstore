@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\ServiceProvider;
 
 use App\ApiHttp\Factory\ErrorFactory;
-use App\ApiHttp\Factory\ResponseFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Zend\Diactoros\ResponseFactory;
 
 final class ApiHttpServiceProvider implements ServiceProviderInterface
 {

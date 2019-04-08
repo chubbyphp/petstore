@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceProvider;
 
 use App\ServiceProvider\SerializationServiceProvider;
+use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\CallableNormalizationObjectMapping;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
-use Chubbyphp\Mock\MockByCallsTrait;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * @covers \App\ServiceProvider\SerializationServiceProvider
@@ -21,7 +22,7 @@ final class SerializationServiceProviderTest extends TestCase
     public function testRegister(): void
     {
         $container = new Container([
-            'router' => $this->getMockByCalls(RouterInterface::class),
+            UrlGenerator::class => $this->getMockByCalls(UrlGeneratorInterface::class),
         ]);
 
         $serviceProvider = new SerializationServiceProvider();

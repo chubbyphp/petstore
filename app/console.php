@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\ServiceProvider\ConsoleServiceProvider;
-use Slim\Container;
+use Pimple\Container;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;

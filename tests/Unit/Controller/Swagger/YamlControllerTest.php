@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Stream;
+use Zend\Diactoros\Stream;
 
 /**
  * @covers \App\Controller\Swagger\YamlController
@@ -22,7 +22,7 @@ class YamlControllerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testInvoke(): void
+    public function testHandle(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class);
@@ -52,6 +52,6 @@ class YamlControllerTest extends TestCase
 
         $controller = new YamlController($responseFactory);
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 }

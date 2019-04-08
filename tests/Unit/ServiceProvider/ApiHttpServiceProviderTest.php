@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceProvider;
 
 use App\ApiHttp\Factory\ErrorFactory;
-use App\ApiHttp\Factory\ResponseFactory;
 use App\ServiceProvider\ApiHttpServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
+use Zend\Diactoros\ResponseFactory;
 
 /**
  * @covers \App\ServiceProvider\ApiHttpServiceProvider

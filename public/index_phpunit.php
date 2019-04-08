@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-/** @var Slim\App $app */
+use Zend\Diactoros\ServerRequestFactory;
+
+/** @var Chubbyphp\Framework\Application $app */
 
 $env = 'phpunit';
 
 $app = require __DIR__ . '/../app/app.php';
-$app->run();
+$app->run(ServerRequestFactory::fromGlobals());

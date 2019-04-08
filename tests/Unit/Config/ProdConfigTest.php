@@ -18,6 +18,7 @@ final class ProdConfigTest extends TestCase
         $config = ProdConfig::create('/path/to/root');
 
         self::assertSame([
+            'cacheDir' => '/path/to/root/var/cache/prod',
             'config.cleanDirectories' => [
                 'cache' => '/path/to/root/var/cache/prod',
                 'log' => '/path/to/root/var/log/prod',

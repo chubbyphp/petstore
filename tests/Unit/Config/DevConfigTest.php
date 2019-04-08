@@ -18,6 +18,7 @@ final class DevConfigTest extends TestCase
         $config = DevConfig::create('/path/to/root');
 
         self::assertSame([
+            'cacheDir' => '/path/to/root/var/cache/dev',
             'config.cleanDirectories' => [
                 'cache' => '/path/to/root/var/cache/dev',
                 'log' => '/path/to/root/var/log/dev',

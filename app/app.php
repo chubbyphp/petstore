@@ -80,7 +80,7 @@ $container[UrlGenerator::class] = function () use ($container) {
 };
 
 $app = new Application(
-    new RouteDispatcher($container[RouteCollection::class]),
+    new RouteDispatcher($container[RouteCollection::class], $container['cacheDir']),
     new MiddlewareDispatcher(),
     new ExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
 );

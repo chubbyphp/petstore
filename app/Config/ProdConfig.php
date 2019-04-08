@@ -12,6 +12,7 @@ class ProdConfig extends AbstractConfig
     public function getConfig(): array
     {
         return [
+            'cacheDir' => $this->getCacheDir(),
             'config.cleanDirectories' => $this->getDirectories(),
             'debug' => false,
             'doctrine.dbal.db.options' => [

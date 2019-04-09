@@ -33,7 +33,7 @@ class IndexControllerTest extends TestCase
 
         /** @var ResponseFactoryInterface|MockObject $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(200, '')->willReturn($response),
+            Call::create('createResponse')->with(302, '')->willReturn($response),
         ]);
 
         /** @var UrlGeneratorInterface|MockObject $urlGenerator */

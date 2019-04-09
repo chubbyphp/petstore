@@ -41,7 +41,7 @@ class IndexController implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->responseFactory->createResponse(200)
+        return $this->responseFactory->createResponse(302)
             ->withHeader('Location', $this->urlGenerator->generateUri($request, 'swagger_index'));
     }
 }

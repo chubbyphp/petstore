@@ -17,13 +17,14 @@ use App\Middleware\AcceptAndContentTypeMiddleware;
 use App\Model\Pet;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
+use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
 use Chubbyphp\Framework\Router\RouteCollection;
 use Chubbyphp\Framework\Router\RouteInterface;
 use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 use Pimple\ServiceProviderInterface;
 
-final class RouteCollectionServiceProvider implements ServiceProviderInterface
+final class ApplicationServiceProvider implements ServiceProviderInterface
 {
     /**
      * @param Container $container
@@ -69,6 +70,10 @@ final class RouteCollectionServiceProvider implements ServiceProviderInterface
                     ->end()
                 ->end()
             ;
+        };
+
+        $container[UrlGenerator::class] = function () use ($container) {
+            return new UrlGenerator($container[RouteCollection::class]);
         };
     }
 }

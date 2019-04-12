@@ -38,7 +38,7 @@ class IndexControllerTest extends TestCase
 
         /** @var UrlGeneratorInterface|MockObject $urlGenerator */
         $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class, [
-            Call::create('generateUri')->with($request, 'swagger_index', [])->willReturn('https://petstore/api'),
+            Call::create('generateUrl')->with($request, 'swagger_index', [])->willReturn('https://petstore/api'),
         ]);
 
         $controller = new IndexController($responseFactory, $urlGenerator);

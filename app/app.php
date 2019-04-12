@@ -21,7 +21,7 @@ use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
-use Chubbyphp\Framework\ResponseHandler\ExceptionResponseHandler;
+use Chubbyphp\Framework\ResponseHandler\JsonExceptionResponseHandler;
 use Chubbyphp\Framework\Router\FastRoute\RouteDispatcher;
 use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
 use Chubbyphp\Framework\Router\RouteCollection;
@@ -82,7 +82,7 @@ $container[UrlGenerator::class] = function () use ($container) {
 $app = new Application(
     new RouteDispatcher($container[RouteCollection::class], $container['cacheDir']),
     new MiddlewareDispatcher(),
-    new ExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
+    new JsonExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
 );
 
 return $app;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\ServiceProvider\ApplicationServiceProvider;
 use App\ServiceProvider\ControllerServiceProvider;
 use App\ServiceProvider\MiddlewareServiceProvider;
+use App\ServiceProvider\RouterServiceProvider;
 use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
 use Chubbyphp\Framework\ResponseHandler\JsonExceptionResponseHandler;
@@ -18,9 +18,9 @@ require __DIR__.'/bootstrap.php';
 
 /** @var Container $container */
 $container = require __DIR__.'/container.php';
-$container->register(new ApplicationServiceProvider());
 $container->register(new ControllerServiceProvider());
 $container->register(new MiddlewareServiceProvider());
+$container->register(new RouterServiceProvider());
 
 $app = new Application(
     new RouteDispatcher($container[RouteCollection::class], $container['cacheDir']),

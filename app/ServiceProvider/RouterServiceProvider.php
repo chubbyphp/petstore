@@ -24,7 +24,7 @@ use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 use Pimple\ServiceProviderInterface;
 
-final class ApplicationServiceProvider implements ServiceProviderInterface
+final class RouterServiceProvider implements ServiceProviderInterface
 {
     /**
      * @param Container $container

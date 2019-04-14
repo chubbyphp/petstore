@@ -11,19 +11,22 @@ use App\Controller\Crud\DeleteController;
 use App\Controller\Crud\ListController;
 use App\Controller\Crud\ReadController;
 use App\Controller\Crud\UpdateController;
+use App\Controller\IndexController;
 use App\Controller\PingController;
-use App\Controller\Swagger\IndexController;
-use App\Controller\Swagger\YamlController;
-use App\Factory\CollectionFactoryInterface;
+use App\Controller\Swagger\IndexController as SwaggerIndexController;
+use App\Controller\Swagger\YamlController as SwaggerYamlController;
 use App\Factory\Collection\PetCollectionFactory;
-use App\Factory\ModelFactoryInterface;
+use App\Factory\CollectionFactoryInterface;
 use App\Factory\Model\PetFactory;
+use App\Factory\ModelFactoryInterface;
 use App\Model\Pet;
 use App\Repository\Repository;
 use App\Repository\RepositoryInterface;
 use App\ServiceProvider\ControllerServiceProvider;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\SerializerInterface;
 use Chubbyphp\Validation\ValidatorInterface;
@@ -50,6 +53,7 @@ final class ControllerServiceProviderTest extends TestCase
             PetCollectionFactory::class => $this->getMockByCalls(CollectionFactoryInterface::class),
             PetFactory::class => $this->getMockByCalls(ModelFactoryInterface::class),
             Repository::class.Pet::class => $this->getMockByCalls(RepositoryInterface::class),
+            UrlGenerator::class => $this->getMockByCalls(UrlGeneratorInterface::class),
         ]);
 
         $serviceProvider = new ControllerServiceProvider();
@@ -61,9 +65,10 @@ final class ControllerServiceProviderTest extends TestCase
         self::assertArrayHasKey(UpdateController::class.Pet::class, $container);
         self::assertArrayHasKey(DeleteController::class.Pet::class, $container);
 
-        self::assertArrayHasKey(IndexController::class, $container);
-        self::assertArrayHasKey(YamlController::class, $container);
+        self::assertArrayHasKey(SwaggerIndexController::class, $container);
+        self::assertArrayHasKey(SwaggerYamlController::class, $container);
 
+        self::assertArrayHasKey(IndexController::class, $container);
         self::assertArrayHasKey(PingController::class, $container);
 
         self::assertInstanceOf(ListController::class, $container[ListController::class.Pet::class]);
@@ -72,9 +77,10 @@ final class ControllerServiceProviderTest extends TestCase
         self::assertInstanceOf(UpdateController::class, $container[UpdateController::class.Pet::class]);
         self::assertInstanceOf(DeleteController::class, $container[DeleteController::class.Pet::class]);
 
-        self::assertInstanceOf(IndexController::class, $container[IndexController::class]);
-        self::assertInstanceOf(YamlController::class, $container[YamlController::class]);
+        self::assertInstanceOf(SwaggerIndexController::class, $container[SwaggerIndexController::class]);
+        self::assertInstanceOf(SwaggerYamlController::class, $container[SwaggerYamlController::class]);
 
+        self::assertInstanceOf(IndexController::class, $container[IndexController::class]);
         self::assertInstanceOf(PingController::class, $container[PingController::class]);
     }
 }

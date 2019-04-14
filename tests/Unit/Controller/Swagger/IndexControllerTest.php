@@ -22,7 +22,7 @@ class IndexControllerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testInvoke(): void
+    public function testHandle(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class);
@@ -52,6 +52,6 @@ class IndexControllerTest extends TestCase
 
         $controller = new IndexController($responseFactory);
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 }

@@ -10,6 +10,7 @@ use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
 use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;
+use Chubbyphp\SlimPsr15\MiddlewareAdapter;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 
@@ -33,6 +34,18 @@ final class MiddlewareServiceProviderTest extends TestCase
 
         self::assertArrayHasKey(AcceptAndContentTypeMiddleware::class, $container);
 
-        self::assertInstanceOf(AcceptAndContentTypeMiddleware::class, $container[AcceptAndContentTypeMiddleware::class]);
+        self::assertMiddlewareInstanceOf(MiddlewareAdapter::class, $container[AcceptAndContentTypeMiddleware::class]);
+    }
+
+    /**
+     * @param string            $expectedMiddlewareClass
+     * @param MiddlewareAdapter $adapter
+     */
+    private static function assertMiddlewareInstanceOf(string $expectedMiddlewareClass, MiddlewareAdapter $adapter)
+    {
+        $reflectionProperty = new \ReflectionProperty($adapter, 'middleware');
+        $reflectionProperty->setAccessible(true);
+
+        self::assertInstanceOf($expectedMiddlewareClass, $reflectionProperty->getValue($adapter));
     }
 }

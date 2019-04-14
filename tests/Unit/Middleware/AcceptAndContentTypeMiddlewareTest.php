@@ -15,6 +15,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * @covers \App\Middleware\AcceptAndContentTypeMiddleware
@@ -33,8 +34,16 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, []);
 
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            self::fail('should not be called');
+        $requestHandler = new class() implements RequestHandlerInterface {
+            /**
+             * @param ServerRequestInterface $request
+             *
+             * @return ResponseInterface
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                self::fail('should not be called');
+            }
         };
 
         /** @var AcceptNegotiatorInterface|MockObject $acceptNegotiator */
@@ -52,7 +61,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
 
         $middleware = new AcceptAndContentTypeMiddleware($acceptNegotiator, $contentTypeNegotiator, $responseManager);
 
-        self::assertSame($response, $middleware($request, $response, $next));
+        self::assertSame($response, $middleware->process($request, $requestHandler));
     }
 
     public function testWithAccept(): void
@@ -66,8 +75,29 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, []);
 
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return $response;
+        $requestHandler = new class($response) implements RequestHandlerInterface {
+            /**
+             * @var ResponseInterface
+             */
+            private $response;
+
+            /**
+             * @param ResponseInterface $response
+             */
+            public function __construct(ResponseInterface $response)
+            {
+                $this->response = $response;
+            }
+
+            /**
+             * @param ServerRequestInterface $request
+             *
+             * @return ResponseInterface
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return $this->response;
+            }
         };
 
         /** @var NegotiatedValueInterface|MockObject $accept */
@@ -88,7 +118,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
 
         $middleware = new AcceptAndContentTypeMiddleware($acceptNegotiator, $contentTypeNegotiator, $responseManager);
 
-        self::assertSame($response, $middleware($request, $response, $next));
+        self::assertSame($response, $middleware->process($request, $requestHandler));
     }
 
     public function testWithoutContentType(): void
@@ -103,8 +133,16 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, []);
 
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            self::fail('should not be called');
+        $requestHandler = new class() implements RequestHandlerInterface {
+            /**
+             * @param ServerRequestInterface $request
+             *
+             * @return ResponseInterface
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                self::fail('should not be called');
+            }
         };
 
         /** @var NegotiatedValueInterface|MockObject $accept */
@@ -132,7 +170,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
 
         $middleware = new AcceptAndContentTypeMiddleware($acceptNegotiator, $contentTypeNegotiator, $responseManager);
 
-        self::assertSame($response, $middleware($request, $response, $next));
+        self::assertSame($response, $middleware->process($request, $requestHandler));
     }
 
     public function testWithContentType(): void
@@ -147,8 +185,29 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, []);
 
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return $response;
+        $requestHandler = new class($response) implements RequestHandlerInterface {
+            /**
+             * @var ResponseInterface
+             */
+            private $response;
+
+            /**
+             * @param ResponseInterface $response
+             */
+            public function __construct(ResponseInterface $response)
+            {
+                $this->response = $response;
+            }
+
+            /**
+             * @param ServerRequestInterface $request
+             *
+             * @return ResponseInterface
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return $this->response;
+            }
         };
 
         /** @var NegotiatedValueInterface|MockObject $accept */
@@ -176,6 +235,6 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
 
         $middleware = new AcceptAndContentTypeMiddleware($acceptNegotiator, $contentTypeNegotiator, $responseManager);
 
-        self::assertSame($response, $middleware($request, $response, $next));
+        self::assertSame($response, $middleware->process($request, $requestHandler));
     }
 }

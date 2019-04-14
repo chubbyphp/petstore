@@ -9,8 +9,10 @@ use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
 use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-final class AcceptAndContentTypeMiddleware
+final class AcceptAndContentTypeMiddleware implements MiddlewareInterface
 {
     /**
      * @var AcceptNegotiatorInterface
@@ -43,17 +45,13 @@ final class AcceptAndContentTypeMiddleware
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface      $response
-     * @param callable               $next
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
      */
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        callable $next
-    ): ResponseInterface {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
         if (null === $accept = $this->acceptNegotiator->negotiate($request)) {
             return $this->responseManager->createAcceptNotSupported($request->getHeaderLine('Accept'));
         }
@@ -71,6 +69,6 @@ final class AcceptAndContentTypeMiddleware
             $request = $request->withAttribute('contentType', $contentType->getValue());
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

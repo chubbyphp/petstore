@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Swagger;
+namespace App\Controller;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Http\Stream;
+use Slim\Router;
 
 class IndexController implements RequestHandlerInterface
 {
@@ -18,11 +18,20 @@ class IndexController implements RequestHandlerInterface
     private $responseFactory;
 
     /**
-     * @param ResponseFactoryInterface $responseFactory
+     * @var Router
      */
-    public function __construct(ResponseFactoryInterface $responseFactory)
-    {
+    private $router;
+
+    /**
+     * @param ResponseFactoryInterface $responseFactory
+     * @param routerInterface          $router
+     */
+    public function __construct(
+        ResponseFactoryInterface $responseFactory,
+        Router $router
+    ) {
         $this->responseFactory = $responseFactory;
+        $this->router = $router;
     }
 
     /**
@@ -32,12 +41,7 @@ class IndexController implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->responseFactory
-            ->createResponse(200)
-            ->withHeader('Content-Type', 'text/html')
-            ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
-            ->withHeader('Pragma', 'no-cache')
-            ->withHeader('Expires', '0')
-            ->withBody(new Stream(fopen(realpath(__DIR__.'/../../../swagger/index.html'), 'r')));
+        return $this->responseFactory->createResponse(302)
+            ->withHeader('Location', $this->router->urlFor('swagger_index'));
     }
 }

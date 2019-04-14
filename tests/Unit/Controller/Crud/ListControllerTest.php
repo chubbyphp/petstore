@@ -91,7 +91,7 @@ class ListControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 
     public function testSuccessful(): void
@@ -155,6 +155,6 @@ class ListControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller($request));
+        self::assertSame($response, $controller->handle($request));
     }
 }

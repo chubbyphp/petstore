@@ -19,6 +19,7 @@ use App\ServiceProvider\MiddlewareServiceProvider;
 use Chubbyphp\Lazy\LazyMiddleware;
 use Slim\App;
 use Slim\Container;
+use App\Controller\IndexController;
 
 require __DIR__.'/bootstrap.php';
 
@@ -31,13 +32,7 @@ $acceptAndContentTypeMiddleware = new LazyMiddleware($container, AcceptAndConten
 
 $app = new App($container);
 
-$app->get('/', function ($request, $response) use ($app) {
-    return $response->withStatus(307)->withHeader(
-        'Location',
-        $app->getContainer()->get('router')->pathFor('swagger_index')
-    );
-});
-
+$app->get('/', IndexController::class)->setName('index');
 $app->group('/api', function () use ($app, $container, $acceptAndContentTypeMiddleware) {
     $app->get('', SwaggerIndexController::class)->setName('swagger_index');
     $app->get('/swagger.yml', SwaggerYamlController::class)->setName('swagger_yml');

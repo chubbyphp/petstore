@@ -7,9 +7,10 @@ namespace App\Controller\Swagger;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Http\Stream;
 
-class YamlController
+class YamlController implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -29,7 +30,7 @@ class YamlController
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->responseFactory
             ->createResponse(200)

@@ -22,13 +22,14 @@ A simple skeleton to build api's based on the [slimframework][1].
  * [chubbyphp/chubbyphp-lazy-middleware][7]: ^1.1.0
  * [chubbyphp/chubbyphp-negotiation][8]: ^1.2.4
  * [chubbyphp/chubbyphp-serialization][9]: ^2.7.0
- * [chubbyphp/chubbyphp-validation][10]: ^3.3.0
- * [doctrine/orm][11]: ^2.6.3
- * [ocramius/proxy-manager][12]: ^2.1.1
- * [ramsey/uuid][13]: ^3.8.0
- * [slim/slim][14]: ^3.11.0
- * [swagger-api/swagger-ui][15]: ^3.20.4
- * [symfony/console][16]: ^4.2.1
+ * [chubbyphp/chubbyphp-slim-psr15][10]: ^1.0.0
+ * [chubbyphp/chubbyphp-validation][11]: ^3.3.0
+ * [doctrine/orm][12]: ^2.6.3
+ * [ocramius/proxy-manager][13]: ^2.1.1
+ * [ramsey/uuid][14]: ^3.8.0
+ * [slim/slim][15]: ^3.11.0
+ * [swagger-api/swagger-ui][16]: ^3.20.4
+ * [symfony/console][17]: ^4.2.1
 
 ## Environment
 
@@ -196,13 +197,14 @@ Dominik Zogg 2018
 [7]: https://packagist.org/packages/chubbyphp/chubbyphp-lazy-middleware
 [8]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
 [9]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[11]: https://packagist.org/packages/doctrine/orm
-[12]: https://packagist.org/packages/ocramius/proxy-manager
-[13]: https://packagist.org/packages/ramsey/uuid
-[14]: https://packagist.org/packages/slim/slim
-[15]: https://packagist.org/packages/swagger-api/swagger-ui
-[16]: https://packagist.org/packages/symfony/console
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-slim-psr15
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[12]: https://packagist.org/packages/doctrine/orm
+[13]: https://packagist.org/packages/ocramius/proxy-manager
+[14]: https://packagist.org/packages/ramsey/uuid
+[15]: https://packagist.org/packages/slim/slim
+[16]: https://packagist.org/packages/swagger-api/swagger-ui
+[17]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

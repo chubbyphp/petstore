@@ -11,6 +11,7 @@
         "chubbyphp/chubbyphp-lazy-middleware": "^1.1.0",
         "chubbyphp/chubbyphp-negotiation": "^1.2.4",
         "chubbyphp/chubbyphp-serialization": "^2.8.1",
+        "chubbyphp/chubbyphp-slim-psr15": "^1.0.0",
         "chubbyphp/chubbyphp-validation": "^3.3.0",
         "doctrine/orm": "^2.6.3",
         "ocramius/proxy-manager": "^2.1.1",

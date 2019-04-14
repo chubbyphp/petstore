@@ -34,7 +34,7 @@ final class MiddlewareServiceProviderTest extends TestCase
 
         self::assertArrayHasKey(AcceptAndContentTypeMiddleware::class, $container);
 
-        self::assertMiddlewareInstanceOf(MiddlewareAdapter::class, $container[AcceptAndContentTypeMiddleware::class]);
+        self::assertMiddlewareInstanceOf(AcceptAndContentTypeMiddleware::class, $container[AcceptAndContentTypeMiddleware::class]);
     }
 
     /**

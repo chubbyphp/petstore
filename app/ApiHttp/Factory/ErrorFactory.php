@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace App\ApiHttp\Factory;
 
-use Chubbyphp\ApiHttp\Error\Error;
-use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\Validation\Error\ErrorInterface as ValidationErrorInterface;
 use Chubbyphp\Validation\Error\NestedErrorMessages;
 
 final class ErrorFactory implements ErrorFactoryInterface
 {
     /**
-     * @param string                     $scope
      * @param ValidationErrorInterface[] $errors
      *
-     * @return ErrorInterface
+     * @return array
      */
-    public function createFromValidationError(string $scope, array $errors): ErrorInterface
+    public function createErrorMessages(array $errors): array
     {
         $nestedErrorMessages = new NestedErrorMessages(
             $errors,
@@ -29,12 +26,6 @@ final class ErrorFactory implements ErrorFactoryInterface
             }
         );
 
-        return new Error(
-            $scope,
-            'validation',
-            'there are validation errors',
-            null,
-            $nestedErrorMessages->getMessages()
-        );
+        return $nestedErrorMessages->getMessages();
     }
 }

@@ -15,6 +15,7 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 
 final class CreateController implements RequestHandlerInterface
 {
@@ -85,10 +86,9 @@ final class CreateController implements RequestHandlerInterface
         $model = $this->requestManager->getDataFromRequestBody($request, $this->factory->create(), $contentType);
 
         if ([] !== $errors = $this->validator->validate($model)) {
-            return $this->responseManager->createFromError(
-                $this->errorFactory->createFromValidationError(ErrorInterface::SCOPE_BODY, $errors),
-                $accept,
-                422
+            return $this->responseManager->createFromApiProblem(
+                new UnprocessableEntity($this->errorFactory->createErrorMessages($errors), 'Validation error'),
+                $accept
             );
         }
 

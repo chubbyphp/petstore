@@ -9,6 +9,7 @@ use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 
 final class DeleteController implements RequestHandlerInterface
 {
@@ -45,7 +46,7 @@ final class DeleteController implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
 
         if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createResourceNotFound(['model' => $id], $accept);
+            return $this->responseManager->createFromApiProblem(new NotFound('Not found'), $accept);
         }
 
         $this->repository->remove($model);

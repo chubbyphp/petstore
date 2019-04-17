@@ -10,6 +10,7 @@ use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 
 final class ReadController implements RequestHandlerInterface
 {
@@ -46,7 +47,7 @@ final class ReadController implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
 
         if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createResourceNotFound(['model' => $id], $accept);
+            return $this->responseManager->createFromApiProblem(new NotFound('Not found'), $accept);
         }
 
         $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();

@@ -16,6 +16,8 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 
 final class UpdateController implements RequestHandlerInterface
 {
@@ -78,7 +80,7 @@ final class UpdateController implements RequestHandlerInterface
 
         /** @var ModelInterface $model */
         if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createResourceNotFound(['model' => $id], $accept);
+            return $this->responseManager->createFromApiProblem(new NotFound('Not found'), $accept);
         }
 
         $model->reset();
@@ -90,10 +92,9 @@ final class UpdateController implements RequestHandlerInterface
         $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
 
         if ([] !== $errors = $this->validator->validate($model)) {
-            return $this->responseManager->createFromError(
-                $this->errorFactory->createFromValidationError(ErrorInterface::SCOPE_BODY, $errors),
-                $accept,
-                422
+            return $this->responseManager->createFromApiProblem(
+                new UnprocessableEntity($this->errorFactory->createErrorMessages($errors), 'Validation error'),
+                $accept
             );
         }
 

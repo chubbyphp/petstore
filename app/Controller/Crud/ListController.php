@@ -15,6 +15,7 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 
 final class ListController implements RequestHandlerInterface
 {
@@ -84,8 +85,8 @@ final class ListController implements RequestHandlerInterface
         $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
 
         if ([] !== $errors = $this->validator->validate($collection)) {
-            return $this->responseManager->createFromError(
-                $this->errorFactory->createFromValidationError(ErrorInterface::SCOPE_QUERY, $errors),
+            return $this->responseManager->createFromApiProblem(
+                new UnprocessableEntity($this->errorFactory->createErrorMessages($errors), 'Validation error'),
                 $accept
             );
         }

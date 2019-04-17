@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceProvider;
 
 use App\Mapping\MappingConfig;
-use App\Mapping\Validation\PetMapping;
-use App\Model\Pet;
 use App\ServiceProvider\ValidationServiceProvider;
 use Chubbyphp\Validation\Mapping\CallableValidationMappingProvider;
+use Chubbyphp\Validation\Mapping\ValidationMappingProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 
@@ -28,15 +27,6 @@ final class ValidationServiceProviderTest extends TestCase
         $serviceProvider = new ValidationServiceProvider();
         $serviceProvider->register($container);
 
-        self::assertArrayHasKey('validator.mappingConfigs', $container);
-
-        $mappingConfigs = $container['validator.mappingConfigs'];
-
-        // hack to tests dependencies
-        $mappingConfigs[Pet::class] = new MappingConfig(PetMapping::class, ['someService']);
-
-        $container['validator.mappingConfigs'] = $mappingConfigs;
-
         self::assertArrayHasKey('validator.mappings', $container);
 
         $mappings = $container['validator.mappings'];
@@ -48,5 +38,67 @@ final class ValidationServiceProviderTest extends TestCase
 
         self::assertCount(3, $mappings[0]->getValidationPropertyMappings('path'));
         self::assertCount(2, $mappings[1]->getValidationPropertyMappings('path'));
+    }
+
+    public function testMappings()
+    {
+        $container = new Container([
+            'sampleService' => function () {
+                return new \stdClass();
+            },
+        ]);
+
+        $serviceProvider = new ValidationServiceProvider();
+        $serviceProvider->register($container);
+
+        $stdClassMapping = new class(new \stdClass()) implements ValidationMappingProviderInterface {
+            public function __construct(\stdClass $sampleService)
+            {
+            }
+
+            /**
+             * @return string
+             */
+            public function getClass(): string
+            {
+                return \stdClass::class;
+            }
+
+            /**
+             * @param string $path
+             *
+             * @return ValidationClassMappingInterface|null
+             */
+            public function getValidationClassMapping(string $path)
+            {
+                return null;
+            }
+
+            /**
+             * @param string $path
+             *
+             * @return ValidationPropertyMappingInterface[]
+             */
+            public function getValidationPropertyMappings(string $path): array
+            {
+                return [];
+            }
+        };
+
+        $stdClassMappingClass = get_class($stdClassMapping);
+
+        $mappingConfigs = [];
+        $mappingConfigs[\stdClass::class] = new MappingConfig($stdClassMappingClass, ['sampleService']);
+
+        $container['validator.mappingConfigs'] = $mappingConfigs;
+
+        /** @var CallableValidationMappingProvider[] $mappings */
+        $mappings = $container['validator.mappings'];
+
+        self::assertCount(1, $mappings);
+
+        self::assertInstanceOf(CallableValidationMappingProvider::class, $mappings[0]);
+
+        self::assertCount(0, $mappings[0]->getValidationPropertyMappings('path'));
     }
 }

@@ -29,8 +29,6 @@ final class DeserializationServiceProvider implements ServiceProviderInterface
             $mappings = [];
 
             foreach ($container['deserializer.mappingConfigs'] as $class => $mappingConfig) {
-                $mappingClass = $mappingConfig->getMappingClass();
-
                 $resolver = function () use ($container, $mappingConfig) {
                     $mappingClass = $mappingConfig->getMappingClass();
 

@@ -33,8 +33,6 @@ final class SerializationServiceProvider implements ServiceProviderInterface
             $mappings = [];
 
             foreach ($container['serializer.mappingConfigs'] as $class => $mappingConfig) {
-                $mappingClass = $mappingConfig->getMappingClass();
-
                 $resolver = function () use ($container, $mappingConfig) {
                     $mappingClass = $mappingConfig->getMappingClass();
 

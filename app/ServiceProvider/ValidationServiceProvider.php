@@ -29,8 +29,6 @@ final class ValidationServiceProvider implements ServiceProviderInterface
             $mappings = [];
 
             foreach ($container['validator.mappingConfigs'] as $class => $mappingConfig) {
-                $mappingClass = $mappingConfig->getMappingClass();
-
                 $resolver = function () use ($container, $mappingConfig) {
                     $mappingClass = $mappingConfig->getMappingClass();
 

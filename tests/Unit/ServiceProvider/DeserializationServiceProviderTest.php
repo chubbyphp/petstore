@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceProvider;
 
-use App\Mapping\Deserialization\PetMapping;
 use App\Mapping\MappingConfig;
-use App\Model\Pet;
 use App\ServiceProvider\DeserializationServiceProvider;
 use Chubbyphp\Deserialization\Mapping\CallableDenormalizationObjectMapping;
+use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 
@@ -30,13 +29,6 @@ final class DeserializationServiceProviderTest extends TestCase
 
         self::assertArrayHasKey('deserializer.denormalizer.objectmappings', $container);
 
-        $mappingConfigs = $container['deserializer.mappingConfigs'];
-
-        // hack to tests dependencies
-        $mappingConfigs[Pet::class] = new MappingConfig(PetMapping::class, ['someService']);
-
-        $container['deserializer.mappingConfigs'] = $mappingConfigs;
-
         $mappings = $container['deserializer.denormalizer.objectmappings'];
 
         self::assertCount(2, $mappings);
@@ -46,5 +38,75 @@ final class DeserializationServiceProviderTest extends TestCase
 
         self::assertCount(3, $mappings[0]->getDenormalizationFieldMappings('path'));
         self::assertCount(2, $mappings[1]->getDenormalizationFieldMappings('path'));
+    }
+
+    public function testMappings()
+    {
+        $container = new Container([
+            'sampleService' => function () {
+                return new \stdClass();
+            },
+        ]);
+
+        $serviceProvider = new DeserializationServiceProvider();
+        $serviceProvider->register($container);
+
+        $stdClassMapping = new class(new \stdClass()) implements DenormalizationObjectMappingInterface {
+            public function __construct(\stdClass $sampleService)
+            {
+            }
+
+            /**
+             * @return string
+             */
+            public function getClass(): string
+            {
+                return \stdClass::class;
+            }
+
+            /**
+             * @param string      $path
+             * @param string|null $type
+             *
+             * @return callable
+             *
+             * @throws DeserializerRuntimeException
+             */
+            public function getDenormalizationFactory(string $path, string $type = null): callable
+            {
+                return function () {
+                    return new \stdClass();
+                };
+            }
+
+            /**
+             * @param string      $path
+             * @param string|null $type
+             *
+             * @return DenormalizationFieldMappingInterface[]
+             *
+             * @throws DeserializerRuntimeException
+             */
+            public function getDenormalizationFieldMappings(string $path, string $type = null): array
+            {
+                return [];
+            }
+        };
+
+        $stdClassMappingClass = get_class($stdClassMapping);
+
+        $mappingConfigs = [];
+        $mappingConfigs[\stdClass::class] = new MappingConfig($stdClassMappingClass, ['sampleService']);
+
+        $container['deserializer.mappingConfigs'] = $mappingConfigs;
+
+        /** @var CallableDenormalizationObjectMapping[] $mappings */
+        $mappings = $container['deserializer.denormalizer.objectmappings'];
+
+        self::assertCount(1, $mappings);
+
+        self::assertInstanceOf(CallableDenormalizationObjectMapping::class, $mappings[0]);
+
+        self::assertCount(0, $mappings[0]->getDenormalizationFieldMappings('path'));
     }
 }

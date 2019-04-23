@@ -70,6 +70,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                         ::create(
                             $this->urlGenerator->generatePath(
                                 $this->getListRouteName(),
+                                [],
                                 array_replace($context->getRequest()->getQueryParams(), [
                                     'offset' => $collection->getOffset(),
                                     'limit' => $collection->getLimit(),

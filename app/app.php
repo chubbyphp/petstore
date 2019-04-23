@@ -10,8 +10,8 @@ use App\ServiceProvider\RouterServiceProvider;
 use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
 use Chubbyphp\Framework\ResponseHandler\JsonExceptionResponseHandler;
+use Chubbyphp\Framework\Router\FastRoute\RouteCollection;
 use Chubbyphp\Framework\Router\FastRoute\RouteDispatcher;
-use Chubbyphp\Framework\Router\RouteCollection;
 use Pimple\Container;
 
 require __DIR__.'/bootstrap.php';

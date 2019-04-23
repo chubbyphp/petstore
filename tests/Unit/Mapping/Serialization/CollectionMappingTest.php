@@ -80,10 +80,10 @@ class CollectionMappingTest extends TestCase
         /** @var UrlGeneratorInterface|MockObject $urlGenerator */
         $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class, [
             Call::create('generatePath')
-                ->with($this->getListRoute(), ['offset' => 0, 'limit' => 20])
+                ->with($this->getListRoute(), [], ['offset' => 0, 'limit' => 20])
                 ->willReturn(sprintf('%s?offset=0&limit=20', $this->getCollectionPath())),
             Call::create('generatePath')
-                ->with($this->getCreateRoute(), [])
+                ->with($this->getCreateRoute(), [], [])
                 ->willReturn(sprintf('%s', $this->getCollectionPath())),
         ]);
 

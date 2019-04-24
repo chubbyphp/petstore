@@ -11,7 +11,6 @@ use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
 use Chubbyphp\Framework\ResponseHandler\JsonExceptionResponseHandler;
 use Chubbyphp\Framework\Router\FastRoute\RouteDispatcher;
-use Chubbyphp\Framework\Router\Group;
 use Pimple\Container;
 
 require __DIR__.'/bootstrap.php';
@@ -23,7 +22,7 @@ $container->register(new MiddlewareServiceProvider());
 $container->register(new RouterServiceProvider());
 
 $app = new Application(
-    new RouteDispatcher($container[Group::class], $container['cacheDir']),
+    new RouteDispatcher($container['routes'], $container['cacheDir']),
     new MiddlewareDispatcher(),
     new JsonExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
 );

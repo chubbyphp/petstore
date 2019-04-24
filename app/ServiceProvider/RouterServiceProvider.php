@@ -31,7 +31,7 @@ final class RouterServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $container): void
     {
-        $container[Group::class] = function () use ($container) {
+        $container['routes'] = function () use ($container) {
             $psrContainer = new PsrContainer($container);
 
             $acceptAndContentTypeMiddleware = new LM($psrContainer, AcceptAndContentTypeMiddleware::class);
@@ -62,12 +62,11 @@ final class RouterServiceProvider implements ServiceProviderInterface
                         ->route(Route::delete('/{id}', 'pet_delete', $petDeleteController))
                         ->middleware($acceptAndContentTypeMiddleware)
                     )
-                )
-            ;
+                )->getRoutes();
         };
 
         $container[UrlGenerator::class] = function () use ($container) {
-            return new UrlGenerator($container[Group::class]);
+            return new UrlGenerator($container['routes']);
         };
     }
 }

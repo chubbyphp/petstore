@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Collection\AbstractCollection;
 use App\Collection\CollectionInterface;
 use App\Mapping\Serialization\AbstractCollectionMapping;
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
@@ -26,30 +26,30 @@ class CollectionMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
-        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
+        /** @var RouterInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouterInterface::class);
 
-        $mapping = $this->getCollectionMapping($urlGenerator);
+        $mapping = $this->getCollectionMapping($router);
 
         self::assertSame($this->getClass(), $mapping->getClass());
     }
 
     public function testGetNormalizationType(): void
     {
-        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
-        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
+        /** @var RouterInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouterInterface::class);
 
-        $mapping = $this->getCollectionMapping($urlGenerator);
+        $mapping = $this->getCollectionMapping($router);
 
         self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
-        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
+        /** @var RouterInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouterInterface::class);
 
-        $mapping = $this->getCollectionMapping($urlGenerator);
+        $mapping = $this->getCollectionMapping($router);
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
@@ -63,10 +63,10 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
     {
-        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
-        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
+        /** @var RouterInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouterInterface::class);
 
-        $mapping = $this->getCollectionMapping($urlGenerator);
+        $mapping = $this->getCollectionMapping($router);
 
         $fieldMappings = $mapping->getNormalizationEmbeddedFieldMappings('/');
 
@@ -77,8 +77,8 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationLinkMappings(): void
     {
-        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
-        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class, [
+        /** @var RouterInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouterInterface::class, [
             Call::create('generatePath')
                 ->with($this->getListRoute(), [], ['offset' => 0, 'limit' => 20])
                 ->willReturn(sprintf('%s?offset=0&limit=20', $this->getCollectionPath())),
@@ -87,7 +87,7 @@ class CollectionMappingTest extends TestCase
                 ->willReturn(sprintf('%s', $this->getCollectionPath())),
         ]);
 
-        $mapping = $this->getCollectionMapping($urlGenerator);
+        $mapping = $this->getCollectionMapping($router);
 
         $linkMappings = $mapping->getNormalizationLinkMappings('/');
 
@@ -176,13 +176,13 @@ class CollectionMappingTest extends TestCase
     }
 
     /**
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param RouterInterface $router
      *
      * @return AbstractCollectionMapping
      */
-    protected function getCollectionMapping(UrlGeneratorInterface $urlGenerator): AbstractCollectionMapping
+    protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
     {
-        return new class($urlGenerator, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
+        return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
             /**
              * @var string
              */
@@ -204,20 +204,20 @@ class CollectionMappingTest extends TestCase
             private $createRouteName;
 
             /**
-             * @param UrlGeneratorInterface $urlGenerator
-             * @param string                $class
-             * @param string                $normalizationType
-             * @param string                $listRouteName
-             * @param string                $createRouteName
+             * @param RouterInterface $router
+             * @param string          $class
+             * @param string          $normalizationType
+             * @param string          $listRouteName
+             * @param string          $createRouteName
              */
             public function __construct(
-                UrlGeneratorInterface $urlGenerator,
+                RouterInterface $router,
                 string $class,
                 string $normalizationType,
                 string $listRouteName,
                 string $createRouteName
             ) {
-                parent::__construct($urlGenerator);
+                parent::__construct($router);
 
                 $this->class = $class;
                 $this->normalizationType = $normalizationType;

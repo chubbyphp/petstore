@@ -18,7 +18,7 @@ use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
 use App\Model\Pet;
 use App\Repository\Repository;
-use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
+use Chubbyphp\Framework\Router\FastRouteRouter;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -84,7 +84,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         };
 
         $container[IndexController::class] = function () use ($container) {
-            return new IndexController($container['api-http.response.factory'], $container[UrlGenerator::class]);
+            return new IndexController($container['api-http.response.factory'], $container[FastRouteRouter::class]);
         };
 
         $container[PingController::class] = function () use ($container) {

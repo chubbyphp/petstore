@@ -11,7 +11,7 @@ use App\Mapping\Serialization\PetMapping;
 use App\Model\Pet;
 use Chubbyphp\ApiHttp\Error\Error;
 use Chubbyphp\ApiHttp\Serialization\ErrorMapping;
-use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
+use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Serialization\Mapping\CallableNormalizationObjectMapping;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -25,8 +25,8 @@ final class SerializationServiceProvider implements ServiceProviderInterface
     {
         $container['serializer.mappingConfigs'] = [
             Error::class => new MappingConfig(ErrorMapping::class),
-            PetCollection::class => new MappingConfig(PetCollectionMapping::class, [UrlGenerator::class]),
-            Pet::class => new MappingConfig(PetMapping::class, [UrlGenerator::class]),
+            PetCollection::class => new MappingConfig(PetCollectionMapping::class, [FastRouteRouter::class]),
+            Pet::class => new MappingConfig(PetMapping::class, [FastRouteRouter::class]),
         ];
 
         $container['serializer.normalizer.objectmappings'] = function () use ($container) {

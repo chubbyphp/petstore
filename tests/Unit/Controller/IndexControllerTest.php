@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Controller;
 
 use App\Controller\IndexController;
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -36,12 +36,12 @@ class IndexControllerTest extends TestCase
             Call::create('createResponse')->with(302, '')->willReturn($response),
         ]);
 
-        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
-        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class, [
+        /** @var RouterInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouterInterface::class, [
             Call::create('generateUrl')->with($request, 'swagger_index', [], [])->willReturn('https://petstore/api'),
         ]);
 
-        $controller = new IndexController($responseFactory, $urlGenerator);
+        $controller = new IndexController($responseFactory, $router);
 
         self::assertSame($response, $controller->handle($request));
     }

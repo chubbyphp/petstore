@@ -12,21 +12,21 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Chubbyphp\Serialization\Normalizer\CallbackLinkNormalizer;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Framework\Router\RouterInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
     /**
-     * @var UrlGeneratorInterface
+     * @var RouterInterface
      */
-    protected $urlGenerator;
+    protected $router;
 
     /**
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param RouterInterface $router
      */
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(RouterInterface $router)
     {
-        $this->urlGenerator = $urlGenerator;
+        $this->router = $router;
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                 function (string $path, CollectionInterface $collection, NormalizerContextInterface $context) {
                     return LinkBuilder
                         ::create(
-                            $this->urlGenerator->generatePath(
+                            $this->router->generatePath(
                                 $this->getListRouteName(),
                                 [],
                                 array_replace($context->getRequest()->getQueryParams(), [
@@ -83,7 +83,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
             )),
             new NormalizationLinkMapping('create', [], new CallbackLinkNormalizer(
                 function () {
-                    return LinkBuilder::create($this->urlGenerator->generatePath($this->getCreateRouteName()))
+                    return LinkBuilder::create($this->router->generatePath($this->getCreateRouteName()))
                         ->setAttributes(['method' => 'POST'])
                         ->getLink();
                 }

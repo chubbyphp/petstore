@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,20 +18,20 @@ class IndexController implements RequestHandlerInterface
     private $responseFactory;
 
     /**
-     * @var UrlGeneratorInterface
+     * @var RouterInterface
      */
-    private $urlGenerator;
+    private $router;
 
     /**
      * @param ResponseFactoryInterface $responseFactory
-     * @param UrlGeneratorInterface    $urlGenerator
+     * @param RouterInterface          $router
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        UrlGeneratorInterface $urlGenerator
+        RouterInterface $router
     ) {
         $this->responseFactory = $responseFactory;
-        $this->urlGenerator = $urlGenerator;
+        $this->router = $router;
     }
 
     /**
@@ -42,6 +42,6 @@ class IndexController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->responseFactory->createResponse(302)
-            ->withHeader('Location', $this->urlGenerator->generateUrl($request, 'swagger_index'));
+            ->withHeader('Location', $this->router->generateUrl($request, 'swagger_index'));
     }
 }

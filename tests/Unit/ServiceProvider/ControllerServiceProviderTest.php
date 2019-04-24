@@ -25,8 +25,8 @@ use App\Repository\RepositoryInterface;
 use App\ServiceProvider\ControllerServiceProvider;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
-use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Framework\Router\FastRouteRouter;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\SerializerInterface;
 use Chubbyphp\Validation\ValidatorInterface;
@@ -53,7 +53,7 @@ final class ControllerServiceProviderTest extends TestCase
             PetCollectionFactory::class => $this->getMockByCalls(CollectionFactoryInterface::class),
             PetFactory::class => $this->getMockByCalls(ModelFactoryInterface::class),
             Repository::class.Pet::class => $this->getMockByCalls(RepositoryInterface::class),
-            UrlGenerator::class => $this->getMockByCalls(UrlGeneratorInterface::class),
+            FastRouteRouter::class => $this->getMockByCalls(RouterInterface::class),
         ]);
 
         $serviceProvider = new ControllerServiceProvider();

@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceProvider;
 
 use App\Mapping\MappingConfig;
 use App\ServiceProvider\SerializationServiceProvider;
-use Chubbyphp\Framework\Router\FastRoute\UrlGenerator;
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Framework\Router\FastRouteRouter;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\CallableNormalizationObjectMapping;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
@@ -24,7 +24,7 @@ final class SerializationServiceProviderTest extends TestCase
     public function testRegister(): void
     {
         $container = new Container([
-            UrlGenerator::class => $this->getMockByCalls(UrlGeneratorInterface::class),
+            FastRouteRouter::class => $this->getMockByCalls(RouterInterface::class),
         ]);
 
         $serviceProvider = new SerializationServiceProvider();

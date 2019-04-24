@@ -9,7 +9,7 @@ use App\ServiceProvider\MiddlewareServiceProvider;
 use App\ServiceProvider\RouterServiceProvider;
 use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
-use Chubbyphp\Framework\ResponseHandler\JsonExceptionResponseHandler;
+use Chubbyphp\Framework\ResponseHandler\ExceptionResponseHandler;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Pimple\Container;
 
@@ -24,7 +24,7 @@ $container->register(new RouterServiceProvider());
 $app = new Application(
     $container[FastRouteRouter::class],
     new MiddlewareDispatcher(),
-    new JsonExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
+    new ExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
 );
 
 return $app;

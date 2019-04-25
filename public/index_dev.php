@@ -9,4 +9,4 @@ use Zend\Diactoros\ServerRequestFactory;
 $env = 'dev';
 
 $app = require __DIR__ . '/../app/app.php';
-$app->run(ServerRequestFactory::fromGlobals());
+$app->send($app->handle(ServerRequestFactory::fromGlobals()));

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\ServiceProvider;
 
 use App\ApiHttp\Factory\ErrorFactory;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Zend\Diactoros\ResponseFactory;
 
 final class ApiHttpServiceProvider implements ServiceProviderInterface
 {
@@ -16,8 +16,12 @@ final class ApiHttpServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $container): void
     {
-        $container['api-http.response.factory'] = function () {
-            return new ResponseFactory();
+        $container['api-http.response.factory'] = function () use ($container) {
+            return new Psr17Factory();
+        };
+
+        $container['api-http.stream.factory'] = function () use ($container) {
+            return new Psr17Factory();
         };
 
         $container[ErrorFactory::class] = function () {

@@ -33,6 +33,7 @@ use Chubbyphp\Validation\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * @covers \App\ServiceProvider\ControllerServiceProvider
@@ -47,13 +48,14 @@ final class ControllerServiceProviderTest extends TestCase
             'api-http.request.manager' => $this->getMockByCalls(RequestManagerInterface::class),
             'api-http.response.factory' => $this->getMockByCalls(ResponseFactoryInterface::class),
             'api-http.response.manager' => $this->getMockByCalls(ResponseManagerInterface::class),
+            'api-http.stream.factory' => $this->getMockByCalls(StreamFactoryInterface::class),
             'serializer' => $this->getMockByCalls(SerializerInterface::class),
             'validator' => $this->getMockByCalls(ValidatorInterface::class),
             ErrorFactory::class => $this->getMockByCalls(ErrorFactoryInterface::class),
+            FastRouteRouter::class => $this->getMockByCalls(RouterInterface::class),
             PetCollectionFactory::class => $this->getMockByCalls(CollectionFactoryInterface::class),
             PetFactory::class => $this->getMockByCalls(ModelFactoryInterface::class),
             Repository::class.Pet::class => $this->getMockByCalls(RepositoryInterface::class),
-            FastRouteRouter::class => $this->getMockByCalls(RouterInterface::class),
         ]);
 
         $serviceProvider = new ControllerServiceProvider();

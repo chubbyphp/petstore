@@ -76,11 +76,17 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         };
 
         $container[SwaggerIndexController::class] = function () use ($container) {
-            return new SwaggerIndexController($container['api-http.response.factory']);
+            return new SwaggerIndexController(
+                $container['api-http.response.factory'],
+                $container['api-http.stream.factory']
+            );
         };
 
         $container[SwaggerYamlController::class] = function () use ($container) {
-            return new SwaggerYamlController($container['api-http.response.factory']);
+            return new SwaggerYamlController(
+                $container['api-http.response.factory'],
+                $container['api-http.stream.factory']
+            );
         };
 
         $container[IndexController::class] = function () use ($container) {

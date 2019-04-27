@@ -46,26 +46,26 @@ final class RouterServiceProvider implements ServiceProviderInterface
             $petUpdateController = new LazyRequestHandler($psrContainer, UpdateController::class.Pet::class);
             $petDeleteController = new LazyRequestHandler($psrContainer, DeleteController::class.Pet::class);
 
-            return new FastRouteRouter(
-                Group::create('')
-                    ->route(Route::get('', 'index', $indexController))
-                    ->group(Group::create('/api')
-                        ->route(Route::get('', 'swagger_index', $swaggerIndexController))
-                        ->route(Route::get('/swagger.yml', 'swagger_yml', $swaggerYamlController))
-                        ->route(Route::get('/ping', 'ping', $pingController)
-                            ->middleware($acceptAndContentTypeMiddleware)
-                        )
-                        ->group(Group::create('/pets')
-                            ->route(Route::get('', 'pet_list', $petListController))
-                            ->route(Route::post('', 'pet_create', $petCreateController))
-                            ->route(Route::get('/{id}', 'pet_read', $petReadController))
-                            ->route(Route::put('/{id}', 'pet_update', $petUpdateController))
-                            ->route(Route::delete('/{id}', 'pet_delete', $petDeleteController))
-                            ->middleware($acceptAndContentTypeMiddleware)
-                        )
-                    )->getRoutes(),
-                $container['cacheDir']
-            );
+            $routes = Group::create('')
+                ->route(Route::get('/', 'index', $indexController))
+                ->group(Group::create('/api')
+                    ->route(Route::get('', 'swagger_index', $swaggerIndexController))
+                    ->route(Route::get('/swagger.yml', 'swagger_yml', $swaggerYamlController))
+                    ->route(Route::get('/ping', 'ping', $pingController)
+                        ->middleware($acceptAndContentTypeMiddleware)
+                    )
+                    ->group(Group::create('/pets')
+                        ->route(Route::get('', 'pet_list', $petListController))
+                        ->route(Route::post('', 'pet_create', $petCreateController))
+                        ->route(Route::get('/{id}', 'pet_read', $petReadController))
+                        ->route(Route::put('/{id}', 'pet_update', $petUpdateController))
+                        ->route(Route::delete('/{id}', 'pet_delete', $petDeleteController))
+                        ->middleware($acceptAndContentTypeMiddleware)
+                    )
+                )
+                ->getRoutes();
+
+            return new FastRouteRouter($routes, $container['cacheDir']);
         };
     }
 }

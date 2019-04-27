@@ -105,11 +105,11 @@ abstract class AbstractIntegrationTest extends TestCase
     private function getHttpStatus(string $statusRow): array
     {
         $matches = [];
-        preg_match('#^HTTP/1.\d{1} (\d+) (.+)$#', $statusRow, $matches);
+        preg_match('#^HTTP/1.\d{1} (\d+)( .+|)$#', $statusRow, $matches);
 
         return [
             'code' => (int) $matches[1],
-            'message' => $matches[2],
+            'message' => trim($matches[2]),
         ];
     }
 

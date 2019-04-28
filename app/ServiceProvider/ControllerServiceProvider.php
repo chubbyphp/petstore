@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceProvider;
 
-use App\ApiHttp\Factory\ErrorFactory;
+use App\ApiHttp\Factory\InvalidParametersFactory;
 use App\Controller\Crud\CreateController;
 use App\Controller\Crud\DeleteController;
 use App\Controller\Crud\ListController;
@@ -32,7 +32,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         $container[CreateController::class.Pet::class] = function () use ($container) {
             return new RequestHandlerAdapter(
                 new CreateController(
-                    $container[ErrorFactory::class],
+                    $container[InvalidParametersFactory::class],
                     $container[PetFactory::class],
                     $container[Repository::class.Pet::class],
                     $container['api-http.request.manager'],
@@ -54,7 +54,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         $container[ListController::class.Pet::class] = function () use ($container) {
             return new RequestHandlerAdapter(
                 new ListController(
-                    $container[ErrorFactory::class],
+                    $container[InvalidParametersFactory::class],
                     $container[PetCollectionFactory::class],
                     $container[Repository::class.Pet::class],
                     $container['api-http.request.manager'],
@@ -76,7 +76,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         $container[UpdateController::class.Pet::class] = function () use ($container) {
             return new RequestHandlerAdapter(
                 new UpdateController(
-                    $container[ErrorFactory::class],
+                    $container[InvalidParametersFactory::class],
                     $container[Repository::class.Pet::class],
                     $container['api-http.request.manager'],
                     $container['api-http.response.manager'],

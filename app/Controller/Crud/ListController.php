@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Crud;
 
-use App\ApiHttp\Factory\ErrorFactoryInterface;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
@@ -15,11 +14,12 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 
 final class ListController implements RequestHandlerInterface
 {
     /**
-     * @var ErrorFactoryInterface
+     * @var InvalidParametersFactoryInterface
      */
     private $errorFactory;
 
@@ -49,15 +49,15 @@ final class ListController implements RequestHandlerInterface
     private $validator;
 
     /**
-     * @param ErrorFactoryInterface      $errorFactory
-     * @param CollectionFactoryInterface $factory
-     * @param RepositoryInterface        $repository
-     * @param RequestManagerInterface    $requestManager
-     * @param ResponseManagerInterface   $responseManager
-     * @param ValidatorInterface         $validator
+     * @param InvalidParametersFactoryInterface $errorFactory
+     * @param CollectionFactoryInterface        $factory
+     * @param RepositoryInterface               $repository
+     * @param RequestManagerInterface           $requestManager
+     * @param ResponseManagerInterface          $responseManager
+     * @param ValidatorInterface                $validator
      */
     public function __construct(
-        ErrorFactoryInterface $errorFactory,
+        InvalidParametersFactoryInterface $errorFactory,
         CollectionFactoryInterface $factory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
@@ -84,8 +84,8 @@ final class ListController implements RequestHandlerInterface
         $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
 
         if ([] !== $errors = $this->validator->validate($collection)) {
-            return $this->responseManager->createFromError(
-                $this->errorFactory->createFromValidationError(ErrorInterface::SCOPE_QUERY, $errors),
+            return $this->responseManager->createFromApiProblem(
+                new BadRequest($this->errorFactory->createInvalidParameters($errors)),
                 $accept
             );
         }

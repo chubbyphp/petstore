@@ -7,7 +7,9 @@ namespace App\Tests\Unit\Controller\Crud;
 use App\Controller\Crud\DeleteController;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
@@ -39,8 +41,12 @@ class DeleteControllerTest extends TestCase
 
         /** @var ResponseManagerInterface|MockObject $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createResourceNotFound')
-                ->with(['model' => 'cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'], 'application/json', null)
+            Call::create('createFromApiProblem')
+                ->with(
+                    new ArgumentCallback(function (NotFound $apiProblem) {}),
+                    'application/json',
+                    null
+                )
                 ->willReturn($response),
         ]);
 

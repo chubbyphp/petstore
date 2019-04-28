@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Controller\Crud;
 
-use App\ApiHttp\Factory\ErrorFactoryInterface;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Controller\Crud\UpdateController;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
@@ -17,11 +18,11 @@ use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
-use Chubbyphp\Validation\Error\ErrorInterface as ValidationErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 
 /**
  * @covers \App\Controller\Crud\UpdateController
@@ -42,11 +43,8 @@ class UpdateControllerTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var ValidationErrorInterface|MockObject $validationError */
-        $validationError = $this->getMockByCalls(ValidationErrorInterface::class);
-
-        /** @var ErrorFactoryInterface|MockObject $errorFactory */
-        $errorFactory = $this->getMockByCalls(ErrorFactoryInterface::class);
+        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
+        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
 
         /** @var RepositoryInterface|MockObject $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
@@ -58,8 +56,12 @@ class UpdateControllerTest extends TestCase
 
         /** @var ResponseManagerInterface|MockObject $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createResourceNotFound')
-                ->with(['model' => 'cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'], 'application/json', null)
+            Call::create('createFromApiProblem')
+                ->with(
+                    new ArgumentCallback(function (NotFound $apiProblem) {}),
+                    'application/json',
+                    null
+                )
                 ->willReturn($response),
         ]);
 
@@ -67,7 +69,7 @@ class UpdateControllerTest extends TestCase
         $validator = $this->getMockByCalls(ValidatorInterface::class);
 
         $controller = new UpdateController(
-            $errorFactory,
+            $invalidParametersFactory,
             $repository,
             $requestManager,
             $responseManager,
@@ -89,17 +91,18 @@ class UpdateControllerTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var ValidationErrorInterface|MockObject $validationError */
-        $validationError = $this->getMockByCalls(ValidationErrorInterface::class);
-
         /** @var ErrorInterface|MockObject $error */
         $error = $this->getMockByCalls(ErrorInterface::class);
 
-        /** @var ErrorFactoryInterface|MockObject $errorFactory */
-        $errorFactory = $this->getMockByCalls(ErrorFactoryInterface::class, [
-            Call::create('createFromValidationError')
-                ->with(ErrorInterface::SCOPE_BODY, [$validationError])
-                ->willReturn($error),
+        $invalidParameters = [
+            ['name' => 'name', 'reason' => 'notunique', 'details' => []],
+        ];
+
+        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
+        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class, [
+            Call::create('createInvalidParameters')
+                ->with([$error])
+                ->willReturn($invalidParameters),
         ]);
 
         /** @var ModelInterface|MockObject $model */
@@ -131,18 +134,24 @@ class UpdateControllerTest extends TestCase
 
         /** @var ResponseManagerInterface|MockObject $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromError')
-                ->with($error, 'application/json', 422, null)
+            Call::create('createFromApiProblem')
+                ->with(
+                    new ArgumentCallback(function (UnprocessableEntity $apiProblem) use ($invalidParameters) {
+                        self::assertSame($invalidParameters, $apiProblem->getInvalidParameters());
+                    }),
+                    'application/json',
+                    null
+                )
                 ->willReturn($response),
         ]);
 
         /** @var ValidatorInterface|MockObject $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
-            Call::create('validate')->with($model, null, '')->willReturn([$validationError]),
+            Call::create('validate')->with($model, null, '')->willReturn([$error]),
         ]);
 
         $controller = new UpdateController(
-            $errorFactory,
+            $invalidParametersFactory,
             $repository,
             $requestManager,
             $responseManager,
@@ -164,8 +173,8 @@ class UpdateControllerTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var ErrorFactoryInterface|MockObject $errorFactory */
-        $errorFactory = $this->getMockByCalls(ErrorFactoryInterface::class);
+        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
+        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
 
         /** @var ModelInterface|MockObject $model */
         $model = $this->getMockByCalls(ModelInterface::class, [
@@ -217,7 +226,7 @@ class UpdateControllerTest extends TestCase
         ]);
 
         $controller = new UpdateController(
-            $errorFactory,
+            $invalidParametersFactory,
             $repository,
             $requestManager,
             $responseManager,

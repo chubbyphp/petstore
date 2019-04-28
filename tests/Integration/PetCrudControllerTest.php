@@ -18,13 +18,24 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                .', "application/x-www-form-urlencoded", "application/xml"',
-            $response['headers']['x-not-acceptable'][0]
-        );
+        self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        self::assertNull($response['body']);
+        $apiProblem = json_decode($response['body'], true);
+
+        self::assertEquals([
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'title' => 'Not Acceptable',
+            'detail' => null,
+            'instance' => null,
+            'accept' => 'text/html',
+            'acceptables' => [
+                'application/json',
+                'application/x-jsonx',
+                'application/x-www-form-urlencoded',
+                'application/xml',
+            ],
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     public function testCreateWithUnsupportedContentType(): void
@@ -42,24 +53,22 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $error = json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true);
 
         self::assertEquals([
-            'scope' => 'header',
-            'key' => 'contentype_not_supported',
-            'detail' => 'the given content type is not supported',
-            'reference' => null,
-            'arguments' => [
-                'contentType' => 'text/html',
-                'supportedContentTypes' => [
-                    'application/json',
-                    'application/x-jsonx',
-                    'application/x-www-form-urlencoded',
-                    'application/xml',
-                ],
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.16',
+            'title' => 'Unsupported Media Type',
+            'detail' => null,
+            'instance' => null,
+            'mediaType' => 'text/html',
+            'supportedMediaTypes' => [
+                'application/json',
+                'application/x-jsonx',
+                'application/x-www-form-urlencoded',
+                'application/xml',
             ],
-            '_type' => 'error',
-        ], $error);
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     public function testCreateWithValidationError(): void
@@ -78,24 +87,22 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $error = json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true);
 
         self::assertEquals([
-            'scope' => 'body',
-            'key' => 'validation',
-            'detail' => 'there are validation errors',
-            'reference' => null,
-            'arguments' => [
-                'name' => [
-                    [
-                            'key' => 'constraint.notblank.blank',
-                            'arguments' => [
-                        ],
-                    ],
+            'type' => 'https://tools.ietf.org/html/rfc4918#section-11.2',
+            'title' => 'Unprocessable Entity',
+            'detail' => null,
+            'instance' => null,
+            'invalidParameters' => [
+                [
+                    'name' => 'name',
+                    'reason' => 'constraint.notblank.blank',
+                    'details' => [],
                 ],
             ],
-            '_type' => 'error',
-        ], $error);
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -139,13 +146,62 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                .', "application/x-www-form-urlencoded", "application/xml"',
-            $response['headers']['x-not-acceptable'][0]
+        self::assertSame('application/json', $response['headers']['content-type'][0]);
+
+        $apiProblem = json_decode($response['body'], true);
+
+        self::assertEquals([
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'title' => 'Not Acceptable',
+            'detail' => null,
+            'instance' => null,
+            'accept' => 'text/html',
+            'acceptables' => [
+                'application/json',
+                'application/x-jsonx',
+                'application/x-www-form-urlencoded',
+                'application/xml',
+            ],
+            '_type' => 'apiProblem',
+        ], $apiProblem);
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testListWithValidationError(): void
+    {
+        $response = $this->httpRequest(
+            'GET',
+            '/api/pets?offset=test',
+            [
+                'Accept' => 'application/json',
+            ]
         );
 
-        self::assertNull($response['body']);
+        self::assertSame(400, $response['status']['code']);
+
+        self::assertSame('application/json', $response['headers']['content-type'][0]);
+
+        $apiProblem = json_decode($response['body'], true);
+
+        self::assertEquals([
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.1',
+            'title' => 'Bad Request',
+            'detail' => null,
+            'instance' => null,
+            'invalidParameters' => [
+                [
+                    'name' => 'offset',
+                    'reason' => 'constraint.type.invalidtype',
+                    'details' => [
+                        'type' => 'string',
+                        'wishedType' => 'integer',
+                    ],
+                ],
+            ],
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -218,21 +274,27 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                .', "application/x-www-form-urlencoded", "application/xml"',
-            $response['headers']['x-not-acceptable'][0]
-        );
+        self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        self::assertNull($response['body']);
+        $apiProblem = json_decode($response['body'], true);
+
+        self::assertEquals([
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'title' => 'Not Acceptable',
+            'detail' => null,
+            'instance' => null,
+            'accept' => 'text/html',
+            'acceptables' => [
+                'application/json',
+                'application/x-jsonx',
+                'application/x-www-form-urlencoded',
+                'application/xml',
+            ],
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testReadWithNotFound(array $existingPet): void
+    public function testReadWithNotFound(): void
     {
         $response = $this->httpRequest(
             'GET',
@@ -246,18 +308,15 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $error = json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true);
 
         self::assertEquals([
-            'scope' => 'resource',
-            'key' => 'resource_not_found',
-            'detail' => 'the requested resource cannot be found',
-            'reference' => null,
-            'arguments' => [
-                'model' => '00000000-0000-0000-0000-000000000000',
-            ],
-            '_type' => 'error',
-        ], $error);
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
+            'title' => 'Not Found',
+            'detail' => null,
+            'instance' => null,
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -301,13 +360,24 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                .', "application/x-www-form-urlencoded", "application/xml"',
-            $response['headers']['x-not-acceptable'][0]
-        );
+        self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        self::assertNull($response['body']);
+        $apiProblem = json_decode($response['body'], true);
+
+        self::assertEquals([
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'title' => 'Not Acceptable',
+            'detail' => null,
+            'instance' => null,
+            'accept' => 'text/html',
+            'acceptables' => [
+                'application/json',
+                'application/x-jsonx',
+                'application/x-www-form-urlencoded',
+                'application/xml',
+            ],
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -330,24 +400,22 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $error = json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true);
 
         self::assertEquals([
-            'scope' => 'header',
-            'key' => 'contentype_not_supported',
-            'detail' => 'the given content type is not supported',
-            'reference' => null,
-            'arguments' => [
-                'contentType' => 'text/html',
-                'supportedContentTypes' => [
-                    'application/json',
-                    'application/x-jsonx',
-                    'application/x-www-form-urlencoded',
-                    'application/xml',
-                ],
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.16',
+            'title' => 'Unsupported Media Type',
+            'detail' => null,
+            'instance' => null,
+            'mediaType' => 'text/html',
+            'supportedMediaTypes' => [
+                'application/json',
+                'application/x-jsonx',
+                'application/x-www-form-urlencoded',
+                'application/xml',
             ],
-            '_type' => 'error',
-        ], $error);
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -370,18 +438,15 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $error = json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true);
 
         self::assertEquals([
-            'scope' => 'resource',
-            'key' => 'resource_not_found',
-            'detail' => 'the requested resource cannot be found',
-            'reference' => null,
-            'arguments' => [
-                'model' => '00000000-0000-0000-0000-000000000000',
-            ],
-            '_type' => 'error',
-        ], $error);
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
+            'title' => 'Not Found',
+            'detail' => null,
+            'instance' => null,
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -405,24 +470,22 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $error = json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true);
 
         self::assertEquals([
-            'scope' => 'body',
-            'key' => 'validation',
-            'detail' => 'there are validation errors',
-            'reference' => null,
-            'arguments' => [
-                'name' => [
-                    [
-                            'key' => 'constraint.notblank.blank',
-                            'arguments' => [
-                        ],
-                    ],
+            'type' => 'https://tools.ietf.org/html/rfc4918#section-11.2',
+            'title' => 'Unprocessable Entity',
+            'detail' => null,
+            'instance' => null,
+            'invalidParameters' => [
+                [
+                    'name' => 'name',
+                    'reason' => 'constraint.notblank.blank',
+                    'details' => [],
                 ],
             ],
-            '_type' => 'error',
-        ], $error);
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -496,13 +559,24 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame(
-            'Accept "text/html" is not supported, supported are "application/json", "application/x-jsonx"'
-                .', "application/x-www-form-urlencoded", "application/xml"',
-            $response['headers']['x-not-acceptable'][0]
-        );
+        self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        self::assertNull($response['body']);
+        $apiProblem = json_decode($response['body'], true);
+
+        self::assertEquals([
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'title' => 'Not Acceptable',
+            'detail' => null,
+            'instance' => null,
+            'accept' => 'text/html',
+            'acceptables' => [
+                'application/json',
+                'application/x-jsonx',
+                'application/x-www-form-urlencoded',
+                'application/xml',
+            ],
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**
@@ -524,18 +598,15 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $error = json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true);
 
         self::assertEquals([
-            'scope' => 'resource',
-            'key' => 'resource_not_found',
-            'detail' => 'the requested resource cannot be found',
-            'reference' => null,
-            'arguments' => [
-                'model' => '00000000-0000-0000-0000-000000000000',
-            ],
-            '_type' => 'error',
-        ], $error);
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
+            'title' => 'Not Found',
+            'detail' => null,
+            'instance' => null,
+            '_type' => 'apiProblem',
+        ], $apiProblem);
     }
 
     /**

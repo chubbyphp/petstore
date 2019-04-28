@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceProvider;
 
-use App\ApiHttp\Factory\ErrorFactory;
+use App\ApiHttp\Factory\InvalidParametersFactory;
 use App\ApiHttp\Factory\ResponseFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -20,8 +20,8 @@ final class ApiHttpServiceProvider implements ServiceProviderInterface
             return new ResponseFactory();
         };
 
-        $container[ErrorFactory::class] = function () {
-            return new ErrorFactory();
+        $container[InvalidParametersFactory::class] = function () {
+            return new InvalidParametersFactory();
         };
     }
 }

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Middleware;
 
 use App\Middleware\AcceptAndContentTypeMiddleware;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotAcceptable;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnsupportedMediaType;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
@@ -49,6 +52,7 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         /** @var AcceptNegotiatorInterface|MockObject $acceptNegotiator */
         $acceptNegotiator = $this->getMockByCalls(AcceptNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn(null),
+            Call::create('getSupportedMediaTypes')->with()->willReturn(['application/json']),
         ]);
 
         /** @var ContentTypeNegotiatorInterface|MockObject $contentTypeNegotiator */
@@ -56,7 +60,16 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
 
         /** @var ResponseManagerInterface|MockObject $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createAcceptNotSupported')->with('application/xml')->willReturn($response),
+            Call::create('createFromApiProblem')
+                ->with(
+                    new ArgumentCallback(function (NotAcceptable $apiProblem) {
+                        self::assertSame('application/xml', $apiProblem->getAccept());
+                        self::assertSame(['application/json'], $apiProblem->getAcceptables());
+                    }),
+                    'application/json',
+                    null
+                )
+                ->willReturn($response),
         ]);
 
         $middleware = new AcceptAndContentTypeMiddleware($acceptNegotiator, $contentTypeNegotiator, $responseManager);
@@ -159,12 +172,20 @@ class AcceptAndContentTypeMiddlewareTest extends TestCase
         /** @var ContentTypeNegotiatorInterface|MockObject $contentTypeNegotiator */
         $contentTypeNegotiator = $this->getMockByCalls(ContentTypeNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn(null),
+            Call::create('getSupportedMediaTypes')->with()->willReturn(['application/json']),
         ]);
 
         /** @var ResponseManagerInterface|MockObject $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createContentTypeNotSupported')
-                ->with('application/xml', 'application/json', null)
+            Call::create('createFromApiProblem')
+                ->with(
+                    new ArgumentCallback(function (UnsupportedMediaType $apiProblem) {
+                        self::assertSame('application/xml', $apiProblem->getMediaType());
+                        self::assertSame(['application/json'], $apiProblem->getSupportedMediaTypes());
+                    }),
+                    'application/json',
+                    null
+                )
                 ->willReturn($response),
         ]);
 

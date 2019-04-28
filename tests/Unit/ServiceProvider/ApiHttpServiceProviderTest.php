@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceProvider;
 
-use App\ApiHttp\Factory\ErrorFactory;
+use App\ApiHttp\Factory\InvalidParametersFactory;
 use App\ApiHttp\Factory\ResponseFactory;
 use App\ServiceProvider\ApiHttpServiceProvider;
 use PHPUnit\Framework\TestCase;
@@ -23,9 +23,9 @@ final class ApiHttpServiceProviderTest extends TestCase
         $serviceProvider->register($container);
 
         self::assertArrayHasKey('api-http.response.factory', $container);
-        self::assertArrayHasKey(ErrorFactory::class, $container);
+        self::assertArrayHasKey(InvalidParametersFactory::class, $container);
 
         self::assertInstanceOf(ResponseFactory::class, $container['api-http.response.factory']);
-        self::assertInstanceOf(ErrorFactory::class, $container[ErrorFactory::class]);
+        self::assertInstanceOf(InvalidParametersFactory::class, $container[InvalidParametersFactory::class]);
     }
 }

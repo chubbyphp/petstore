@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Crud;
 
-use App\ApiHttp\Factory\ErrorFactoryInterface;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\Error\ErrorInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
@@ -16,13 +17,11 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 
 final class UpdateController implements RequestHandlerInterface
 {
     /**
-     * @var ErrorFactoryInterface
+     * @var InvalidParametersFactoryInterface
      */
     private $errorFactory;
 
@@ -47,14 +46,14 @@ final class UpdateController implements RequestHandlerInterface
     private $validator;
 
     /**
-     * @param ErrorFactoryInterface    $errorFactory
-     * @param RepositoryInterface      $repository
-     * @param RequestManagerInterface  $requestManager
-     * @param ResponseManagerInterface $responseManager
-     * @param ValidatorInterface       $validator
+     * @param InvalidParametersFactoryInterface $errorFactory
+     * @param RepositoryInterface               $repository
+     * @param RequestManagerInterface           $requestManager
+     * @param ResponseManagerInterface          $responseManager
+     * @param ValidatorInterface                $validator
      */
     public function __construct(
-        ErrorFactoryInterface $errorFactory,
+        InvalidParametersFactoryInterface $errorFactory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
@@ -80,7 +79,7 @@ final class UpdateController implements RequestHandlerInterface
 
         /** @var ModelInterface $model */
         if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createFromApiProblem(new NotFound('Not found'), $accept);
+            return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
         $model->reset();
@@ -93,7 +92,7 @@ final class UpdateController implements RequestHandlerInterface
 
         if ([] !== $errors = $this->validator->validate($model)) {
             return $this->responseManager->createFromApiProblem(
-                new UnprocessableEntity($this->errorFactory->createErrorMessages($errors), 'Validation error'),
+                new UnprocessableEntity($this->errorFactory->createInvalidParameters($errors)),
                 $accept
             );
         }

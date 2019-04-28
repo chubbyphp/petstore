@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Crud;
 
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 
 final class ReadController implements RequestHandlerInterface
 {
@@ -47,7 +47,7 @@ final class ReadController implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
 
         if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createFromApiProblem(new NotFound('Not found'), $accept);
+            return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
         $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();

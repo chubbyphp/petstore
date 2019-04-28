@@ -33,15 +33,23 @@ final class SerializationServiceProviderTest extends TestCase
 
         $mappings = $container['serializer.normalizer.objectmappings'];
 
-        self::assertCount(3, $mappings);
+        self::assertCount(7, $mappings);
 
         self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mappings[0]);
         self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mappings[1]);
         self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mappings[2]);
+        self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mappings[3]);
+        self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mappings[4]);
+        self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mappings[5]);
+        self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mappings[6]);
 
         self::assertCount(5, $mappings[0]->getNormalizationFieldMappings('path'));
-        self::assertCount(4, $mappings[1]->getNormalizationFieldMappings('path'));
-        self::assertCount(5, $mappings[2]->getNormalizationFieldMappings('path'));
+        self::assertCount(6, $mappings[1]->getNormalizationFieldMappings('path'));
+        self::assertCount(4, $mappings[2]->getNormalizationFieldMappings('path'));
+        self::assertCount(5, $mappings[3]->getNormalizationFieldMappings('path'));
+        self::assertCount(4, $mappings[4]->getNormalizationFieldMappings('path'));
+        self::assertCount(5, $mappings[5]->getNormalizationFieldMappings('path'));
+        self::assertCount(6, $mappings[6]->getNormalizationFieldMappings('path'));
     }
 
     public function testMappings()

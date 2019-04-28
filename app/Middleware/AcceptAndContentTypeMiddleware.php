@@ -57,10 +57,10 @@ final class AcceptAndContentTypeMiddleware implements MiddlewareInterface
         if (null === $accept = $this->acceptNegotiator->negotiate($request)) {
             return $this->responseManager->createFromApiProblem(
                 new NotAcceptable(
-                    $this->acceptNegotiator->getSupportedMediaTypes(),
-                    'Accept is not supported'
+                    $request->getHeaderLine('Accept'),
+                    $this->acceptNegotiator->getSupportedMediaTypes()
                 ),
-                ''
+                'application/json' // fallback for the developer
             );
         }
 
@@ -70,8 +70,8 @@ final class AcceptAndContentTypeMiddleware implements MiddlewareInterface
             if (null === $contentType = $this->contentTypeNegotiator->negotiate($request)) {
                 return $this->responseManager->createFromApiProblem(
                     new UnsupportedMediaType(
-                        $this->contentTypeNegotiator->getSupportedMediaTypes(),
-                        'Content-Type is not supported'
+                        $request->getHeaderLine('Content-Type'),
+                        $this->contentTypeNegotiator->getSupportedMediaTypes()
                     ),
                     $accept->getValue()
                 );

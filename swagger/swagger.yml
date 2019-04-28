@@ -59,19 +59,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorValidation'
+                $ref: '#/components/schemas/BadRequestApiProblem'
         '406':
           description: Missing or not supported accept header
-          headers:
-            x-not-acceptable:
-              type: string
-              description: Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"', "application/xml"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotAcceptableApiProblem'
         '415':
           description: Missing or not supported content-type header
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMissingOrWrongContentType'
+                $ref: '#/components/schemas/UnsupportedMediaTypeApiProblem'
         '500':
           description: Server error
     post:
@@ -110,22 +110,22 @@ paths:
                 $ref: '#/components/schemas/PetResponse'
         '406':
           description: Missing or not supported accept header
-          headers:
-            x-not-acceptable:
-              type: string
-              description: Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"', "application/xml"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotAcceptableApiProblem'
         '415':
           description: Missing or not supported content-type header
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMissingOrWrongContentType'
+                $ref: '#/components/schemas/UnsupportedMediaTypeApiProblem'
         '422':
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorValidation'
+                $ref: '#/components/schemas/UnprocessableEntityApiProblem'
         '500':
           description: Server error
   /api/pets/{id}:
@@ -161,19 +161,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResourceNotFound'
+                $ref: '#/components/schemas/NotFoundApiProblem'
         '406':
           description: Missing or not supported accept header
-          headers:
-            x-not-acceptable:
-              type: string
-              description: Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"', "application/xml"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotAcceptableApiProblem'
         '415':
           description: Missing or not supported content-type header
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMissingOrWrongContentType'
+                $ref: '#/components/schemas/UnsupportedMediaTypeApiProblem'
         '500':
           description: Server error
     put:
@@ -222,25 +222,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResourceNotFound'
+                $ref: '#/components/schemas/NotFoundApiProblem'
         '406':
           description: Missing or not supported accept header
-          headers:
-            x-not-acceptable:
-              type: string
-              description: Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"', "application/xml"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotAcceptableApiProblem'
         '415':
           description: Missing or not supported content-type header
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMissingOrWrongContentType'
+                $ref: '#/components/schemas/UnsupportedMediaTypeApiProblem'
         '422':
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorValidation'
+                $ref: '#/components/schemas/UnprocessableEntityApiProblem'
         '500':
           description: Server error
     delete:
@@ -271,93 +271,156 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResourceNotFound'
+                $ref: '#/components/schemas/NotFoundApiProblem'
         '406':
           description: Missing or not supported accept header
-          headers:
-            x-not-acceptable:
-              type: string
-              description: Accept "text/html" is not supported, supported are "application/json", "application/x-www-form-urlencoded"', "application/xml"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotAcceptableApiProblem'
         '500':
           description: Server error
 components:
   schemas:
-    ErrorResourceNotFound:
+    BadRequestApiProblem:
       type: object
       properties:
-        scope:
+        type:
           type: string
-          example: resource
-        key:
+          example: https://tools.ietf.org/html/rfc2616#section-10.4.2
+        title:
           type: string
-          example: resource_not_found
+          example: Bad Request
         detail:
           type: string
-          example: the requested resource cannot be found
-        arguments:
-          type: object
-          properties:
-            model:
-              type: string
-              format: uuid
-              example: a0dba4b7-2eaf-4c23-9968-96576fa3dd5c
-        _type:
+          example: null
+        instance:
           type: string
-          example: error
-    ErrorMissingOrWrongContentType:
-      type: object
-      properties:
-        scope:
-          type: string
-          example: header
-        key:
-          type: string
-          example: contentype_not_supported
-        detail:
-          type: string
-          example: the given content type is not supported
-        arguments:
-          type: object
-          properties:
-            contentType:
-              type: string
-              example: text/html
-            supportedContentTypes:
-              type: array
-              items:
+          example: null
+        invalidParameters:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
                 type: string
-                example: application/json
-        _type:
-          type: string
-          example: error
-    ErrorValidation:
-      type: object
-      properties:
-        scope:
-          type: string
-          example: body
-        key:
-          type: string
-          example: validation
-        detail:
-          type: string
-          example: there are validation errors
-        arguments:
-          type: object
-          properties:
-            name:
-              type: array
-              items:
+                example: limit
+              reason:
+                type: string
+                example: constraint.type.invalidtype
+              details:
                 type: object
                 properties:
-                  key:
+                  type:
                     type: string
-                    example: constraint.notblank.blank
-                  arguments:
-                    type: object
+                    example: string
+                  wishedType:
+                    type: string
+                    example: integer
         _type:
           type: string
-          example: error
+          example: apiProblem
+    NotFoundApiProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: https://tools.ietf.org/html/rfc2616#section-10.4.5
+        title:
+          type: string
+          example: Not Found
+        detail:
+          type: string
+          example: null
+        instance:
+          type: string
+          example: null
+        _type:
+          type: string
+          example: apiProblem
+    NotAcceptableApiProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: https://tools.ietf.org/html/rfc2616#section-10.4.7
+        title:
+          type: string
+          example: Not Acceptable
+        detail:
+          type: string
+          example: null
+        instance:
+          type: string
+          example: null
+        accept:
+          type: string
+          example: text/html
+        acceptables:
+          type: array
+          items:
+            type: string
+            example: application/json
+        _type:
+          type: string
+          example: apiProblem
+    UnsupportedMediaTypeApiProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: https://tools.ietf.org/html/rfc2616#section-10.4.16
+        title:
+          type: string
+          example: Unsupported Media Type
+        detail:
+          type: string
+          example: null
+        instance:
+          type: string
+          example: null
+        mediaType:
+          type: string
+          example: text/html
+        supportedMediaTypes:
+          type: array
+          items:
+            type: string
+            example: application/json
+        _type:
+          type: string
+          example: apiProblem
+    UnprocessableEntityApiProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: https://tools.ietf.org/html/rfc4918#section-11.2
+        title:
+          type: string
+          example: Unprocessable Entity
+        detail:
+          type: string
+          example: null
+        instance:
+          type: string
+          example: null
+        invalidParameters:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: name
+              reason:
+                type: string
+                example: constraint.notblank.blank
+              details:
+                type: object
+        _type:
+          type: string
+          example: apiProblem
     PetRequest:
       required:
         -name

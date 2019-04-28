@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceProvider;
 
-use App\ApiHttp\Factory\ErrorFactory;
+use App\ApiHttp\Factory\InvalidParametersFactory;
 use App\ServiceProvider\ApiHttpServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
@@ -25,10 +25,18 @@ final class ApiHttpServiceProviderTest extends TestCase
 
         self::assertArrayHasKey('api-http.response.factory', $container);
         self::assertArrayHasKey('api-http.stream.factory', $container);
-        self::assertArrayHasKey(ErrorFactory::class, $container);
+        self::assertArrayHasKey(InvalidParametersFactory::class, $container);
 
         self::assertInstanceOf(ResponseFactoryInterface::class, $container['api-http.response.factory']);
         self::assertInstanceOf(StreamFactoryInterface::class, $container['api-http.stream.factory']);
-        self::assertInstanceOf(ErrorFactory::class, $container[ErrorFactory::class]);
+        self::assertInstanceOf(InvalidParametersFactory::class, $container[InvalidParametersFactory::class]);
+
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container['api-http.response.factory'];
+
+        $response = $responseFactory->createResponse();
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('OK', $response->getReasonPhrase());
     }
 }

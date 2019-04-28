@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceProvider;
 
-use App\ApiHttp\Factory\ErrorFactory;
-use App\ApiHttp\Factory\ErrorFactoryInterface;
+use App\ApiHttp\Factory\InvalidParametersFactory;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Controller\Crud\CreateController;
 use App\Controller\Crud\DeleteController;
 use App\Controller\Crud\ListController;
@@ -51,8 +51,8 @@ final class ControllerServiceProviderTest extends TestCase
             'api-http.stream.factory' => $this->getMockByCalls(StreamFactoryInterface::class),
             'serializer' => $this->getMockByCalls(SerializerInterface::class),
             'validator' => $this->getMockByCalls(ValidatorInterface::class),
-            ErrorFactory::class => $this->getMockByCalls(ErrorFactoryInterface::class),
             FastRouteRouter::class => $this->getMockByCalls(RouterInterface::class),
+            InvalidParametersFactory::class => $this->getMockByCalls(InvalidParametersFactoryInterface::class),
             PetCollectionFactory::class => $this->getMockByCalls(CollectionFactoryInterface::class),
             PetFactory::class => $this->getMockByCalls(ModelFactoryInterface::class),
             Repository::class.Pet::class => $this->getMockByCalls(RepositoryInterface::class),

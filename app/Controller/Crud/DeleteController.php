@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Crud;
 
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -45,7 +46,7 @@ final class DeleteController implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
 
         if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createResourceNotFound(['model' => $id], $accept);
+            return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
         $this->repository->remove($model);

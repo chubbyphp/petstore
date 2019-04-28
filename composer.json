@@ -4,7 +4,7 @@
     "license": "MIT",
     "require": {
         "php": "~7.2",
-        "chubbyphp/chubbyphp-api-http": "^2.1.0",
+        "chubbyphp/chubbyphp-api-http": "^3.0@beta",
         "chubbyphp/chubbyphp-config": "^1.1.2",
         "chubbyphp/chubbyphp-deserialization": "^2.9.1",
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.2.1",

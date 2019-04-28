@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Controller\Crud;
 
-use App\ApiHttp\Factory\ErrorFactoryInterface;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Collection\CollectionInterface;
 use App\Controller\Crud\ListController;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
@@ -16,7 +17,6 @@ use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
-use Chubbyphp\Validation\Error\ErrorInterface as ValidationErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -39,17 +39,18 @@ class ListControllerTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var ValidationErrorInterface|MockObject $validationError */
-        $validationError = $this->getMockByCalls(ValidationErrorInterface::class);
-
         /** @var ErrorInterface|MockObject $error */
         $error = $this->getMockByCalls(ErrorInterface::class);
 
-        /** @var ErrorFactoryInterface|MockObject $errorFactory */
-        $errorFactory = $this->getMockByCalls(ErrorFactoryInterface::class, [
-            Call::create('createFromValidationError')
-                ->with(ErrorInterface::SCOPE_QUERY, [$validationError])
-                ->willReturn($error),
+        $invalidParameters = [
+            ['name' => 'offset', 'reason' => 'notinteger', 'details' => []],
+        ];
+
+        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
+        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class, [
+            Call::create('createInvalidParameters')
+                ->with([$error])
+                ->willReturn($invalidParameters),
         ]);
 
         /** @var CollectionInterface|MockObject $collection */
@@ -72,18 +73,24 @@ class ListControllerTest extends TestCase
 
         /** @var ResponseManagerInterface|MockObject $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromError')
-                ->with($error, 'application/json', 400, null)
+            Call::create('createFromApiProblem')
+                ->with(
+                    new ArgumentCallback(function (BadRequest $apiProblem) use ($invalidParameters) {
+                        self::assertSame($invalidParameters, $apiProblem->getInvalidParameters());
+                    }),
+                    'application/json',
+                    null
+                )
                 ->willReturn($response),
         ]);
 
         /** @var ValidatorInterface|MockObject $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
-            Call::create('validate')->with($collection, null, '')->willReturn([$validationError]),
+            Call::create('validate')->with($collection, null, '')->willReturn([$error]),
         ]);
 
         $controller = new ListController(
-            $errorFactory,
+            $invalidParametersFactory,
             $factory,
             $repository,
             $requestManager,
@@ -104,8 +111,8 @@ class ListControllerTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var ErrorFactoryInterface|MockObject $errorFactory */
-        $errorFactory = $this->getMockByCalls(ErrorFactoryInterface::class);
+        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
+        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
 
         /** @var CollectionInterface|MockObject $collection */
         $collection = $this->getMockByCalls(CollectionInterface::class);
@@ -147,7 +154,7 @@ class ListControllerTest extends TestCase
         ]);
 
         $controller = new ListController(
-            $errorFactory,
+            $invalidParametersFactory,
             $factory,
             $repository,
             $requestManager,

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Crud;
 
-use App\ApiHttp\Factory\ErrorFactoryInterface;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\Error\ErrorInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
@@ -20,7 +21,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class UpdateController implements RequestHandlerInterface
 {
     /**
-     * @var ErrorFactoryInterface
+     * @var InvalidParametersFactoryInterface
      */
     private $errorFactory;
 
@@ -45,14 +46,14 @@ final class UpdateController implements RequestHandlerInterface
     private $validator;
 
     /**
-     * @param ErrorFactoryInterface    $errorFactory
-     * @param RepositoryInterface      $repository
-     * @param RequestManagerInterface  $requestManager
-     * @param ResponseManagerInterface $responseManager
-     * @param ValidatorInterface       $validator
+     * @param InvalidParametersFactoryInterface $errorFactory
+     * @param RepositoryInterface               $repository
+     * @param RequestManagerInterface           $requestManager
+     * @param ResponseManagerInterface          $responseManager
+     * @param ValidatorInterface                $validator
      */
     public function __construct(
-        ErrorFactoryInterface $errorFactory,
+        InvalidParametersFactoryInterface $errorFactory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
@@ -78,7 +79,7 @@ final class UpdateController implements RequestHandlerInterface
 
         /** @var ModelInterface $model */
         if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createResourceNotFound(['model' => $id], $accept);
+            return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
         $model->reset();
@@ -90,10 +91,9 @@ final class UpdateController implements RequestHandlerInterface
         $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
 
         if ([] !== $errors = $this->validator->validate($model)) {
-            return $this->responseManager->createFromError(
-                $this->errorFactory->createFromValidationError(ErrorInterface::SCOPE_BODY, $errors),
-                $accept,
-                422
+            return $this->responseManager->createFromApiProblem(
+                new UnprocessableEntity($this->errorFactory->createInvalidParameters($errors)),
+                $accept
             );
         }
 

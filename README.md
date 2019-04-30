@@ -15,7 +15,7 @@ A simple skeleton to build api's based on the [slimframework][1].
 ## Requirements
 
  * php: ~7.1
- * [chubbyphp/chubbyphp-api-http][3]: ^2.1.0
+ * [chubbyphp/chubbyphp-api-http][3]: ^3.0.0
  * [chubbyphp/chubbyphp-config][4]: ^1.1.2
  * [chubbyphp/chubbyphp-deserialization][5]: ^2.7.4
  * [chubbyphp/chubbyphp-doctrine-db-service-provider][6]: ^1.2.1

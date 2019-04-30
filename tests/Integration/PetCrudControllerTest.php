@@ -18,7 +18,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -51,7 +51,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(415, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -85,7 +85,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(422, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -146,7 +146,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -181,7 +181,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(400, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -274,7 +274,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -306,7 +306,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(404, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -360,7 +360,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -398,7 +398,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(415, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -436,7 +436,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(404, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -468,7 +468,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(422, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -559,7 +559,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(406, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 
@@ -596,7 +596,7 @@ final class PetCrudControllerTest extends AbstractIntegrationTest
 
         self::assertSame(404, $response['status']['code']);
 
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
+        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
         $apiProblem = json_decode($response['body'], true);
 

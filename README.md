@@ -104,20 +104,21 @@ bin/console orm:schema-tool:update --dump-sql --force
 
 ### Controller
 
- * [App\Controller\PingController][80]
+ * [App\Controller\IndexController][80]
+ * [App\Controller\PingController][81]
 
 #### Crud
 
- * [App\Controller\Crud\CreateController][81]
- * [App\Controller\Crud\DeleteController][82]
- * [App\Controller\Crud\ListController][83]
- * [App\Controller\Crud\ReadController][84]
- * [App\Controller\Crud\UpdateController][85]
+ * [App\Controller\Crud\CreateController][82]
+ * [App\Controller\Crud\DeleteController][83]
+ * [App\Controller\Crud\ListController][84]
+ * [App\Controller\Crud\ReadController][85]
+ * [App\Controller\Crud\UpdateController][86]
 
 #### Swagger
 
- * [App\Controller\Swagger\IndexController][86]
- * [App\Controller\Swagger\YamlController][87]
+ * [App\Controller\Swagger\IndexController][87]
+ * [App\Controller\Swagger\YamlController][88]
 
 ### Factory
 
@@ -217,14 +218,15 @@ Dominik Zogg 2018
 [71]: app/Config/PhpunitConfig.php
 [72]: app/Config/ProdConfig.php
 
-[80]: app/Controller/PingController.php
-[81]: app/Controller/Crud/CreateController.php
-[82]: app/Controller/Crud/DeleteController.php
-[83]: app/Controller/Crud/ListController.php
-[84]: app/Controller/Crud/ReadController.php
-[85]: app/Controller/Crud/UpdateController.php
-[86]: app/Controller/Swagger/IndexController.php
-[87]: app/Controller/Swagger/YamlController.php
+[80]: app/Controller/IndexController.php
+[81]: app/Controller/PingController.php
+[82]: app/Controller/Crud/CreateController.php
+[83]: app/Controller/Crud/DeleteController.php
+[84]: app/Controller/Crud/ListController.php
+[85]: app/Controller/Crud/ReadController.php
+[86]: app/Controller/Crud/UpdateController.php
+[87]: app/Controller/Swagger/IndexController.php
+[88]: app/Controller/Swagger/YamlController.php
 
 [100]: app/Factory/Collection/PetCollectionFactory.php
 [101]: app/Factory/Model/PetFactory.php

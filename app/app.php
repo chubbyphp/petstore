@@ -9,10 +9,11 @@ use App\ServiceProvider\MiddlewareServiceProvider;
 use App\ServiceProvider\RouterServiceProvider;
 use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\ErrorHandler;
+use Chubbyphp\Framework\ExceptionHandler;
 use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
-use Chubbyphp\Framework\ResponseHandler\ExceptionResponseHandler;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Pimple\Container;
+use Psr\Log\NullLogger;
 
 require __DIR__.'/bootstrap.php';
 
@@ -27,7 +28,7 @@ $container->register(new RouterServiceProvider());
 $app = new Application(
     $container[FastRouteRouter::class],
     new MiddlewareDispatcher(),
-    new ExceptionResponseHandler($container['api-http.response.factory'], $container['debug'])
+    new ExceptionHandler($container['api-http.response.factory'], new NullLogger(), $container['debug'])
 );
 
 return $app;

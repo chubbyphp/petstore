@@ -11,8 +11,9 @@ class ProdConfig extends AbstractConfig
      */
     public function getConfig(): array
     {
+        $cacheDir = $this->getCacheDir();
+
         return [
-            'cacheDir' => $this->getCacheDir(),
             'config.cleanDirectories' => $this->getDirectories(),
             'debug' => false,
             'doctrine.dbal.db.options' => [
@@ -33,8 +34,9 @@ class ProdConfig extends AbstractConfig
                 'cache.hydration' => ['type' => 'apcu'],
                 'cache.metadata' => ['type' => 'apcu'],
                 'cache.query' => ['type' => 'apcu'],
-                'proxies.dir' => $this->getCacheDir().'/doctrine/proxies',
+                'proxies.dir' => $cacheDir.'/doctrine/proxies',
             ],
+            'routerCacheFile' => $cacheDir.'/routes.php',
         ];
     }
 

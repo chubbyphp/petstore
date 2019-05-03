@@ -65,7 +65,7 @@ final class RouterServiceProvider implements ServiceProviderInterface
                 )
                 ->getRoutes();
 
-            return new FastRouteRouter($routes, $container['cacheDir']);
+            return new FastRouteRouter($routes, $container['routerCacheFile']);
         };
     }
 }

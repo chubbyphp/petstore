@@ -21,6 +21,8 @@ class DevConfig extends ProdConfig
         $config['doctrine.orm.em.options']['cache.metadata']['type'] = 'array';
         $config['doctrine.orm.em.options']['cache.query']['type'] = 'array';
 
+        $config['routerCacheFile'] = null;
+
         return $config;
     }
 

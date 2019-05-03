@@ -17,7 +17,7 @@ final class RouterServiceProviderTest extends TestCase
     public function testRegister(): void
     {
         $container = new Container([
-            'cacheDir' => sys_get_temp_dir(),
+            'routerCacheFile' => tempnam(sys_get_temp_dir(), 'fast-route-') .'.php',
         ]);
 
         $serviceProvider = new RouterServiceProvider();

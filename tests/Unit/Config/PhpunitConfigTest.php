@@ -18,7 +18,6 @@ final class PhpunitConfigTest extends TestCase
         $config = PhpunitConfig::create('/path/to/root');
 
         self::assertSame([
-            'cacheDir' => '/path/to/root/var/cache/phpunit',
             'config.cleanDirectories' => [
                 'cache' => '/path/to/root/var/cache/phpunit',
                 'log' => '/path/to/root/var/log/phpunit',
@@ -52,6 +51,7 @@ final class PhpunitConfigTest extends TestCase
                 ],
                 'proxies.dir' => '/path/to/root/var/cache/phpunit/doctrine/proxies',
             ],
+            'routerCacheFile' => null,
         ], $config->getConfig());
     }
 

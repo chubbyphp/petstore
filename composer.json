@@ -8,7 +8,7 @@
         "chubbyphp/chubbyphp-config": "^1.1.2",
         "chubbyphp/chubbyphp-deserialization": "^2.9.1",
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.2.1",
-        "chubbyphp/chubbyphp-framework": "^1.0@alpha,>=1.0-alpha7",
+        "chubbyphp/chubbyphp-framework": "^1.0@alpha,>=1.0-alpha8",
         "chubbyphp/chubbyphp-negotiation": "^1.2.4",
         "chubbyphp/chubbyphp-serialization": "^2.8.1",
         "chubbyphp/chubbyphp-validation": "^3.3.1",

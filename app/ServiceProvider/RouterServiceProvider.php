@@ -32,6 +32,10 @@ final class RouterServiceProvider implements ServiceProviderInterface
     public function register(Container $container): void
     {
         $container[FastRouteRouter::class] = function () use ($container) {
+            return new FastRouteRouter($container['routes'], $container['routerCacheFile']);
+        };
+
+        $container['routes'] = function () use ($container) {
             $psrContainer = new PsrContainer($container);
 
             $acceptAndContentTypeMiddleware = new LazyMiddleware($psrContainer, AcceptAndContentTypeMiddleware::class);
@@ -46,7 +50,7 @@ final class RouterServiceProvider implements ServiceProviderInterface
             $petUpdateController = new LazyRequestHandler($psrContainer, UpdateController::class.Pet::class);
             $petDeleteController = new LazyRequestHandler($psrContainer, DeleteController::class.Pet::class);
 
-            $routes = Group::create('')
+            return Group::create('')
                 ->route(Route::get('/', 'index', $indexController))
                 ->group(Group::create('/api')
                     ->route(Route::get('', 'swagger_index', $swaggerIndexController))
@@ -64,8 +68,6 @@ final class RouterServiceProvider implements ServiceProviderInterface
                     )
                 )
                 ->getRoutes();
-
-            return new FastRouteRouter($routes, $container['routerCacheFile']);
         };
     }
 }

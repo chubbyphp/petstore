@@ -17,7 +17,7 @@ use App\Controller\Swagger\YamlController as SwaggerYamlController;
 use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
 use App\Model\Pet;
-use App\Repository\Repository;
+use App\Repository\PetRepository;
 use Chubbyphp\SlimPsr15\RequestHandlerAdapter;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -34,7 +34,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
                 new CreateController(
                     $container[InvalidParametersFactory::class],
                     $container[PetFactory::class],
-                    $container[Repository::class.Pet::class],
+                    $container[PetRepository::class],
                     $container['api-http.request.manager'],
                     $container['api-http.response.manager'],
                     $container['validator']
@@ -45,7 +45,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         $container[DeleteController::class.Pet::class] = function () use ($container) {
             return new RequestHandlerAdapter(
                 new DeleteController(
-                    $container[Repository::class.Pet::class],
+                    $container[PetRepository::class],
                     $container['api-http.response.manager']
                 )
             );
@@ -56,7 +56,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
                 new ListController(
                     $container[InvalidParametersFactory::class],
                     $container[PetCollectionFactory::class],
-                    $container[Repository::class.Pet::class],
+                    $container[PetRepository::class],
                     $container['api-http.request.manager'],
                     $container['api-http.response.manager'],
                     $container['validator']
@@ -67,7 +67,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
         $container[ReadController::class.Pet::class] = function () use ($container) {
             return new RequestHandlerAdapter(
                 new ReadController(
-                    $container[Repository::class.Pet::class],
+                    $container[PetRepository::class],
                     $container['api-http.response.manager']
                 )
             );
@@ -77,7 +77,7 @@ final class ControllerServiceProvider implements ServiceProviderInterface
             return new RequestHandlerAdapter(
                 new UpdateController(
                     $container[InvalidParametersFactory::class],
-                    $container[Repository::class.Pet::class],
+                    $container[PetRepository::class],
                     $container['api-http.request.manager'],
                     $container['api-http.response.manager'],
                     $container['validator']

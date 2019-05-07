@@ -20,7 +20,6 @@ use App\Factory\CollectionFactoryInterface;
 use App\Factory\Model\PetFactory;
 use App\Factory\ModelFactoryInterface;
 use App\Model\Pet;
-use App\Repository\Repository;
 use App\Repository\RepositoryInterface;
 use App\ServiceProvider\ControllerServiceProvider;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
@@ -33,6 +32,7 @@ use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Router;
+use App\Repository\PetRepository;
 
 /**
  * @covers \App\ServiceProvider\ControllerServiceProvider
@@ -53,7 +53,7 @@ final class ControllerServiceProviderTest extends TestCase
             InvalidParametersFactory::class => $this->getMockByCalls(InvalidParametersFactoryInterface::class),
             PetCollectionFactory::class => $this->getMockByCalls(CollectionFactoryInterface::class),
             PetFactory::class => $this->getMockByCalls(ModelFactoryInterface::class),
-            Repository::class.Pet::class => $this->getMockByCalls(RepositoryInterface::class),
+            PetRepository::class => $this->getMockByCalls(RepositoryInterface::class),
         ]);
 
         $serviceProvider = new ControllerServiceProvider();

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceProvider;
 
-use App\Model\Pet;
-use App\Repository\Repository;
+use App\Repository\PetRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -16,8 +15,8 @@ final class RepositoryServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $container): void
     {
-        $container[Repository::class.Pet::class] = function () use ($container) {
-            return new Repository($container['doctrine.orm.em'], Pet::class);
+        $container[PetRepository::class] = function () use ($container) {
+            return new PetRepository($container['doctrine.orm.em']);
         };
     }
 }

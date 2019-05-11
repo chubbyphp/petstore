@@ -9,17 +9,17 @@ use App\Controller\Crud\DeleteController;
 use App\Controller\Crud\ListController;
 use App\Controller\Crud\ReadController;
 use App\Controller\Crud\UpdateController;
+use App\Controller\IndexController;
 use App\Controller\PingController;
 use App\Controller\Swagger\IndexController as SwaggerIndexController;
 use App\Controller\Swagger\YamlController as SwaggerYamlController;
-use App\Middleware\AcceptAndContentTypeMiddleware;
 use App\Model\Pet;
 use App\ServiceProvider\ControllerServiceProvider;
 use App\ServiceProvider\MiddlewareServiceProvider;
+use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\Lazy\LazyMiddleware;
 use Slim\App;
 use Slim\Container;
-use App\Controller\IndexController;
 
 require __DIR__.'/bootstrap.php';
 

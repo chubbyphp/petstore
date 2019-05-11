@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceProvider;
 
-use App\Middleware\AcceptAndContentTypeMiddleware;
 use App\ServiceProvider\MiddlewareServiceProvider;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
 use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;

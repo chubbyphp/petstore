@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceProvider;
 
-use App\Middleware\AcceptAndContentTypeMiddleware;
+use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

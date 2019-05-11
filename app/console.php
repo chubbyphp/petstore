@@ -6,15 +6,12 @@ declare(strict_types=1);
 namespace App;
 
 use App\ServiceProvider\ConsoleServiceProvider;
-use Chubbyphp\Framework\ErrorHandler;
 use Pimple\Container;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
 
 require __DIR__.'/bootstrap.php';
-
-set_error_handler([ErrorHandler::class, 'handle']);
 
 $input = new ArgvInput();
 

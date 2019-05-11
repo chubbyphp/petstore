@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\ServiceProvider\ChubbyphpFrameworkProvider;
 use App\ServiceProvider\ControllerServiceProvider;
 use App\ServiceProvider\MiddlewareServiceProvider;
-use App\ServiceProvider\RouterServiceProvider;
 use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\ExceptionHandler;
 use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
@@ -19,12 +19,12 @@ require __DIR__.'/bootstrap.php';
 $container = require __DIR__.'/container.php';
 $container->register(new ControllerServiceProvider());
 $container->register(new MiddlewareServiceProvider());
-$container->register(new RouterServiceProvider());
+$container->register(new ChubbyphpFrameworkProvider());
 
 $app = new Application(
     $container[FastRouteRouter::class],
-    new MiddlewareDispatcher(),
-    new ExceptionHandler($container['api-http.response.factory'], $container['debug'])
+    $container[MiddlewareDispatcher::class],
+    $container[ExceptionHandler::class]
 );
 
 return $app;

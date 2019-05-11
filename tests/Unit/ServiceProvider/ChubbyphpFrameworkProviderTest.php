@@ -15,32 +15,44 @@ use App\Controller\Swagger\IndexController as SwaggerIndexController;
 use App\Controller\Swagger\YamlController as SwaggerYamlController;
 use App\Middleware\AcceptAndContentTypeMiddleware;
 use App\Model\Pet;
-use App\ServiceProvider\RouterServiceProvider;
+use App\ServiceProvider\ChubbyphpFrameworkProvider;
+use Chubbyphp\Framework\ExceptionHandler;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
+use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\RouteInterface;
+use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 /**
- * @covers \App\ServiceProvider\RouterServiceProvider
+ * @covers \App\ServiceProvider\ChubbyphpFrameworkProvider
  */
-final class RouterServiceProviderTest extends TestCase
+final class ChubbyphpFrameworkProviderTest extends TestCase
 {
+    use MockByCallsTrait;
+
     public function testRegister(): void
     {
         $container = new Container([
+            'api-http.response.factory' => $this->getMockByCalls(ResponseFactoryInterface::class),
+            'debug' => false,
             'routerCacheFile' => null,
         ]);
 
-        $serviceProvider = new RouterServiceProvider();
+        $serviceProvider = new ChubbyphpFrameworkProvider();
         $serviceProvider->register($container);
 
+        self::assertArrayHasKey(ExceptionHandler::class, $container);
         self::assertArrayHasKey(FastRouteRouter::class, $container);
+        self::assertArrayHasKey(MiddlewareDispatcher::class, $container);
         self::assertArrayHasKey('routes', $container);
 
+        self::assertInstanceOf(ExceptionHandler::class, $container[ExceptionHandler::class]);
         self::assertInstanceOf(FastRouteRouter::class, $container[FastRouteRouter::class]);
+        self::assertInstanceOf(MiddlewareDispatcher::class, $container[MiddlewareDispatcher::class]);
 
         /** @var RouteInterface[] $routes */
         $routes = $container['routes'];

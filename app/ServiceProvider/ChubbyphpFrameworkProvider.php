@@ -15,7 +15,9 @@ use App\Controller\Swagger\IndexController as SwaggerIndexController;
 use App\Controller\Swagger\YamlController as SwaggerYamlController;
 use App\Middleware\AcceptAndContentTypeMiddleware;
 use App\Model\Pet;
+use Chubbyphp\Framework\ExceptionHandler;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
+use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\Group;
@@ -24,15 +26,23 @@ use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 use Pimple\ServiceProviderInterface;
 
-final class RouterServiceProvider implements ServiceProviderInterface
+final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
 {
     /**
      * @param Container $container
      */
     public function register(Container $container): void
     {
+        $container[ExceptionHandler::class] = function () use ($container) {
+            return new ExceptionHandler($container['api-http.response.factory'], $container['debug']);
+        };
+
         $container[FastRouteRouter::class] = function () use ($container) {
             return new FastRouteRouter($container['routes'], $container['routerCacheFile']);
+        };
+
+        $container[MiddlewareDispatcher::class] = function () {
+            return new MiddlewareDispatcher();
         };
 
         $container['routes'] = function () use ($container) {

@@ -38,7 +38,7 @@ class IndexControllerTest extends TestCase
 
         /** @var Router|MockObject $router */
         $router = $this->getMockByCalls(Router::class, [
-            Call::create('urlFor')->with('swagger_index', [], [])->willReturn('https://petstore/api'),
+            Call::create('pathFor')->with('swagger_index', [], [])->willReturn('https://petstore/api'),
         ]);
 
         $controller = new IndexController($responseFactory, $router);

@@ -5,7 +5,7 @@
     "require": {
         "php": "^7.2",
         "chubbyphp/chubbyphp-api-http": "^3.0.1",
-        "chubbyphp/chubbyphp-config": "^1.1.2",
+        "chubbyphp/chubbyphp-config": "^1.2",
         "chubbyphp/chubbyphp-deserialization": "^2.9.1",
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.2.1",
         "chubbyphp/chubbyphp-framework": "^1.0@alpha,>=1.0-alpha8",

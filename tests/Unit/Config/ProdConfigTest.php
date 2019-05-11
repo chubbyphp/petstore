@@ -18,10 +18,6 @@ final class ProdConfigTest extends TestCase
         $config = ProdConfig::create('/path/to/root');
 
         self::assertSame([
-            'config.cleanDirectories' => [
-                'cache' => '/path/to/root/var/cache/prod',
-                'log' => '/path/to/root/var/log/prod',
-            ],
             'debug' => false,
             'doctrine.dbal.db.options' => [
                 'configuration' => [

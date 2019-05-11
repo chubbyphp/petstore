@@ -18,10 +18,6 @@ final class DevConfigTest extends TestCase
         $config = DevConfig::create('/path/to/root');
 
         self::assertSame([
-            'config.cleanDirectories' => [
-                'cache' => '/path/to/root/var/cache/dev',
-                'log' => '/path/to/root/var/log/dev',
-            ],
             'debug' => true,
             'doctrine.dbal.db.options' => [
                 'configuration' => [

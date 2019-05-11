@@ -18,10 +18,6 @@ final class PhpunitConfigTest extends TestCase
         $config = PhpunitConfig::create('/path/to/root');
 
         self::assertSame([
-            'config.cleanDirectories' => [
-                'cache' => '/path/to/root/var/cache/phpunit',
-                'log' => '/path/to/root/var/log/phpunit',
-            ],
             'debug' => true,
             'doctrine.dbal.db.options' => [
                 'configuration' => [

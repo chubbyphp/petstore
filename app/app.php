@@ -35,7 +35,7 @@ $app = new App($container);
 $app->get('/', IndexController::class)->setName('index');
 $app->group('/api', function () use ($app, $container, $acceptAndContentTypeMiddleware) {
     $app->get('', SwaggerIndexController::class)->setName('swagger_index');
-    $app->get('/swagger.yml', SwaggerYamlController::class)->setName('swagger_yml');
+    $app->get('/swagger', SwaggerYamlController::class)->setName('swagger_yml');
     $app->get('/ping', PingController::class)->add($acceptAndContentTypeMiddleware)->setName('ping');
     $app->group('/pets', function () use ($app, $container) {
         $app->get('', ListController::class.Pet::class)->setName('pet_list');

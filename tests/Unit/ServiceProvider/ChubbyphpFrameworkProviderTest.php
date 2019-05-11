@@ -66,7 +66,7 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
             SwaggerIndexController::class
         );
 
-        self::assertRoute(array_shift($routes), 'swagger_yml', 'GET', '/api/swagger.yml', [],
+        self::assertRoute(array_shift($routes), 'swagger_yml', 'GET', '/api/swagger', [],
             [],
             SwaggerYamlController::class
         );

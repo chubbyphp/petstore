@@ -64,7 +64,7 @@ final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
                 ->route(Route::get('/', 'index', $indexController))
                 ->group(Group::create('/api')
                     ->route(Route::get('', 'swagger_index', $swaggerIndexController))
-                    ->route(Route::get('/swagger.yml', 'swagger_yml', $swaggerYamlController))
+                    ->route(Route::get('/swagger', 'swagger_yml', $swaggerYamlController))
                     ->route(Route::get('/ping', 'ping', $pingController)
                         ->middleware($acceptAndContentTypeMiddleware)
                     )

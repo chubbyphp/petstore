@@ -37,7 +37,7 @@ final class ConsoleServiceProviderTest extends TestCase
     public function testRegister(): void
     {
         $container = new Container([
-            'config.cleanDirectories' => [
+            'chubbyphp.config.directories' => [
                 'cache' => '/path/to/cache',
             ],
             'proxymanager.doctrine.dbal.connection_registry' => $this->getMockByCalls(ConnectionRegistry::class),

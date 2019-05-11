@@ -12,7 +12,6 @@ class ProdConfig extends AbstractConfig
     public function getConfig(): array
     {
         return [
-            'config.cleanDirectories' => $this->getDirectories(),
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => ['type' => 'apcu'],

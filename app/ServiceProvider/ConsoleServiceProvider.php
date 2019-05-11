@@ -32,7 +32,7 @@ final class ConsoleServiceProvider implements ServiceProviderInterface
     {
         $container['console.commands'] = function () use ($container) {
             return [
-                new CleanDirectoriesCommand($container['config.cleanDirectories']),
+                new CleanDirectoriesCommand($container['chubbyphp.config.directories']),
 
                 // doctrine dbal
                 new CreateDatabaseDoctrineCommand($container['proxymanager.doctrine.dbal.connection_registry']),

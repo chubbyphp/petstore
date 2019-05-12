@@ -21,10 +21,10 @@ $container->register(new ControllerServiceProvider());
 $container->register(new MiddlewareServiceProvider());
 $container->register(new ChubbyphpFrameworkProvider());
 
-$app = new Application(
+$web = new Application(
     $container[FastRouteRouter::class],
     $container[MiddlewareDispatcher::class],
     $container[ExceptionHandler::class]
 );
 
-return $app;
+return $web;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use Zend\Diactoros\ServerRequestFactory;
 
-/** @var Chubbyphp\Framework\Application $app */
+/** @var Chubbyphp\Framework\Application $web */
 
 $env = 'dev';
 
-$app = require __DIR__ . '/../app/app.php';
+$web = require __DIR__ . '/../app/web.php';
 
-$app->send($app->handle(ServerRequestFactory::fromGlobals()));
+$web->send($web->handle(ServerRequestFactory::fromGlobals()));

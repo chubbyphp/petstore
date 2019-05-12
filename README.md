@@ -67,7 +67,7 @@ https://petstore.development
 Through [Composer](http://getcomposer.org) as [chubbyphp/petstore][40].
 
 ```bash
-composer create-project chubbyphp/petstore -s dev
+composer create-project chubbyphp/petstore myproject "dev-chubbyphp-framework"
 ```
 
 ## Setup

@@ -30,20 +30,20 @@ $container->register(new MiddlewareServiceProvider());
 
 $acceptAndContentTypeMiddleware = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
 
-$app = new App($container);
+$web = new App($container);
 
-$app->get('/', IndexController::class)->setName('index');
-$app->group('/api', function () use ($app, $container, $acceptAndContentTypeMiddleware) {
-    $app->get('', SwaggerIndexController::class)->setName('swagger_index');
-    $app->get('/swagger', SwaggerYamlController::class)->setName('swagger_yml');
-    $app->get('/ping', PingController::class)->add($acceptAndContentTypeMiddleware)->setName('ping');
-    $app->group('/pets', function () use ($app, $container) {
-        $app->get('', ListController::class.Pet::class)->setName('pet_list');
-        $app->post('', CreateController::class.Pet::class)->setName('pet_create');
-        $app->get('/{id}', ReadController::class.Pet::class)->setName('pet_read');
-        $app->put('/{id}', UpdateController::class.Pet::class)->setName('pet_update');
-        $app->delete('/{id}', DeleteController::class.Pet::class)->setName('pet_delete');
+$web->get('/', IndexController::class)->setName('index');
+$web->group('/api', function () use ($web, $container, $acceptAndContentTypeMiddleware) {
+    $web->get('', SwaggerIndexController::class)->setName('swagger_index');
+    $web->get('/swagger', SwaggerYamlController::class)->setName('swagger_yml');
+    $web->get('/ping', PingController::class)->add($acceptAndContentTypeMiddleware)->setName('ping');
+    $web->group('/pets', function () use ($web, $container) {
+        $web->get('', ListController::class.Pet::class)->setName('pet_list');
+        $web->post('', CreateController::class.Pet::class)->setName('pet_create');
+        $web->get('/{id}', ReadController::class.Pet::class)->setName('pet_read');
+        $web->put('/{id}', UpdateController::class.Pet::class)->setName('pet_update');
+        $web->delete('/{id}', DeleteController::class.Pet::class)->setName('pet_delete');
     })->add($acceptAndContentTypeMiddleware);
 });
 
-return $app;
+return $web;

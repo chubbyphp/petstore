@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-/** @var Slim\App $app */
+/** @var Slim\App $web */
 
 $env = 'dev';
 
-$app = require __DIR__ . '/../app/app.php';
-$app->run();
+$web = require __DIR__ . '/../app/web.php';
+$web->run();

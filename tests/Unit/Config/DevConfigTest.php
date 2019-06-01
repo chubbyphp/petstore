@@ -46,6 +46,11 @@ final class DevConfigTest extends TestCase
                 ],
                 'proxies.dir' => '/path/to/root/var/cache/dev/doctrine/proxies',
             ],
+            'monolog' => [
+                'name' => 'petstore',
+                'path' => '/path/to/root/var/log/dev/application.log',
+                'level' => 100,
+            ],
         ], $config->getConfig());
     }
 

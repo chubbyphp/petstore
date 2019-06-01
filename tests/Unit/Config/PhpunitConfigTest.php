@@ -46,6 +46,11 @@ final class PhpunitConfigTest extends TestCase
                 ],
                 'proxies.dir' => '/path/to/root/var/cache/phpunit/doctrine/proxies',
             ],
+            'monolog' => [
+                'name' => 'petstore',
+                'path' => '/path/to/root/var/log/phpunit/application.log',
+                'level' => 100,
+            ],
         ], $config->getConfig());
     }
 

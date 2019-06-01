@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Config;
 
+use Monolog\Logger;
+
 class ProdConfig extends AbstractConfig
 {
     /**
@@ -11,6 +13,9 @@ class ProdConfig extends AbstractConfig
      */
     public function getConfig(): array
     {
+        $cacheDir = $this->getCacheDir();
+        $logDir = $this->getLogDir();
+
         return [
             'doctrine.dbal.db.options' => [
                 'configuration' => [
@@ -30,7 +35,12 @@ class ProdConfig extends AbstractConfig
                 'cache.hydration' => ['type' => 'apcu'],
                 'cache.metadata' => ['type' => 'apcu'],
                 'cache.query' => ['type' => 'apcu'],
-                'proxies.dir' => $this->getCacheDir().'/doctrine/proxies',
+                'proxies.dir' => $cacheDir.'/doctrine/proxies',
+            ],
+            'monolog' => [
+                'name' => 'petstore',
+                'path' => $logDir.'/application.log',
+                'level' => Logger::NOTICE,
             ],
         ];
     }

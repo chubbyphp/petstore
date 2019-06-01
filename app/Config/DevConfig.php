@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Config;
 
+use Monolog\Logger;
+
 class DevConfig extends ProdConfig
 {
     /**
@@ -18,6 +20,8 @@ class DevConfig extends ProdConfig
         $config['doctrine.orm.em.options']['cache.hydration']['type'] = 'array';
         $config['doctrine.orm.em.options']['cache.metadata']['type'] = 'array';
         $config['doctrine.orm.em.options']['cache.query']['type'] = 'array';
+
+        $config['monolog']['level'] = Logger::DEBUG;
 
         return $config;
     }

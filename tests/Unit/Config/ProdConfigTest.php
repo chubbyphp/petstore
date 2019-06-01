@@ -47,6 +47,11 @@ final class ProdConfigTest extends TestCase
                 ],
                 'proxies.dir' => '/path/to/root/var/cache/prod/doctrine/proxies',
             ],
+            'monolog' => [
+                'name' => 'petstore',
+                'path' => '/path/to/root/var/log/prod/application.log',
+                'level' => 250,
+            ],
             'routerCacheFile' => '/path/to/root/var/cache/prod/routes.php',
         ], $config->getConfig());
     }

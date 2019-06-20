@@ -19,7 +19,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-config][4]: ^1.2
  * [chubbyphp/chubbyphp-deserialization][5]: ^2.7.4
  * [chubbyphp/chubbyphp-doctrine-db-service-provider][6]: ^1.2.1
- * [chubbyphp/chubbyphp-framework][7]: ^1.0@dev
+ * [chubbyphp/chubbyphp-framework][7]: ^1.0
  * [chubbyphp/chubbyphp-negotiation][8]: ^1.2.4
  * [chubbyphp/chubbyphp-serialization][9]: ^2.7.0
  * [chubbyphp/chubbyphp-validation][10]: ^3.3.0

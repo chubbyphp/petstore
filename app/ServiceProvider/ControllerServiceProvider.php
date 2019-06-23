@@ -18,7 +18,6 @@ use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
 use App\Model\Pet;
 use App\Repository\PetRepository;
-use Chubbyphp\SlimPsr15\RequestHandlerAdapter;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -30,84 +29,73 @@ final class ControllerServiceProvider implements ServiceProviderInterface
     public function register(Container $container): void
     {
         $container[CreateController::class.Pet::class] = function () use ($container) {
-            return new RequestHandlerAdapter(
-                new CreateController(
-                    $container[InvalidParametersFactory::class],
-                    $container[PetFactory::class],
-                    $container[PetRepository::class],
-                    $container['api-http.request.manager'],
-                    $container['api-http.response.manager'],
-                    $container['validator']
-                )
+            return new CreateController(
+                $container[InvalidParametersFactory::class],
+                $container[PetFactory::class],
+                $container[PetRepository::class],
+                $container['api-http.request.manager'],
+                $container['api-http.response.manager'],
+                $container['validator']
             );
         };
 
         $container[DeleteController::class.Pet::class] = function () use ($container) {
-            return new RequestHandlerAdapter(
-                new DeleteController(
-                    $container[PetRepository::class],
-                    $container['api-http.response.manager']
-                )
+            return new DeleteController(
+                $container[PetRepository::class],
+                $container['api-http.response.manager']
             );
         };
 
         $container[ListController::class.Pet::class] = function () use ($container) {
-            return new RequestHandlerAdapter(
-                new ListController(
-                    $container[InvalidParametersFactory::class],
-                    $container[PetCollectionFactory::class],
-                    $container[PetRepository::class],
-                    $container['api-http.request.manager'],
-                    $container['api-http.response.manager'],
-                    $container['validator']
-                )
+            return new ListController(
+                $container[InvalidParametersFactory::class],
+                $container[PetCollectionFactory::class],
+                $container[PetRepository::class],
+                $container['api-http.request.manager'],
+                $container['api-http.response.manager'],
+                $container['validator']
             );
         };
 
         $container[ReadController::class.Pet::class] = function () use ($container) {
-            return new RequestHandlerAdapter(
-                new ReadController(
-                    $container[PetRepository::class],
-                    $container['api-http.response.manager']
-                )
+            return new ReadController(
+                $container[PetRepository::class],
+                $container['api-http.response.manager']
             );
         };
 
         $container[UpdateController::class.Pet::class] = function () use ($container) {
-            return new RequestHandlerAdapter(
-                new UpdateController(
-                    $container[InvalidParametersFactory::class],
-                    $container[PetRepository::class],
-                    $container['api-http.request.manager'],
-                    $container['api-http.response.manager'],
-                    $container['validator']
-                )
+            return new UpdateController(
+                $container[InvalidParametersFactory::class],
+                $container[PetRepository::class],
+                $container['api-http.request.manager'],
+                $container['api-http.response.manager'],
+                $container['validator']
             );
         };
 
         $container[SwaggerIndexController::class] = function () use ($container) {
-            return new RequestHandlerAdapter(new SwaggerIndexController($container['api-http.response.factory']));
-        };
-
-        $container[SwaggerYamlController::class] = function () use ($container) {
-            return new RequestHandlerAdapter(new SwaggerYamlController($container['api-http.response.factory']));
-        };
-
-        $container[IndexController::class] = function () use ($container) {
-            return new RequestHandlerAdapter(
-                new IndexController(
-                    $container['api-http.response.factory'],
-                    $container['router']
-                )
+            return new SwaggerIndexController(
+                $container['api-http.response.factory'],
+                $container['api-http.stream.factory']
             );
         };
 
+        $container[SwaggerYamlController::class] = function () use ($container) {
+            return new SwaggerYamlController(
+                $container['api-http.response.factory'],
+                $container['api-http.stream.factory']
+            );
+        };
+
+        $container[IndexController::class] = function () use ($container) {
+            return new IndexController($container['api-http.response.factory'], $container['router']);
+        };
+
         $container[PingController::class] = function () use ($container) {
-            return new RequestHandlerAdapter(
-                new PingController(
-                    $container['api-http.response.factory'],
-                    $container['serializer']
-                )
+            return new PingController(
+                $container['api-http.response.factory'],
+                $container['serializer']
             );
         };
     }

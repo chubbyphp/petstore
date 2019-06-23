@@ -17,7 +17,8 @@ use App\Model\Pet;
 use App\ServiceProvider\ControllerServiceProvider;
 use App\ServiceProvider\MiddlewareServiceProvider;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
-use Chubbyphp\Lazy\LazyMiddleware;
+use Chubbyphp\SlimPsr15\LazyMiddlewareAdapter;
+use Chubbyphp\SlimPsr15\LazyRequestHandlerAdapter;
 use Slim\App;
 use Slim\Container;
 
@@ -28,21 +29,29 @@ $container = require __DIR__.'/container.php';
 $container->register(new ControllerServiceProvider());
 $container->register(new MiddlewareServiceProvider());
 
-$acceptAndContentTypeMiddleware = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
+$acceptAndContentTypeMiddleware = new LazyMiddlewareAdapter($container, AcceptAndContentTypeMiddleware::class);
 
 $web = new App($container);
 
-$web->get('/', IndexController::class)->setName('index');
+$web->get('/', new LazyRequestHandlerAdapter($container, IndexController::class))->setName('index');
 $web->group('/api', function () use ($web, $container, $acceptAndContentTypeMiddleware) {
-    $web->get('', SwaggerIndexController::class)->setName('swagger_index');
-    $web->get('/swagger', SwaggerYamlController::class)->setName('swagger_yml');
-    $web->get('/ping', PingController::class)->add($acceptAndContentTypeMiddleware)->setName('ping');
+    $web->get('', new LazyRequestHandlerAdapter($container, SwaggerIndexController::class))->setName('swagger_index');
+    $web->get('/swagger', new LazyRequestHandlerAdapter($container, SwaggerYamlController::class))
+        ->setName('swagger_yml');
+    $web->get('/ping', new LazyRequestHandlerAdapter($container, PingController::class))
+        ->add($acceptAndContentTypeMiddleware)
+        ->setName('ping');
     $web->group('/pets', function () use ($web, $container) {
-        $web->get('', ListController::class.Pet::class)->setName('pet_list');
-        $web->post('', CreateController::class.Pet::class)->setName('pet_create');
-        $web->get('/{id}', ReadController::class.Pet::class)->setName('pet_read');
-        $web->put('/{id}', UpdateController::class.Pet::class)->setName('pet_update');
-        $web->delete('/{id}', DeleteController::class.Pet::class)->setName('pet_delete');
+        $web->get('', new LazyRequestHandlerAdapter($container, ListController::class.Pet::class))
+            ->setName('pet_list');
+        $web->post('', new LazyRequestHandlerAdapter($container, CreateController::class.Pet::class))
+            ->setName('pet_create');
+        $web->get('/{id}', new LazyRequestHandlerAdapter($container, ReadController::class.Pet::class))
+            ->setName('pet_read');
+        $web->put('/{id}', new LazyRequestHandlerAdapter($container, UpdateController::class.Pet::class))
+            ->setName('pet_update');
+        $web->delete('/{id}', new LazyRequestHandlerAdapter($container, DeleteController::class.Pet::class))
+            ->setName('pet_delete');
     })->add($acceptAndContentTypeMiddleware);
 });
 

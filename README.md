@@ -19,10 +19,9 @@ A simple skeleton to build api's based on the [slimframework][1].
  * [chubbyphp/chubbyphp-config][4]: ^1.2
  * [chubbyphp/chubbyphp-deserialization][5]: ^2.9.2
  * [chubbyphp/chubbyphp-doctrine-db-service-provider][6]: ^1.2.1
- * [chubbyphp/chubbyphp-lazy-middleware][7]: ^1.1.0
  * [chubbyphp/chubbyphp-negotiation][8]: ^1.2.4
  * [chubbyphp/chubbyphp-serialization][9]: ^2.8.1
- * [chubbyphp/chubbyphp-slim-psr15][10]: ^1.0.1
+ * [chubbyphp/chubbyphp-slim-psr15][10]: ^1.1
  * [chubbyphp/chubbyphp-validation][11]: ^3.3.1
  * [doctrine/orm][12]: ^2.6.3
  * [ocramius/proxy-manager][13]: ^2.1.1

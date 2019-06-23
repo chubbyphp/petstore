@@ -7,8 +7,8 @@ namespace App\Controller\Swagger;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Http\Stream;
 
 class IndexController implements RequestHandlerInterface
 {
@@ -18,11 +18,18 @@ class IndexController implements RequestHandlerInterface
     private $responseFactory;
 
     /**
-     * @param ResponseFactoryInterface $responseFactory
+     * @var StreamFactoryInterface
      */
-    public function __construct(ResponseFactoryInterface $responseFactory)
+    private $streamFactory;
+
+    /**
+     * @param ResponseFactoryInterface $responseFactory
+     * @param StreamFactoryInterface   $streamFactory
+     */
+    public function __construct(ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory)
     {
         $this->responseFactory = $responseFactory;
+        $this->streamFactory = $streamFactory;
     }
 
     /**
@@ -38,6 +45,6 @@ class IndexController implements RequestHandlerInterface
             ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->withHeader('Pragma', 'no-cache')
             ->withHeader('Expires', '0')
-            ->withBody(new Stream(fopen(realpath(__DIR__.'/../../../swagger/index.html'), 'r')));
+            ->withBody($this->streamFactory->createStreamFromFile(__DIR__.'/../../../swagger/index.html'));
     }
 }

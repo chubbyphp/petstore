@@ -13,7 +13,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Stream;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \App\Controller\Swagger\IndexController
@@ -27,6 +28,9 @@ class IndexControllerTest extends TestCase
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class);
 
+        /** @var StreamInterface|MockObject $responseStream */
+        $responseStream = $this->getMockByCalls(StreamInterface::class);
+
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Content-Type', 'text/html')->willReturnSelf(),
@@ -35,14 +39,7 @@ class IndexControllerTest extends TestCase
                 ->willReturnSelf(),
             Call::create('withHeader')->with('Pragma', 'no-cache')->willReturnSelf(),
             Call::create('withHeader')->with('Expires', '0')->willReturnSelf(),
-            Call::create('withBody')
-                ->with(
-                    new ArgumentCallback(function ($body) {
-                        self::assertInstanceOf(Stream::class, $body);
-                        self::assertRegExp('/SwaggerUIBundle/', (string) $body);
-                    })
-                )
-                ->willReturnSelf(),
+            Call::create('withBody')->with($responseStream)->willReturnSelf(),
         ]);
 
         /** @var ResponseFactoryInterface|MockObject $responseFactory */
@@ -50,7 +47,19 @@ class IndexControllerTest extends TestCase
             Call::create('createResponse')->with(200, '')->willReturn($response),
         ]);
 
-        $controller = new IndexController($responseFactory);
+        /** @var StreamFactoryInterface|MockObject $streamFactory */
+        $streamFactory = $this->getMockByCalls(StreamFactoryInterface::class, [
+            Call::create('createStreamFromFile')
+                ->with(
+                    new ArgumentCallback(function (string $path) {
+                        self::assertRegExp('#swagger/index\.html$#', $path);
+                    }),
+                    'r'
+                )
+                ->willReturn($responseStream),
+        ]);
+
+        $controller = new IndexController($responseFactory, $streamFactory);
 
         self::assertSame($response, $controller->handle($request));
     }

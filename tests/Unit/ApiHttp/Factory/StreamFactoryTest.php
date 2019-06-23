@@ -59,7 +59,7 @@ class StreamFactoryTest extends TestCase
         $this->expectExceptionMessage(
             sprintf(
                 'Parameter 1 of %s() must be a resource.',
-                StreamFactory::class.'::createStreamFromResource',
+                StreamFactory::class.'::createStreamFromResource'
             )
         );
 

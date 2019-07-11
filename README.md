@@ -15,20 +15,21 @@ A simple skeleton to build api's based on the [slimframework][1].
 ## Requirements
 
  * php: ~7.1
- * [chubbyphp/chubbyphp-api-http][3]: ^3.1.0
+ * [chubbyphp/chubbyphp-api-http][3]: ^3.1
  * [chubbyphp/chubbyphp-config][4]: ^1.2
- * [chubbyphp/chubbyphp-deserialization][5]: ^2.9.2
+ * [chubbyphp/chubbyphp-deserialization][5]: ^2.11
  * [chubbyphp/chubbyphp-doctrine-db-service-provider][6]: ^1.2.1
  * [chubbyphp/chubbyphp-negotiation][8]: ^1.2.4
  * [chubbyphp/chubbyphp-serialization][9]: ^2.8.1
  * [chubbyphp/chubbyphp-slim-psr15][10]: ^1.1
  * [chubbyphp/chubbyphp-validation][11]: ^3.3.1
  * [doctrine/orm][12]: ^2.6.3
- * [ocramius/proxy-manager][13]: ^2.1.1
- * [ramsey/uuid][14]: ^3.8.0
- * [slim/slim][15]: ^3.12.1
- * [swagger-api/swagger-ui][16]: ^3.22.1
- * [symfony/console][17]: ^4.2.8
+ * [monolog/monolog][13]: ^1.24
+ * [ocramius/proxy-manager][14]: ^2.1.1
+ * [ramsey/uuid][15]: ^3.8
+ * [slim/slim][16]: ^3.12.1
+ * [swagger-api/swagger-ui][17]: ^3.23
+ * [symfony/console][18]: ^4.3.1
 
 ## Environment
 
@@ -197,11 +198,12 @@ Dominik Zogg 2018
 [10]: https://packagist.org/packages/chubbyphp/chubbyphp-slim-psr15
 [11]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
 [12]: https://packagist.org/packages/doctrine/orm
-[13]: https://packagist.org/packages/ocramius/proxy-manager
-[14]: https://packagist.org/packages/ramsey/uuid
-[15]: https://packagist.org/packages/slim/slim
-[16]: https://packagist.org/packages/swagger-api/swagger-ui
-[17]: https://packagist.org/packages/symfony/console
+[13]: https://packagist.org/packages/monolog/monolog
+[14]: https://packagist.org/packages/ocramius/proxy-manager
+[15]: https://packagist.org/packages/ramsey/uuid
+[16]: https://packagist.org/packages/slim/slim
+[17]: https://packagist.org/packages/swagger-api/swagger-ui
+[18]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

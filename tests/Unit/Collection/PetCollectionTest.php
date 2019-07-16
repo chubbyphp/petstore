@@ -9,6 +9,8 @@ use App\Collection\PetCollection;
 
 /**
  * @covers \App\Collection\PetCollection
+ *
+ * @internal
  */
 final class PetCollectionTest extends CollectionTest
 {

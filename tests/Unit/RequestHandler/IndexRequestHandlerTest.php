@@ -16,6 +16,8 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * @covers \App\RequestHandler\IndexRequestHandler
+ *
+ * @internal
  */
 class IndexRequestHandlerTest extends TestCase
 {

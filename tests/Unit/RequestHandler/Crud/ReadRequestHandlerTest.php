@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\RequestHandler\Crud;
 
-use App\RequestHandler\Crud\ReadRequestHandler;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
+use App\RequestHandler\Crud\ReadRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
@@ -19,6 +19,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \App\RequestHandler\Crud\ReadRequestHandler
+ *
+ * @internal
  */
 class ReadRequestHandlerTest extends TestCase
 {
@@ -44,7 +46,7 @@ class ReadRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem) {}),
+                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )
@@ -82,7 +84,7 @@ class ReadRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     200,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request) {
+                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

@@ -15,6 +15,8 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
 /**
  * @covers \App\ServiceProvider\ProxyManagerServiceProvider
+ *
+ * @internal
  */
 final class ProxyManagerServiceProviderTest extends TestCase
 {

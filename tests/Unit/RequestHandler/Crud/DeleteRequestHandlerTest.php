@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\RequestHandler\Crud;
 
-use App\RequestHandler\Crud\DeleteRequestHandler;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
+use App\RequestHandler\Crud\DeleteRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
@@ -18,6 +18,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \App\RequestHandler\Crud\DeleteRequestHandler
+ *
+ * @internal
  */
 class DeleteRequestHandlerTest extends TestCase
 {
@@ -43,7 +45,7 @@ class DeleteRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem) {}),
+                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )

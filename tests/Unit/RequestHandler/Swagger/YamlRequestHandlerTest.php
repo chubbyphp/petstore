@@ -18,6 +18,8 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \App\RequestHandler\Swagger\YamlRequestHandler
+ *
+ * @internal
  */
 class YamlRequestHandlerTest extends TestCase
 {
@@ -51,7 +53,7 @@ class YamlRequestHandlerTest extends TestCase
         $streamFactory = $this->getMockByCalls(StreamFactoryInterface::class, [
             Call::create('createStreamFromFile')
                 ->with(
-                    new ArgumentCallback(function (string $path) {
+                    new ArgumentCallback(function (string $path): void {
                         self::assertRegExp('#swagger/swagger\.yml$#', $path);
                     }),
                     'r'

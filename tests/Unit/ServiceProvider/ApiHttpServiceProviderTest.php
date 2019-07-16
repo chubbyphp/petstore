@@ -13,6 +13,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\ApiHttpServiceProvider
+ *
+ * @internal
  */
 final class ApiHttpServiceProviderTest extends TestCase
 {

@@ -17,6 +17,8 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractModelMapping
+ *
+ * @internal
  */
 class ModelMappingTest extends TestCase
 {

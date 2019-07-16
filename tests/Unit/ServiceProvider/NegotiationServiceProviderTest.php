@@ -14,6 +14,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\NegotiationServiceProvider
+ *
+ * @internal
  */
 final class NegotiationServiceProviderTest extends TestCase
 {

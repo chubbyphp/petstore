@@ -11,6 +11,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\MonologServiceProvider
+ *
+ * @internal
  */
 final class MonologServiceProviderTest extends TestCase
 {

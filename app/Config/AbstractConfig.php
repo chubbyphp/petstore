@@ -14,6 +14,10 @@ abstract class AbstractConfig implements ConfigInterface, SlimSettingsInterface
      */
     protected $rootDir;
 
+    private function __construct()
+    {
+    }
+
     /**
      * @param string $rootDir
      *
@@ -25,10 +29,6 @@ abstract class AbstractConfig implements ConfigInterface, SlimSettingsInterface
         $config->rootDir = $rootDir;
 
         return $config;
-    }
-
-    private function __construct()
-    {
     }
 
     /**

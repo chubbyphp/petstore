@@ -32,9 +32,9 @@ final class StreamFactory implements StreamFactoryInterface
      * @param string $filename
      * @param string $mode
      *
-     * @return StreamInterface
-     *
      * @throws \RuntimeException
+     *
+     * @return StreamInterface
      */
     public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
     {
@@ -52,9 +52,9 @@ final class StreamFactory implements StreamFactoryInterface
     /**
      * @param resource $resource
      *
-     * @return StreamInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return StreamInterface
      */
     public function createStreamFromResource($resource): StreamInterface
     {

@@ -34,25 +34,33 @@ $acceptAndContentTypeMiddleware = new LazyMiddlewareAdapter($container, AcceptAn
 $web = new App($container);
 
 $web->get('/', new LazyRequestHandlerAdapter($container, IndexRequestHandler::class))->setName('index');
-$web->group('/api', function () use ($web, $container, $acceptAndContentTypeMiddleware) {
+$web->group('/api', function () use ($web, $container, $acceptAndContentTypeMiddleware): void {
     $web->get('', new LazyRequestHandlerAdapter($container, SwaggerIndexRequestHandler::class))
-        ->setName('swagger_index');
+        ->setName('swagger_index')
+    ;
     $web->get('/swagger', new LazyRequestHandlerAdapter($container, SwaggerYamlRequestHandler::class))
-        ->setName('swagger_yml');
+        ->setName('swagger_yml')
+    ;
     $web->get('/ping', new LazyRequestHandlerAdapter($container, PingRequestHandler::class))
         ->add($acceptAndContentTypeMiddleware)
-        ->setName('ping');
-    $web->group('/pets', function () use ($web, $container) {
+        ->setName('ping')
+    ;
+    $web->group('/pets', function () use ($web, $container): void {
         $web->get('', new LazyRequestHandlerAdapter($container, ListRequestHandler::class.Pet::class))
-            ->setName('pet_list');
+            ->setName('pet_list')
+        ;
         $web->post('', new LazyRequestHandlerAdapter($container, CreateRequestHandler::class.Pet::class))
-            ->setName('pet_create');
+            ->setName('pet_create')
+        ;
         $web->get('/{id}', new LazyRequestHandlerAdapter($container, ReadRequestHandler::class.Pet::class))
-            ->setName('pet_read');
+            ->setName('pet_read')
+        ;
         $web->put('/{id}', new LazyRequestHandlerAdapter($container, UpdateRequestHandler::class.Pet::class))
-            ->setName('pet_update');
+            ->setName('pet_update')
+        ;
         $web->delete('/{id}', new LazyRequestHandlerAdapter($container, DeleteRequestHandler::class.Pet::class))
-            ->setName('pet_delete');
+            ->setName('pet_delete')
+        ;
     })->add($acceptAndContentTypeMiddleware);
 });
 

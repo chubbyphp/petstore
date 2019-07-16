@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Mapping\Deserialization\PetMapping
+ *
+ * @internal
  */
 final class PetMappingTest extends TestCase
 {

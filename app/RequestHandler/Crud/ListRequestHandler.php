@@ -7,6 +7,7 @@ namespace App\RequestHandler\Crud;
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
@@ -14,7 +15,6 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 
 final class ListRequestHandler implements RequestHandlerInterface
 {

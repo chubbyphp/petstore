@@ -110,7 +110,7 @@ class Pet implements ModelInterface
                 continue;
             }
 
-            $this->$property = $value;
+            $this->{$property} = $value;
         }
     }
 }

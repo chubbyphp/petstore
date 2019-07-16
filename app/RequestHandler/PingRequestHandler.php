@@ -49,7 +49,8 @@ class PingRequestHandler implements RequestHandlerInterface
             ->withHeader('Content-Type', $accept)
             ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->withHeader('Pragma', 'no-cache')
-            ->withHeader('Expires', '0');
+            ->withHeader('Expires', '0')
+        ;
 
         $response->getBody()->write($body);
 

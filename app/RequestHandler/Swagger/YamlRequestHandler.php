@@ -45,6 +45,7 @@ class YamlRequestHandler implements RequestHandlerInterface
             ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->withHeader('Pragma', 'no-cache')
             ->withHeader('Expires', '0')
-            ->withBody($this->streamFactory->createStreamFromFile(__DIR__.'/../../../swagger/swagger.yml'));
+            ->withBody($this->streamFactory->createStreamFromFile(__DIR__.'/../../../swagger/swagger.yml'))
+        ;
     }
 }

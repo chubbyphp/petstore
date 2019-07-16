@@ -13,6 +13,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\RepositoryServiceProvider
+ *
+ * @internal
  */
 final class RepositoryServiceProviderTest extends TestCase
 {

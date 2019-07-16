@@ -78,14 +78,16 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                             )
                         )
                         ->setAttributes(['method' => 'GET'])
-                        ->getLink();
+                        ->getLink()
+                    ;
                 }
             )),
             new NormalizationLinkMapping('create', [], new CallbackLinkNormalizer(
                 function () {
                     return LinkBuilder::create($this->router->pathFor($this->getCreateRouteName()))
                         ->setAttributes(['method' => 'POST'])
-                        ->getLink();
+                        ->getLink()
+                    ;
                 }
             )),
         ];

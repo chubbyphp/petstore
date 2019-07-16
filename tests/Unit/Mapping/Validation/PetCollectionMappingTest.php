@@ -14,6 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Mapping\Validation\PetCollectionMapping
+ *
+ * @internal
  */
 final class PetCollectionMappingTest extends TestCase
 {

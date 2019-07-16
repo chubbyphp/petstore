@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Mapping\Deserialization;
 
+use App\Collection\PetCollection;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
-use App\Collection\PetCollection;
 
 final class PetCollectionMapping implements DenormalizationObjectMappingInterface
 {

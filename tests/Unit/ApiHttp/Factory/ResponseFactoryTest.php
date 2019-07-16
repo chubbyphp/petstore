@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ApiHttp\Factory;
 
-use PHPUnit\Framework\TestCase;
 use App\ApiHttp\Factory\ResponseFactory;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * @covers \App\ApiHttp\Factory\ResponseFactory
+ *
+ * @internal
  */
 class ResponseFactoryTest extends TestCase
 {

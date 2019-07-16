@@ -14,6 +14,8 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * @covers \App\Mapping\Serialization\PetMapping
+ *
+ * @internal
  */
 final class PetMappingTest extends ModelMappingTest
 {

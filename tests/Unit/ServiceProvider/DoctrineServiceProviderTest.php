@@ -12,6 +12,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\DoctrineServiceProvider
+ *
+ * @internal
  */
 final class DoctrineServiceProviderTest extends TestCase
 {

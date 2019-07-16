@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\ApiHttp\Factory\InvalidParametersFactory
+ *
+ * @internal
  */
 class InvalidParametersFactoryTest extends TestCase
 {

@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace App\Mapping\Validation\Constraint;
 
 use Chubbyphp\Validation\Constraint\ConstraintInterface;
+use Chubbyphp\Validation\Error\Error;
+use Chubbyphp\Validation\Error\ErrorInterface;
 use Chubbyphp\Validation\ValidatorContextInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use Chubbyphp\Validation\ValidatorLogicException;
-use Chubbyphp\Validation\Error\ErrorInterface;
-use Chubbyphp\Validation\Error\Error;
 
 final class SortConstraint implements ConstraintInterface
 {
+    const ALLOWED_ORDERS = ['asc', 'desc'];
     /**
      * @var string[]
      */
     private $allowedFields;
-
-    const ALLOWED_ORDERS = ['asc', 'desc'];
 
     /**
      * @param array $allowedFields
@@ -34,9 +33,9 @@ final class SortConstraint implements ConstraintInterface
      * @param ValidatorContextInterface $context
      * @param ValidatorInterface|null   $validator
      *
-     * @return ErrorInterface[]
-     *
      * @throws ValidatorLogicException
+     *
+     * @return ErrorInterface[]
      */
     public function validate(
         string $path,

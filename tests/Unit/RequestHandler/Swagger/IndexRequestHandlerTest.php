@@ -18,6 +18,8 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \App\RequestHandler\Swagger\IndexRequestHandler
+ *
+ * @internal
  */
 class IndexRequestHandlerTest extends TestCase
 {
@@ -51,7 +53,7 @@ class IndexRequestHandlerTest extends TestCase
         $streamFactory = $this->getMockByCalls(StreamFactoryInterface::class, [
             Call::create('createStreamFromFile')
                 ->with(
-                    new ArgumentCallback(function (string $path) {
+                    new ArgumentCallback(function (string $path): void {
                         self::assertRegExp('#swagger/index\.html$#', $path);
                     }),
                     'r'

@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\ApiHttp\Factory\StreamFactory
+ *
+ * @internal
  */
 class StreamFactoryTest extends TestCase
 {

@@ -19,6 +19,8 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractCollectionMapping
+ *
+ * @internal
  */
 class CollectionMappingTest extends TestCase
 {

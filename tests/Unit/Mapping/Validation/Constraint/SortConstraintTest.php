@@ -6,13 +6,15 @@ namespace App\Tests\Unit\Mapping\Validation\Constraint;
 
 use App\Mapping\Validation\Constraint\SortConstraint;
 use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Validation\Error\Error;
 use Chubbyphp\Validation\ValidatorContextInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Chubbyphp\Validation\Error\Error;
 
 /**
  * @covers \App\Mapping\Validation\Constraint\SortConstraint
+ *
+ * @internal
  */
 final class SortConstraintTest extends TestCase
 {

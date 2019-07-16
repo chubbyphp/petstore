@@ -36,7 +36,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param int $offset
      */
-    public function setOffset(int $offset)
+    public function setOffset(int $offset): void
     {
         $this->offset = $offset;
     }
@@ -52,7 +52,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param int $limit
      */
-    public function setLimit(int $limit)
+    public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }
@@ -68,7 +68,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param string[] $sort
      */
-    public function setSort(array $sort)
+    public function setSort(array $sort): void
     {
         $this->sort = $sort;
     }

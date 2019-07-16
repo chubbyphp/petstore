@@ -17,9 +17,9 @@
             <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <listeners>
-        <listener class="App\Tests\PhpServerTestListener" file="./tests/PhpServerTestListener.php" />
-    </listeners>
+    <extensions>
+        <extension class="App\Tests\PhpServerTestListener" />
+    </extensions>
     <filter>
         <whitelist>
             <directory>./app</directory>

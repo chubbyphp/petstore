@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Framework\TestListenerDefaultImplementation;
-use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\BeforeTestHook;
 
-final class PhpServerTestListener implements TestListener
+final class PhpServerTestListener implements BeforeTestHook
 {
-    use TestListenerDefaultImplementation;
-
     const PHP_SERVER_PORT = 49199;
     const ENV_INTEGRATION_ENDPOINT = 'INTEGRATION_ENDPOINT';
 
@@ -28,9 +24,10 @@ final class PhpServerTestListener implements TestListener
     }
 
     /**
-     * @param TestSuite $suite
+     * @param string $test
+     * @return void
      */
-    public function startTestSuite(TestSuite $suite): void
+    public function executeBeforeTest(string $test): void
     {
         if (null !== $this->serverPid) {
             return;
@@ -40,7 +37,7 @@ final class PhpServerTestListener implements TestListener
             return;
         }
 
-        if (!$this->isIntegrationTest($suite)) {
+        if (!$this->isIntegrationTest($test)) {
             return;
         }
 
@@ -49,23 +46,12 @@ final class PhpServerTestListener implements TestListener
     }
 
     /**
-     * @param TestSuite $suite
-     *
-     * @return bool
+     * @param string $test
+     * @return boolean
      */
-    private function isIntegrationTest(TestSuite $suite): bool
+    private function isIntegrationTest(string $test): bool
     {
-        $name = $suite->getName();
-
-        if ('Integration' === $name) {
-            return true;
-        }
-
-        if (false !== strpos($name, 'Integration')) {
-            return true;
-        }
-
-        return false;
+        return 0 === strpos($test, 'App\\Tests\\Integration');
     }
 
     private function initialize(): void

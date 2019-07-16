@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Crud;
+namespace App\Tests\Unit\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Collection\CollectionInterface;
-use App\Controller\Crud\ListController;
+use App\RequestHandler\Crud\ListRequestHandler;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
@@ -23,9 +23,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @covers \App\Controller\Crud\ListController
+ * @covers \App\RequestHandler\Crud\ListRequestHandler
  */
-class ListControllerTest extends TestCase
+class ListRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -89,7 +89,7 @@ class ListControllerTest extends TestCase
             Call::create('validate')->with($collection, null, '')->willReturn([$error]),
         ]);
 
-        $controller = new ListController(
+        $requestHandler = new ListRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -98,7 +98,7 @@ class ListControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -153,7 +153,7 @@ class ListControllerTest extends TestCase
             Call::create('validate')->with($collection, null, '')->willReturn([]),
         ]);
 
-        $controller = new ListController(
+        $requestHandler = new ListRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -162,6 +162,6 @@ class ListControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

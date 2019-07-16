@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller;
+namespace App\Tests\Unit\RequestHandler;
 
-use App\Controller\IndexController;
+use App\RequestHandler\IndexRequestHandler;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,9 +15,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\RouterInterface;
 
 /**
- * @covers \App\Controller\IndexController
+ * @covers \App\RequestHandler\IndexRequestHandler
  */
-class IndexControllerTest extends TestCase
+class IndexRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -41,8 +41,8 @@ class IndexControllerTest extends TestCase
             Call::create('pathFor')->with('swagger_index', [], [])->willReturn('https://petstore/api'),
         ]);
 
-        $controller = new IndexController($responseFactory, $router);
+        $requestHandler = new IndexRequestHandler($responseFactory, $router);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

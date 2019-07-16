@@ -102,23 +102,23 @@ bin/console orm:schema-tool:update --dump-sql --force
  * [App\Config\PhpunitConfig][71]
  * [App\Config\ProdConfig][72]
 
-### Controller
+### RequestHandler
 
- * [App\Controller\IndexController][80]
- * [App\Controller\PingController][81]
+ * [App\RequestHandler\IndexRequestHandler][80]
+ * [App\RequestHandler\PingRequestHandler][81]
 
 #### Crud
 
- * [App\Controller\Crud\CreateController][82]
- * [App\Controller\Crud\DeleteController][83]
- * [App\Controller\Crud\ListController][84]
- * [App\Controller\Crud\ReadController][85]
- * [App\Controller\Crud\UpdateController][86]
+ * [App\RequestHandler\Crud\CreateRequestHandler][82]
+ * [App\RequestHandler\Crud\DeleteRequestHandler][83]
+ * [App\RequestHandler\Crud\ListRequestHandler][84]
+ * [App\RequestHandler\Crud\ReadRequestHandler][85]
+ * [App\RequestHandler\Crud\UpdateRequestHandler][86]
 
 #### Swagger
 
- * [App\Controller\Swagger\IndexController][87]
- * [App\Controller\Swagger\YamlController][88]
+ * [App\RequestHandler\Swagger\IndexRequestHandler][87]
+ * [App\RequestHandler\Swagger\YamlRequestHandler][88]
 
 ### Factory
 
@@ -169,7 +169,7 @@ bin/console orm:schema-tool:update --dump-sql --force
 
  * [App\ServiceProvider\ApiHttpServiceProvider][160]
  * [App\ServiceProvider\ConsoleServiceProvider][161]
- * [App\ServiceProvider\ControllerServiceProvider][162]
+ * [App\ServiceProvider\RequestHandlerServiceProvider][162]
  * [App\ServiceProvider\DeserializationServiceProvider][163]
  * [App\ServiceProvider\DoctrineServiceProvider][164]
  * [App\ServiceProvider\FactoryServiceProvider][165]
@@ -216,15 +216,15 @@ Dominik Zogg 2018
 [71]: app/Config/PhpunitConfig.php
 [72]: app/Config/ProdConfig.php
 
-[80]: app/Controller/IndexController.php
-[81]: app/Controller/PingController.php
-[82]: app/Controller/Crud/CreateController.php
-[83]: app/Controller/Crud/DeleteController.php
-[84]: app/Controller/Crud/ListController.php
-[85]: app/Controller/Crud/ReadController.php
-[86]: app/Controller/Crud/UpdateController.php
-[87]: app/Controller/Swagger/IndexController.php
-[88]: app/Controller/Swagger/YamlController.php
+[80]: app/RequestHandler/IndexRequestHandler.php
+[81]: app/RequestHandler/PingRequestHandler.php
+[82]: app/RequestHandler/Crud/CreateRequestHandler.php
+[83]: app/RequestHandler/Crud/DeleteRequestHandler.php
+[84]: app/RequestHandler/Crud/ListRequestHandler.php
+[85]: app/RequestHandler/Crud/ReadRequestHandler.php
+[86]: app/RequestHandler/Crud/UpdateRequestHandler.php
+[87]: app/RequestHandler/Swagger/IndexRequestHandler.php
+[88]: app/RequestHandler/Swagger/YamlRequestHandler.php
 
 [100]: app/Factory/Collection/PetCollectionFactory.php
 [101]: app/Factory/Model/PetFactory.php
@@ -245,7 +245,7 @@ Dominik Zogg 2018
 
 [160]: app/ServiceProvider/ApiHttpServiceProvider.php
 [161]: app/ServiceProvider/ConsoleServiceProvider.php
-[162]: app/ServiceProvider/ControllerServiceProvider.php
+[162]: app/ServiceProvider/RequestHandlerServiceProvider.php
 [163]: app/ServiceProvider/DeserializationServiceProvider.php
 [164]: app/ServiceProvider/DoctrineServiceProvider.php
 [165]: app/ServiceProvider/FactoryServiceProvider.php

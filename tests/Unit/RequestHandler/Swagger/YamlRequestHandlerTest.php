@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Swagger;
+namespace App\Tests\Unit\RequestHandler\Swagger;
 
-use App\Controller\Swagger\YamlController;
+use App\RequestHandler\Swagger\YamlRequestHandler;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -17,9 +17,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers \App\Controller\Swagger\YamlController
+ * @covers \App\RequestHandler\Swagger\YamlRequestHandler
  */
-class YamlControllerTest extends TestCase
+class YamlRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -59,8 +59,8 @@ class YamlControllerTest extends TestCase
                 ->willReturn($responseStream),
         ]);
 
-        $controller = new YamlController($responseFactory, $streamFactory);
+        $requestHandler = new YamlRequestHandler($responseFactory, $streamFactory);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

@@ -2,31 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Crud;
+namespace App\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
-use App\Factory\ModelFactoryInterface;
+use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class CreateController implements RequestHandlerInterface
+final class UpdateRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var InvalidParametersFactoryInterface
      */
     private $errorFactory;
-
-    /**
-     * @var ModelFactoryInterface
-     */
-    private $factory;
 
     /**
      * @var RepositoryInterface
@@ -50,7 +47,6 @@ final class CreateController implements RequestHandlerInterface
 
     /**
      * @param InvalidParametersFactoryInterface $errorFactory
-     * @param ModelFactoryInterface             $factory
      * @param RepositoryInterface               $repository
      * @param RequestManagerInterface           $requestManager
      * @param ResponseManagerInterface          $responseManager
@@ -58,14 +54,12 @@ final class CreateController implements RequestHandlerInterface
      */
     public function __construct(
         InvalidParametersFactoryInterface $errorFactory,
-        ModelFactoryInterface $factory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
         ValidatorInterface $validator
     ) {
         $this->errorFactory = $errorFactory;
-        $this->factory = $factory;
         $this->repository = $repository;
         $this->requestManager = $requestManager;
         $this->responseManager = $responseManager;
@@ -79,10 +73,22 @@ final class CreateController implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $id = $request->getAttribute('id');
         $accept = $request->getAttribute('accept');
         $contentType = $request->getAttribute('contentType');
 
-        $model = $this->requestManager->getDataFromRequestBody($request, $this->factory->create(), $contentType);
+        /** @var ModelInterface $model */
+        if (null === $model = $this->repository->findById($id)) {
+            return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
+        }
+
+        $model->reset();
+
+        $context = DenormalizerContextBuilder::create()
+            ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
+            ->getContext();
+
+        $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
 
         if ([] !== $errors = $this->validator->validate($model)) {
             return $this->responseManager->createFromApiProblem(
@@ -91,11 +97,13 @@ final class CreateController implements RequestHandlerInterface
             );
         }
 
+        $model->setUpdatedAt(new \DateTime());
+
         $this->repository->persist($model);
         $this->repository->flush();
 
         $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
 
-        return $this->responseManager->create($model, $accept, 201, $context);
+        return $this->responseManager->create($model, $accept, 200, $context);
     }
 }

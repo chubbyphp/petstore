@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Crud;
+namespace App\Tests\Unit\RequestHandler\Crud;
 
-use App\Controller\Crud\ReadController;
+use App\RequestHandler\Crud\ReadRequestHandler;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
@@ -18,9 +18,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @covers \App\Controller\Crud\ReadController
+ * @covers \App\RequestHandler\Crud\ReadRequestHandler
  */
-class ReadControllerTest extends TestCase
+class ReadRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -51,9 +51,9 @@ class ReadControllerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $controller = new ReadController($repository, $responseManager);
+        $requestHandler = new ReadRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -89,8 +89,8 @@ class ReadControllerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $controller = new ReadController($repository, $responseManager);
+        $requestHandler = new ReadRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

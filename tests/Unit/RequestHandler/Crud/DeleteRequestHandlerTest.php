@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Crud;
+namespace App\Tests\Unit\RequestHandler\Crud;
 
-use App\Controller\Crud\DeleteController;
+use App\RequestHandler\Crud\DeleteRequestHandler;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
@@ -17,9 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @covers \App\Controller\Crud\DeleteController
+ * @covers \App\RequestHandler\Crud\DeleteRequestHandler
  */
-class DeleteControllerTest extends TestCase
+class DeleteRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -50,9 +50,9 @@ class DeleteControllerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $controller = new DeleteController($repository, $responseManager);
+        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -83,8 +83,8 @@ class DeleteControllerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $controller = new DeleteController($repository, $responseManager);
+        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

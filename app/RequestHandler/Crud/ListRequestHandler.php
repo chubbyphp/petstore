@@ -2,28 +2,31 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Crud;
+namespace App\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
-use App\Model\ModelInterface;
+use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
-use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 
-final class UpdateController implements RequestHandlerInterface
+final class ListRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var InvalidParametersFactoryInterface
      */
     private $errorFactory;
+
+    /**
+     * @var CollectionFactoryInterface
+     */
+    private $factory;
 
     /**
      * @var RepositoryInterface
@@ -47,6 +50,7 @@ final class UpdateController implements RequestHandlerInterface
 
     /**
      * @param InvalidParametersFactoryInterface $errorFactory
+     * @param CollectionFactoryInterface        $factory
      * @param RepositoryInterface               $repository
      * @param RequestManagerInterface           $requestManager
      * @param ResponseManagerInterface          $responseManager
@@ -54,12 +58,14 @@ final class UpdateController implements RequestHandlerInterface
      */
     public function __construct(
         InvalidParametersFactoryInterface $errorFactory,
+        CollectionFactoryInterface $factory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
         ValidatorInterface $validator
     ) {
         $this->errorFactory = $errorFactory;
+        $this->factory = $factory;
         $this->repository = $repository;
         $this->requestManager = $requestManager;
         $this->responseManager = $responseManager;
@@ -73,37 +79,21 @@ final class UpdateController implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = $request->getAttribute('id');
         $accept = $request->getAttribute('accept');
-        $contentType = $request->getAttribute('contentType');
 
-        /** @var ModelInterface $model */
-        if (null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
-        }
+        $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
 
-        $model->reset();
-
-        $context = DenormalizerContextBuilder::create()
-            ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
-            ->getContext();
-
-        $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
-
-        if ([] !== $errors = $this->validator->validate($model)) {
+        if ([] !== $errors = $this->validator->validate($collection)) {
             return $this->responseManager->createFromApiProblem(
-                new UnprocessableEntity($this->errorFactory->createInvalidParameters($errors)),
+                new BadRequest($this->errorFactory->createInvalidParameters($errors)),
                 $accept
             );
         }
 
-        $model->setUpdatedAt(new \DateTime());
-
-        $this->repository->persist($model);
-        $this->repository->flush();
+        $this->repository->resolveCollection($collection);
 
         $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
 
-        return $this->responseManager->create($model, $accept, 200, $context);
+        return $this->responseManager->create($collection, $accept, 200, $context);
     }
 }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Crud;
+namespace App\Tests\Unit\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
-use App\Controller\Crud\UpdateController;
+use App\RequestHandler\Crud\UpdateRequestHandler;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
@@ -25,9 +25,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 
 /**
- * @covers \App\Controller\Crud\UpdateController
+ * @covers \App\RequestHandler\Crud\UpdateRequestHandler
  */
-class UpdateControllerTest extends TestCase
+class UpdateRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -68,7 +68,7 @@ class UpdateControllerTest extends TestCase
         /** @var ValidatorInterface|MockObject $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class);
 
-        $controller = new UpdateController(
+        $requestHandler = new UpdateRequestHandler(
             $invalidParametersFactory,
             $repository,
             $requestManager,
@@ -76,7 +76,7 @@ class UpdateControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testCreateWithValidationError(): void
@@ -150,7 +150,7 @@ class UpdateControllerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([$error]),
         ]);
 
-        $controller = new UpdateController(
+        $requestHandler = new UpdateRequestHandler(
             $invalidParametersFactory,
             $repository,
             $requestManager,
@@ -158,7 +158,7 @@ class UpdateControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -225,7 +225,7 @@ class UpdateControllerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([]),
         ]);
 
-        $controller = new UpdateController(
+        $requestHandler = new UpdateRequestHandler(
             $invalidParametersFactory,
             $repository,
             $requestManager,
@@ -233,6 +233,6 @@ class UpdateControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller;
+namespace App\Tests\Unit\RequestHandler;
 
-use App\Controller\PingController;
+use App\RequestHandler\PingRequestHandler;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -17,9 +17,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers \App\Controller\PingController
+ * @covers \App\RequestHandler\PingRequestHandler
  */
-class PingControllerTest extends TestCase
+class PingRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -65,8 +65,8 @@ class PingControllerTest extends TestCase
                 ->willReturn('{"date": "now"}'),
         ]);
 
-        $controller = new PingController($responseFactory, $serializer);
+        $requestHandler = new PingRequestHandler($responseFactory, $serializer);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

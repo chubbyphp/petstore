@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Swagger;
+namespace App\Tests\Unit\RequestHandler\Swagger;
 
-use App\Controller\Swagger\IndexController;
+use App\RequestHandler\Swagger\IndexRequestHandler;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -17,9 +17,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers \App\Controller\Swagger\IndexController
+ * @covers \App\RequestHandler\Swagger\IndexRequestHandler
  */
-class IndexControllerTest extends TestCase
+class IndexRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -59,8 +59,8 @@ class IndexControllerTest extends TestCase
                 ->willReturn($responseStream),
         ]);
 
-        $controller = new IndexController($responseFactory, $streamFactory);
+        $requestHandler = new IndexRequestHandler($responseFactory, $streamFactory);
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

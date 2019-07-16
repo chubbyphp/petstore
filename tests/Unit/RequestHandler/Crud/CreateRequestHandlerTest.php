@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Controller\Crud;
+namespace App\Tests\Unit\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
-use App\Controller\Crud\CreateController;
+use App\RequestHandler\Crud\CreateRequestHandler;
 use App\Factory\ModelFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
@@ -23,9 +23,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @covers \App\Controller\Crud\CreateController
+ * @covers \App\RequestHandler\Crud\CreateRequestHandler
  */
-class CreateControllerTest extends TestCase
+class CreateRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -90,7 +90,7 @@ class CreateControllerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([$error]),
         ]);
 
-        $controller = new CreateController(
+        $requestHandler = new CreateRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -99,7 +99,7 @@ class CreateControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -156,7 +156,7 @@ class CreateControllerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([]),
         ]);
 
-        $controller = new CreateController(
+        $requestHandler = new CreateRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -165,6 +165,6 @@ class CreateControllerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $controller->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

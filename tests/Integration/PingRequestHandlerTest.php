@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
-final class PingControllerTest extends AbstractIntegrationTest
+final class PingRequestHandlerTest extends AbstractIntegrationTest
 {
     public function testPingWithUnsupportedAccept(): void
     {

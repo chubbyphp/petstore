@@ -50,9 +50,9 @@ class DeleteRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $RequestHandler = new DeleteRequestHandler($repository, $responseManager);
+        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -83,8 +83,8 @@ class DeleteRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $RequestHandler = new DeleteRequestHandler($repository, $responseManager);
+        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

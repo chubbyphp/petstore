@@ -68,7 +68,7 @@ class UpdateRequestHandlerTest extends TestCase
         /** @var ValidatorInterface|MockObject $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class);
 
-        $RequestHandler = new UpdateRequestHandler(
+        $requestHandler = new UpdateRequestHandler(
             $invalidParametersFactory,
             $repository,
             $requestManager,
@@ -76,7 +76,7 @@ class UpdateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testCreateWithValidationError(): void
@@ -150,7 +150,7 @@ class UpdateRequestHandlerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([$error]),
         ]);
 
-        $RequestHandler = new UpdateRequestHandler(
+        $requestHandler = new UpdateRequestHandler(
             $invalidParametersFactory,
             $repository,
             $requestManager,
@@ -158,7 +158,7 @@ class UpdateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -225,7 +225,7 @@ class UpdateRequestHandlerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([]),
         ]);
 
-        $RequestHandler = new UpdateRequestHandler(
+        $requestHandler = new UpdateRequestHandler(
             $invalidParametersFactory,
             $repository,
             $requestManager,
@@ -233,6 +233,6 @@ class UpdateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

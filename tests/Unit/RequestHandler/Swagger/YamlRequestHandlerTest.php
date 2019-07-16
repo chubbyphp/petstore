@@ -59,8 +59,8 @@ class YamlRequestHandlerTest extends TestCase
                 ->willReturn($responseStream),
         ]);
 
-        $RequestHandler = new YamlRequestHandler($responseFactory, $streamFactory);
+        $requestHandler = new YamlRequestHandler($responseFactory, $streamFactory);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

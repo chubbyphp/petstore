@@ -89,7 +89,7 @@ class ListRequestHandlerTest extends TestCase
             Call::create('validate')->with($collection, null, '')->willReturn([$error]),
         ]);
 
-        $RequestHandler = new ListRequestHandler(
+        $requestHandler = new ListRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -98,7 +98,7 @@ class ListRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -153,7 +153,7 @@ class ListRequestHandlerTest extends TestCase
             Call::create('validate')->with($collection, null, '')->willReturn([]),
         ]);
 
-        $RequestHandler = new ListRequestHandler(
+        $requestHandler = new ListRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -162,6 +162,6 @@ class ListRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

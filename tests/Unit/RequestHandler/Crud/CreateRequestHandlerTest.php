@@ -90,7 +90,7 @@ class CreateRequestHandlerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([$error]),
         ]);
 
-        $RequestHandler = new CreateRequestHandler(
+        $requestHandler = new CreateRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -99,7 +99,7 @@ class CreateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -156,7 +156,7 @@ class CreateRequestHandlerTest extends TestCase
             Call::create('validate')->with($model, null, '')->willReturn([]),
         ]);
 
-        $RequestHandler = new CreateRequestHandler(
+        $requestHandler = new CreateRequestHandler(
             $invalidParametersFactory,
             $factory,
             $repository,
@@ -165,6 +165,6 @@ class CreateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

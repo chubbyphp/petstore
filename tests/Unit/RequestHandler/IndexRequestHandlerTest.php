@@ -41,8 +41,8 @@ class IndexRequestHandlerTest extends TestCase
             Call::create('generateUrl')->with($request, 'swagger_index', [], [])->willReturn('https://petstore/api'),
         ]);
 
-        $RequestHandler = new IndexRequestHandler($responseFactory, $router);
+        $requestHandler = new IndexRequestHandler($responseFactory, $router);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

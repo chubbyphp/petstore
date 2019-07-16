@@ -65,8 +65,8 @@ class PingRequestHandlerTest extends TestCase
                 ->willReturn('{"date": "now"}'),
         ]);
 
-        $RequestHandler = new PingRequestHandler($responseFactory, $serializer);
+        $requestHandler = new PingRequestHandler($responseFactory, $serializer);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

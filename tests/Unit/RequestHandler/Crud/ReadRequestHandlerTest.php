@@ -51,9 +51,9 @@ class ReadRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $RequestHandler = new ReadRequestHandler($repository, $responseManager);
+        $requestHandler = new ReadRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testSuccessful(): void
@@ -89,8 +89,8 @@ class ReadRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        $RequestHandler = new ReadRequestHandler($repository, $responseManager);
+        $requestHandler = new ReadRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

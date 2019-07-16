@@ -59,8 +59,8 @@ class IndexRequestHandlerTest extends TestCase
                 ->willReturn($responseStream),
         ]);
 
-        $RequestHandler = new IndexRequestHandler($responseFactory, $streamFactory);
+        $requestHandler = new IndexRequestHandler($responseFactory, $streamFactory);
 
-        self::assertSame($response, $RequestHandler->handle($request));
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }

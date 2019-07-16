@@ -6,6 +6,7 @@ namespace App\Tests\Unit\Repository;
 
 use App\Collection\CollectionInterface;
 use App\Collection\PetCollection;
+use App\Model\ModelInterface;
 use App\Model\Pet;
 use App\Repository\PetRepository;
 use Chubbyphp\Mock\Call;
@@ -18,10 +19,11 @@ use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use App\Model\ModelInterface;
 
 /**
  * @covers \App\Repository\PetRepository
+ *
+ * @internal
  */
 final class PetRepositoryTest extends TestCase
 {

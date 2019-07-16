@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \App\Config\AbstractConfig
  * @covers \App\Config\ProdConfig
+ *
+ * @internal
  */
 final class ProdConfigTest extends TestCase
 {

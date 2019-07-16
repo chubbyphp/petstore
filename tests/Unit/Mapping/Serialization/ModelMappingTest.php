@@ -6,6 +6,7 @@ namespace App\Tests\Unit\Mapping\Serialization;
 
 use App\Mapping\Serialization\AbstractModelMapping;
 use App\Model\ModelInterface;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
@@ -13,10 +14,11 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Chubbyphp\Framework\Router\RouterInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractModelMapping
+ *
+ * @internal
  */
 class ModelMappingTest extends TestCase
 {

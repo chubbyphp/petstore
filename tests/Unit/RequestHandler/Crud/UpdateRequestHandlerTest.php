@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
-use App\RequestHandler\Crud\UpdateRequestHandler;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
+use App\RequestHandler\Crud\UpdateRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
@@ -22,10 +23,11 @@ use Chubbyphp\Validation\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 
 /**
  * @covers \App\RequestHandler\Crud\UpdateRequestHandler
+ *
+ * @internal
  */
 class UpdateRequestHandlerTest extends TestCase
 {
@@ -58,7 +60,7 @@ class UpdateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem) {}),
+                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )
@@ -122,7 +124,7 @@ class UpdateRequestHandlerTest extends TestCase
                     $request,
                     $model,
                     'application/json',
-                    new ArgumentCallback(function (DenormalizerContextInterface $context) {
+                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
                         self::assertSame(
                             ['id', 'createdAt', 'updatedAt', '_links'],
                             $context->getAllowedAdditionalFields()
@@ -136,7 +138,7 @@ class UpdateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (UnprocessableEntity $apiProblem) use ($invalidParameters) {
+                    new ArgumentCallback(function (UnprocessableEntity $apiProblem) use ($invalidParameters): void {
                         self::assertSame($invalidParameters, $apiProblem->getInvalidParameters());
                     }),
                     'application/json',
@@ -196,7 +198,7 @@ class UpdateRequestHandlerTest extends TestCase
                     $request,
                     $model,
                     'application/json',
-                    new ArgumentCallback(function (DenormalizerContextInterface $context) {
+                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
                         self::assertSame(
                             ['id', 'createdAt', 'updatedAt', '_links'],
                             $context->getAllowedAdditionalFields()
@@ -213,7 +215,7 @@ class UpdateRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     200,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request) {
+                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

@@ -15,6 +15,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\MiddlewareServiceProvider
+ *
+ * @internal
  */
 final class MiddlewareServiceProviderTest extends TestCase
 {

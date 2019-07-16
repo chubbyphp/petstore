@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Collection\AbstractCollection
+ *
+ * @internal
  */
 class CollectionTest extends TestCase
 {

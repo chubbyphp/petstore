@@ -37,6 +37,8 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * @covers \App\ServiceProvider\RequestHandlerServiceProvider
+ *
+ * @internal
  */
 final class RequestHandlerServiceProviderTest extends TestCase
 {

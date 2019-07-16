@@ -18,6 +18,8 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \App\RequestHandler\PingRequestHandler
+ *
+ * @internal
  */
 class PingRequestHandlerTest extends TestCase
 {
@@ -55,7 +57,7 @@ class PingRequestHandlerTest extends TestCase
         $serializer = $this->getMockByCalls(SerializerInterface::class, [
             Call::create('encode')
                 ->with(
-                    new ArgumentCallback(function ($data) {
+                    new ArgumentCallback(function ($data): void {
                         self::assertIsArray($data);
 
                         self::assertArrayHasKey('date', $data);

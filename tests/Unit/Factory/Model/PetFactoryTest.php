@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Factory\Model\PetFactory
+ *
+ * @internal
  */
 final class PetFactoryTest extends TestCase
 {

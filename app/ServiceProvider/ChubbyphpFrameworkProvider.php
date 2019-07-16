@@ -77,7 +77,8 @@ final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
                         ->middleware($acceptAndContentTypeMiddleware)
                     )
                 )
-                ->getRoutes();
+                ->getRoutes()
+            ;
         };
     }
 }

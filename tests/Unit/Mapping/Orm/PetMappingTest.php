@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Mapping\Orm\PetMapping
+ *
+ * @internal
  */
 final class PetMappingTest extends TestCase
 {

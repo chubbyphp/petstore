@@ -24,6 +24,7 @@
     },
     "require-dev": {
         "chubbyphp/chubbyphp-mock": "^1.4.0",
+        "friendsofphp/php-cs-fixer": "^2.15.1",
         "phpunit/phpunit": "^8.1.3"
     },
     "autoload": {

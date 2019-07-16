@@ -23,7 +23,7 @@ final class ProxyManagerServiceProvider implements ServiceProviderInterface
 
         $container['proxymanager.doctrine.dbal.connection_registry'] = function () use ($container) {
             return $container['proxymanager.factory']->createProxy(ConnectionRegistry::class,
-                function (&$wrappedObject, $proxy, $method, $parameters, &$initializer) use ($container) {
+                function (&$wrappedObject, $proxy, $method, $parameters, &$initializer) use ($container): void {
                     $wrappedObject = $container['doctrine.dbal.connection_registry'];
                     $initializer = null;
                 }
@@ -32,7 +32,7 @@ final class ProxyManagerServiceProvider implements ServiceProviderInterface
 
         $container['proxymanager.doctrine.orm.manager_registry'] = function () use ($container) {
             return $container['proxymanager.factory']->createProxy(ManagerRegistry::class,
-                function (&$wrappedObject, $proxy, $method, $parameters, &$initializer) use ($container) {
+                function (&$wrappedObject, $proxy, $method, $parameters, &$initializer) use ($container): void {
                     $wrappedObject = $container['doctrine.orm.manager_registry'];
                     $initializer = null;
                 }

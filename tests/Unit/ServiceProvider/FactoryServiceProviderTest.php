@@ -12,6 +12,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\FactoryServiceProvider
+ *
+ * @internal
  */
 final class FactoryServiceProviderTest extends TestCase
 {

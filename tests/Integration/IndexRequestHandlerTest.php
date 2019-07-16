@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class IndexRequestHandlerTest extends AbstractIntegrationTest
 {
     public function testIndex(): void

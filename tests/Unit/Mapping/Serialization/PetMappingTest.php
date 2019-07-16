@@ -14,6 +14,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @covers \App\Mapping\Serialization\PetMapping
+ *
+ * @internal
  */
 final class PetMappingTest extends ModelMappingTest
 {

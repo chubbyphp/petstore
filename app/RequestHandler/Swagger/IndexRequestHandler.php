@@ -45,6 +45,7 @@ class IndexRequestHandler implements RequestHandlerInterface
             ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->withHeader('Pragma', 'no-cache')
             ->withHeader('Expires', '0')
-            ->withBody($this->streamFactory->createStreamFromFile(__DIR__.'/../../../swagger/index.html'));
+            ->withBody($this->streamFactory->createStreamFromFile(__DIR__.'/../../../swagger/index.html'))
+        ;
     }
 }

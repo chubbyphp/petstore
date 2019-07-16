@@ -29,6 +29,8 @@ use Psr\Http\Message\ResponseFactoryInterface;
 
 /**
  * @covers \App\ServiceProvider\ChubbyphpFrameworkProvider
+ *
+ * @internal
  */
 final class ChubbyphpFrameworkProviderTest extends TestCase
 {
@@ -119,7 +121,7 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
         array $pathOptions,
         array $middlewareIds,
         string $requestHandlerId
-    ) {
+    ): void {
         self::assertSame($name, $route->getName());
         self::assertSame($method, $route->getMethod());
         self::assertSame($path, $route->getPath());
@@ -132,7 +134,7 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
      * @param string[]         $ids
      * @param LazyMiddleware[] $middlewares
      */
-    private static function assertMiddlewares(array $ids, array $middlewares)
+    private static function assertMiddlewares(array $ids, array $middlewares): void
     {
         self::assertCount(count($ids), $middlewares);
 
@@ -145,7 +147,7 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
      * @param string         $id
      * @param LazyMiddleware $lazyMiddleware
      */
-    private static function assertMiddleware(string $id, LazyMiddleware $lazyMiddleware)
+    private static function assertMiddleware(string $id, LazyMiddleware $lazyMiddleware): void
     {
         $reflectionProperty = new \ReflectionProperty($lazyMiddleware, 'id');
         $reflectionProperty->setAccessible(true);
@@ -157,7 +159,7 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
      * @param string             $id
      * @param LazyRequestHandler $requestHander
      */
-    private static function assertRequestHandler(string $id, LazyRequestHandler $requestHander)
+    private static function assertRequestHandler(string $id, LazyRequestHandler $requestHander): void
     {
         $reflectionProperty = new \ReflectionProperty($requestHander, 'id');
         $reflectionProperty->setAccessible(true);

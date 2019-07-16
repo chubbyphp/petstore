@@ -30,14 +30,6 @@ final class MappingConfig
     }
 
     /**
-     * @param string $dependency
-     */
-    private function addDependency(string $dependency): void
-    {
-        $this->dependencies[] = $dependency;
-    }
-
-    /**
      * @return string
      */
     public function getMappingClass(): string
@@ -51,5 +43,13 @@ final class MappingConfig
     public function getDependencies(): array
     {
         return $this->dependencies;
+    }
+
+    /**
+     * @param string $dependency
+     */
+    private function addDependency(string $dependency): void
+    {
+        $this->dependencies[] = $dependency;
     }
 }

@@ -30,7 +30,6 @@ final class PetMapping implements ValidationMappingProviderInterface
      */
     public function getValidationClassMapping(string $path)
     {
-        return null;
     }
 
     /**

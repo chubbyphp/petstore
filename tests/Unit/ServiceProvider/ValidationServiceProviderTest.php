@@ -13,6 +13,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\ValidationServiceProvider
+ *
+ * @internal
  */
 final class ValidationServiceProviderTest extends TestCase
 {
@@ -40,7 +42,7 @@ final class ValidationServiceProviderTest extends TestCase
         self::assertCount(2, $mappings[1]->getValidationPropertyMappings('path'));
     }
 
-    public function testMappings()
+    public function testMappings(): void
     {
         $container = new Container([
             'sampleService' => function () {
@@ -71,7 +73,6 @@ final class ValidationServiceProviderTest extends TestCase
              */
             public function getValidationClassMapping(string $path)
             {
-                return null;
             }
 
             /**

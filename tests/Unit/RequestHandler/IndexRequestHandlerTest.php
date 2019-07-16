@@ -16,6 +16,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \App\RequestHandler\IndexRequestHandler
+ *
+ * @internal
  */
 class IndexRequestHandlerTest extends TestCase
 {

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Mapping\Serialization;
 
 use App\Model\ModelInterface;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Link\LinkBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMapping;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Chubbyphp\Serialization\Normalizer\CallbackLinkNormalizer;
-use Chubbyphp\Framework\Router\RouterInterface;
 
 abstract class AbstractModelMapping implements NormalizationObjectMappingInterface
 {
@@ -67,7 +67,8 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                             $this->router->generatePath($this->getReadRouteName(), ['id' => $model->getId()])
                         )
                         ->setAttributes(['method' => 'GET'])
-                        ->getLink();
+                        ->getLink()
+                    ;
                 }
             )),
             new NormalizationLinkMapping('update', [], new CallbackLinkNormalizer(
@@ -77,7 +78,8 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                             $this->router->generatePath($this->getUpdateRouteName(), ['id' => $model->getId()])
                         )
                         ->setAttributes(['method' => 'PUT'])
-                        ->getLink();
+                        ->getLink()
+                    ;
                 }
             )),
             new NormalizationLinkMapping('delete', [], new CallbackLinkNormalizer(
@@ -87,7 +89,8 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                             $this->router->generatePath($this->getDeleteRouteName(), ['id' => $model->getId()])
                         )
                         ->setAttributes(['method' => 'DELETE'])
-                        ->getLink();
+                        ->getLink()
+                    ;
                 }
             )),
         ];

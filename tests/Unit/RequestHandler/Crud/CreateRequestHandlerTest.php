@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
-use App\RequestHandler\Crud\CreateRequestHandler;
 use App\Factory\ModelFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
+use App\RequestHandler\Crud\CreateRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
@@ -24,6 +24,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \App\RequestHandler\Crud\CreateRequestHandler
+ *
+ * @internal
  */
 class CreateRequestHandlerTest extends TestCase
 {
@@ -76,7 +78,7 @@ class CreateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (UnprocessableEntity $apiProblem) use ($invalidParameters) {
+                    new ArgumentCallback(function (UnprocessableEntity $apiProblem) use ($invalidParameters): void {
                         self::assertSame($invalidParameters, $apiProblem->getInvalidParameters());
                     }),
                     'application/json',
@@ -144,7 +146,7 @@ class CreateRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     201,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request) {
+                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

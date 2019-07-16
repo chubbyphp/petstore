@@ -6,9 +6,9 @@ namespace App\Tests\Unit\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Collection\CollectionInterface;
-use App\RequestHandler\Crud\ListRequestHandler;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
+use App\RequestHandler\Crud\ListRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
@@ -24,6 +24,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \App\RequestHandler\Crud\ListRequestHandler
+ *
+ * @internal
  */
 class ListRequestHandlerTest extends TestCase
 {
@@ -75,7 +77,7 @@ class ListRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (BadRequest $apiProblem) use ($invalidParameters) {
+                    new ArgumentCallback(function (BadRequest $apiProblem) use ($invalidParameters): void {
                         self::assertSame($invalidParameters, $apiProblem->getInvalidParameters());
                     }),
                     'application/json',
@@ -141,7 +143,7 @@ class ListRequestHandlerTest extends TestCase
                     $collection,
                     'application/json',
                     200,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request) {
+                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

@@ -25,7 +25,6 @@ final class PhpServerTestListener implements BeforeTestHook
 
     /**
      * @param string $test
-     * @return void
      */
     public function executeBeforeTest(string $test): void
     {
@@ -47,7 +46,8 @@ final class PhpServerTestListener implements BeforeTestHook
 
     /**
      * @param string $test
-     * @return boolean
+     *
+     * @return bool
      */
     private function isIntegrationTest(string $test): bool
     {

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class PingRequestHandlerTest extends AbstractIntegrationTest
 {
     public function testPingWithUnsupportedAccept(): void
@@ -38,7 +42,7 @@ final class PingRequestHandlerTest extends AbstractIntegrationTest
         ], $apiProblem);
     }
 
-    public function testPing()
+    public function testPing(): void
     {
         $now = \DateTime::createFromFormat(\DateTime::ATOM, date('c'));
 

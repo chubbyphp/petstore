@@ -11,6 +11,8 @@ use Chubbyphp\Framework\Router\RouterInterface;
 
 /**
  * @covers \App\Mapping\Serialization\PetCollectionMapping
+ *
+ * @internal
  */
 final class PetCollectionMappingTest extends CollectionMappingTest
 {

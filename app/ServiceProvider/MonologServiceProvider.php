@@ -15,7 +15,7 @@ final class MonologServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $container
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container[Logger::class] = function () use ($container) {
             return new Logger($container['monolog']['name'], [

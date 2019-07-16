@@ -16,6 +16,8 @@ use Pimple\Container;
 
 /**
  * @covers \App\ServiceProvider\SerializationServiceProvider
+ *
+ * @internal
  */
 final class SerializationServiceProviderTest extends TestCase
 {
@@ -53,7 +55,7 @@ final class SerializationServiceProviderTest extends TestCase
         self::assertCount(6, $mappings[6]->getNormalizationFieldMappings('path'));
     }
 
-    public function testMappings()
+    public function testMappings(): void
     {
         $container = new Container([
             'sampleService' => function () {

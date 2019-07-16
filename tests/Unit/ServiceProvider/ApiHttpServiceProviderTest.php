@@ -13,6 +13,8 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * @covers \App\ServiceProvider\ApiHttpServiceProvider
+ *
+ * @internal
  */
 final class ApiHttpServiceProviderTest extends TestCase
 {

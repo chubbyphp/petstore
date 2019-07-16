@@ -19,6 +19,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractCollectionMapping
+ *
+ * @internal
  */
 class CollectionMappingTest extends TestCase
 {

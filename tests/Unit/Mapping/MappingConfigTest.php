@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Mapping\MappingConfig
+ *
+ * @internal
  */
 final class MappingConfigTest extends TestCase
 {

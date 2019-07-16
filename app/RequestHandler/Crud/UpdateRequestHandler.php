@@ -86,7 +86,8 @@ final class UpdateRequestHandler implements RequestHandlerInterface
 
         $context = DenormalizerContextBuilder::create()
             ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
-            ->getContext();
+            ->getContext()
+        ;
 
         $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
 

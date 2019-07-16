@@ -13,6 +13,10 @@ abstract class AbstractConfig implements ConfigInterface
      */
     protected $rootDir;
 
+    private function __construct()
+    {
+    }
+
     /**
      * @param string $rootDir
      *
@@ -24,10 +28,6 @@ abstract class AbstractConfig implements ConfigInterface
         $config->rootDir = $rootDir;
 
         return $config;
-    }
-
-    private function __construct()
-    {
     }
 
     /**

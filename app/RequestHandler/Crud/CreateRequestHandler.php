@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Crud;
+namespace App\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
-use App\Factory\CollectionFactoryInterface;
+use App\Factory\ModelFactoryInterface;
 use App\Repository\RepositoryInterface;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
@@ -14,9 +15,8 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 
-final class ListController implements RequestHandlerInterface
+final class CreateRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var InvalidParametersFactoryInterface
@@ -24,7 +24,7 @@ final class ListController implements RequestHandlerInterface
     private $errorFactory;
 
     /**
-     * @var CollectionFactoryInterface
+     * @var ModelFactoryInterface
      */
     private $factory;
 
@@ -50,7 +50,7 @@ final class ListController implements RequestHandlerInterface
 
     /**
      * @param InvalidParametersFactoryInterface $errorFactory
-     * @param CollectionFactoryInterface        $factory
+     * @param ModelFactoryInterface             $factory
      * @param RepositoryInterface               $repository
      * @param RequestManagerInterface           $requestManager
      * @param ResponseManagerInterface          $responseManager
@@ -58,7 +58,7 @@ final class ListController implements RequestHandlerInterface
      */
     public function __construct(
         InvalidParametersFactoryInterface $errorFactory,
-        CollectionFactoryInterface $factory,
+        ModelFactoryInterface $factory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
@@ -80,20 +80,22 @@ final class ListController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $accept = $request->getAttribute('accept');
+        $contentType = $request->getAttribute('contentType');
 
-        $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
+        $model = $this->requestManager->getDataFromRequestBody($request, $this->factory->create(), $contentType);
 
-        if ([] !== $errors = $this->validator->validate($collection)) {
+        if ([] !== $errors = $this->validator->validate($model)) {
             return $this->responseManager->createFromApiProblem(
-                new BadRequest($this->errorFactory->createInvalidParameters($errors)),
+                new UnprocessableEntity($this->errorFactory->createInvalidParameters($errors)),
                 $accept
             );
         }
 
-        $this->repository->resolveCollection($collection);
+        $this->repository->persist($model);
+        $this->repository->flush();
 
         $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
 
-        return $this->responseManager->create($collection, $accept, 200, $context);
+        return $this->responseManager->create($model, $accept, 201, $context);
     }
 }

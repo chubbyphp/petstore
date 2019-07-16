@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Crud;
+namespace App\RequestHandler\Crud;
 
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class DeleteController implements RequestHandlerInterface
+final class ReadRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var RepositoryInterface
@@ -49,9 +50,8 @@ final class DeleteController implements RequestHandlerInterface
             return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
-        $this->repository->remove($model);
-        $this->repository->flush();
+        $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
 
-        return $this->responseManager->createEmpty($accept);
+        return $this->responseManager->create($model, $accept, 200, $context);
     }
 }

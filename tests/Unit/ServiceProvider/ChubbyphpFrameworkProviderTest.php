@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceProvider;
 
-use App\Controller\Crud\CreateController;
-use App\Controller\Crud\DeleteController;
-use App\Controller\Crud\ListController;
-use App\Controller\Crud\ReadController;
-use App\Controller\Crud\UpdateController;
-use App\Controller\IndexController;
-use App\Controller\PingController;
-use App\Controller\Swagger\IndexController as SwaggerIndexController;
-use App\Controller\Swagger\YamlController as SwaggerYamlController;
 use App\Model\Pet;
+use App\RequestHandler\Crud\CreateRequestHandler;
+use App\RequestHandler\Crud\DeleteRequestHandler;
+use App\RequestHandler\Crud\ListRequestHandler;
+use App\RequestHandler\Crud\ReadRequestHandler;
+use App\RequestHandler\Crud\UpdateRequestHandler;
+use App\RequestHandler\IndexRequestHandler;
+use App\RequestHandler\PingRequestHandler;
+use App\RequestHandler\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler;
+use App\RequestHandler\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
 use App\ServiceProvider\ChubbyphpFrameworkProvider;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\Framework\ExceptionHandler;
@@ -59,46 +59,46 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
 
         self::assertCount(9, $routes);
 
-        self::assertRoute(array_shift($routes), 'index', 'GET', '/', [], [], IndexController::class);
+        self::assertRoute(array_shift($routes), 'index', 'GET', '/', [], [], IndexRequestHandler::class);
 
         self::assertRoute(array_shift($routes), 'swagger_index', 'GET', '/api', [],
             [],
-            SwaggerIndexController::class
+            SwaggerIndexRequestHandler::class
         );
 
         self::assertRoute(array_shift($routes), 'swagger_yml', 'GET', '/api/swagger', [],
             [],
-            SwaggerYamlController::class
+            SwaggerYamlRequestHandler::class
         );
 
         self::assertRoute(array_shift($routes), 'ping', 'GET', '/api/ping', [],
             [AcceptAndContentTypeMiddleware::class],
-            PingController::class
+            PingRequestHandler::class
         );
 
         self::assertRoute(array_shift($routes), 'pet_list', 'GET', '/api/pets', [],
             [AcceptAndContentTypeMiddleware::class],
-            ListController::class.Pet::class
+            ListRequestHandler::class.Pet::class
         );
 
         self::assertRoute(array_shift($routes), 'pet_create', 'POST', '/api/pets', [],
             [AcceptAndContentTypeMiddleware::class],
-            CreateController::class.Pet::class
+            CreateRequestHandler::class.Pet::class
         );
 
         self::assertRoute(array_shift($routes), 'pet_read', 'GET', '/api/pets/{id}', [],
             [AcceptAndContentTypeMiddleware::class],
-            ReadController::class.Pet::class
+            ReadRequestHandler::class.Pet::class
         );
 
         self::assertRoute(array_shift($routes), 'pet_update', 'PUT', '/api/pets/{id}', [],
             [AcceptAndContentTypeMiddleware::class],
-            UpdateController::class.Pet::class
+            UpdateRequestHandler::class.Pet::class
         );
 
         self::assertRoute(array_shift($routes), 'pet_delete', 'DELETE', '/api/pets/{id}', [],
             [AcceptAndContentTypeMiddleware::class],
-            DeleteController::class.Pet::class
+            DeleteRequestHandler::class.Pet::class
         );
     }
 

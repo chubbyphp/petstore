@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
-final class SwaggerControllerTest extends AbstractIntegrationTest
+final class SwaggerRequestHandlerTest extends AbstractIntegrationTest
 {
     public function testIndex(): void
     {

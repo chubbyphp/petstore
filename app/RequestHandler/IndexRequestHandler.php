@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\RequestHandler;
 
 use Chubbyphp\Framework\Router\RouterInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class IndexController implements RequestHandlerInterface
+class IndexRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface

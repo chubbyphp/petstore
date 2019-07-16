@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
-final class PetCrudControllerTest extends AbstractIntegrationTest
+final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 {
     public function testCreateWithUnsupportedAccept(): void
     {

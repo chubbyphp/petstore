@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Swagger;
+namespace App\RequestHandler\Swagger;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class IndexController implements RequestHandlerInterface
+class IndexRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface

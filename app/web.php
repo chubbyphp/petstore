@@ -35,7 +35,8 @@ $web = new App($container);
 
 $web->get('/', new LazyRequestHandlerAdapter($container, IndexRequestHandler::class))->setName('index');
 $web->group('/api', function () use ($web, $container, $acceptAndContentTypeMiddleware) {
-    $web->get('', new LazyRequestHandlerAdapter($container, SwaggerIndexRequestHandler::class))->setName('swagger_index');
+    $web->get('', new LazyRequestHandlerAdapter($container, SwaggerIndexRequestHandler::class))
+        ->setName('swagger_index');
     $web->get('/swagger', new LazyRequestHandlerAdapter($container, SwaggerYamlRequestHandler::class))
         ->setName('swagger_yml');
     $web->get('/ping', new LazyRequestHandlerAdapter($container, PingRequestHandler::class))

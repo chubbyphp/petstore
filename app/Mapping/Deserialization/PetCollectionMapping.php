@@ -49,6 +49,8 @@ final class PetCollectionMapping implements DenormalizationObjectMappingInterfac
             DenormalizationFieldMappingBuilder::createConvertType('limit', ConvertTypeFieldDenormalizer::TYPE_INT)
                 ->getMapping(),
             DenormalizationFieldMappingBuilder::create('sort')->getMapping(),
+            DenormalizationFieldMappingBuilder::createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING)
+                ->getMapping(),
         ];
     }
 }

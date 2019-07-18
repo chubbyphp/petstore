@@ -49,7 +49,7 @@ final class SerializationServiceProviderTest extends TestCase
         self::assertCount(6, $mappings[1]->getNormalizationFieldMappings('path'));
         self::assertCount(4, $mappings[2]->getNormalizationFieldMappings('path'));
         self::assertCount(5, $mappings[3]->getNormalizationFieldMappings('path'));
-        self::assertCount(4, $mappings[4]->getNormalizationFieldMappings('path'));
+        self::assertCount(5, $mappings[4]->getNormalizationFieldMappings('path'));
         self::assertCount(5, $mappings[5]->getNormalizationFieldMappings('path'));
         self::assertCount(6, $mappings[6]->getNormalizationFieldMappings('path'));
     }

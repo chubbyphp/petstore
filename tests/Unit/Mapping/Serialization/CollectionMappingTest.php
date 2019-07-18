@@ -55,12 +55,7 @@ class CollectionMappingTest extends TestCase
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
-        self::assertEquals([
-            NormalizationFieldMappingBuilder::create('offset')->getMapping(),
-            NormalizationFieldMappingBuilder::create('limit')->getMapping(),
-            NormalizationFieldMappingBuilder::create('count')->getMapping(),
-            NormalizationFieldMappingBuilder::create('sort')->getMapping(),
-        ], $fieldMappings);
+        self::assertEquals($this->getNormalizationFieldMappings('/'), $fieldMappings);
     }
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
@@ -135,6 +130,21 @@ class CollectionMappingTest extends TestCase
                 'method' => 'POST',
             ],
         ], $create);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return NormalizationFieldMappingInterface[]
+     */
+    protected function getNormalizationFieldMappings(string $path): array
+    {
+        return [
+            NormalizationFieldMappingBuilder::create('offset')->getMapping(),
+            NormalizationFieldMappingBuilder::create('limit')->getMapping(),
+            NormalizationFieldMappingBuilder::create('count')->getMapping(),
+            NormalizationFieldMappingBuilder::create('sort')->getMapping(),
+        ];
     }
 
     /**

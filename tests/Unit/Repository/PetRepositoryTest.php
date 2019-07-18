@@ -60,15 +60,20 @@ final class PetRepositoryTest extends TestCase
 
         $collection = new PetCollection();
         $collection->setSort(['name' => 'asc']);
+        $collection->setName('sample');
         $collection->setOffset(0);
         $collection->setLimit(20);
 
-        /** @var Func|MockObject $func */
-        $func = $this->getMockByCalls(Func::class);
+        /** @var Func|MockObject $likeNameFunc */
+        $likeNameFunc = $this->getMockByCalls(Func::class);
+
+        /** @var Func|MockObject $countIdFunc */
+        $countIdFunc = $this->getMockByCalls(Func::class);
 
         /** @var Expr|MockObject $expr */
         $expr = $this->getMockByCalls(Expr::class, [
-            Call::create('count')->with('p.id')->willReturn($func),
+            Call::create('like')->with('p.name', ':name')->willReturn($likeNameFunc),
+            Call::create('count')->with('p.id')->willReturn($countIdFunc),
         ]);
 
         /** @var AbstractQuery|MockObject $countQuery */
@@ -84,7 +89,10 @@ final class PetRepositoryTest extends TestCase
         /** @var QueryBuilder|MockObject $queryBuilder */
         $queryBuilder = $this->getMockByCalls(QueryBuilder::class, [
             Call::create('expr')->with()->willReturn($expr),
-            Call::create('select')->with($func),
+            Call::create('andWhere')->with($likeNameFunc),
+            Call::create('setParameter')->with('name', '%sample%', null),
+            Call::create('expr')->with()->willReturn($expr),
+            Call::create('select')->with($countIdFunc),
             Call::create('getQuery')->with()->willReturn($countQuery),
             Call::create('addOrderBy')->with('p.name', 'asc'),
             Call::create('setFirstResult')->with(0),

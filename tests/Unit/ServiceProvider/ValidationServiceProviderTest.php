@@ -38,7 +38,7 @@ final class ValidationServiceProviderTest extends TestCase
         self::assertInstanceOf(CallableValidationMappingProvider::class, $mappings[0]);
         self::assertInstanceOf(CallableValidationMappingProvider::class, $mappings[1]);
 
-        self::assertCount(3, $mappings[0]->getValidationPropertyMappings('path'));
+        self::assertCount(4, $mappings[0]->getValidationPropertyMappings('path'));
         self::assertCount(2, $mappings[1]->getValidationPropertyMappings('path'));
     }
 

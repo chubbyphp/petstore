@@ -52,6 +52,9 @@ final class PetCollectionMapping implements ValidationMappingProviderInterface
             ValidationPropertyMappingBuilder::create('sort', [
                 new SortConstraint(['name']),
             ])->getMapping(),
+            ValidationPropertyMappingBuilder::create('name', [
+                new TypeConstraint('string'),
+            ])->getMapping(),
         ];
     }
 }

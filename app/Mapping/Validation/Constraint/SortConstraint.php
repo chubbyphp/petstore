@@ -14,6 +14,7 @@ use Chubbyphp\Validation\ValidatorLogicException;
 final class SortConstraint implements ConstraintInterface
 {
     const ALLOWED_ORDERS = ['asc', 'desc'];
+
     /**
      * @var string[]
      */

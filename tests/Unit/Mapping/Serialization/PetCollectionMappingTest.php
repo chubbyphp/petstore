@@ -8,7 +8,6 @@ use App\Collection\PetCollection;
 use App\Mapping\Serialization\AbstractCollectionMapping;
 use App\Mapping\Serialization\PetCollectionMapping;
 use Chubbyphp\Framework\Router\RouterInterface;
-use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
 
@@ -19,8 +18,6 @@ use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
  */
 final class PetCollectionMappingTest extends CollectionMappingTest
 {
-    use MockByCallsTrait;
-
     /**
      * @param string $path
      *

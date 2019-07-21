@@ -47,6 +47,13 @@ paths:
                 example: asc
           style: deepObject
           explode: true
+        - name: name
+          in: query
+          description: Full name or parts of it (case sensitive)
+          required: false
+          schema:
+            type: string
+            example: Cherry
       responses:
         '200':
           description: Pets

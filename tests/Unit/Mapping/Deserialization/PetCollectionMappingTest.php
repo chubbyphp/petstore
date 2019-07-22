@@ -46,9 +46,8 @@ final class PetCollectionMappingTest extends TestCase
                 ->getMapping(),
             DenormalizationFieldMappingBuilder::createConvertType('limit', ConvertTypeFieldDenormalizer::TYPE_INT)
                 ->getMapping(),
+            DenormalizationFieldMappingBuilder::create('filters')->getMapping(),
             DenormalizationFieldMappingBuilder::create('sort')->getMapping(),
-            DenormalizationFieldMappingBuilder::createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING)
-                ->getMapping(),
         ], $fieldMappings);
     }
 }

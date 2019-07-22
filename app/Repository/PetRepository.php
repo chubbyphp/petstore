@@ -43,9 +43,11 @@ final class PetRepository implements RepositoryInterface
 
         $qb = $this->entityManager->getRepository(Pet::class)->createQueryBuilder('p');
 
-        if (null !== $name = $petCollection->getName()) {
+        $filters = $petCollection->getFilters();
+
+        if (isset($filters['name'])) {
             $qb->andWhere($qb->expr()->like('p.name', ':name'));
-            $qb->setParameter('name', '%'.$name.'%');
+            $qb->setParameter('name', '%'.$filters['name'].'%');
         }
 
         $countQb = clone $qb;

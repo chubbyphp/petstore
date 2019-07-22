@@ -35,25 +35,20 @@ paths:
           schema:
             type: integer
             example: 20
-        - name: sort
+        - name: filters[name]
           in: query
-          description: How to sort the items
-          required: false
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: asc
-          style: deepObject
-          explode: true
-        - name: name
-          in: query
-          description: Full name or parts of it (case sensitive)
+          description: Filter by name
           required: false
           schema:
             type: string
             example: Cherry
+        - name: sort[name]
+          in: query
+          description: Sort by name
+          required: false
+          schema:
+            type: string
+            example: asc
       responses:
         '200':
           description: Pets

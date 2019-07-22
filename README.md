@@ -22,7 +22,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-framework][7]: ^1.0
  * [chubbyphp/chubbyphp-negotiation][8]: ^1.2.4
  * [chubbyphp/chubbyphp-serialization][9]: ^2.8.1
- * [chubbyphp/chubbyphp-validation][10]: ^3.3.1
+ * [chubbyphp/chubbyphp-validation][10]: ^3.4
  * [doctrine/orm][11]: ^2.6.3
  * [monolog/monolog][12]: ^1.24
  * [nikic/fast-route][13]: ^1.3

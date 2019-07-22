@@ -59,10 +59,10 @@ final class PetRepositoryTest extends TestCase
         $items = [$pet];
 
         $collection = new PetCollection();
-        $collection->setSort(['name' => 'asc']);
-        $collection->setName('sample');
         $collection->setOffset(0);
         $collection->setLimit(20);
+        $collection->setFilters(['name' => 'sample']);
+        $collection->setSort(['name' => 'asc']);
 
         /** @var Func|MockObject $likeNameFunc */
         $likeNameFunc = $this->getMockByCalls(Func::class);

@@ -7,8 +7,6 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Collection\PetCollection;
 use App\Mapping\Serialization\AbstractCollectionMapping;
 use App\Mapping\Serialization\PetCollectionMapping;
-use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
-use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
 use Slim\Interfaces\RouterInterface;
 
 /**
@@ -18,19 +16,6 @@ use Slim\Interfaces\RouterInterface;
  */
 final class PetCollectionMappingTest extends CollectionMappingTest
 {
-    /**
-     * @param string $path
-     *
-     * @return NormalizationFieldMappingInterface[]
-     */
-    protected function getNormalizationFieldMappings(string $path): array
-    {
-        $mappings = parent::getNormalizationFieldMappings($path);
-        $mappings[] = NormalizationFieldMappingBuilder::create('name')->getMapping();
-
-        return $mappings;
-    }
-
     /**
      * @return string
      */

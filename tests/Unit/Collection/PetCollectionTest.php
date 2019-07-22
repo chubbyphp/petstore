@@ -14,17 +14,6 @@ use App\Collection\PetCollection;
  */
 final class PetCollectionTest extends CollectionTest
 {
-    public function testGetSetName(): void
-    {
-        $petCollection = new PetCollection();
-
-        self::assertNull($petCollection->getName());
-
-        $petCollection->setName('sample');
-
-        self::assertSame('sample', $petCollection->getName());
-    }
-
     /**
      * @return CollectionInterface
      */

@@ -6,6 +6,7 @@ namespace App\Mapping\Validation;
 
 use App\Collection\PetCollection;
 use App\Mapping\Validation\Constraint\SortConstraint;
+use Chubbyphp\Validation\Constraint\MapConstraint;
 use Chubbyphp\Validation\Constraint\NotBlankConstraint;
 use Chubbyphp\Validation\Constraint\TypeConstraint;
 use Chubbyphp\Validation\Mapping\ValidationClassMappingInterface;
@@ -52,8 +53,10 @@ final class PetCollectionMapping implements ValidationMappingProviderInterface
             ValidationPropertyMappingBuilder::create('sort', [
                 new SortConstraint(['name']),
             ])->getMapping(),
-            ValidationPropertyMappingBuilder::create('name', [
-                new TypeConstraint('string'),
+            ValidationPropertyMappingBuilder::create('filters', [
+                new MapConstraint([
+                    'name' => new TypeConstraint('string'),
+                ]),
             ])->getMapping(),
         ];
     }

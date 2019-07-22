@@ -40,6 +40,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
             NormalizationFieldMappingBuilder::create('offset')->getMapping(),
             NormalizationFieldMappingBuilder::create('limit')->getMapping(),
             NormalizationFieldMappingBuilder::create('count')->getMapping(),
+            NormalizationFieldMappingBuilder::create('filters')->getMapping(),
             NormalizationFieldMappingBuilder::create('sort')->getMapping(),
         ];
     }

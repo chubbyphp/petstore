@@ -21,22 +21,25 @@ class CollectionTest extends TestCase
 
         self::assertSame(0, $collection->getOffset());
         self::assertSame(20, $collection->getLimit());
-        self::assertSame(0, $collection->getCount());
+        self::assertSame([], $collection->getFilters());
         self::assertSame([], $collection->getSort());
+        self::assertSame(0, $collection->getCount());
         self::assertSame([], $collection->getItems());
 
         $object = new \stdClass();
 
         $collection->setOffset(5);
         $collection->setLimit(15);
-        $collection->setCount(6);
+        $collection->setFilters(['name' => 'sample']);
         $collection->setSort(['name' => 'asc']);
+        $collection->setCount(6);
         $collection->setItems([$object]);
 
         self::assertSame(5, $collection->getOffset());
         self::assertSame(15, $collection->getLimit());
-        self::assertSame(6, $collection->getCount());
+        self::assertSame(['name' => 'sample'], $collection->getFilters());
         self::assertSame(['name' => 'asc'], $collection->getSort());
+        self::assertSame(6, $collection->getCount());
         self::assertSame([$object], $collection->getItems());
     }
 

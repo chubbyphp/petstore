@@ -177,7 +177,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/pets?offset=test',
+            '/api/pets?offset=test&filters[name2]=test&sort[name]=test',
             [
                 'Accept' => 'application/json',
             ]
@@ -203,6 +203,23 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                         'wishedType' => 'integer',
                     ],
                 ],
+                [
+                    'name' => 'filters[name2]',
+                    'reason' => 'constraint.map.field.notallowed',
+                    'details' => [
+                        'field' => 'name2',
+                        'allowedFields' => ['name'],
+                    ],
+                ],
+                [
+                    'name' => 'sort',
+                    'reason' => 'constraint.sort.order.notallowed',
+                    'details' => [
+                        'field' => 'name',
+                        'order' => 'test',
+                        'allowedOrders' => ['asc', 'desc'],
+                    ],
+                ],
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
@@ -215,7 +232,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/pets',
+            '/api/pets?sort[name]=desc',
             [
                 'Accept' => 'application/json',
             ]
@@ -229,6 +246,9 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertArrayHasKey('offset', $petCollection);
         self::assertArrayHasKey('limit', $petCollection);
+        self::assertArrayHasKey('filters', $petCollection);
+        self::assertArrayHasKey('sort', $petCollection);
+        self::assertArrayHasKey('count', $petCollection);
         self::assertArrayHasKey('_embedded', $petCollection);
         self::assertArrayHasKey('items', $petCollection['_embedded']);
         self::assertArrayHasKey('_links', $petCollection);
@@ -238,12 +258,14 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame(0, $petCollection['offset']);
         self::assertSame(20, $petCollection['limit']);
+        self::assertSame(['name' => 'desc'], $petCollection['sort']);
+        self::assertSame(1, $petCollection['count']);
 
         $this::assertPet($petCollection['_embedded']['items'][0], ['name' => 'Kathy', 'tag' => '134.456.789'], false);
 
         self::assertCount(1, $petCollection['_embedded']['items']);
         self::assertSame([
-            'href' => '/api/pets?offset=0&limit=20',
+            'href' => '/api/pets?sort%5Bname%5D=desc&offset=0&limit=20',
             'templated' => false,
             'rel' => [],
             'attributes' => [

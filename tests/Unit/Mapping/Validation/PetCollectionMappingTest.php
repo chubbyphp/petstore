@@ -49,13 +49,16 @@ final class PetCollectionMappingTest extends TestCase
                 new NotBlankConstraint(),
                 new TypeConstraint('integer'),
             ])->getMapping(),
-            ValidationPropertyMappingBuilder::create('sort', [
-                new SortConstraint(['name']),
-            ])->getMapping(),
             ValidationPropertyMappingBuilder::create('filters', [
                 new MapConstraint([
-                    'name' => new TypeConstraint('string'),
+                    'name' => [
+                        new NotBlankConstraint(),
+                        new TypeConstraint('string'),
+                    ],
                 ]),
+            ])->getMapping(),
+            ValidationPropertyMappingBuilder::create('sort', [
+                new SortConstraint(['name']),
             ])->getMapping(),
         ], $propertyMappings);
     }

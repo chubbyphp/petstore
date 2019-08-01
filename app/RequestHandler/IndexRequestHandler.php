@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 class IndexRequestHandler implements RequestHandlerInterface
 {
@@ -18,17 +18,17 @@ class IndexRequestHandler implements RequestHandlerInterface
     private $responseFactory;
 
     /**
-     * @var RouterInterface
+     * @var RouteParserInterface
      */
     private $router;
 
     /**
      * @param ResponseFactoryInterface $responseFactory
-     * @param RouterInterface          $router
+     * @param RouteParserInterface     $router
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        RouterInterface $router
+        RouteParserInterface $router
     ) {
         $this->responseFactory = $responseFactory;
         $this->router = $router;
@@ -42,7 +42,7 @@ class IndexRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->responseFactory->createResponse(302)
-            ->withHeader('Location', $this->router->pathFor('swagger_index'))
+            ->withHeader('Location', $this->router->urlFor('swagger_index'))
         ;
     }
 }

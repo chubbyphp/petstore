@@ -20,6 +20,7 @@ final class ProdConfigTest extends TestCase
         $config = ProdConfig::create('/path/to/root');
 
         self::assertSame([
+            'debug' => false,
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => [
@@ -53,17 +54,8 @@ final class ProdConfigTest extends TestCase
                 'path' => '/path/to/root/var/log/prod/application.log',
                 'level' => 250,
             ],
-        ], $config->getConfig());
-    }
-
-    public function testGetSlimSettings(): void
-    {
-        $config = ProdConfig::create('/path/to/root');
-
-        self::assertSame([
-            'displayErrorDetails' => false,
             'routerCacheFile' => '/path/to/root/var/cache/prod/routes.php',
-        ], $config->getSlimSettings());
+        ], $config->getConfig());
     }
 
     public function testGetDirectories(): void

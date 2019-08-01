@@ -20,6 +20,7 @@ final class DevConfigTest extends TestCase
         $config = DevConfig::create('/path/to/root');
 
         self::assertSame([
+            'debug' => true,
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => [
@@ -53,17 +54,8 @@ final class DevConfigTest extends TestCase
                 'path' => '/path/to/root/var/log/dev/application.log',
                 'level' => 100,
             ],
+            'routerCacheFile' => null,
         ], $config->getConfig());
-    }
-
-    public function testGetSlimSettings(): void
-    {
-        $config = DevConfig::create('/path/to/root');
-
-        self::assertSame([
-            'displayErrorDetails' => true,
-            'routerCacheFile' => false,
-        ], $config->getSlimSettings());
     }
 
     public function testGetDirectories(): void

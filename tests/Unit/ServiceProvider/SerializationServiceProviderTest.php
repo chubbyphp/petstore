@@ -11,7 +11,7 @@ use Chubbyphp\Serialization\Mapping\CallableNormalizationObjectMapping;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\ServiceProvider\SerializationServiceProvider
@@ -25,7 +25,7 @@ final class SerializationServiceProviderTest extends TestCase
     public function testRegister(): void
     {
         $container = new Container([
-            'router' => $this->getMockByCalls(RouterInterface::class),
+            'router' => $this->getMockByCalls(RouteParserInterface::class),
         ]);
 
         $serviceProvider = new SerializationServiceProvider();

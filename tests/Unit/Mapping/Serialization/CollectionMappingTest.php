@@ -15,7 +15,7 @@ use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractCollectionMapping
@@ -28,8 +28,8 @@ class CollectionMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
@@ -38,8 +38,8 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationType(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
@@ -48,8 +48,8 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
@@ -60,8 +60,8 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
@@ -74,12 +74,12 @@ class CollectionMappingTest extends TestCase
 
     public function testGetNormalizationLinkMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class, [
-            Call::create('pathFor')
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class, [
+            Call::create('urlFor')
                 ->with($this->getListRoute(), [], ['offset' => 0, 'limit' => 20])
                 ->willReturn(sprintf('%s?offset=0&limit=20', $this->getCollectionPath())),
-            Call::create('pathFor')
+            Call::create('urlFor')
                 ->with($this->getCreateRoute(), [], [])
                 ->willReturn(sprintf('%s', $this->getCollectionPath())),
         ]);
@@ -189,11 +189,11 @@ class CollectionMappingTest extends TestCase
     }
 
     /**
-     * @param RouterInterface $router
+     * @param RouteParserInterface $router
      *
      * @return AbstractCollectionMapping
      */
-    protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
+    protected function getCollectionMapping(RouteParserInterface $router): AbstractCollectionMapping
     {
         return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
             /**
@@ -217,14 +217,14 @@ class CollectionMappingTest extends TestCase
             private $createRouteName;
 
             /**
-             * @param RouterInterface $router
-             * @param string          $class
-             * @param string          $normalizationType
-             * @param string          $listRouteName
-             * @param string          $createRouteName
+             * @param RouteParserInterface $router
+             * @param string               $class
+             * @param string               $normalizationType
+             * @param string               $listRouteName
+             * @param string               $createRouteName
              */
             public function __construct(
-                RouterInterface $router,
+                RouteParserInterface $router,
                 string $class,
                 string $normalizationType,
                 string $listRouteName,

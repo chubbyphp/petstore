@@ -10,7 +10,7 @@ use App\Model\Pet;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\Mapping\Serialization\PetMapping
@@ -23,8 +23,8 @@ final class PetMappingTest extends ModelMappingTest
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
@@ -88,11 +88,11 @@ final class PetMappingTest extends ModelMappingTest
     }
 
     /**
-     * @param RouterInterface $router
+     * @param RouteParserInterface $router
      *
      * @return AbstractModelMapping
      */
-    protected function getModelMapping(RouterInterface $router): AbstractModelMapping
+    protected function getModelMapping(RouteParserInterface $router): AbstractModelMapping
     {
         return new PetMapping($router);
     }

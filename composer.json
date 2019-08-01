@@ -2,6 +2,9 @@
     "name": "chubbyphp/petstore",
     "type": "project",
     "license": "MIT",
+    "repositories": [
+        {"type": "vcs", "no-api": true, "url": "https://github.com/l0gicgate/Slim.git"}
+    ],
     "require": {
         "php": "^7.1",
         "chubbyphp/chubbyphp-api-http": "^3.1",
@@ -10,15 +13,18 @@
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.2.1",
         "chubbyphp/chubbyphp-negotiation": "^1.2.4",
         "chubbyphp/chubbyphp-serialization": "^2.8.1",
-        "chubbyphp/chubbyphp-slim-psr15": "^1.1",
         "chubbyphp/chubbyphp-validation": "^3.4.2",
         "doctrine/orm": "^2.6.3",
+        "fig/http-message-util":  "^1.1.2",
         "monolog/monolog": "^1.24",
         "ocramius/proxy-manager": "^2.1.1",
+        "pimple/pimple": "^3.2.3",
         "ramsey/uuid": "^3.8",
-        "slim/slim": "^3.12.1",
+        "slim/psr7": "^0.4",
+        "slim/slim": "dev-FixInvocationStrategy@dev",
         "swagger-api/swagger-ui": "^3.23",
-        "symfony/console": "^4.3.1"
+        "symfony/console": "^4.3.1",
+        "zendframework/zend-code": "^3.3.1"
     },
     "require-dev": {
         "chubbyphp/chubbyphp-mock": "^1.4.0",

@@ -16,11 +16,14 @@ use App\RequestHandler\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler
 use App\RequestHandler\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
 use App\ServiceProvider\MiddlewareServiceProvider;
 use App\ServiceProvider\RequestHandlerServiceProvider;
+use App\ServiceProvider\SlimServiceProvider;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
-use Chubbyphp\SlimPsr15\LazyMiddlewareAdapter;
-use Chubbyphp\SlimPsr15\LazyRequestHandlerAdapter;
+use Pimple\Container;
+use Pimple\Psr11\Container as PsrContainer;
 use Slim\App;
-use Slim\Container;
+use Slim\CallableResolver;
+use Slim\Routing\RouteCollector;
+use Slim\Routing\RouteCollectorProxy;
 
 require __DIR__.'/bootstrap.php';
 
@@ -28,40 +31,29 @@ require __DIR__.'/bootstrap.php';
 $container = require __DIR__.'/container.php';
 $container->register(new MiddlewareServiceProvider());
 $container->register(new RequestHandlerServiceProvider());
+$container->register(new SlimServiceProvider());
 
-$acceptAndContentTypeMiddleware = new LazyMiddlewareAdapter($container, AcceptAndContentTypeMiddleware::class);
+$web = new App(
+    $container['api-http.response.factory'],
+    $container[PsrContainer::class],
+    $container[CallableResolver::class],
+    $container[RouteCollector::class]
+);
 
-$web = new App($container);
+$web->addErrorMiddleware($container['debug'], true, true);
 
-$web->get('/', new LazyRequestHandlerAdapter($container, IndexRequestHandler::class))->setName('index');
-$web->group('/api', function () use ($web, $container, $acceptAndContentTypeMiddleware): void {
-    $web->get('', new LazyRequestHandlerAdapter($container, SwaggerIndexRequestHandler::class))
-        ->setName('swagger_index')
-    ;
-    $web->get('/swagger', new LazyRequestHandlerAdapter($container, SwaggerYamlRequestHandler::class))
-        ->setName('swagger_yml')
-    ;
-    $web->get('/ping', new LazyRequestHandlerAdapter($container, PingRequestHandler::class))
-        ->add($acceptAndContentTypeMiddleware)
-        ->setName('ping')
-    ;
-    $web->group('/pets', function () use ($web, $container): void {
-        $web->get('', new LazyRequestHandlerAdapter($container, ListRequestHandler::class.Pet::class))
-            ->setName('pet_list')
-        ;
-        $web->post('', new LazyRequestHandlerAdapter($container, CreateRequestHandler::class.Pet::class))
-            ->setName('pet_create')
-        ;
-        $web->get('/{id}', new LazyRequestHandlerAdapter($container, ReadRequestHandler::class.Pet::class))
-            ->setName('pet_read')
-        ;
-        $web->put('/{id}', new LazyRequestHandlerAdapter($container, UpdateRequestHandler::class.Pet::class))
-            ->setName('pet_update')
-        ;
-        $web->delete('/{id}', new LazyRequestHandlerAdapter($container, DeleteRequestHandler::class.Pet::class))
-            ->setName('pet_delete')
-        ;
-    })->add($acceptAndContentTypeMiddleware);
+$web->get('/', IndexRequestHandler::class)->setName('index');
+$web->group('/api', function (RouteCollectorProxy $group): void {
+    $group->get('', SwaggerIndexRequestHandler::class)->setName('swagger_index');
+    $group->get('/swagger', SwaggerYamlRequestHandler::class)->setName('swagger_yml');
+    $group->get('/ping', PingRequestHandler::class)->setName('ping')->add(AcceptAndContentTypeMiddleware::class);
+    $group->group('/pets', function (RouteCollectorProxy $group): void {
+        $group->get('', ListRequestHandler::class.Pet::class)->setName('pet_list');
+        $group->post('', CreateRequestHandler::class.Pet::class)->setName('pet_create');
+        $group->get('/{id}', ReadRequestHandler::class.Pet::class)->setName('pet_read');
+        $group->put('/{id}', UpdateRequestHandler::class.Pet::class)->setName('pet_update');
+        $group->delete('/{id}', DeleteRequestHandler::class.Pet::class)->setName('pet_delete');
+    })->add(AcceptAndContentTypeMiddleware::class);
 });
 
 return $web;

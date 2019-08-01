@@ -12,19 +12,19 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Chubbyphp\Serialization\Normalizer\CallbackLinkNormalizer;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
     /**
-     * @var RouterInterface
+     * @var RouteParserInterface
      */
     protected $router;
 
     /**
-     * @param RouterInterface $router
+     * @param RouteParserInterface $router
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(RouteParserInterface $router)
     {
         $this->router = $router;
     }
@@ -69,7 +69,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                 function (string $path, CollectionInterface $collection, NormalizerContextInterface $context) {
                     return LinkBuilder
                         ::create(
-                            $this->router->pathFor(
+                            $this->router->urlFor(
                                 $this->getListRouteName(),
                                 [],
                                 array_replace($context->getRequest()->getQueryParams(), [
@@ -85,7 +85,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
             )),
             new NormalizationLinkMapping('create', [], new CallbackLinkNormalizer(
                 function () {
-                    return LinkBuilder::create($this->router->pathFor($this->getCreateRouteName()))
+                    return LinkBuilder::create($this->router->urlFor($this->getCreateRouteName()))
                         ->setAttributes(['method' => 'POST'])
                         ->getLink()
                     ;

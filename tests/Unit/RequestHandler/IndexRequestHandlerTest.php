@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\RequestHandler\IndexRequestHandler
@@ -38,9 +38,9 @@ class IndexRequestHandlerTest extends TestCase
             Call::create('createResponse')->with(302, '')->willReturn($response),
         ]);
 
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class, [
-            Call::create('pathFor')->with('swagger_index', [], [])->willReturn('https://petstore/api'),
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class, [
+            Call::create('urlFor')->with('swagger_index', [], [])->willReturn('https://petstore/api'),
         ]);
 
         $requestHandler = new IndexRequestHandler($responseFactory, $router);

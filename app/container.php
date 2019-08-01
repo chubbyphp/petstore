@@ -21,14 +21,13 @@ use Chubbyphp\ApiHttp\Provider\ApiHttpProvider;
 use Chubbyphp\Config\ConfigMapping;
 use Chubbyphp\Config\ConfigProvider;
 use Chubbyphp\Config\Pimple\ConfigServiceProvider;
-use Chubbyphp\Config\Slim\SlimSettingsServiceProvider;
 use Chubbyphp\Deserialization\Provider\DeserializationProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider;
 use Chubbyphp\Negotiation\Provider\NegotiationProvider;
 use Chubbyphp\Serialization\Provider\SerializationProvider;
 use Chubbyphp\Validation\Provider\ValidationProvider;
-use Slim\Container;
+use Pimple\Container;
 
 $configProvider = new ConfigProvider(realpath(__DIR__.'/..'), [
     new ConfigMapping('dev', DevConfig::class),
@@ -57,6 +56,5 @@ $container->register(new RepositoryServiceProvider());
 $container->register(new ValidationServiceProvider());
 
 $container->register(new ConfigServiceProvider($configProvider));
-$container->register(new SlimSettingsServiceProvider($configProvider));
 
 return $container;

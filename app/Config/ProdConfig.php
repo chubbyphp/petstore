@@ -17,6 +17,7 @@ class ProdConfig extends AbstractConfig
         $logDir = $this->getLogDir();
 
         return [
+            'debug' => false,
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => ['type' => 'apcu'],
@@ -42,17 +43,7 @@ class ProdConfig extends AbstractConfig
                 'path' => $logDir.'/application.log',
                 'level' => Logger::NOTICE,
             ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getSlimSettings(): array
-    {
-        return [
-            'displayErrorDetails' => false,
-            'routerCacheFile' => $this->getCacheDir().'/routes.php',
+            'routerCacheFile' => $cacheDir.'/routes.php',
         ];
     }
 

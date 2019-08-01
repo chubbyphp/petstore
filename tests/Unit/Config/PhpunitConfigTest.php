@@ -20,6 +20,7 @@ final class PhpunitConfigTest extends TestCase
         $config = PhpunitConfig::create('/path/to/root');
 
         self::assertSame([
+            'debug' => true,
             'doctrine.dbal.db.options' => [
                 'configuration' => [
                     'cache.result' => [
@@ -53,17 +54,8 @@ final class PhpunitConfigTest extends TestCase
                 'path' => '/path/to/root/var/log/phpunit/application.log',
                 'level' => 100,
             ],
+            'routerCacheFile' => null,
         ], $config->getConfig());
-    }
-
-    public function testGetSlimSettings(): void
-    {
-        $config = PhpunitConfig::create('/path/to/root');
-
-        self::assertSame([
-            'displayErrorDetails' => true,
-            'routerCacheFile' => false,
-        ], $config->getSlimSettings());
     }
 
     public function testGetDirectories(): void

@@ -32,7 +32,7 @@ use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\ServiceProvider\RequestHandlerServiceProvider
@@ -50,7 +50,7 @@ final class RequestHandlerServiceProviderTest extends TestCase
             'api-http.response.factory' => $this->getMockByCalls(ResponseFactoryInterface::class),
             'api-http.response.manager' => $this->getMockByCalls(ResponseManagerInterface::class),
             'api-http.stream.factory' => $this->getMockByCalls(StreamFactoryInterface::class),
-            'router' => $this->getMockByCalls(RouterInterface::class),
+            'router' => $this->getMockByCalls(RouteParserInterface::class),
             'serializer' => $this->getMockByCalls(SerializerInterface::class),
             'validator' => $this->getMockByCalls(ValidatorInterface::class),
             InvalidParametersFactory::class => $this->getMockByCalls(InvalidParametersFactoryInterface::class),

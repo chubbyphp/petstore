@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\ServiceProvider;
 
 use App\ApiHttp\Factory\InvalidParametersFactory;
-use App\ApiHttp\Factory\ResponseFactory;
-use App\ApiHttp\Factory\StreamFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\StreamFactory;
 
 final class ApiHttpServiceProvider implements ServiceProviderInterface
 {

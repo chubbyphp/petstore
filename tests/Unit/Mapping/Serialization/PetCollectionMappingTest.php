@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Collection\PetCollection;
 use App\Mapping\Serialization\AbstractCollectionMapping;
 use App\Mapping\Serialization\PetCollectionMapping;
-use Slim\Interfaces\RouterInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\Mapping\Serialization\PetCollectionMapping
@@ -57,11 +57,11 @@ final class PetCollectionMappingTest extends CollectionMappingTest
     }
 
     /**
-     * @param RouterInterface $router
+     * @param RouteParserInterface $router
      *
      * @return AbstractCollectionMapping
      */
-    protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
+    protected function getCollectionMapping(RouteParserInterface $router): AbstractCollectionMapping
     {
         return new PetCollectionMapping($router);
     }

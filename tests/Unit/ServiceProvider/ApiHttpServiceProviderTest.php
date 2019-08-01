@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceProvider;
 
 use App\ApiHttp\Factory\InvalidParametersFactory;
-use App\ApiHttp\Factory\ResponseFactory;
-use App\ApiHttp\Factory\StreamFactory;
 use App\ServiceProvider\ApiHttpServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\StreamFactory;
 
 /**
  * @covers \App\ServiceProvider\ApiHttpServiceProvider

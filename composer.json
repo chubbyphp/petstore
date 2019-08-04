@@ -18,7 +18,8 @@
         "ramsey/uuid": "^3.8",
         "slim/slim": "^3.12.1",
         "swagger-api/swagger-ui": "^3.23",
-        "symfony/console": "^4.3.1"
+        "symfony/console": "^4.3.1",
+        "zendframework/zend-code": "^3.3.1"
     },
     "require-dev": {
         "chubbyphp/chubbyphp-mock": "^1.4.0",

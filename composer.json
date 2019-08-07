@@ -17,7 +17,7 @@
         "pimple/pimple": "^3.2.3",
         "ramsey/uuid": "^3.8",
         "slim/psr7": "dev-master@dev",
-        "slim/slim": "4.x@dev",
+        "slim/slim": "^4.1",
         "swagger-api/swagger-ui": "^3.23",
         "symfony/console": "^4.3.1",
         "zendframework/zend-code": "^3.3.1"

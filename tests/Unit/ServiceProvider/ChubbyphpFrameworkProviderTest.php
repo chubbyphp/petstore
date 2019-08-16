@@ -16,9 +16,9 @@ use App\RequestHandler\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler
 use App\RequestHandler\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
 use App\ServiceProvider\ChubbyphpFrameworkProvider;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
-use Chubbyphp\Framework\ExceptionHandler;
+use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
-use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
+use Chubbyphp\Framework\Middleware\RouterMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\RouteInterface;
@@ -26,6 +26,7 @@ use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @covers \App\ServiceProvider\ChubbyphpFrameworkProvider
@@ -41,20 +42,20 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
         $container = new Container([
             'api-http.response.factory' => $this->getMockByCalls(ResponseFactoryInterface::class),
             'debug' => false,
+            'logger' => $this->getMockByCalls(LoggerInterface::class),
             'routerCacheFile' => null,
         ]);
 
         $serviceProvider = new ChubbyphpFrameworkProvider();
         $serviceProvider->register($container);
 
-        self::assertArrayHasKey(ExceptionHandler::class, $container);
-        self::assertArrayHasKey(FastRouteRouter::class, $container);
-        self::assertArrayHasKey(MiddlewareDispatcher::class, $container);
+        self::assertArrayHasKey(ExceptionMiddleware::class, $container);
+        self::assertArrayHasKey(RouterMiddleware::class, $container);
         self::assertArrayHasKey('routes', $container);
 
-        self::assertInstanceOf(ExceptionHandler::class, $container[ExceptionHandler::class]);
+        self::assertInstanceOf(ExceptionMiddleware::class, $container[ExceptionMiddleware::class]);
+        self::assertInstanceOf(RouterMiddleware::class, $container[RouterMiddleware::class]);
         self::assertInstanceOf(FastRouteRouter::class, $container[FastRouteRouter::class]);
-        self::assertInstanceOf(MiddlewareDispatcher::class, $container[MiddlewareDispatcher::class]);
 
         /** @var RouteInterface[] $routes */
         $routes = $container['routes'];

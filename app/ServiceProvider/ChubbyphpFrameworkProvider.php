@@ -15,9 +15,9 @@ use App\RequestHandler\PingRequestHandler;
 use App\RequestHandler\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler;
 use App\RequestHandler\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
-use Chubbyphp\Framework\ExceptionHandler;
+use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
-use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
+use Chubbyphp\Framework\Middleware\RouterMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\Group;
@@ -33,16 +33,20 @@ final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
      */
     public function register(Container $container): void
     {
-        $container[ExceptionHandler::class] = function () use ($container) {
-            return new ExceptionHandler($container['api-http.response.factory'], $container['debug']);
+        $container[ExceptionMiddleware::class] = function () use ($container) {
+            return new ExceptionMiddleware(
+                $container['api-http.response.factory'],
+                $container['debug'],
+                $container['logger']
+            );
+        };
+
+        $container[RouterMiddleware::class] = function () use ($container) {
+            return new RouterMiddleware($container[FastRouteRouter::class], $container['api-http.response.factory']);
         };
 
         $container[FastRouteRouter::class] = function () use ($container) {
             return new FastRouteRouter($container['routes'], $container['routerCacheFile']);
-        };
-
-        $container[MiddlewareDispatcher::class] = function () {
-            return new MiddlewareDispatcher();
         };
 
         $container['routes'] = function () use ($container) {

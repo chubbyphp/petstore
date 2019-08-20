@@ -16,7 +16,7 @@
         "ocramius/proxy-manager": "^2.1.1",
         "pimple/pimple": "^3.2.3",
         "ramsey/uuid": "^3.8",
-        "slim/psr7": "dev-master@dev",
+        "slim/psr7": "^0.5",
         "slim/slim": "^4.1",
         "swagger-api/swagger-ui": "^3.23",
         "symfony/console": "^4.3.1",

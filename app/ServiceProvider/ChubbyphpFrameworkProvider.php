@@ -33,6 +33,10 @@ final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
      */
     public function register(Container $container): void
     {
+        $container[PsrContainer::class] = function () use ($container) {
+            return new PsrContainer($container);
+        };
+
         $container[ExceptionMiddleware::class] = function () use ($container) {
             return new ExceptionMiddleware(
                 $container['api-http.response.factory'],
@@ -50,19 +54,43 @@ final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
         };
 
         $container['routes'] = function () use ($container) {
-            $psrContainer = new PsrContainer($container);
-
-            $acceptAndContentTypeMiddleware = new LazyMiddleware($psrContainer, AcceptAndContentTypeMiddleware::class);
-
-            $indexRequestHandler = new LazyRequestHandler($psrContainer, IndexRequestHandler::class);
-            $swaggerIndexRequestHandler = new LazyRequestHandler($psrContainer, SwaggerIndexRequestHandler::class);
-            $swaggerYamlRequestHandler = new LazyRequestHandler($psrContainer, SwaggerYamlRequestHandler::class);
-            $pingRequestHandler = new LazyRequestHandler($psrContainer, PingRequestHandler::class);
-            $petListRequestHandler = new LazyRequestHandler($psrContainer, ListRequestHandler::class.Pet::class);
-            $petCreateRequestHandler = new LazyRequestHandler($psrContainer, CreateRequestHandler::class.Pet::class);
-            $petReadRequestHandler = new LazyRequestHandler($psrContainer, ReadRequestHandler::class.Pet::class);
-            $petUpdateRequestHandler = new LazyRequestHandler($psrContainer, UpdateRequestHandler::class.Pet::class);
-            $petDeleteRequestHandler = new LazyRequestHandler($psrContainer, DeleteRequestHandler::class.Pet::class);
+            $acceptAndContentTypeMiddleware = new LazyMiddleware(
+                $container[PsrContainer::class],
+                AcceptAndContentTypeMiddleware::class
+            );
+            $indexRequestHandler = new LazyRequestHandler($container[PsrContainer::class], IndexRequestHandler::class);
+            $swaggerIndexRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                SwaggerIndexRequestHandler::class
+            );
+            $swaggerYamlRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                SwaggerYamlRequestHandler::class
+            );
+            $pingRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                PingRequestHandler::class
+            );
+            $petListRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                ListRequestHandler::class.Pet::class
+            );
+            $petCreateRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                CreateRequestHandler::class.Pet::class
+            );
+            $petReadRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                ReadRequestHandler::class.Pet::class
+            );
+            $petUpdateRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                UpdateRequestHandler::class.Pet::class
+            );
+            $petDeleteRequestHandler = new LazyRequestHandler(
+                $container[PsrContainer::class],
+                DeleteRequestHandler::class.Pet::class
+            );
 
             return Group::create('')
                 ->route(Route::get('/', 'index', $indexRequestHandler))

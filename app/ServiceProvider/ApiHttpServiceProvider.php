@@ -7,8 +7,8 @@ namespace App\ServiceProvider;
 use App\ApiHttp\Factory\InvalidParametersFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Zend\Diactoros\ResponseFactory;
-use Zend\Diactoros\StreamFactory;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\StreamFactory;
 
 final class ApiHttpServiceProvider implements ServiceProviderInterface
 {

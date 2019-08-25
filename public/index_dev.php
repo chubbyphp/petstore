@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-use Zend\Diactoros\ServerRequestFactory;
-
-/** @var Chubbyphp\Framework\Application $web */
+use Slim\Psr7\Factory\ServerRequestFactory;
 
 $env = 'dev';
 
+/** @var Chubbyphp\Framework\Application $web */
 $web = require __DIR__ . '/../app/web.php';
-
-$web->send($web->handle(ServerRequestFactory::fromGlobals()));
+$web->send($web->handle((new ServerRequestFactory)->createFromGlobals()));

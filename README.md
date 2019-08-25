@@ -29,9 +29,9 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [ocramius/proxy-manager][14]: ^2.1.1
  * [pimple/pimple][15]: ^3.2.3
  * [ramsey/uuid][16]: ^3.8
- * [swagger-api/swagger-ui][17]: ^3.23
- * [symfony/console][18]: ^4.3.1
- * [zendframework/zend-diactoros][19]: ^2.1.3
+ * [slim/psr7][17]: ^0.5
+ * [swagger-api/swagger-ui][18]: ^3.23
+ * [symfony/console][19]: ^4.3.1
 
 ## Environment
 
@@ -203,9 +203,9 @@ Dominik Zogg 2018
 [14]: https://packagist.org/packages/ocramius/proxy-manager
 [15]: https://packagist.org/packages/pimple/pimple
 [16]: https://packagist.org/packages/ramsey/uuid
-[17]: https://packagist.org/packages/swagger-api/swagger-ui
-[18]: https://packagist.org/packages/symfony/console
-[19]: https://packagist.org/packages/zendframework/zend-diactoros
+[17]: https://packagist.org/packages/slim/psr7
+[18]: https://packagist.org/packages/swagger-api/swagger-ui
+[19]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
+use App\Collection\CollectionInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
@@ -81,6 +82,7 @@ final class ListRequestHandler implements RequestHandlerInterface
     {
         $accept = $request->getAttribute('accept');
 
+        /** @var CollectionInterface $collection */
         $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
 
         if ([] !== $errors = $this->validator->validate($collection)) {

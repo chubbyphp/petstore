@@ -119,7 +119,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @param ModelInterface[]
+     * @param ModelInterface[] $items
      */
     public function setItems(array $items): void
     {

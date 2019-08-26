@@ -6,6 +6,7 @@ namespace App\Mapping\Orm;
 
 use Chubbyphp\DoctrineDbServiceProvider\Driver\ClassMapMappingInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\MappingException;
 
 final class PetMapping implements ClassMapMappingInterface
 {

@@ -89,6 +89,7 @@ final class UpdateRequestHandler implements RequestHandlerInterface
             ->getContext()
         ;
 
+        /** @var ModelInterface */
         $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
 
         if ([] !== $errors = $this->validator->validate($model)) {

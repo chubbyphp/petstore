@@ -8,6 +8,7 @@ use App\Collection\CollectionInterface;
 use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Link\LinkBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
+use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMapping;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
@@ -67,16 +68,20 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
         return [
             new NormalizationLinkMapping('list', [], new CallbackLinkNormalizer(
                 function (string $path, CollectionInterface $collection, NormalizerContextInterface $context) {
+                    $queryParams = [];
+                    if (null !== $request = $context->getRequest()) {
+                        $queryParams = $request->getQueryParams();
+                    }
+
+                    /** @var array<string, mixed> */
+                    $queryParams = array_merge($queryParams, [
+                        'offset' => $collection->getOffset(),
+                        'limit' => $collection->getLimit(),
+                    ]);
+
                     return LinkBuilder
                         ::create(
-                            $this->router->generatePath(
-                                $this->getListRouteName(),
-                                [],
-                                array_replace($context->getRequest()->getQueryParams(), [
-                                    'offset' => $collection->getOffset(),
-                                    'limit' => $collection->getLimit(),
-                                ])
-                            )
+                            $this->router->generatePath($this->getListRouteName(), [], $queryParams)
                         )
                         ->setAttributes(['method' => 'GET'])
                         ->getLink()

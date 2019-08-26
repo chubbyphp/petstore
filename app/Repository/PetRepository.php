@@ -9,6 +9,7 @@ use App\Collection\PetCollection;
 use App\Model\ModelInterface;
 use App\Model\Pet;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 final class PetRepository implements RepositoryInterface
 {
@@ -41,7 +42,10 @@ final class PetRepository implements RepositoryInterface
             );
         }
 
-        $qb = $this->entityManager->getRepository(Pet::class)->createQueryBuilder('p');
+        /** @var EntityRepository $entityRepository */
+        $entityRepository = $this->entityManager->getRepository(Pet::class);
+
+        $qb = $entityRepository->createQueryBuilder('p');
 
         $filters = $petCollection->getFilters();
 
@@ -74,7 +78,10 @@ final class PetRepository implements RepositoryInterface
      */
     public function findById(string $id): ?ModelInterface
     {
-        return $this->entityManager->find(Pet::class, $id);
+        /** @var Pet|ModelInterface|null */
+        $pet = $this->entityManager->find(Pet::class, $id);
+
+        return $pet;
     }
 
     /**

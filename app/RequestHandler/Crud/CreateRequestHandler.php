@@ -6,6 +6,7 @@ namespace App\RequestHandler\Crud;
 
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Factory\ModelFactoryInterface;
+use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
@@ -82,6 +83,7 @@ final class CreateRequestHandler implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
         $contentType = $request->getAttribute('contentType');
 
+        /** @var ModelInterface $model */
         $model = $this->requestManager->getDataFromRequestBody($request, $this->factory->create(), $contentType);
 
         if ([] !== $errors = $this->validator->validate($model)) {

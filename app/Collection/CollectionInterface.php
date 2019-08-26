@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Collection;
 
+use App\Model\ModelInterface;
+
 interface CollectionInterface
 {
     const LIMIT = 20;
@@ -59,12 +61,12 @@ interface CollectionInterface
     public function getCount(): int;
 
     /**
-     * @param array
+     * @param ModelInterface[] $items
      */
     public function setItems(array $items): void;
 
     /**
-     * @return array
+     * @return ModelInterface[]
      */
     public function getItems(): array;
 }

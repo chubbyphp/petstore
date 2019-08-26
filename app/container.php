@@ -29,7 +29,7 @@ use Chubbyphp\Serialization\Provider\SerializationProvider;
 use Chubbyphp\Validation\Provider\ValidationProvider;
 use Pimple\Container;
 
-$configProvider = new ConfigProvider(realpath(__DIR__.'/..'), [
+$configProvider = new ConfigProvider(__DIR__.'/..', [
     new ConfigMapping('dev', DevConfig::class),
     new ConfigMapping('phpunit', PhpunitConfig::class),
     new ConfigMapping('prod', ProdConfig::class),

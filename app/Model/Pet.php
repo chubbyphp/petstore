@@ -35,7 +35,7 @@ class Pet implements ModelInterface
 
     public function __construct()
     {
-        $this->id = (string) Uuid::uuid4();
+        $this->id = Uuid::uuid4()->toString();
         $this->createdAt = new \DateTime();
     }
 

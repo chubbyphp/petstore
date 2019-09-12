@@ -7,6 +7,21 @@ info:
 servers:
   - url: http://petstore.development
 paths:
+  /api/ping:
+    get:
+      summary: Ping
+      operationId: ping
+      tags:
+        - system
+      responses:
+        '200':
+          description: Ping response with current date
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PingResponse"
+        '500':
+          description: Server error
   /api/pets:
     get:
       summary: List all pets
@@ -423,6 +438,13 @@ components:
         _type:
           type: string
           example: apiProblem
+    PingResponse:
+      type: object
+      properties:
+        date:
+          type: string
+          format: datetime
+          example: "2019-09-11T11:28:42+00:00"
     PetRequest:
       required:
         -name

@@ -10,6 +10,7 @@ use App\Mapping\Deserialization\PetMapping;
 use App\Mapping\MappingConfig;
 use App\Model\Pet;
 use Chubbyphp\Deserialization\Mapping\CallableDenormalizationObjectMapping;
+use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -25,19 +26,15 @@ final class DeserializationServiceProvider implements ServiceProviderInterface
             Pet::class => new MappingConfig(PetMapping::class),
         ];
 
+        /*
+         * @return array
+         */
         $container['deserializer.denormalizer.objectmappings'] = function () use ($container) {
             $mappings = [];
 
             foreach ($container['deserializer.mappingConfigs'] as $class => $mappingConfig) {
                 $resolver = function () use ($container, $mappingConfig) {
-                    $mappingClass = $mappingConfig->getMappingClass();
-
-                    $dependencies = [];
-                    foreach ($mappingConfig->getDependencies() as $dependency) {
-                        $dependencies[] = $container[$dependency];
-                    }
-
-                    return new $mappingClass(...$dependencies);
+                    return $this->resolve($container, $mappingConfig);
                 };
 
                 $mappings[] = new CallableDenormalizationObjectMapping($class, $resolver);
@@ -45,5 +42,23 @@ final class DeserializationServiceProvider implements ServiceProviderInterface
 
             return $mappings;
         };
+    }
+
+    /**
+     * @param Container     $container
+     * @param MappingConfig $mappingConfig
+     *
+     * @return DenormalizationObjectMappingInterface
+     */
+    private function resolve(Container $container, MappingConfig $mappingConfig): DenormalizationObjectMappingInterface
+    {
+        $mappingClass = $mappingConfig->getMappingClass();
+
+        $dependencies = [];
+        foreach ($mappingConfig->getDependencies() as $dependency) {
+            $dependencies[] = $container[$dependency];
+        }
+
+        return new $mappingClass(...$dependencies);
     }
 }

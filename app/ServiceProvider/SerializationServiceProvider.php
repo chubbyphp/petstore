@@ -21,6 +21,7 @@ use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMa
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Serialization\Mapping\CallableNormalizationObjectMapping;
+use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -46,14 +47,7 @@ final class SerializationServiceProvider implements ServiceProviderInterface
 
             foreach ($container['serializer.mappingConfigs'] as $class => $mappingConfig) {
                 $resolver = function () use ($container, $mappingConfig) {
-                    $mappingClass = $mappingConfig->getMappingClass();
-
-                    $dependencies = [];
-                    foreach ($mappingConfig->getDependencies() as $dependency) {
-                        $dependencies[] = $container[$dependency];
-                    }
-
-                    return new $mappingClass(...$dependencies);
+                    return $this->resolve($container, $mappingConfig);
                 };
 
                 $mappings[] = new CallableNormalizationObjectMapping($class, $resolver);
@@ -61,5 +55,23 @@ final class SerializationServiceProvider implements ServiceProviderInterface
 
             return $mappings;
         };
+    }
+
+    /**
+     * @param Container     $container
+     * @param MappingConfig $mappingConfig
+     *
+     * @return NormalizationObjectMappingInterface
+     */
+    private function resolve(Container $container, MappingConfig $mappingConfig): NormalizationObjectMappingInterface
+    {
+        $mappingClass = $mappingConfig->getMappingClass();
+
+        $dependencies = [];
+        foreach ($mappingConfig->getDependencies() as $dependency) {
+            $dependencies[] = $container[$dependency];
+        }
+
+        return new $mappingClass(...$dependencies);
     }
 }

@@ -10,6 +10,7 @@ use App\Mapping\Validation\PetCollectionMapping;
 use App\Mapping\Validation\PetMapping;
 use App\Model\Pet;
 use Chubbyphp\Validation\Mapping\CallableValidationMappingProvider;
+use Chubbyphp\Validation\Mapping\ValidationMappingProviderInterface;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -30,14 +31,7 @@ final class ValidationServiceProvider implements ServiceProviderInterface
 
             foreach ($container['validator.mappingConfigs'] as $class => $mappingConfig) {
                 $resolver = function () use ($container, $mappingConfig) {
-                    $mappingClass = $mappingConfig->getMappingClass();
-
-                    $dependencies = [];
-                    foreach ($mappingConfig->getDependencies() as $dependency) {
-                        $dependencies[] = $container[$dependency];
-                    }
-
-                    return new $mappingClass(...$dependencies);
+                    return $this->resolve($container, $mappingConfig);
                 };
 
                 $mappings[] = new CallableValidationMappingProvider($class, $resolver);
@@ -45,5 +39,23 @@ final class ValidationServiceProvider implements ServiceProviderInterface
 
             return $mappings;
         };
+    }
+
+    /**
+     * @param Container     $container
+     * @param MappingConfig $mappingConfig
+     *
+     * @return ValidationMappingProviderInterface
+     */
+    private function resolve(Container $container, MappingConfig $mappingConfig): ValidationMappingProviderInterface
+    {
+        $mappingClass = $mappingConfig->getMappingClass();
+
+        $dependencies = [];
+        foreach ($mappingConfig->getDependencies() as $dependency) {
+            $dependencies[] = $container[$dependency];
+        }
+
+        return new $mappingClass(...$dependencies);
     }
 }

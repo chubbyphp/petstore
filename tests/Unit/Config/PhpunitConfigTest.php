@@ -29,7 +29,7 @@ final class PhpunitConfigTest extends TestCase
                 ],
                 'connection' => [
                     'charset' => 'utf8',
-                    'dbname' => 'petshop_phpunit',
+                    'dbname' => 'petstore_phpunit',
                     'driver' => 'pdo_pgsql',
                     'host' => 'localhost',
                     'port' => 5432,

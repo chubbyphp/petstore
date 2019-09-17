@@ -24,7 +24,7 @@ class ProdConfig extends AbstractConfig
                 ],
                 'connection' => [
                     'charset' => 'utf8',
-                    'dbname' => 'petshop',
+                    'dbname' => 'petstore',
                     'driver' => 'pdo_pgsql',
                     'host' => 'localhost',
                     'port' => 5432,

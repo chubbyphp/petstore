@@ -10,6 +10,59 @@ nginx:
             root: /vagrant/public
             server_name: *hostname
             template: default
+
+nginx:
+    server:
+        -
+            root: /vagrant/public
+            server_name: *hostname
+            template: petstore-http
+        -
+            root: /vagrant/public
+            server_name: *hostname
+            template: petstore-https
+    templates:
+        petstore-http:
+            listen: 80
+            return: 301 https://$host$request_uri
+        petstore-https:
+            listen: 443 ssl http2
+            index: index_dev.php
+            ssl_protocols: 'TLSv1.2 TLSv1.3'
+            ssl_ciphers: 'ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384'
+            ssl_prefer_server_ciphers: 'on'
+            'location /':
+                "if ($request_method = 'OPTIONS')":
+                    add_header:
+                        - '"Access-Control-Allow-Headers" "Accept,Content-Type"'
+                        - '"Access-Control-Allow-Methods" "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"'
+                        - '"Access-Control-Allow-Origin" "$http_origin"'
+                        - '"Access-Control-Allow-Credentials" "true"'
+                        - '"Access-Control-Max-Age" 1728000'
+                        - '"Content-Type" "text/plain charset=UTF-8"'
+                        - '"Content-Length" 0'
+                    return: 204
+                add_header:
+                    - '"Access-Control-Allow-Origin" "$http_origin"'
+                try_files:
+                    - '$uri $uri/ /index_dev.php?$args'
+                'location ~ ^(.+\.php)(.*)$':
+                    fastcgi_split_path_info: '^(.+\.php)(.*)$'
+                    try_files: '$fastcgi_script_name =404'
+                    set: '$wtf $fastcgi_path_info'
+                    fastcgi_param:
+                        - 'PATH_INFO $wtf'
+                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
+                    fastcgi_pass:
+                        - unix://var/run/php/default.sock
+                    fastcgi_read_timeout: 600
+                    fastcgi_buffer_size: 128k
+                    fastcgi_buffers: 4 256k
+                    fastcgi_busy_buffers_size: 256k
+                    include:
+                        - 'fastcgi_params'
+
+
 php:
     version: 7.3
     composer:

@@ -20,6 +20,17 @@ final class ProdConfigTest extends TestCase
         $config = ProdConfig::create('/path/to/root');
 
         self::assertSame([
+            'cors' => [
+                'allow-origin' => [],
+                'allow-methods' => ['DELETE', 'GET', 'POST', 'PUT'],
+                'allow-headers' => [
+                    'Accept',
+                    'Content-Type',
+                ],
+                'allow-credentials' => false,
+                'expose-headers' => [],
+                'max-age' => 7200,
+            ],
             'debug' => false,
             'doctrine.dbal.db.options' => [
                 'configuration' => [

@@ -7,6 +7,7 @@ namespace App;
 use App\ServiceProvider\ChubbyphpFrameworkProvider;
 use App\ServiceProvider\MiddlewareServiceProvider;
 use App\ServiceProvider\RequestHandlerServiceProvider;
+use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Framework\Application;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
@@ -24,6 +25,7 @@ $container->register(new ChubbyphpFrameworkProvider());
 
 $web = new Application([
     new LazyMiddleware($container[PsrContainer::class], ExceptionMiddleware::class),
+    new LazyMiddleware($container[PsrContainer::class], CorsMiddleware::class),
     new LazyMiddleware($container[PsrContainer::class], RouterMiddleware::class),
 ]);
 

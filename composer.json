@@ -6,6 +6,7 @@
         "php": "^7.2",
         "chubbyphp/chubbyphp-api-http": "^3.1",
         "chubbyphp/chubbyphp-config": "^1.2",
+        "chubbyphp/chubbyphp-cors": "^1.0",
         "chubbyphp/chubbyphp-deserialization": "^2.11",
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.2.1",
         "chubbyphp/chubbyphp-framework": "^2.0",
@@ -31,5 +32,8 @@
     },
     "autoload": {
         "psr-4": { "App\\": "app/" }
+    },
+    "config": {
+        "sort-packages": true
     }
 }

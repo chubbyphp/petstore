@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Config;
 
 use App\Config\DevConfig;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,6 +21,19 @@ final class DevConfigTest extends TestCase
         $config = DevConfig::create('/path/to/root');
 
         self::assertSame([
+            'cors' => [
+                'allow-origin' => [
+                    '^https?://localhost:3000' => AllowOriginRegex::class,
+                ],
+                'allow-methods' => ['DELETE', 'GET', 'POST', 'PUT'],
+                'allow-headers' => [
+                    'Accept',
+                    'Content-Type',
+                ],
+                'allow-credentials' => false,
+                'expose-headers' => [],
+                'max-age' => 7200,
+            ],
             'debug' => true,
             'doctrine.dbal.db.options' => [
                 'configuration' => [

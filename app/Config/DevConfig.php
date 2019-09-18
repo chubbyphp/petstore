@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Config;
 
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Monolog\Logger;
 
 class DevConfig extends ProdConfig
@@ -14,6 +15,10 @@ class DevConfig extends ProdConfig
     public function getConfig(): array
     {
         $config = parent::getConfig();
+
+        $config['cors']['allow-origin'] = [
+            '^https?://localhost:3000' => AllowOriginRegex::class,
+        ];
 
         $config['debug'] = true;
 

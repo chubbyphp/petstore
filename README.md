@@ -17,21 +17,22 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * php: ~7.1
  * [chubbyphp/chubbyphp-api-http][3]: ^3.1
  * [chubbyphp/chubbyphp-config][4]: ^1.2
- * [chubbyphp/chubbyphp-deserialization][5]: ^2.11
- * [chubbyphp/chubbyphp-doctrine-db-service-provider][6]: ^1.2.1
- * [chubbyphp/chubbyphp-framework][7]: ^2.0
- * [chubbyphp/chubbyphp-negotiation][8]: ^1.2.4
- * [chubbyphp/chubbyphp-serialization][9]: ^2.8.1
- * [chubbyphp/chubbyphp-validation][10]: ^3.4
- * [doctrine/orm][11]: ^2.6.3
- * [monolog/monolog][12]: ^1.24
- * [nikic/fast-route][13]: ^1.3
- * [ocramius/proxy-manager][14]: ^2.1.1
- * [pimple/pimple][15]: ^3.2.3
- * [ramsey/uuid][16]: ^3.8
- * [slim/psr7][17]: ^0.5
- * [swagger-api/swagger-ui][18]: ^3.23
- * [symfony/console][19]: ^4.3.1
+ * [chubbyphp/chubbyphp-cors][5]: ^1.0
+ * [chubbyphp/chubbyphp-deserialization][6]: ^2.11
+ * [chubbyphp/chubbyphp-doctrine-db-service-provider][7]: ^1.2.1
+ * [chubbyphp/chubbyphp-framework][8]: ^2.0
+ * [chubbyphp/chubbyphp-negotiation][9]: ^1.2.4
+ * [chubbyphp/chubbyphp-serialization][10]: ^2.8.1
+ * [chubbyphp/chubbyphp-validation][11]: ^3.4
+ * [doctrine/orm][12]: ^2.6.3
+ * [monolog/monolog][13]: ^1.24
+ * [nikic/fast-route][14]: ^1.3
+ * [ocramius/proxy-manager][15]: ^2.1.1
+ * [pimple/pimple][16]: ^3.2.3
+ * [ramsey/uuid][17]: ^3.8
+ * [slim/psr7][18]: ^0.5
+ * [swagger-api/swagger-ui][19]: ^3.23
+ * [symfony/console][20]: ^4.3.1
 
 ## Environment
 
@@ -191,21 +192,22 @@ Dominik Zogg 2018
 
 [3]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
 [4]: https://packagist.org/packages/chubbyphp/chubbyphp-config
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-doctrine-db-service-provider
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[11]: https://packagist.org/packages/doctrine/orm
-[12]: https://packagist.org/packages/monolog/monolog
-[13]: https://packagist.org/packages/nikic/fast-route
-[14]: https://packagist.org/packages/ocramius/proxy-manager
-[15]: https://packagist.org/packages/pimple/pimple
-[16]: https://packagist.org/packages/ramsey/uuid
-[17]: https://packagist.org/packages/slim/psr7
-[18]: https://packagist.org/packages/swagger-api/swagger-ui
-[19]: https://packagist.org/packages/symfony/console
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-doctrine-db-service-provider
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[12]: https://packagist.org/packages/doctrine/orm
+[13]: https://packagist.org/packages/monolog/monolog
+[14]: https://packagist.org/packages/nikic/fast-route
+[15]: https://packagist.org/packages/ocramius/proxy-manager
+[16]: https://packagist.org/packages/pimple/pimple
+[17]: https://packagist.org/packages/ramsey/uuid
+[18]: https://packagist.org/packages/slim/psr7
+[19]: https://packagist.org/packages/swagger-api/swagger-ui
+[20]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

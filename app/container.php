@@ -28,6 +28,7 @@ use Chubbyphp\Negotiation\Provider\NegotiationProvider;
 use Chubbyphp\Serialization\Provider\SerializationProvider;
 use Chubbyphp\Validation\Provider\ValidationProvider;
 use Pimple\Container;
+use Pimple\Psr11\Container as PsrContainer;
 
 $configProvider = new ConfigProvider(__DIR__.'/..', [
     new ConfigMapping('dev', DevConfig::class),
@@ -36,6 +37,11 @@ $configProvider = new ConfigProvider(__DIR__.'/..', [
 ]);
 
 $container = new Container(['env' => $env ?? 'dev']);
+
+$container[PsrContainer::class] = function () use ($container) {
+    return new PsrContainer($container);
+};
+
 $container->register(new ApiHttpProvider());
 $container->register(new DeserializationProvider());
 $container->register(new DoctrineDbalServiceProvider());

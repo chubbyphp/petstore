@@ -33,10 +33,6 @@ final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
      */
     public function register(Container $container): void
     {
-        $container[PsrContainer::class] = function () use ($container) {
-            return new PsrContainer($container);
-        };
-
         $container[ExceptionMiddleware::class] = function () use ($container) {
             return new ExceptionMiddleware(
                 $container['api-http.response.factory'],

@@ -25,6 +25,8 @@ use Chubbyphp\Framework\Router\RouteInterface;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
+use Pimple\Psr11\Container as PsrContainer;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -44,6 +46,7 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
             'debug' => false,
             'logger' => $this->getMockByCalls(LoggerInterface::class),
             'routerCacheFile' => null,
+            PsrContainer::class => $this->getMockByCalls(ContainerInterface::class),
         ]);
 
         $serviceProvider = new ChubbyphpFrameworkProvider();

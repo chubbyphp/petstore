@@ -30,7 +30,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [ocramius/proxy-manager][15]: ^2.1.1
  * [pimple/pimple][16]: ^3.2.3
  * [ramsey/uuid][17]: ^3.8
- * [slim/psr7][18]: ^0.5
+ * [slim/psr7][18]: ^0.6
  * [swagger-api/swagger-ui][19]: ^3.23
  * [symfony/console][20]: ^4.3.1
 

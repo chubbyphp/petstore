@@ -1,5 +1,8 @@
 language: php
 
+services:
+  - postgresql
+
 matrix:
   include:
     - php: 7.2
@@ -18,11 +21,13 @@ before_script:
   - echo 'Europe/Zurich' | sudo tee /etc/timezone
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update -q
+  - composer global require hirak/prestissimo
   - if [ -z "$dependencies" ]; then composer install; fi;
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
   - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
 
-script: vendor/bin/phpunit --testsuite=Unit --coverage-text --verbose && vendor/bin/phpunit --testsuite=Integration --verbose
-
-services:
-  - postgresql
+script:
+  - phpdbg -qrr vendor/bin/phpunit --testsuite=Unit --coverage-text --verbose
+  - phpdbg -qrr vendor/bin/phpunit --testsuite=Integration --coverage-text --verbose
+  - phpdbg -qrr vendor/bin/infection --threads=$(nproc) --min-msi=86 --verbose
+  - vendor/bin/phpstan analyse

@@ -37,6 +37,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
@@ -70,6 +71,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
@@ -109,35 +111,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         ], $apiProblem);
     }
 
-    /**
-     * @return array
-     */
-    public function testCreate(): array
+    public function testCreate(): void
     {
-        $response = $this->httpRequest(
-            'POST',
-            '/api/pets',
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-            json_encode(['name' => 'Kathy', 'tag' => '134.456.789'])
-        );
-
-        self::assertSame(201, $response['status']['code']);
-
-        self::assertSame('application/json', $response['headers']['content-type'][0]);
-
-        $pet = json_decode($response['body'], true);
+        $pet = $this->create();
 
         $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789'], false);
-
-        return $pet;
     }
 
-    /**
-     * @depends testCreate
-     */
     public function testListWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
@@ -165,14 +145,12 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     */
     public function testListWithValidationError(): void
     {
         $response = $this->httpRequest(
@@ -225,11 +203,10 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     */
     public function testList(): void
     {
+        $pet = $this->create();
+
         $response = $this->httpRequest(
             'GET',
             '/api/pets?sort[name]=desc',
@@ -259,11 +236,20 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         self::assertSame(0, $petCollection['offset']);
         self::assertSame(20, $petCollection['limit']);
         self::assertSame(['name' => 'desc'], $petCollection['sort']);
-        self::assertSame(1, $petCollection['count']);
+        self::assertGreaterThanOrEqual(1, $petCollection['count']);
+        self::assertGreaterThanOrEqual(1, count($petCollection['_embedded']['items']));
+        self::assertSame($petCollection['count'], count($petCollection['_embedded']['items']));
 
-        $this::assertPet($petCollection['_embedded']['items'][0], ['name' => 'Kathy', 'tag' => '134.456.789'], false);
+        $found = false;
+        foreach ($petCollection['_embedded']['items'] as $item) {
+            if ($item['id'] === $pet['id']) {
+                $this::assertPet($item, ['name' => 'Kathy', 'tag' => '134.456.789'], false);
+                $found = true;
+            }
+        }
 
-        self::assertCount(1, $petCollection['_embedded']['items']);
+        self::assertTrue($found);
+
         self::assertSame([
             'href' => '/api/pets?sort%5Bname%5D=desc&offset=0&limit=20',
             'templated' => false,
@@ -283,16 +269,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         self::assertSame('petCollection', $petCollection['_type']);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testReadWithUnsupportedAccept(array $existingPet): void
+    public function testReadWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
             'GET',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
             [
                 'Accept' => 'text/html',
             ]
@@ -315,6 +296,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
@@ -324,7 +306,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/pets/00000000-0000-0000-0000-000000000000',
+            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
             [
                 'Accept' => 'application/json',
             ]
@@ -345,13 +327,10 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testRead(array $existingPet): void
+    public function testRead(): void
     {
+        $existingPet = $this->create();
+
         $response = $this->httpRequest(
             'GET',
             sprintf('/api/pets/%s', $existingPet['id']),
@@ -369,16 +348,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789'], false);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testUpdateWithUnsupportedAccept(array $existingPet): void
+    public function testUpdateWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
             [
                 'Accept' => 'text/html',
             ]
@@ -401,21 +375,17 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testUpdateWithUnsupportedContentType(array $existingPet): void
+    public function testUpdateWithUnsupportedContentType(): void
     {
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'text/html',
@@ -439,21 +409,17 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testUpdateWithNotFound(array $existingPet): void
+    public function testUpdateWithNotFound(): void
     {
         $response = $this->httpRequest(
             'PUT',
-            '/api/pets/00000000-0000-0000-0000-000000000000',
+            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -475,13 +441,10 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testUpdateWithValidationError(array $existingPet): void
+    public function testUpdateWithValidationError(): void
     {
+        $existingPet = $this->create();
+
         $response = $this->httpRequest(
             'PUT',
             sprintf('/api/pets/%s', $existingPet['id']),
@@ -514,13 +477,10 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testUpdateByCreateData(array $existingPet): void
+    public function testUpdateByCreateData(): void
     {
+        $existingPet = $this->create();
+
         $response = $this->httpRequest(
             'PUT',
             sprintf('/api/pets/%s', $existingPet['id']),
@@ -540,13 +500,10 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789'], true);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testUpdate(array $existingPet): void
+    public function testUpdate(): void
     {
+        $existingPet = $this->create();
+
         $response = $this->httpRequest(
             'PUT',
             sprintf('/api/pets/%s', $existingPet['id']),
@@ -568,16 +525,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $this::assertPet($pet, ['name' => 'Momo', 'tag' => null], true);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testDeleteWithUnsupportedAccept(array $existingPet): void
+    public function testDeleteWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
             'DELETE',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
             [
                 'Accept' => 'text/html',
             ]
@@ -600,21 +552,17 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testDeleteWithNotFound(array $existingPet): void
+    public function testDeleteWithNotFound(): void
     {
         $response = $this->httpRequest(
             'DELETE',
-            '/api/pets/00000000-0000-0000-0000-000000000000',
+            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
             [
                 'Accept' => 'application/json',
             ]
@@ -635,13 +583,10 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         ], $apiProblem);
     }
 
-    /**
-     * @depends testCreate
-     *
-     * @param array $existingPet
-     */
-    public function testDelete(array $existingPet): void
+    public function testDelete(): void
     {
+        $existingPet = $this->create();
+
         $response = $this->httpRequest(
             'DELETE',
             sprintf('/api/pets/%s', $existingPet['id']),
@@ -651,6 +596,32 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         );
 
         self::assertSame(204, $response['status']['code']);
+    }
+
+    /**
+     * @return array
+     */
+    private function create(): array
+    {
+        $response = $this->httpRequest(
+            'POST',
+            '/api/pets',
+            [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+            json_encode(['name' => 'Kathy', 'tag' => '134.456.789'])
+        );
+
+        self::assertSame(201, $response['status']['code']);
+
+        self::assertSame('application/json', $response['headers']['content-type'][0]);
+
+        $pet = json_decode($response['body'], true);
+
+        self::assertIsArray($pet);
+
+        return $pet;
     }
 
     /**

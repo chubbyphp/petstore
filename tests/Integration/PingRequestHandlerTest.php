@@ -37,6 +37,7 @@ final class PingRequestHandlerTest extends AbstractIntegrationTest
                 'application/x-jsonx',
                 'application/x-www-form-urlencoded',
                 'application/xml',
+                'application/x-yaml',
             ],
             '_type' => 'apiProblem',
         ], $apiProblem);

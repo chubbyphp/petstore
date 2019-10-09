@@ -10,12 +10,9 @@ use Pimple\ServiceProviderInterface;
 
 final class RepositoryServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container[PetRepository::class] = function () use ($container) {
+        $container[PetRepository::class] = static function () use ($container) {
             return new PetRepository($container['doctrine.orm.em']);
         };
     }

@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class IndexRequestHandler implements RequestHandlerInterface
+final class IndexRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -22,10 +22,6 @@ class IndexRequestHandler implements RequestHandlerInterface
      */
     private $router;
 
-    /**
-     * @param ResponseFactoryInterface $responseFactory
-     * @param RouterInterface          $router
-     */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         RouterInterface $router
@@ -34,11 +30,6 @@ class IndexRequestHandler implements RequestHandlerInterface
         $this->router = $router;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->responseFactory->createResponse(302)

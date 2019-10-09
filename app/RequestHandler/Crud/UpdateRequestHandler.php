@@ -12,7 +12,9 @@ use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
+use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
+use Chubbyphp\Validation\Error\ErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -45,13 +47,6 @@ final class UpdateRequestHandler implements RequestHandlerInterface
      */
     private $validator;
 
-    /**
-     * @param InvalidParametersFactoryInterface $errorFactory
-     * @param RepositoryInterface               $repository
-     * @param RequestManagerInterface           $requestManager
-     * @param ResponseManagerInterface          $responseManager
-     * @param ValidatorInterface                $validator
-     */
     public function __construct(
         InvalidParametersFactoryInterface $errorFactory,
         RepositoryInterface $repository,
@@ -66,11 +61,6 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $this->validator = $validator;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getAttribute('id');
@@ -84,19 +74,13 @@ final class UpdateRequestHandler implements RequestHandlerInterface
 
         $model->reset();
 
-        $context = DenormalizerContextBuilder::create()
-            ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
-            ->getContext()
-        ;
+        $context = $this->getDenormalizerContext();
 
-        /** @var ModelInterface */
+        /** @var ModelInterface $model */
         $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
 
         if ([] !== $errors = $this->validator->validate($model)) {
-            return $this->responseManager->createFromApiProblem(
-                new UnprocessableEntity($this->errorFactory->createInvalidParameters($errors)),
-                $accept
-            );
+            return $this->createValidationErrorResponse($errors, $accept);
         }
 
         $model->setUpdatedAt(new \DateTime());
@@ -107,5 +91,27 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
 
         return $this->responseManager->create($model, $accept, 200, $context);
+    }
+
+    private function getDenormalizerContext(): DenormalizerContextInterface
+    {
+        return DenormalizerContextBuilder::create()
+            ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
+            ->getContext()
+        ;
+    }
+
+    /**
+     * @param array<ErrorInterface> $errors
+     * @param string                $accept
+     *
+     * @return ResponseInterface
+     */
+    private function createValidationErrorResponse(array $errors, string $accept): ResponseInterface
+    {
+        return $this->responseManager->createFromApiProblem(
+            new UnprocessableEntity($this->errorFactory->createInvalidParameters($errors)),
+            $accept
+        );
     }
 }

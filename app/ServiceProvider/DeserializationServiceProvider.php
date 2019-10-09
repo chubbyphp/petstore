@@ -16,9 +16,6 @@ use Pimple\ServiceProviderInterface;
 
 final class DeserializationServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
         $container['deserializer.mappingConfigs'] = [
@@ -44,12 +41,6 @@ final class DeserializationServiceProvider implements ServiceProviderInterface
         };
     }
 
-    /**
-     * @param Container     $container
-     * @param MappingConfig $mappingConfig
-     *
-     * @return DenormalizationObjectMappingInterface
-     */
     private function resolve(Container $container, MappingConfig $mappingConfig): DenormalizationObjectMappingInterface
     {
         $mappingClass = $mappingConfig->getMappingClass();

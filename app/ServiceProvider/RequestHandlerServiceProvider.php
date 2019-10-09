@@ -24,12 +24,9 @@ use Pimple\ServiceProviderInterface;
 
 final class RequestHandlerServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container[CreateRequestHandler::class.Pet::class] = function () use ($container) {
+        $container[CreateRequestHandler::class.Pet::class] = static function () use ($container) {
             return new CreateRequestHandler(
                 $container[InvalidParametersFactory::class],
                 $container[PetFactory::class],
@@ -40,14 +37,14 @@ final class RequestHandlerServiceProvider implements ServiceProviderInterface
             );
         };
 
-        $container[DeleteRequestHandler::class.Pet::class] = function () use ($container) {
+        $container[DeleteRequestHandler::class.Pet::class] = static function () use ($container) {
             return new DeleteRequestHandler(
                 $container[PetRepository::class],
                 $container['api-http.response.manager']
             );
         };
 
-        $container[ListRequestHandler::class.Pet::class] = function () use ($container) {
+        $container[ListRequestHandler::class.Pet::class] = static function () use ($container) {
             return new ListRequestHandler(
                 $container[InvalidParametersFactory::class],
                 $container[PetCollectionFactory::class],
@@ -58,14 +55,14 @@ final class RequestHandlerServiceProvider implements ServiceProviderInterface
             );
         };
 
-        $container[ReadRequestHandler::class.Pet::class] = function () use ($container) {
+        $container[ReadRequestHandler::class.Pet::class] = static function () use ($container) {
             return new ReadRequestHandler(
                 $container[PetRepository::class],
                 $container['api-http.response.manager']
             );
         };
 
-        $container[UpdateRequestHandler::class.Pet::class] = function () use ($container) {
+        $container[UpdateRequestHandler::class.Pet::class] = static function () use ($container) {
             return new UpdateRequestHandler(
                 $container[InvalidParametersFactory::class],
                 $container[PetRepository::class],
@@ -75,25 +72,25 @@ final class RequestHandlerServiceProvider implements ServiceProviderInterface
             );
         };
 
-        $container[SwaggerIndexRequestHandler::class] = function () use ($container) {
+        $container[SwaggerIndexRequestHandler::class] = static function () use ($container) {
             return new SwaggerIndexRequestHandler(
                 $container['api-http.response.factory'],
                 $container['api-http.stream.factory']
             );
         };
 
-        $container[SwaggerYamlRequestHandler::class] = function () use ($container) {
+        $container[SwaggerYamlRequestHandler::class] = static function () use ($container) {
             return new SwaggerYamlRequestHandler(
                 $container['api-http.response.factory'],
                 $container['api-http.stream.factory']
             );
         };
 
-        $container[IndexRequestHandler::class] = function () use ($container) {
+        $container[IndexRequestHandler::class] = static function () use ($container) {
             return new IndexRequestHandler($container['api-http.response.factory'], $container[FastRouteRouter::class]);
         };
 
-        $container[PingRequestHandler::class] = function () use ($container) {
+        $container[PingRequestHandler::class] = static function () use ($container) {
             return new PingRequestHandler(
                 $container['api-http.response.factory'],
                 $container['serializer']

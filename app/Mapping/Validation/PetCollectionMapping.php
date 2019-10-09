@@ -16,30 +16,23 @@ use Chubbyphp\Validation\Mapping\ValidationPropertyMappingInterface;
 
 final class PetCollectionMapping implements ValidationMappingProviderInterface
 {
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return PetCollection::class;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return ValidationClassMappingInterface|null
-     */
-    public function getValidationClassMapping(string $path)
+    public function getValidationClassMapping(string $path): ?ValidationClassMappingInterface
     {
+        return null;
     }
 
     /**
      * @param string      $path
      * @param string|null $type
      *
-     * @return ValidationPropertyMappingInterface[]
+     * @return array<ValidationPropertyMappingInterface>
      */
-    public function getValidationPropertyMappings(string $path, string $type = null): array
+    public function getValidationPropertyMappings(string $path, ?string $type = null): array
     {
         return [
             ValidationPropertyMappingBuilder::create('offset', [

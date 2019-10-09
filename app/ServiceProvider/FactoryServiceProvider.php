@@ -11,16 +11,13 @@ use Pimple\ServiceProviderInterface;
 
 final class FactoryServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container[PetCollectionFactory::class] = function () {
+        $container[PetCollectionFactory::class] = static function () {
             return new PetCollectionFactory();
         };
 
-        $container[PetFactory::class] = function () {
+        $container[PetFactory::class] = static function () {
             return new PetFactory();
         };
     }

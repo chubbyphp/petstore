@@ -12,12 +12,9 @@ use Pimple\ServiceProviderInterface;
 
 final class MonologServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container[Logger::class] = function () use ($container) {
+        $container[Logger::class] = static function () use ($container) {
             return new Logger($container['monolog']['name'], [
                 (new StreamHandler(
                     $container['monolog']['path'],
@@ -26,7 +23,7 @@ final class MonologServiceProvider implements ServiceProviderInterface
             ]);
         };
 
-        $container['logger'] = function () use ($container) {
+        $container['logger'] = static function () use ($container) {
             return $container[Logger::class];
         };
     }

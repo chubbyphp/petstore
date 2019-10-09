@@ -49,14 +49,6 @@ final class CreateRequestHandler implements RequestHandlerInterface
      */
     private $validator;
 
-    /**
-     * @param InvalidParametersFactoryInterface $errorFactory
-     * @param ModelFactoryInterface             $factory
-     * @param RepositoryInterface               $repository
-     * @param RequestManagerInterface           $requestManager
-     * @param ResponseManagerInterface          $responseManager
-     * @param ValidatorInterface                $validator
-     */
     public function __construct(
         InvalidParametersFactoryInterface $errorFactory,
         ModelFactoryInterface $factory,
@@ -73,11 +65,6 @@ final class CreateRequestHandler implements RequestHandlerInterface
         $this->validator = $validator;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $accept = $request->getAttribute('accept');

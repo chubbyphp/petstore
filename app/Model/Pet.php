@@ -6,7 +6,7 @@ namespace App\Model;
 
 use Ramsey\Uuid\Uuid;
 
-class Pet implements ModelInterface
+final class Pet implements ModelInterface
 {
     /**
      * @var string
@@ -39,65 +39,41 @@ class Pet implements ModelInterface
         $this->createdAt = new \DateTime();
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTime $updatedAt
-     */
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $tag
-     */
     public function setTag(?string $tag): void
     {
         $this->tag = $tag;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTag(): ?string
     {
         return $this->tag;

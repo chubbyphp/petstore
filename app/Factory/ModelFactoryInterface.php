@@ -8,13 +8,7 @@ use App\Model\ModelInterface;
 
 interface ModelFactoryInterface
 {
-    /**
-     * @return ModelInterface
-     */
     public function create(): ModelInterface;
 
-    /**
-     * @return string
-     */
     public function getClass(): string;
 }

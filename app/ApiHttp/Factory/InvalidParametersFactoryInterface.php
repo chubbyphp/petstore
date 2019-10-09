@@ -9,9 +9,9 @@ use Chubbyphp\Validation\Error\ErrorInterface;
 interface InvalidParametersFactoryInterface
 {
     /**
-     * @param ErrorInterface[] $errors
+     * @param array<ErrorInterface> $errors
      *
-     * @return array
+     * @return array<array<string, array|string>>
      */
     public function createInvalidParameters(array $errors): array;
 }

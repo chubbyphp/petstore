@@ -12,20 +12,17 @@ use Slim\Psr7\Factory\StreamFactory;
 
 final class ApiHttpServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container['api-http.response.factory'] = function () {
+        $container['api-http.response.factory'] = static function () {
             return new ResponseFactory();
         };
 
-        $container['api-http.stream.factory'] = function () {
+        $container['api-http.stream.factory'] = static function () {
             return new StreamFactory();
         };
 
-        $container[InvalidParametersFactory::class] = function () {
+        $container[InvalidParametersFactory::class] = static function () {
             return new InvalidParametersFactory();
         };
     }

@@ -14,12 +14,9 @@ use Pimple\ServiceProviderInterface;
 
 final class MiddlewareServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container[AcceptAndContentTypeMiddleware::class] = function () use ($container) {
+        $container[AcceptAndContentTypeMiddleware::class] = static function () use ($container) {
             return new AcceptAndContentTypeMiddleware(
                 $container['negotiator.acceptNegotiator'],
                 $container['negotiator.contentTypeNegotiator'],
@@ -27,7 +24,7 @@ final class MiddlewareServiceProvider implements ServiceProviderInterface
             );
         };
 
-        $container[CorsMiddleware::class] = function () use ($container) {
+        $container[CorsMiddleware::class] = static function () use ($container) {
             $allowOrigins = [];
             foreach ($container['cors']['allow-origin'] as $allowOrigin => $class) {
                 $allowOrigins[] = new $class($allowOrigin);

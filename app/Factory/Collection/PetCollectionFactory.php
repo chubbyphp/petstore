@@ -11,7 +11,7 @@ use App\Factory\CollectionFactoryInterface;
 final class PetCollectionFactory implements CollectionFactoryInterface
 {
     /**
-     * @return CollectionInterface
+     * @return PetCollection|CollectionInterface
      */
     public function create(): CollectionInterface
     {

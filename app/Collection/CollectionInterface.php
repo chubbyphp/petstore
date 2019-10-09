@@ -8,65 +8,47 @@ use App\Model\ModelInterface;
 
 interface CollectionInterface
 {
-    const LIMIT = 20;
+    public const LIMIT = 20;
 
-    /**
-     * @param int $offset
-     */
-    public function setOffset(int $offset);
+    public function setOffset(int $offset): void;
 
-    /**
-     * @return int
-     */
     public function getOffset(): int;
 
-    /**
-     * @param int $limit
-     */
-    public function setLimit(int $limit);
+    public function setLimit(int $limit): void;
 
-    /**
-     * @return int
-     */
     public function getLimit(): int;
 
     /**
-     * @param string[] $filters
+     * @param array<string, string> $filters
      */
-    public function setFilters(array $filters);
+    public function setFilters(array $filters): void;
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function getFilters(): array;
 
     /**
-     * @param string[] $sort
+     * @param array<string, string> $sort
      */
-    public function setSort(array $sort);
+    public function setSort(array $sort): void;
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function getSort(): array;
 
-    /**
-     * @param int $count
-     */
     public function setCount(int $count): void;
 
-    /**
-     * @return int
-     */
     public function getCount(): int;
 
     /**
-     * @param ModelInterface[] $items
+     * @param array<ModelInterface> $items
      */
     public function setItems(array $items): void;
 
     /**
-     * @return ModelInterface[]
+     * @return array<ModelInterface>
      */
     public function getItems(): array;
 }

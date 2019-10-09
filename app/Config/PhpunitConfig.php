@@ -18,9 +18,6 @@ class PhpunitConfig extends DevConfig
         return $config;
     }
 
-    /**
-     * @return string
-     */
     protected function getEnv(): string
     {
         return 'phpunit';

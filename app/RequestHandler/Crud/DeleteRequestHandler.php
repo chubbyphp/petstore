@@ -23,10 +23,6 @@ final class DeleteRequestHandler implements RequestHandlerInterface
      */
     private $responseManager;
 
-    /**
-     * @param RepositoryInterface      $repository
-     * @param ResponseManagerInterface $responseManager
-     */
     public function __construct(
         RepositoryInterface $repository,
         ResponseManagerInterface $responseManager
@@ -35,11 +31,6 @@ final class DeleteRequestHandler implements RequestHandlerInterface
         $this->responseManager = $responseManager;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getAttribute('id');

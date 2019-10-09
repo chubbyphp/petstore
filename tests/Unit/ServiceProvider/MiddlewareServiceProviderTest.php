@@ -36,7 +36,7 @@ final class MiddlewareServiceProviderTest extends TestCase
                 'allow-headers' => [],
                 'allow-credentials' => false,
                 'expose-headers' => [],
-                'max-age' => 600
+                'max-age' => 600,
             ],
             'negotiator.acceptNegotiator' => $this->getMockByCalls(AcceptNegotiatorInterface::class),
             'negotiator.contentTypeNegotiator' => $this->getMockByCalls(ContentTypeNegotiatorInterface::class),

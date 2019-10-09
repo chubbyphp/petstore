@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class YamlRequestHandler implements RequestHandlerInterface
+final class YamlRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -22,21 +22,12 @@ class YamlRequestHandler implements RequestHandlerInterface
      */
     private $streamFactory;
 
-    /**
-     * @param ResponseFactoryInterface $responseFactory
-     * @param StreamFactoryInterface   $streamFactory
-     */
     public function __construct(ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory)
     {
         $this->responseFactory = $responseFactory;
         $this->streamFactory = $streamFactory;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->responseFactory

@@ -22,9 +22,6 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
      */
     protected $router;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
@@ -33,7 +30,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     /**
      * @param string $path
      *
-     * @return NormalizationFieldMappingInterface[]
+     * @return array<NormalizationFieldMappingInterface>
      */
     public function getNormalizationFieldMappings(string $path): array
     {
@@ -49,7 +46,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     /**
      * @param string $path
      *
-     * @return NormalizationFieldMappingInterface[]
+     * @return array<NormalizationFieldMappingInterface>
      */
     public function getNormalizationEmbeddedFieldMappings(string $path): array
     {
@@ -61,7 +58,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     /**
      * @param string $path
      *
-     * @return NormalizationLinkMappingInterface[]
+     * @return array<NormalizationLinkMappingInterface>
      */
     public function getNormalizationLinkMappings(string $path): array
     {
@@ -73,7 +70,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                         $queryParams = $request->getQueryParams();
                     }
 
-                    /** @var array<string, mixed> */
+                    /** @var array<string, array|string|float|int|bool> $queryParams */
                     $queryParams = array_merge($queryParams, [
                         'offset' => $collection->getOffset(),
                         'limit' => $collection->getLimit(),
@@ -99,13 +96,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
         ];
     }
 
-    /**
-     * @return string
-     */
     abstract protected function getListRouteName(): string;
 
-    /**
-     * @return string
-     */
     abstract protected function getCreateRouteName(): string;
 }

@@ -12,21 +12,12 @@ use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 
 final class PetCollectionMapping implements DenormalizationObjectMappingInterface
 {
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return PetCollection::class;
     }
 
-    /**
-     * @param string      $path
-     * @param string|null $type
-     *
-     * @return callable
-     */
-    public function getDenormalizationFactory(string $path, string $type = null): callable
+    public function getDenormalizationFactory(string $path, ?string $type = null): callable
     {
         return function () {
             $class = $this->getClass();
@@ -39,9 +30,9 @@ final class PetCollectionMapping implements DenormalizationObjectMappingInterfac
      * @param string      $path
      * @param string|null $type
      *
-     * @return DenormalizationFieldMappingInterface[]
+     * @return array<DenormalizationFieldMappingInterface>
      */
-    public function getDenormalizationFieldMappings(string $path, string $type = null): array
+    public function getDenormalizationFieldMappings(string $path, ?string $type = null): array
     {
         return [
             DenormalizationFieldMappingBuilder::createConvertType('offset', ConvertTypeFieldDenormalizer::TYPE_INT)

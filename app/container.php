@@ -38,7 +38,7 @@ $configProvider = new ConfigProvider(__DIR__.'/..', [
 
 $container = new Container(['env' => $env ?? 'dev']);
 
-$container[PsrContainer::class] = function () use ($container) {
+$container[PsrContainer::class] = static function () use ($container) {
     return new PsrContainer($container);
 };
 

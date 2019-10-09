@@ -21,9 +21,6 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
      */
     protected $router;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
@@ -32,7 +29,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
     /**
      * @param string $path
      *
-     * @return NormalizationFieldMappingInterface[]
+     * @return array<NormalizationFieldMappingInterface>
      */
     public function getNormalizationFieldMappings(string $path): array
     {
@@ -46,7 +43,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
     /**
      * @param string $path
      *
-     * @return NormalizationFieldMappingInterface[]
+     * @return array<NormalizationFieldMappingInterface>
      */
     public function getNormalizationEmbeddedFieldMappings(string $path): array
     {
@@ -56,7 +53,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
     /**
      * @param string $path
      *
-     * @return NormalizationLinkMappingInterface[]
+     * @return array<NormalizationLinkMappingInterface>
      */
     public function getNormalizationLinkMappings(string $path): array
     {
@@ -97,18 +94,9 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
         ];
     }
 
-    /**
-     * @return string
-     */
     abstract protected function getReadRouteName(): string;
 
-    /**
-     * @return string
-     */
     abstract protected function getUpdateRouteName(): string;
 
-    /**
-     * @return string
-     */
     abstract protected function getDeleteRouteName(): string;
 }

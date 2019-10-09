@@ -8,4 +8,4 @@ $env = 'phpunit';
 
 /** @var Chubbyphp\Framework\Application $web */
 $web = require __DIR__ . '/../app/web.php';
-$web->send($web->handle((new ServerRequestFactory)->createFromGlobals()));
+$web->send($web->handle((new ServerRequestFactory())->createFromGlobals()));

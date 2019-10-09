@@ -19,17 +19,17 @@ abstract class AbstractCollection implements CollectionInterface
     protected $limit = self::LIMIT;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $filters = [];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $sort = [];
 
     /**
-     * @var ModelInterface[]
+     * @var array<ModelInterface>
      */
     protected $items = [];
 
@@ -38,40 +38,28 @@ abstract class AbstractCollection implements CollectionInterface
      */
     protected $count = 0;
 
-    /**
-     * @param int $offset
-     */
     public function setOffset(int $offset): void
     {
         $this->offset = $offset;
     }
 
-    /**
-     * @return int
-     */
     public function getOffset(): int
     {
         return $this->offset;
     }
 
-    /**
-     * @param int $limit
-     */
     public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }
 
-    /**
-     * @return int
-     */
     public function getLimit(): int
     {
         return $this->limit;
     }
 
     /**
-     * @param string[] $filters
+     * @param array<string, string> $filters
      */
     public function setFilters(array $filters): void
     {
@@ -79,7 +67,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function getFilters(): array
     {
@@ -87,7 +75,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @param string[] $sort
+     * @param array<string, string> $sort
      */
     public function setSort(array $sort): void
     {
@@ -95,31 +83,25 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function getSort(): array
     {
         return $this->sort;
     }
 
-    /**
-     * @param int $count
-     */
     public function setCount(int $count): void
     {
         $this->count = $count;
     }
 
-    /**
-     * @return int
-     */
     public function getCount(): int
     {
         return $this->count;
     }
 
     /**
-     * @param ModelInterface[] $items
+     * @param array<ModelInterface> $items
      */
     public function setItems(array $items): void
     {
@@ -127,7 +109,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @return ModelInterface[]
+     * @return array<ModelInterface>
      */
     public function getItems(): array
     {

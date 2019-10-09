@@ -28,12 +28,9 @@ use Pimple\ServiceProviderInterface;
 
 final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container[ExceptionMiddleware::class] = function () use ($container) {
+        $container[ExceptionMiddleware::class] = static function () use ($container) {
             return new ExceptionMiddleware(
                 $container['api-http.response.factory'],
                 $container['debug'],
@@ -41,15 +38,15 @@ final class ChubbyphpFrameworkProvider implements ServiceProviderInterface
             );
         };
 
-        $container[RouterMiddleware::class] = function () use ($container) {
+        $container[RouterMiddleware::class] = static function () use ($container) {
             return new RouterMiddleware($container[FastRouteRouter::class], $container['api-http.response.factory']);
         };
 
-        $container[FastRouteRouter::class] = function () use ($container) {
+        $container[FastRouteRouter::class] = static function () use ($container) {
             return new FastRouteRouter($container['routes'], $container['routerCacheFile']);
         };
 
-        $container['routes'] = function () use ($container) {
+        $container['routes'] = static function () use ($container) {
             $acceptAndContentTypeMiddleware = new LazyMiddleware(
                 $container[PsrContainer::class],
                 AcceptAndContentTypeMiddleware::class

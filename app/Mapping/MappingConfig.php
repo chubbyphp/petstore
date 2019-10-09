@@ -12,13 +12,13 @@ final class MappingConfig
     private $mappingClass;
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     private $dependencies = [];
 
     /**
-     * @param string   $mappingClass
-     * @param string[] $dependencies
+     * @param string        $mappingClass
+     * @param array<string> $dependencies
      */
     public function __construct(string $mappingClass, array $dependencies = [])
     {
@@ -29,25 +29,19 @@ final class MappingConfig
         }
     }
 
-    /**
-     * @return string
-     */
     public function getMappingClass(): string
     {
         return $this->mappingClass;
     }
 
     /**
-     * @return array
+     * @return array<string>
      */
     public function getDependencies(): array
     {
         return $this->dependencies;
     }
 
-    /**
-     * @param string $dependency
-     */
     private function addDependency(string $dependency): void
     {
         $this->dependencies[] = $dependency;

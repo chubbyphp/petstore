@@ -25,12 +25,9 @@ use Pimple\ServiceProviderInterface;
 
 final class ConsoleServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container['console.commands'] = function () use ($container) {
+        $container['console.commands'] = static function () use ($container) {
             return [
                 new CleanDirectoriesCommand($container['chubbyphp.config.directories']),
 

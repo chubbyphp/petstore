@@ -13,15 +13,15 @@ use Chubbyphp\Validation\ValidatorLogicException;
 
 final class SortConstraint implements ConstraintInterface
 {
-    const ALLOWED_ORDERS = ['asc', 'desc'];
+    private const ALLOWED_ORDERS = ['asc', 'desc'];
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     private $allowedFields;
 
     /**
-     * @param array $allowedFields
+     * @param array<string> $allowedFields
      */
     public function __construct(array $allowedFields)
     {
@@ -36,13 +36,13 @@ final class SortConstraint implements ConstraintInterface
      *
      * @throws ValidatorLogicException
      *
-     * @return ErrorInterface[]
+     * @return array<ErrorInterface>
      */
     public function validate(
         string $path,
         $sort,
         ValidatorContextInterface $context,
-        ValidatorInterface $validator = null
+        ?ValidatorInterface $validator = null
     ): array {
         if (!is_array($sort)) {
             return [new Error(

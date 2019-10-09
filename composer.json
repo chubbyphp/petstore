@@ -1,5 +1,6 @@
 {
     "name": "chubbyphp/petstore",
+    "description": "A simple skeleton to build api's based on the chubbyphp-framework.",
     "type": "project",
     "license": "MIT",
     "require": {
@@ -28,6 +29,8 @@
         "chubbyphp/chubbyphp-mock": "^1.4.1",
         "friendsofphp/php-cs-fixer": "^2.15.3",
         "infection/infection": "^0.14.1",
+        "nunomaduro/phpinsights": "^1.9",
+        "phploc/phploc": "^5.0",
         "phpstan/phpstan": "^0.11.16",
         "phpunit/phpunit": "^8.4.1",
         "symfony/yaml": "^4.3.5"

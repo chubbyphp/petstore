@@ -9,16 +9,13 @@ use Pimple\ServiceProviderInterface;
 
 final class NegotiationServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
-        $container['negotiator.acceptNegotiator.values'] = function () use ($container) {
+        $container['negotiator.acceptNegotiator.values'] = static function () use ($container) {
             return $container['serializer']->getContentTypes();
         };
 
-        $container['negotiator.contentTypeNegotiator.values'] = function () use ($container) {
+        $container['negotiator.contentTypeNegotiator.values'] = static function () use ($container) {
             return $container['deserializer']->getContentTypes();
         };
     }

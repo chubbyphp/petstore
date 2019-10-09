@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class PingRequestHandler implements RequestHandlerInterface
+final class PingRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -22,10 +22,6 @@ class PingRequestHandler implements RequestHandlerInterface
      */
     private $serializer;
 
-    /**
-     * @param ResponseFactoryInterface $responseFactory
-     * @param SerializerInterface      $serializer
-     */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         SerializerInterface $serializer
@@ -34,11 +30,6 @@ class PingRequestHandler implements RequestHandlerInterface
         $this->serializer = $serializer;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $accept = $request->getAttribute('accept');

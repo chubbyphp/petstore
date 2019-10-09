@@ -23,10 +23,8 @@ $container->register(new MiddlewareServiceProvider());
 $container->register(new RequestHandlerServiceProvider());
 $container->register(new ChubbyphpFrameworkProvider());
 
-$web = new Application([
+return new Application([
     new LazyMiddleware($container[PsrContainer::class], ExceptionMiddleware::class),
     new LazyMiddleware($container[PsrContainer::class], CorsMiddleware::class),
     new LazyMiddleware($container[PsrContainer::class], RouterMiddleware::class),
 ]);
-
-return $web;

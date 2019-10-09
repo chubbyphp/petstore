@@ -11,16 +11,13 @@ use App\Model\Pet;
 final class PetFactory implements ModelFactoryInterface
 {
     /**
-     * @return ModelInterface
+     * @return Pet|ModelInterface
      */
     public function create(): ModelInterface
     {
         return new Pet();
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return Pet::class;

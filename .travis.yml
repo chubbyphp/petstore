@@ -28,6 +28,11 @@ before_script:
 
 script:
   - phpdbg -qrr vendor/bin/phpunit --testsuite=Unit --coverage-text --verbose
-  - phpdbg -qrr vendor/bin/phpunit --testsuite=Integration --coverage-text --verbose
+  - phpdbg -qrr vendor/bin/phpunit --testsuite=Integration --verbose
   - phpdbg -qrr vendor/bin/infection --threads=$(nproc) --min-msi=86 --verbose
   - vendor/bin/phpstan analyse
+  - vendor/bin/phploc app --verbose
+  - vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation
+  - if [ -z "$dependencies" ]; then vendor/bin/phpinsights analyse --no-interaction --min-quality=94; fi;
+  - if [ "$dependencies" = "highest" ]; then vendor/bin/phpinsights analyse --no-interaction --min-quality=94; fi;
+  - if [ "$dependencies" = "lowest" ]; then vendor/bin/phpinsights analyse --no-interaction --min-quality=94 --disable-security-check; fi;

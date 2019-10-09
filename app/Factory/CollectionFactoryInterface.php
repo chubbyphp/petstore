@@ -8,8 +8,5 @@ use App\Collection\CollectionInterface;
 
 interface CollectionFactoryInterface
 {
-    /**
-     * @return CollectionInterface
-     */
     public function create(): CollectionInterface;
 }

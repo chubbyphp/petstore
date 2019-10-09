@@ -18,9 +18,6 @@ final class PetRepository implements RepositoryInterface
      */
     private $entityManager;
 
-    /**
-     * @param EntityManager $entityManager
-     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -45,30 +42,30 @@ final class PetRepository implements RepositoryInterface
         /** @var EntityRepository $entityRepository */
         $entityRepository = $this->entityManager->getRepository(Pet::class);
 
-        $qb = $entityRepository->createQueryBuilder('p');
+        $queryBuilder = $entityRepository->createQueryBuilder('p');
 
         $filters = $petCollection->getFilters();
 
         if (isset($filters['name'])) {
-            $qb->andWhere($qb->expr()->like('p.name', ':name'));
-            $qb->setParameter('name', '%'.$filters['name'].'%');
+            $queryBuilder->andWhere($queryBuilder->expr()->like('p.name', ':name'));
+            $queryBuilder->setParameter('name', '%'.$filters['name'].'%');
         }
 
-        $countQb = clone $qb;
-        $countQb->select($qb->expr()->count('p.id'));
+        $countQueryBuilder = clone $queryBuilder;
+        $countQueryBuilder->select($queryBuilder->expr()->count('p.id'));
 
-        $petCollection->setCount((int) $countQb->getQuery()->getSingleScalarResult());
+        $petCollection->setCount((int) $countQueryBuilder->getQuery()->getSingleScalarResult());
 
-        $itemsQb = clone $qb;
+        $itemsQueryBuilder = clone $queryBuilder;
 
         foreach ($petCollection->getSort() as $field => $order) {
-            $itemsQb->addOrderBy(sprintf('p.%s', $field), $order);
+            $itemsQueryBuilder->addOrderBy(sprintf('p.%s', $field), $order);
         }
 
-        $itemsQb->setFirstResult($petCollection->getOffset());
-        $itemsQb->setMaxResults($petCollection->getLimit());
+        $itemsQueryBuilder->setFirstResult($petCollection->getOffset());
+        $itemsQueryBuilder->setMaxResults($petCollection->getLimit());
 
-        $petCollection->setItems($itemsQb->getQuery()->getResult());
+        $petCollection->setItems($itemsQueryBuilder->getQuery()->getResult());
     }
 
     /**
@@ -78,10 +75,7 @@ final class PetRepository implements RepositoryInterface
      */
     public function findById(string $id): ?ModelInterface
     {
-        /** @var Pet|ModelInterface|null */
-        $pet = $this->entityManager->find(Pet::class, $id);
-
-        return $pet;
+        return $this->entityManager->find(Pet::class, $id);
     }
 
     /**

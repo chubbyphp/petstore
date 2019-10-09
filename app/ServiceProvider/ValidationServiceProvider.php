@@ -16,9 +16,6 @@ use Pimple\ServiceProviderInterface;
 
 final class ValidationServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $container
-     */
     public function register(Container $container): void
     {
         $container['validator.mappingConfigs'] = [
@@ -41,12 +38,6 @@ final class ValidationServiceProvider implements ServiceProviderInterface
         };
     }
 
-    /**
-     * @param Container     $container
-     * @param MappingConfig $mappingConfig
-     *
-     * @return ValidationMappingProviderInterface
-     */
     private function resolve(Container $container, MappingConfig $mappingConfig): ValidationMappingProviderInterface
     {
         $mappingClass = $mappingConfig->getMappingClass();

@@ -22,28 +22,38 @@ class InvalidParametersFactoryTest extends TestCase
 
     public function testCreateResponse(): void
     {
-        /** @var ErrorInterface|MockObject $error */
-        $error = $this->getMockByCalls(ErrorInterface::class, [
-            Call::create('getPath')->with()->willReturn('path.to.property'),
+        /** @var ErrorInterface|MockObject $error1 */
+        $error1 = $this->getMockByCalls(ErrorInterface::class, [
+            Call::create('getPath')->with()->willReturn('path.to.property1'),
             Call::create('getKey')->with()->willReturn('constraint.numericrange.outofrange'),
             Call::create('getArguments')
                 ->with()
                 ->willReturn(['value' => 5, 'min' => 2, 'max' => 4]),
         ]);
 
+        /** @var ErrorInterface|MockObject $error2 */
+        $error2 = $this->getMockByCalls(ErrorInterface::class, [
+            Call::create('getPath')->with()->willReturn('path.to.property2'),
+            Call::create('getKey')->with()->willReturn('constraint.type.invalidtype'),
+            Call::create('getArguments')
+                ->with()
+                ->willReturn(['type' => 'string', 'wishedType' => 'int']),
+        ]);
+
         $factory = new InvalidParametersFactory();
 
-        $invalidParameters = $factory->createInvalidParameters([$error]);
+        $invalidParameters = $factory->createInvalidParameters([$error1, $error2]);
 
         self::assertSame([
             [
-                'name' => 'path.to.property',
+                'name' => 'path.to.property1',
                 'reason' => 'constraint.numericrange.outofrange',
-                'details' => [
-                    'value' => 5,
-                    'min' => 2,
-                    'max' => 4,
-                ],
+                'details' => ['value' => 5, 'min' => 2, 'max' => 4],
+            ],
+            [
+                'name' => 'path.to.property2',
+                'reason' => 'constraint.type.invalidtype',
+                'details' => ['type' => 'string', 'wishedType' => 'int'],
             ],
         ], $invalidParameters);
     }

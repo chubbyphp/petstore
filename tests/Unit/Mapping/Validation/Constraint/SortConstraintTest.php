@@ -82,15 +82,25 @@ final class SortConstraintTest extends TestCase
                 new Error(
                     'path',
                     'constraint.sort.field.notallowed',
-                    ['field' => 'unknown', 'allowedFields' => ['name']]
+                    ['field' => 'unknown1', 'allowedFields' => ['name']]
                 ),
                 new Error(
                     'path',
                     'constraint.sort.order.invalidtype',
-                    ['field' => 'unknown', 'type' => \stdClass::class]
+                    ['field' => 'unknown1', 'type' => \stdClass::class]
+                ),
+                new Error(
+                    'path',
+                    'constraint.sort.field.notallowed',
+                    ['field' => 'unknown2', 'allowedFields' => ['name']]
+                ),
+                new Error(
+                    'path',
+                    'constraint.sort.order.invalidtype',
+                    ['field' => 'unknown2', 'type' => 'integer']
                 ),
             ],
-            $constraint->validate('path', ['name' => 'asc', 'unknown' => new \stdClass()], $context)
+            $constraint->validate('path', ['name' => 'asc', 'unknown1' => new \stdClass(), 'unknown2' => 1], $context)
         );
     }
 

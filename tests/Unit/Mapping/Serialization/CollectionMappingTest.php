@@ -77,7 +77,7 @@ class CollectionMappingTest extends TestCase
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class, [
             Call::create('generatePath')
-                ->with($this->getListRoute(), [], ['offset' => 0, 'limit' => 20])
+                ->with($this->getListRoute(), [], ['key' => 'value', 'offset' => 0, 'limit' => 20])
                 ->willReturn(sprintf('%s?offset=0&limit=20', $this->getCollectionPath())),
             Call::create('generatePath')
                 ->with($this->getCreateRoute(), [], [])
@@ -102,7 +102,7 @@ class CollectionMappingTest extends TestCase
 
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getQueryParams')->with()->willReturn([]),
+            Call::create('getQueryParams')->with()->willReturn(['key' => 'value']),
         ]);
 
         /** @var NormalizerContextInterface|MockObject $context */

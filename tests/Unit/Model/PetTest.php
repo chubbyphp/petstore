@@ -36,7 +36,13 @@ class PetTest extends TestCase
         self::assertSame('Lucas', $pet->getName());
         self::assertSame('2018 OHIO DOG 87123 LUCAS', $pet->getTag());
 
+        $id = $pet->getId();
+        $createdAt = $pet->getCreatedAt();
+
         $pet->reset();
+
+        self::assertSame($id, $pet->getId());
+        self::assertSame($createdAt, $pet->getCreatedAt());
 
         self::assertNull($pet->getUpdatedAt());
         self::assertNull($pet->getTag());

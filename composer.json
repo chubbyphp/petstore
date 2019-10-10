@@ -40,5 +40,23 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "test:unit": "phpdbg -qrr vendor/bin/phpunit --testsuite=Unit --coverage-text --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/phpunit.junit.xml",
+        "test:integration": "vendor/bin/phpunit --testsuite=Integration",
+        "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=86 --verbose --coverage=build/phpunit",
+        "test:static-analysis": "vendor/bin/phpstan analyse",
+        "test:loc": "vendor/bin/phploc app --verbose",
+        "test:cs": "vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation",
+        "test:insights": "vendor/bin/phpinsights analyse --no-interaction --min-quality=94 --disable-security-check",
+        "test": [
+            "@test:unit",
+            "@test:integration",
+            "@test:infection",
+            "@test:static-analysis",
+            "@test:loc",
+            "@test:cs",
+            "@test:insights"
+        ]
     }
 }

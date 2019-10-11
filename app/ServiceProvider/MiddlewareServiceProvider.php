@@ -24,15 +24,19 @@ final class MiddlewareServiceProvider implements ServiceProviderInterface
             );
         };
 
-        $container[CorsMiddleware::class] = static function () use ($container) {
+        $container['allowOrigins'] = static function () use ($container) {
             $allowOrigins = [];
             foreach ($container['cors']['allow-origin'] as $allowOrigin => $class) {
                 $allowOrigins[] = new $class($allowOrigin);
             }
 
+            return $allowOrigins;
+        };
+
+        $container[CorsMiddleware::class] = static function () use ($container) {
             return new CorsMiddleware(
                 $container['api-http.response.factory'],
-                new OriginNegotiator($allowOrigins),
+                new OriginNegotiator($container['allowOrigins']),
                 new MethodNegotiator($container['cors']['allow-methods']),
                 new HeadersNegotiator($container['cors']['allow-headers']),
                 $container['cors']['expose-headers'],

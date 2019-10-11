@@ -8,6 +8,7 @@ use App\ServiceProvider\MiddlewareServiceProvider;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\Cors\CorsMiddleware;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginInterface;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
@@ -50,5 +51,12 @@ final class MiddlewareServiceProviderTest extends TestCase
 
         self::assertInstanceOf(AcceptAndContentTypeMiddleware::class, $container[AcceptAndContentTypeMiddleware::class]);
         self::assertInstanceOf(CorsMiddleware::class, $container[CorsMiddleware::class]);
+
+        /** @var array<int, AllowOriginInterface> $allowOrigins */
+        $allowOrigins = $container['allowOrigins'];
+
+        self::assertCount(1, $allowOrigins);
+
+        self::assertInstanceOf(AllowOriginRegex::class, array_shift($allowOrigins));
     }
 }

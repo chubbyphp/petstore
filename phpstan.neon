@@ -1,7 +1,4 @@
 parameters:
-    level: 7
-    paths:
-        - app
     ignoreErrors:
         -
             message: '#Method App\\Repository\\PetRepository\:\:findById\(\) should return App\\Model\\ModelInterface\|null but returns object\|null\.#'

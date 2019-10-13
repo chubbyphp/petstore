@@ -29,3 +29,6 @@ before_script:
 
 script:
   - composer test
+
+after_success:
+  - travis_retry composer test:coveralls

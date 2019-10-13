@@ -2,7 +2,7 @@ build:
     environment:
         timezone: 'Europe/Zurich'
         php:
-            version: '7.3'
+            version: '7.2'
             ini:
                 'date.timezone': 'Europe/Zurich'
     nodes:
@@ -15,6 +15,10 @@ build:
                 command: PGPASSWORD=scrutinizer psql --host=127.0.0.1 --port=5432 --username=scrutinizer --command="CREATE USER root WITH ENCRYPTED PASSWORD 'root';"
             -
                 command: PGPASSWORD=scrutinizer psql --host=127.0.0.1 --port=5432 --username=scrutinizer --command="ALTER USER root WITH SUPERUSER;"
+            -
+                command: composer self-update -q
+            -
+                command: composer global require hirak/prestissimo
         override:
             -
                 command: 'vendor/bin/phpunit --testsuite=Unit --coverage-clover=coverage/clover.xml'

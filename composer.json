@@ -47,15 +47,19 @@
         "sort-packages": true
     },
     "scripts": {
+        "config:clean-directories": "bin/console config:clean-directories cache log",
+        "database:create": "bin/console dbal:database:create --if-not-exists",
+        "database:drop": "bin/console dbal:database:drop --if-exists --force",
+        "database:schema:update": "bin/console orm:schema-tool:update --complete --force --dump-sql",
+        "database:schema:validate": "bin/console orm:validate-schema",
         "fix:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --cache-file=build/phpcs.cache",
-        "test:lint": "mkdir -p build && find app tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",
-        "test:unit": "phpdbg -qrr vendor/bin/phpunit --testsuite=Unit --coverage-text --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/phpunit.junit.xml --cache-result-file=build/phpunit/phpunit.result.cache",
-        "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/phpunit.result.cache",
-        "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=88 --verbose --coverage=build/phpunit",
-        "test:static-analysis": "mkdir -p build && bash -c 'vendor/bin/phpstan analyse app --no-progress --level=7 --error-format=junit | tee build/phpstan.junit.xml; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
-        "test:loc": "mkdir -p build && vendor/bin/phploc app --verbose | tee build/phploc.log",
-        "test:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
-        "test:insights": "mkdir -p build && bash -c 'vendor/bin/phpinsights analyse -v --no-interaction --min-quality=94 --disable-security-check | tee build/phpinsights.log; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
+        "setup-dev": [
+            "@database:drop --env=dev",
+            "@database:create --env=dev",
+            "@database:schema:update --env=dev",
+            "@database:schema:validate --env=dev",
+            "@config:clean-directories"
+        ],
         "test": [
             "@test:lint",
             "@test:unit",
@@ -65,6 +69,14 @@
             "@test:loc",
             "@test:cs",
             "@test:insights"
-        ]
+        ],
+        "test:lint": "mkdir -p build && find app tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",
+        "test:unit": "phpdbg -qrr vendor/bin/phpunit --testsuite=Unit --coverage-text --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/phpunit.junit.xml --cache-result-file=build/phpunit/phpunit.result.cache",
+        "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/phpunit.result.cache",
+        "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=88 --verbose --coverage=build/phpunit",
+        "test:static-analysis": "mkdir -p build && bash -c 'vendor/bin/phpstan analyse app --no-progress --level=7 --error-format=junit | tee build/phpstan.junit.xml; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
+        "test:loc": "mkdir -p build && vendor/bin/phploc app --verbose | tee build/phploc.log",
+        "test:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
+        "test:insights": "mkdir -p build && bash -c 'vendor/bin/phpinsights analyse -v --no-interaction --min-quality=94 --disable-security-check | tee build/phpinsights.log; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'"
     }
 }

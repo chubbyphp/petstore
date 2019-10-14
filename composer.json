@@ -71,7 +71,6 @@
             "@test:cs",
             "@test:insights"
         ],
-        "test:coveralls": "vendor/bin/php-coveralls",
         "test:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
         "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=88 --verbose --coverage=build/phpunit",
         "test:insights": "mkdir -p build && bash -c 'vendor/bin/phpinsights analyse -v --no-interaction --min-quality=94 --disable-security-check | tee build/phpinsights.log; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",

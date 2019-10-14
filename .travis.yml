@@ -8,11 +8,9 @@ matrix:
     - php: 7.2
       env: dependencies=lowest
     - php: 7.2
-      env: dependencies=highest
     - php: 7.3
       env: dependencies=lowest
     - php: 7.3
-      env: dependencies=highest
 
 before_script:
   - psql --username=postgres --command="CREATE USER root WITH ENCRYPTED PASSWORD 'root';"
@@ -23,12 +21,10 @@ before_script:
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update -q
   - composer global require hirak/prestissimo
-  - if [ -z "$dependencies" ]; then composer install; fi;
+  - if [ -z "$dependencies" ]; then composer update -n; fi;
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
-  - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
 
 script:
   - composer test
+  - vendor/bin/php-coveralls --coverage_clover=build/phpunit/phpunit.clover.xml --json_path=build/coveralls.json -v
 
-after_success:
-  - travis_retry composer test:coveralls

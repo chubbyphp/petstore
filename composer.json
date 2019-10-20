@@ -54,7 +54,7 @@
         "database:schema:update": "bin/console orm:schema-tool:update --complete --force --dump-sql",
         "database:schema:validate": "bin/console orm:validate-schema",
         "fix:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --cache-file=build/phpcs.cache",
-        "setup-dev": [
+        "setup:dev": [
             "@database:drop --env=dev",
             "@database:create --env=dev",
             "@database:schema:update --env=dev",

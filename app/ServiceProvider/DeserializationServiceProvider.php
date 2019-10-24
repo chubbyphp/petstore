@@ -9,6 +9,10 @@ use App\Mapping\Deserialization\PetCollectionMapping;
 use App\Mapping\Deserialization\PetMapping;
 use App\Mapping\MappingConfig;
 use App\Model\Pet;
+use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
 use Chubbyphp\Deserialization\Mapping\CallableDenormalizationObjectMapping;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 use Pimple\Container;
@@ -18,6 +22,17 @@ final class DeserializationServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container): void
     {
+        $container['deserializer.decodertypes'] = function () {
+            $decoderTypes = [];
+
+            $decoderTypes[] = new JsonTypeDecoder();
+            $decoderTypes[] = new JsonxTypeDecoder('application/jsonx+xml');
+            $decoderTypes[] = new UrlEncodedTypeDecoder();
+            $decoderTypes[] = new YamlTypeDecoder();
+
+            return $decoderTypes;
+        };
+
         $container['deserializer.mappingConfigs'] = [
             PetCollection::class => new MappingConfig(PetCollectionMapping::class),
             Pet::class => new MappingConfig(PetMapping::class),

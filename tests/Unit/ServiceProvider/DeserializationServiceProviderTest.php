@@ -6,6 +6,10 @@ namespace App\Tests\Unit\ServiceProvider;
 
 use App\Mapping\MappingConfig;
 use App\ServiceProvider\DeserializationServiceProvider;
+use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
 use Chubbyphp\Deserialization\Mapping\CallableDenormalizationObjectMapping;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +32,23 @@ final class DeserializationServiceProviderTest extends TestCase
 
         $serviceProvider = new DeserializationServiceProvider();
         $serviceProvider->register($container);
+
+        self::assertArrayHasKey('deserializer.decodertypes', $container);
+
+        $decoderTypes = $container['deserializer.decodertypes'];
+
+        self::assertCount(4, $decoderTypes);
+
+        self::assertInstanceOf(JsonTypeDecoder::class, array_shift($decoderTypes));
+
+        $jsonxTypeDecoder = array_shift($decoderTypes);
+
+        self::assertInstanceOf(JsonxTypeDecoder::class, $jsonxTypeDecoder);
+
+        self::assertSame('application/jsonx+xml', $jsonxTypeDecoder->getContentType());
+
+        self::assertInstanceOf(UrlEncodedTypeDecoder::class, array_shift($decoderTypes));
+        self::assertInstanceOf(YamlTypeDecoder::class, array_shift($decoderTypes));
 
         self::assertArrayHasKey('deserializer.denormalizer.objectmappings', $container);
 

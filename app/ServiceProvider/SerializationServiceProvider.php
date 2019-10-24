@@ -33,7 +33,7 @@ final class SerializationServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container): void
     {
-        $container['serializer.encodertypes'] = function () {
+        $container['serializer.encodertypes'] = static function () {
             $encoderTypes = [];
 
             $encoderTypes[] = new JsonTypeEncoder();

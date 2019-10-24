@@ -22,7 +22,7 @@ final class DeserializationServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container): void
     {
-        $container['deserializer.decodertypes'] = function () {
+        $container['deserializer.decodertypes'] = static function () {
             $decoderTypes = [];
 
             $decoderTypes[] = new JsonTypeDecoder();

@@ -12,6 +12,7 @@ RUN apt-get update -y && apt-get install -y \
     openssh-client \
     sudo \
     tzdata \
+    unzip \
     vim
 
 RUN locale-gen de_CH.UTF-8 && update-locale LANG=de_CH.UTF-8 LC_ALL=de_CH.UTF-8 \

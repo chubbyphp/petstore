@@ -35,33 +35,20 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 
 ## Environment
 
-### Vagrant
+### Docker
 
-There is a vagrant setup provided ([vagrant-php][2]) as a git submodule.
+Add the following environment variable to your system, for example within `~./bash_aliases`.
 
-#### Install
-
-```bash
-git submodule update --init -- vagrant-php
+```sh
+export USER_ID=$(id -u)
 ```
 
-#### Update
-
-```bash
-git submodule update --remote -- vagrant-php
+```sh
+docker-compose up -d
+docker-compose exec php bash
 ```
 
-#### Run
-
-```bash
-cd vagrant-php
-vagrant up
-vagrant ssh
-```
-
-#### Host
-
-https://petstore.development
+https://petstore.local:1337
 
 ## Installation
 
@@ -179,7 +166,6 @@ composer setup:dev
 Dominik Zogg 2018
 
 [1]: https://github.com/chubbyphp/chubbyphp-framework
-[2]: https://github.com/vagrant-php/ubuntu
 
 [3]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
 [4]: https://packagist.org/packages/chubbyphp/chubbyphp-config

@@ -45,7 +45,7 @@ final class PhpunitConfigTest extends TestCase
                     'charset' => 'utf8',
                     'dbname' => 'petstore_phpunit',
                     'driver' => 'pdo_pgsql',
-                    'host' => 'localhost',
+                    'host' => 'postgres',
                     'port' => 5432,
                     'password' => 'root',
                     'user' => 'root',

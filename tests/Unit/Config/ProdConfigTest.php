@@ -42,7 +42,7 @@ final class ProdConfigTest extends TestCase
                     'charset' => 'utf8',
                     'dbname' => 'petstore',
                     'driver' => 'pdo_pgsql',
-                    'host' => 'localhost',
+                    'host' => 'postgres',
                     'port' => 5432,
                     'password' => 'root',
                     'user' => 'root',

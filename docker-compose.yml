@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  php:
+    container_name: petstore-php
+    hostname: petstore-php
+    build:
+      dockerfile: ./dev/php/Dockerfile
+      context: ./docker
+      args:
+        HOST_USER_ID: ${USER_ID}
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
+    volumes:
+      - ./:/var/www/html
+      - ~/.bash_aliases:/var/www/.bash_aliases:rw
+      - ~/.bash_history:/var/www/.bash_history:rw
+      - $SSH_AUTH_SOCK:/ssh-agent
+    depends_on:
+      - postgres
+  postgres:
+    container_name: petstore-postgres
+    hostname: pestore-postgres
+    image: postgres:12
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+  nginx:
+    container_name: petstore-nginx
+    hostname: petstore-nginx
+    build:
+      dockerfile: ./dev/nginx/Dockerfile
+      context: ./docker
+    ports:
+      - "1337:443"
+    volumes:
+      - ./:/var/www/html

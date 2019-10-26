@@ -35,13 +35,22 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 
 ## Environment
 
-### Docker
-
-Add the following environment variable to your system, for example within `~./bash_aliases`.
+Add the following environment variable to your system, for example within `~./bash_aliases`:
 
 ```sh
+export GIT_AUTHOR_EMAIL='john.doe@gmail.com'
+export GIT_AUTHOR_NAME='John Doe'
+
 export USER_ID=$(id -u)
 ```
+
+Add the following to you `/etc/hosts`:
+
+```sh
+127.0.0.1 petstore.local
+```
+
+### Docker
 
 ```sh
 docker-compose up -d

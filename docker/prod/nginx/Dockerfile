@@ -17,6 +17,6 @@ RUN echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu eoan main" > /etc/apt
 
 RUN apt-get update -y && apt-get install -y nginx
 
-COPY dev/nginx/files /
+COPY prod/nginx/files /
 
 CMD ["nginx", "-g", "daemon off;"]

@@ -28,9 +28,11 @@ services:
     container_name: petstore-nginx
     hostname: petstore-nginx
     build:
-      dockerfile: ./dev/nginx/Dockerfile
+      dockerfile: ./prod/nginx/Dockerfile
       context: ./docker
     ports:
       - "1337:443"
     volumes:
       - ./:/var/www/html
+    depends_on:
+      - php

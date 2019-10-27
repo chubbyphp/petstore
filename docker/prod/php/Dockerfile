@@ -36,19 +36,9 @@ RUN apt-get update -y && apt-get install -y \
     php-apcu \
     php-ast
 
-COPY prod/php/files /
-COPY dev/php/files /
+COPY prod/nginx/files /
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
-
-ARG HOST_USER_ID
-
-RUN if [ -n "$HOST_USER_ID" ] && [ "$HOST_USER_ID" -lt 60001 ]; then \
-        usermod -u ${HOST_USER_ID} -o www-data; \
-    fi
-
-RUN usermod -s /bin/bash www-data && \
-    echo 'www-data ALL=(ALL) NOPASSWD: ALL' > '/etc/sudoers.d/www-data'
 
 RUN mkdir -p /var/www \
     && chown -R www-data:www-data /var/www \

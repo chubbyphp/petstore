@@ -12,9 +12,9 @@ services:
       SSH_AUTH_SOCK: /ssh-agent
     volumes:
       - ./:/var/www/html
-      - ~/.bash_aliases:/var/www/.bash_aliases:rw
-      - ~/.bash_history:/var/www/.bash_history:rw
-      - ~/.gitconfig:/var/www/.gitconfig:rw
+      - ~/.bash_aliases:/var/www/.bash_aliases
+      - ~/.bash_history:/var/www/.bash_history
+      - ~/.gitconfig:/var/www/.gitconfig
       - $SSH_AUTH_SOCK:/ssh-agent
     depends_on:
       - postgres

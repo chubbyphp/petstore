@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
-use App\Tests\PhpServerTestListener;
+use App\Tests\PhpServerTestHook;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractIntegrationTest extends TestCase
@@ -151,12 +151,12 @@ abstract class AbstractIntegrationTest extends TestCase
      */
     private function getEndpoint(): string
     {
-        $integrationEndpoint = getenv(PhpServerTestListener::ENV_INTEGRATION_ENDPOINT);
+        $integrationEndpoint = getenv(PhpServerTestHook::ENV_INTEGRATION_ENDPOINT);
 
         if (false !== $integrationEndpoint) {
             return $integrationEndpoint;
         }
 
-        return sprintf(self::DEFAULT_INTEGRATION_ENDPOINT, PhpServerTestListener::PHP_SERVER_PORT);
+        return sprintf(self::DEFAULT_INTEGRATION_ENDPOINT, PhpServerTestHook::PHP_SERVER_PORT);
     }
 }

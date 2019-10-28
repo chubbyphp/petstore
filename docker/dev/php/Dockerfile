@@ -52,6 +52,8 @@ RUN usermod -s /bin/bash www-data && \
 
 RUN mkdir -p /var/www \
     && chown -R www-data:www-data /var/www \
+    && touch /var/log/php-cli.err.log \
+    && chown www-data:www-data /var/log/php-cli.err.log
     && touch /var/log/php-fpm.log \
     && chown www-data:www-data /var/log/php-fpm.log \
     && touch /var/log/php-fpm.err.log \

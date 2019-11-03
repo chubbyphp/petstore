@@ -27,7 +27,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @internal
  */
-class CreateRequestHandlerTest extends TestCase
+final class CreateRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 

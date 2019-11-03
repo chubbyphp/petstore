@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @internal
  */
-class IndexRequestHandlerTest extends TestCase
+final class IndexRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 

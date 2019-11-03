@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class InvalidParametersFactoryTest extends TestCase
+final class InvalidParametersFactoryTest extends TestCase
 {
     use MockByCallsTrait;
 

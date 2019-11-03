@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class PetTest extends TestCase
+final class PetTest extends TestCase
 {
     public function testGetSet(): void
     {

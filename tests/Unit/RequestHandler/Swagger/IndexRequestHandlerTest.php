@@ -21,7 +21,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * @internal
  */
-class IndexRequestHandlerTest extends TestCase
+final class IndexRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 

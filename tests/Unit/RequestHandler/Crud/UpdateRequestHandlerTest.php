@@ -29,7 +29,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @internal
  */
-class UpdateRequestHandlerTest extends TestCase
+final class UpdateRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 

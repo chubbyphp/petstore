@@ -21,7 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @internal
  */
-class DeleteRequestHandlerTest extends TestCase
+final class DeleteRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 

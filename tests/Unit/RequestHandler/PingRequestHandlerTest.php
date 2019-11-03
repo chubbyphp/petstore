@@ -21,7 +21,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * @internal
  */
-class PingRequestHandlerTest extends TestCase
+final class PingRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 

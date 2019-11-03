@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class CollectionTest extends TestCase
+final class CollectionTest extends TestCase
 {
     public function testGetSet(): void
     {

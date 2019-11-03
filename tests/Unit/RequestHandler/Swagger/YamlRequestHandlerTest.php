@@ -21,7 +21,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * @internal
  */
-class YamlRequestHandlerTest extends TestCase
+final class YamlRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 

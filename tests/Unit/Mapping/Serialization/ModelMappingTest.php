@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class ModelMappingTest extends TestCase
+final class ModelMappingTest extends TestCase
 {
     use MockByCallsTrait;
 

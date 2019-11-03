@@ -21,8 +21,6 @@ final class PetMapping extends AbstractModelMapping
     }
 
     /**
-     * @param string $path
-     *
      * @return array<NormalizationFieldMappingInterface>
      */
     public function getNormalizationFieldMappings(string $path): array

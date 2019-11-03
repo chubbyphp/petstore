@@ -28,8 +28,6 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     }
 
     /**
-     * @param string $path
-     *
      * @return array<NormalizationFieldMappingInterface>
      */
     public function getNormalizationFieldMappings(string $path): array
@@ -44,8 +42,6 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     }
 
     /**
-     * @param string $path
-     *
      * @return array<NormalizationFieldMappingInterface>
      */
     public function getNormalizationEmbeddedFieldMappings(string $path): array
@@ -56,8 +52,6 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     }
 
     /**
-     * @param string $path
-     *
      * @return array<NormalizationLinkMappingInterface>
      */
     public function getNormalizationLinkMappings(string $path): array

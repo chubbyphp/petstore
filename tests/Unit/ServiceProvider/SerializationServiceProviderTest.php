@@ -92,9 +92,6 @@ final class SerializationServiceProviderTest extends TestCase
             {
             }
 
-            /**
-             * @return string
-             */
             public function getClass(): string
             {
                 return \stdClass::class;
@@ -109,8 +106,6 @@ final class SerializationServiceProviderTest extends TestCase
             }
 
             /**
-             * @param string $path
-             *
              * @return NormalizationFieldMappingInterface[]
              */
             public function getNormalizationFieldMappings(string $path): array
@@ -119,8 +114,6 @@ final class SerializationServiceProviderTest extends TestCase
             }
 
             /**
-             * @param string $path
-             *
              * @return NormalizationFieldMappingInterface[]
              */
             public function getNormalizationEmbeddedFieldMappings(string $path): array
@@ -129,8 +122,6 @@ final class SerializationServiceProviderTest extends TestCase
             }
 
             /**
-             * @param string $path
-             *
              * @return NormalizationLinkMappingInterface[]
              */
             public function getNormalizationLinkMappings(string $path): array

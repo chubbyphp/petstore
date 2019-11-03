@@ -18,8 +18,6 @@ abstract class AbstractConfig implements ConfigInterface
     }
 
     /**
-     * @param string $rootDir
-     *
      * @return self
      */
     public static function create(string $rootDir): ConfigInterface
@@ -30,9 +28,6 @@ abstract class AbstractConfig implements ConfigInterface
         return $config;
     }
 
-    /**
-     * @return array
-     */
     public function getDirectories(): array
     {
         return [

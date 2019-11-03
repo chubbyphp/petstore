@@ -58,17 +58,12 @@ final class ValidationServiceProviderTest extends TestCase
             {
             }
 
-            /**
-             * @return string
-             */
             public function getClass(): string
             {
                 return \stdClass::class;
             }
 
             /**
-             * @param string $path
-             *
              * @return ValidationClassMappingInterface|null
              */
             public function getValidationClassMapping(string $path)
@@ -76,8 +71,6 @@ final class ValidationServiceProviderTest extends TestCase
             }
 
             /**
-             * @param string $path
-             *
              * @return ValidationPropertyMappingInterface[]
              */
             public function getValidationPropertyMappings(string $path): array

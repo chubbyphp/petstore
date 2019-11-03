@@ -26,9 +26,6 @@ final class PetMapping implements ValidationMappingProviderInterface
     }
 
     /**
-     * @param string      $path
-     * @param string|null $type
-     *
      * @return array<ValidationPropertyMappingInterface>
      */
     public function getValidationPropertyMappings(string $path, ?string $type = null): array

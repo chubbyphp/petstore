@@ -79,21 +79,13 @@ final class DeserializationServiceProviderTest extends TestCase
             {
             }
 
-            /**
-             * @return string
-             */
             public function getClass(): string
             {
                 return \stdClass::class;
             }
 
             /**
-             * @param string      $path
-             * @param string|null $type
-             *
              * @throws DeserializerRuntimeException
-             *
-             * @return callable
              */
             public function getDenormalizationFactory(string $path, string $type = null): callable
             {
@@ -103,9 +95,6 @@ final class DeserializationServiceProviderTest extends TestCase
             }
 
             /**
-             * @param string      $path
-             * @param string|null $type
-             *
              * @throws DeserializerRuntimeException
              *
              * @return DenormalizationFieldMappingInterface[]

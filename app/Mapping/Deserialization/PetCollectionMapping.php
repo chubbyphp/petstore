@@ -27,9 +27,6 @@ final class PetCollectionMapping implements DenormalizationObjectMappingInterfac
     }
 
     /**
-     * @param string      $path
-     * @param string|null $type
-     *
      * @return array<DenormalizationFieldMappingInterface>
      */
     public function getDenormalizationFieldMappings(string $path, ?string $type = null): array

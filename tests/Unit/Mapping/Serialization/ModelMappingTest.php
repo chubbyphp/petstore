@@ -139,59 +139,36 @@ class ModelMappingTest extends TestCase
         ], $delete);
     }
 
-    /**
-     * @return string
-     */
     protected function getClass(): string
     {
         return ModelInterface::class;
     }
 
-    /**
-     * @return string
-     */
     protected function getNormalizationType(): string
     {
         return 'model';
     }
 
-    /**
-     * @return string
-     */
     protected function getReadRoute(): string
     {
         return 'model_read';
     }
 
-    /**
-     * @return string
-     */
     protected function getUpdateRoute(): string
     {
         return 'model_update';
     }
 
-    /**
-     * @return string
-     */
     protected function getDeleteRoute(): string
     {
         return 'model_delete';
     }
 
-    /**
-     * @return string
-     */
     protected function getModelPath(): string
     {
         return '/api/collection/%s';
     }
 
-    /**
-     * @param RouterInterface $router
-     *
-     * @return AbstractModelMapping
-     */
     protected function getModelMapping(RouterInterface $router): AbstractModelMapping
     {
         return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getReadRoute(), $this->getUpdateRoute(), $this->getDeleteRoute()) extends AbstractModelMapping {
@@ -215,14 +192,6 @@ class ModelMappingTest extends TestCase
              */
             private $createRouteName;
 
-            /**
-             * @param RouterInterface $router
-             * @param string          $class
-             * @param string          $normalizationType
-             * @param string          $readRouteName
-             * @param string          $updateRouteName
-             * @param string          $deleteRouteName
-             */
             public function __construct(
                 RouterInterface $router,
                 string $class,
@@ -240,41 +209,26 @@ class ModelMappingTest extends TestCase
                 $this->deleteRouteName = $deleteRouteName;
             }
 
-            /**
-             * @return string
-             */
             public function getClass(): string
             {
                 return $this->class;
             }
 
-            /**
-             * @return string
-             */
             public function getNormalizationType(): string
             {
                 return $this->normalizationType;
             }
 
-            /**
-             * @return string
-             */
             protected function getReadRouteName(): string
             {
                 return $this->readRouteName;
             }
 
-            /**
-             * @return string
-             */
             protected function getUpdateRouteName(): string
             {
                 return $this->updateRouteName;
             }
 
-            /**
-             * @return string
-             */
             protected function getDeleteRouteName(): string
             {
                 return $this->deleteRouteName;

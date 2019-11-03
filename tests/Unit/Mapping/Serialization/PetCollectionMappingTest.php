@@ -16,51 +16,31 @@ use Chubbyphp\Framework\Router\RouterInterface;
  */
 final class PetCollectionMappingTest extends CollectionMappingTest
 {
-    /**
-     * @return string
-     */
     protected function getClass(): string
     {
         return PetCollection::class;
     }
 
-    /**
-     * @return string
-     */
     protected function getNormalizationType(): string
     {
         return 'petCollection';
     }
 
-    /**
-     * @return string
-     */
     protected function getListRoute(): string
     {
         return 'pet_list';
     }
 
-    /**
-     * @return string
-     */
     protected function getCreateRoute(): string
     {
         return 'pet_create';
     }
 
-    /**
-     * @return string
-     */
     protected function getCollectionPath(): string
     {
         return '/api/pets';
     }
 
-    /**
-     * @param RouterInterface $router
-     *
-     * @return AbstractCollectionMapping
-     */
     protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
     {
         return new PetCollectionMapping($router);

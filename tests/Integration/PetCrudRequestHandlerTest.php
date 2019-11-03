@@ -591,9 +591,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         self::assertSame(204, $response['status']['code']);
     }
 
-    /**
-     * @return array
-     */
     private function create(): array
     {
         $response = $this->httpRequest(
@@ -617,11 +614,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         return $pet;
     }
 
-    /**
-     * @param array $pet
-     * @param array $expectedValues
-     * @param bool  $updated
-     */
     private static function assertPet(array $pet, array $expectedValues, bool $updated): void
     {
         self::assertArrayHasKey('id', $pet);

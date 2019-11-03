@@ -103,9 +103,6 @@ final class UpdateRequestHandler implements RequestHandlerInterface
 
     /**
      * @param array<ErrorInterface> $errors
-     * @param string                $accept
-     *
-     * @return ResponseInterface
      */
     private function createValidationErrorResponse(array $errors, string $accept): ResponseInterface
     {

@@ -23,9 +23,6 @@ final class PhpServerTestHook implements BeforeTestHook
         }
     }
 
-    /**
-     * @param string $test
-     */
     public function executeBeforeTest(string $test): void
     {
         if (null !== $this->serverPid) {
@@ -44,11 +41,6 @@ final class PhpServerTestHook implements BeforeTestHook
         $this->startServer();
     }
 
-    /**
-     * @param string $test
-     *
-     * @return bool
-     */
     private function isIntegrationTest(string $test): bool
     {
         return 0 === strpos($test, 'App\\Tests\\Integration');

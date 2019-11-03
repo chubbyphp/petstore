@@ -29,14 +29,7 @@ final class PetRepository implements RepositoryInterface
     public function resolveCollection(CollectionInterface $petCollection): void
     {
         if (!$petCollection instanceof PetCollection) {
-            throw new \TypeError(
-                sprintf(
-                    '%s() expects parameter 1 to be %s, %s given',
-                    __METHOD__,
-                    PetCollection::class,
-                    get_class($petCollection)
-                )
-            );
+            throw new \TypeError(sprintf('%s() expects parameter 1 to be %s, %s given', __METHOD__, PetCollection::class, get_class($petCollection)));
         }
 
         /** @var EntityRepository $entityRepository */
@@ -69,8 +62,6 @@ final class PetRepository implements RepositoryInterface
     }
 
     /**
-     * @param string $id
-     *
      * @return Pet|ModelInterface|null
      */
     public function findById(string $id): ?ModelInterface
@@ -84,14 +75,7 @@ final class PetRepository implements RepositoryInterface
     public function persist(ModelInterface $pet): void
     {
         if (!$pet instanceof Pet) {
-            throw new \TypeError(
-                sprintf(
-                    '%s() expects parameter 1 to be %s, %s given',
-                    __METHOD__,
-                    Pet::class,
-                    get_class($pet)
-                )
-            );
+            throw new \TypeError(sprintf('%s() expects parameter 1 to be %s, %s given', __METHOD__, Pet::class, get_class($pet)));
         }
 
         $this->entityManager->persist($pet);
@@ -103,14 +87,7 @@ final class PetRepository implements RepositoryInterface
     public function remove(ModelInterface $pet): void
     {
         if (!$pet instanceof Pet) {
-            throw new \TypeError(
-                sprintf(
-                    '%s() expects parameter 1 to be %s, %s given',
-                    __METHOD__,
-                    Pet::class,
-                    get_class($pet)
-                )
-            );
+            throw new \TypeError(sprintf('%s() expects parameter 1 to be %s, %s given', __METHOD__, Pet::class, get_class($pet)));
         }
 
         $this->entityManager->remove($pet);

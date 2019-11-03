@@ -39,59 +39,36 @@ final class PetMappingTest extends ModelMappingTest
         ], $fieldMappings);
     }
 
-    /**
-     * @return string
-     */
     protected function getClass(): string
     {
         return Pet::class;
     }
 
-    /**
-     * @return string
-     */
     protected function getNormalizationType(): string
     {
         return 'pet';
     }
 
-    /**
-     * @return string
-     */
     protected function getReadRoute(): string
     {
         return 'pet_read';
     }
 
-    /**
-     * @return string
-     */
     protected function getUpdateRoute(): string
     {
         return 'pet_update';
     }
 
-    /**
-     * @return string
-     */
     protected function getDeleteRoute(): string
     {
         return 'pet_delete';
     }
 
-    /**
-     * @return string
-     */
     protected function getModelPath(): string
     {
         return '/api/pets/%s';
     }
 
-    /**
-     * @param RouterInterface $router
-     *
-     * @return AbstractModelMapping
-     */
     protected function getModelMapping(RouterInterface $router): AbstractModelMapping
     {
         return new PetMapping($router);

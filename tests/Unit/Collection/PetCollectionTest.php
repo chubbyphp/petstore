@@ -14,9 +14,6 @@ use App\Collection\PetCollection;
  */
 final class PetCollectionTest extends CollectionTest
 {
-    /**
-     * @return CollectionInterface
-     */
     protected function getCollection(): CollectionInterface
     {
         return new PetCollection();

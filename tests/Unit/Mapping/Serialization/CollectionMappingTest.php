@@ -133,8 +133,6 @@ class CollectionMappingTest extends TestCase
     }
 
     /**
-     * @param string $path
-     *
      * @return NormalizationFieldMappingInterface[]
      */
     protected function getNormalizationFieldMappings(string $path): array
@@ -148,51 +146,31 @@ class CollectionMappingTest extends TestCase
         ];
     }
 
-    /**
-     * @return string
-     */
     protected function getClass(): string
     {
         return CollectionInterface::class;
     }
 
-    /**
-     * @return string
-     */
     protected function getNormalizationType(): string
     {
         return 'collection';
     }
 
-    /**
-     * @return string
-     */
     protected function getListRoute(): string
     {
         return 'collection_list';
     }
 
-    /**
-     * @return string
-     */
     protected function getCreateRoute(): string
     {
         return 'collection_create';
     }
 
-    /**
-     * @return string
-     */
     protected function getCollectionPath(): string
     {
         return '/api/collection';
     }
 
-    /**
-     * @param RouterInterface $router
-     *
-     * @return AbstractCollectionMapping
-     */
     protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
     {
         return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
@@ -216,13 +194,6 @@ class CollectionMappingTest extends TestCase
              */
             private $createRouteName;
 
-            /**
-             * @param RouterInterface $router
-             * @param string          $class
-             * @param string          $normalizationType
-             * @param string          $listRouteName
-             * @param string          $createRouteName
-             */
             public function __construct(
                 RouterInterface $router,
                 string $class,
@@ -238,33 +209,21 @@ class CollectionMappingTest extends TestCase
                 $this->createRouteName = $createRouteName;
             }
 
-            /**
-             * @return string
-             */
             public function getClass(): string
             {
                 return $this->class;
             }
 
-            /**
-             * @return string
-             */
             public function getNormalizationType(): string
             {
                 return $this->normalizationType;
             }
 
-            /**
-             * @return string
-             */
             protected function getListRouteName(): string
             {
                 return $this->listRouteName;
             }
 
-            /**
-             * @return string
-             */
             protected function getCreateRouteName(): string
             {
                 return $this->createRouteName;

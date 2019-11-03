@@ -9,9 +9,6 @@ use Monolog\Logger;
 
 class DevConfig extends ProdConfig
 {
-    /**
-     * @return array
-     */
     public function getConfig(): array
     {
         $config = parent::getConfig();

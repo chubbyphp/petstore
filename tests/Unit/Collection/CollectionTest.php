@@ -43,9 +43,6 @@ class CollectionTest extends TestCase
         self::assertSame([$object], $collection->getItems());
     }
 
-    /**
-     * @return CollectionInterface
-     */
     protected function getCollection(): CollectionInterface
     {
         return new class() extends AbstractCollection {

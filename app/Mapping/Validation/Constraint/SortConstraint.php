@@ -29,10 +29,7 @@ final class SortConstraint implements ConstraintInterface
     }
 
     /**
-     * @param string                    $path
-     * @param mixed                     $sort
-     * @param ValidatorContextInterface $context
-     * @param ValidatorInterface|null   $validator
+     * @param mixed $sort
      *
      * @throws ValidatorLogicException
      *

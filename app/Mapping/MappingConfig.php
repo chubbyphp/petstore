@@ -17,7 +17,6 @@ final class MappingConfig
     private $dependencies = [];
 
     /**
-     * @param string        $mappingClass
      * @param array<string> $dependencies
      */
     public function __construct(string $mappingClass, array $dependencies = [])

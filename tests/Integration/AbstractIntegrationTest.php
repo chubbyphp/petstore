@@ -23,14 +23,7 @@ abstract class AbstractIntegrationTest extends TestCase
     private $curl;
 
     /**
-     * @param string      $method
-     * @param string      $resource
-     * @param array       $headers
-     * @param string|null $body
-     *
      * @throws \RuntimeException
-     *
-     * @return array
      */
     protected function httpRequest(string $method, string $resource, array $headers = [], string $body = null): array
     {
@@ -84,12 +77,6 @@ abstract class AbstractIntegrationTest extends TestCase
         return $ch;
     }
 
-    /**
-     * @param string $rawResponse
-     * @param int    $headerSize
-     *
-     * @return array
-     */
     private function getHttpHeaderRows(string $rawResponse, int $headerSize): array
     {
         $headerRawGroups = explode("\r\n\r\n", trim(substr($rawResponse, 0, $headerSize)));
@@ -97,11 +84,6 @@ abstract class AbstractIntegrationTest extends TestCase
         return explode("\r\n", end($headerRawGroups));
     }
 
-    /**
-     * @param string $statusRow
-     *
-     * @return array
-     */
     private function getHttpStatus(string $statusRow): array
     {
         $matches = [];
@@ -113,11 +95,6 @@ abstract class AbstractIntegrationTest extends TestCase
         ];
     }
 
-    /**
-     * @param array $headerRows
-     *
-     * @return array
-     */
     private function geHttpHeaders(array $headerRows): array
     {
         $headers = [];
@@ -146,9 +123,6 @@ abstract class AbstractIntegrationTest extends TestCase
         return $headers;
     }
 
-    /**
-     * @return string
-     */
     private function getEndpoint(): string
     {
         $integrationEndpoint = getenv(PhpServerTestHook::ENV_INTEGRATION_ENDPOINT);

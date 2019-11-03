@@ -109,13 +109,7 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
     }
 
     /**
-     * @param RouteInterface $route
-     * @param string         $name
-     * @param string         $method
-     * @param string         $path
-     * @param array          $pathOptions
-     * @param string[]       $middlewareIds
-     * @param string         $requestHandlerId
+     * @param string[] $middlewareIds
      */
     private static function assertRoute(
         RouteInterface $route,
@@ -147,10 +141,6 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
         }
     }
 
-    /**
-     * @param string         $id
-     * @param LazyMiddleware $lazyMiddleware
-     */
     private static function assertMiddleware(string $id, LazyMiddleware $lazyMiddleware): void
     {
         $reflectionProperty = new \ReflectionProperty($lazyMiddleware, 'id');
@@ -159,10 +149,6 @@ final class ChubbyphpFrameworkProviderTest extends TestCase
         self::assertSame($id, $reflectionProperty->getValue($lazyMiddleware));
     }
 
-    /**
-     * @param string             $id
-     * @param LazyRequestHandler $requestHander
-     */
     private static function assertRequestHandler(string $id, LazyRequestHandler $requestHander): void
     {
         $reflectionProperty = new \ReflectionProperty($requestHander, 'id');

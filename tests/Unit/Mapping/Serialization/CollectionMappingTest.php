@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @internal
  */
-final class CollectionMappingTest extends TestCase
+class CollectionMappingTest extends TestCase
 {
     use MockByCallsTrait;
 

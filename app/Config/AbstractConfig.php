@@ -13,19 +13,9 @@ abstract class AbstractConfig implements ConfigInterface
      */
     protected $rootDir;
 
-    private function __construct()
+    public function __construct(string $rootDir)
     {
-    }
-
-    /**
-     * @return self
-     */
-    public static function create(string $rootDir): ConfigInterface
-    {
-        $config = new static();
-        $config->rootDir = $rootDir;
-
-        return $config;
+        $this->rootDir = $rootDir;
     }
 
     public function getDirectories(): array
@@ -35,8 +25,6 @@ abstract class AbstractConfig implements ConfigInterface
             'log' => $this->getLogDir(),
         ];
     }
-
-    abstract protected function getEnv(): string;
 
     protected function getCacheDir(): string
     {

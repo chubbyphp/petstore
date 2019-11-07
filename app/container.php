@@ -18,9 +18,8 @@ use App\ServiceProvider\RepositoryServiceProvider;
 use App\ServiceProvider\SerializationServiceProvider;
 use App\ServiceProvider\ValidationServiceProvider;
 use Chubbyphp\ApiHttp\Provider\ApiHttpProvider;
-use Chubbyphp\Config\ConfigMapping;
 use Chubbyphp\Config\ConfigProvider;
-use Chubbyphp\Config\Pimple\ConfigServiceProvider;
+use Chubbyphp\Config\ServiceProvider\ConfigServiceProvider;
 use Chubbyphp\Deserialization\Provider\DeserializationProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider;
@@ -56,11 +55,15 @@ return static function (string $env) {
     $container->register(new RepositoryServiceProvider());
     $container->register(new ValidationServiceProvider());
 
-    $container->register(new ConfigServiceProvider(new ConfigProvider(__DIR__.'/..', [
-        new ConfigMapping('dev', DevConfig::class),
-        new ConfigMapping('phpunit', PhpunitConfig::class),
-        new ConfigMapping('prod', ProdConfig::class),
-    ])));
+    $rootDir = __DIR__.'/..';
+
+    $container->register(new ConfigServiceProvider(
+        new ConfigProvider([
+            new DevConfig($rootDir),
+            new PhpunitConfig($rootDir),
+            new ProdConfig($rootDir),
+        ])
+    ));
 
     return $container;
 };

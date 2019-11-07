@@ -15,7 +15,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 
  * php: ^7.2
  * [chubbyphp/chubbyphp-api-http][3]: ^3.2
- * [chubbyphp/chubbyphp-config][4]: ^1.3
+ * [chubbyphp/chubbyphp-config][4]: ^2.0@beta
  * [chubbyphp/chubbyphp-cors][5]: ^1.1
  * [chubbyphp/chubbyphp-deserialization][6]: ^2.14.1
  * [chubbyphp/chubbyphp-doctrine-db-service-provider][7]: ^1.4

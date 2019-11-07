@@ -30,37 +30,37 @@ use Chubbyphp\Validation\Provider\ValidationProvider;
 use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 
-$configProvider = new ConfigProvider(__DIR__.'/..', [
-    new ConfigMapping('dev', DevConfig::class),
-    new ConfigMapping('phpunit', PhpunitConfig::class),
-    new ConfigMapping('prod', ProdConfig::class),
-]);
+return static function (string $env) {
+    $container = new Container(['env' => $env]);
 
-$container = new Container(['env' => $env ?? 'dev']);
+    $container[PsrContainer::class] = static function () use ($container) {
+        return new PsrContainer($container);
+    };
 
-$container[PsrContainer::class] = static function () use ($container) {
-    return new PsrContainer($container);
+    $container->register(new ApiHttpProvider());
+    $container->register(new DeserializationProvider());
+    $container->register(new DoctrineDbalServiceProvider());
+    $container->register(new DoctrineOrmServiceProvider());
+    $container->register(new MonologServiceProvider());
+    $container->register(new NegotiationProvider());
+    $container->register(new SerializationProvider());
+    $container->register(new ValidationProvider());
+
+    $container->register(new ApiHttpServiceProvider());
+    $container->register(new DeserializationServiceProvider());
+    $container->register(new DoctrineServiceProvider());
+    $container->register(new FactoryServiceProvider());
+    $container->register(new NegotiationServiceProvider());
+    $container->register(new ProxyManagerServiceProvider());
+    $container->register(new SerializationServiceProvider());
+    $container->register(new RepositoryServiceProvider());
+    $container->register(new ValidationServiceProvider());
+
+    $container->register(new ConfigServiceProvider(new ConfigProvider(__DIR__.'/..', [
+        new ConfigMapping('dev', DevConfig::class),
+        new ConfigMapping('phpunit', PhpunitConfig::class),
+        new ConfigMapping('prod', ProdConfig::class),
+    ])));
+
+    return $container;
 };
-
-$container->register(new ApiHttpProvider());
-$container->register(new DeserializationProvider());
-$container->register(new DoctrineDbalServiceProvider());
-$container->register(new DoctrineOrmServiceProvider());
-$container->register(new MonologServiceProvider());
-$container->register(new NegotiationProvider());
-$container->register(new SerializationProvider());
-$container->register(new ValidationProvider());
-
-$container->register(new ApiHttpServiceProvider());
-$container->register(new DeserializationServiceProvider());
-$container->register(new DoctrineServiceProvider());
-$container->register(new FactoryServiceProvider());
-$container->register(new NegotiationServiceProvider());
-$container->register(new ProxyManagerServiceProvider());
-$container->register(new SerializationServiceProvider());
-$container->register(new RepositoryServiceProvider());
-$container->register(new ValidationServiceProvider());
-
-$container->register(new ConfigServiceProvider($configProvider));
-
-return $container;

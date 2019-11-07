@@ -11,14 +11,12 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
 
-require __DIR__.'/bootstrap.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $input = new ArgvInput();
 
-$env = $input->getParameterOption(['--env', '-e'], 'dev');
-
 /** @var Container $container */
-$container = require __DIR__.'/../app/container.php';
+$container = (require __DIR__.'/container.php')($input->getParameterOption(['--env', '-e'], 'dev'));
 $container->register(new ConsoleServiceProvider());
 
 $console = new Application();

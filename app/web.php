@@ -9,22 +9,27 @@ use App\ServiceProvider\MiddlewareServiceProvider;
 use App\ServiceProvider\RequestHandlerServiceProvider;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Framework\Application;
+use Chubbyphp\Framework\ErrorHandler;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\Middleware\RouterMiddleware;
 use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 
-require __DIR__.'/bootstrap.php';
+require __DIR__.'/../vendor/autoload.php';
 
-/** @var Container $container */
-$container = require __DIR__.'/container.php';
-$container->register(new MiddlewareServiceProvider());
-$container->register(new RequestHandlerServiceProvider());
-$container->register(new ChubbyphpFrameworkProvider());
+return static function (string $env) {
+    set_error_handler([new ErrorHandler(), 'errorToException']);
 
-return new Application([
-    new LazyMiddleware($container[PsrContainer::class], ExceptionMiddleware::class),
-    new LazyMiddleware($container[PsrContainer::class], CorsMiddleware::class),
-    new LazyMiddleware($container[PsrContainer::class], RouterMiddleware::class),
-]);
+    /** @var Container $container */
+    $container = (require __DIR__.'/container.php')($env);
+    $container->register(new MiddlewareServiceProvider());
+    $container->register(new RequestHandlerServiceProvider());
+    $container->register(new ChubbyphpFrameworkProvider());
+
+    return new Application([
+        new LazyMiddleware($container[PsrContainer::class], ExceptionMiddleware::class),
+        new LazyMiddleware($container[PsrContainer::class], CorsMiddleware::class),
+        new LazyMiddleware($container[PsrContainer::class], RouterMiddleware::class),
+    ]);
+};

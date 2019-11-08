@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Config\DevConfig;
-use App\Config\PhpunitConfig;
-use App\Config\ProdConfig;
 use App\ServiceProvider\ApiHttpServiceProvider;
 use App\ServiceProvider\DeserializationServiceProvider;
 use App\ServiceProvider\DoctrineServiceProvider;
@@ -18,8 +15,6 @@ use App\ServiceProvider\RepositoryServiceProvider;
 use App\ServiceProvider\SerializationServiceProvider;
 use App\ServiceProvider\ValidationServiceProvider;
 use Chubbyphp\ApiHttp\Provider\ApiHttpProvider;
-use Chubbyphp\Config\ConfigProvider;
-use Chubbyphp\Config\ServiceProvider\ConfigServiceProvider;
 use Chubbyphp\Deserialization\Provider\DeserializationProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider;
@@ -54,16 +49,6 @@ return static function (string $env) {
     $container->register(new SerializationServiceProvider());
     $container->register(new RepositoryServiceProvider());
     $container->register(new ValidationServiceProvider());
-
-    $rootDir = __DIR__.'/..';
-
-    $container->register(new ConfigServiceProvider(
-        new ConfigProvider([
-            new DevConfig($rootDir),
-            new PhpunitConfig($rootDir),
-            new ProdConfig($rootDir),
-        ])
-    ));
 
     return $container;
 };

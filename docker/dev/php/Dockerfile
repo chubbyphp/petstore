@@ -22,17 +22,17 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu eoan main" > /etc/apt/s
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
 
 RUN apt-get update -y && apt-get install -y \
-    php7.3-cli \
-    php7.3-curl \
-    php7.3-fpm \
-    php7.3-json \
-    php7.3-mbstring \
-    php7.3-opcache \
-    php7.3-pgsql \
-    php7.3-phpdbg \
-    php7.3-readline \
-    php7.3-xml \
-    php7.3-zip \
+    php7.4-cli \
+    php7.4-curl \
+    php7.4-fpm \
+    php7.4-json \
+    php7.4-mbstring \
+    php7.4-opcache \
+    php7.4-pgsql \
+    php7.4-phpdbg \
+    php7.4-readline \
+    php7.4-xml \
+    php7.4-zip \
     php-apcu \
     php-ast
 
@@ -65,4 +65,4 @@ RUN composer global require hirak/prestissimo
 
 WORKDIR /var/www/html
 
-CMD ["/usr/sbin/php-fpm7.3", "-c", "/etc/php/7.3/fpm/php-fpm.conf", "-F"]
+CMD ["/usr/sbin/php-fpm7.4", "-c", "/etc/php/7.4/fpm/php-fpm.conf", "-F"]

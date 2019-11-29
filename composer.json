@@ -28,7 +28,7 @@
     "require-dev": {
         "chubbyphp/chubbyphp-mock": "^1.4.2",
         "friendsofphp/php-cs-fixer": "^2.16.1",
-        "infection/infection": "^0.14.4",
+        "infection/infection": "^0.15.0",
         "mavimo/phpstan-junit": "^0.2.3",
         "nunomaduro/phpinsights": "^1.11",
         "php-coveralls/php-coveralls": "^2.2",

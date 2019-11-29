@@ -12,7 +12,7 @@
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.4.1",
         "chubbyphp/chubbyphp-framework": "^2.5",
         "chubbyphp/chubbyphp-negotiation": "^1.4",
-        "chubbyphp/chubbyphp-serialization": "^2.11.2",
+        "chubbyphp/chubbyphp-serialization": "^2.12",
         "chubbyphp/chubbyphp-validation": "^3.5.1",
         "doctrine/orm": "^2.7",
         "monolog/monolog": "^2.0.1",

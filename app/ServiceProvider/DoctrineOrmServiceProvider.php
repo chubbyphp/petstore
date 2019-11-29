@@ -9,7 +9,7 @@ use App\Model\Pet;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-final class DoctrineServiceProvider implements ServiceProviderInterface
+final class DoctrineOrmServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container): void
     {

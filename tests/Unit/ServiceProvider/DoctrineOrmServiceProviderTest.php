@@ -6,22 +6,22 @@ namespace App\Tests\Unit\ServiceProvider;
 
 use App\Mapping\Orm\PetMapping;
 use App\Model\Pet;
-use App\ServiceProvider\DoctrineServiceProvider;
+use App\ServiceProvider\DoctrineOrmServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 
 /**
- * @covers \App\ServiceProvider\DoctrineServiceProvider
+ * @covers \App\ServiceProvider\DoctrineOrmServiceProvider
  *
  * @internal
  */
-final class DoctrineServiceProviderTest extends TestCase
+final class DoctrineOrmServiceProviderTest extends TestCase
 {
     public function testRegister(): void
     {
         $container = new Container();
 
-        $serviceProvider = new DoctrineServiceProvider();
+        $serviceProvider = new DoctrineOrmServiceProvider();
         $serviceProvider->register($container);
 
         self::assertArrayHasKey('doctrine.orm.em.options', $container);

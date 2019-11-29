@@ -6,7 +6,7 @@ namespace App;
 
 use App\ServiceProvider\ApiHttpServiceProvider;
 use App\ServiceProvider\DeserializationServiceProvider;
-use App\ServiceProvider\DoctrineServiceProvider;
+use App\ServiceProvider\DoctrineOrmServiceProvider;
 use App\ServiceProvider\FactoryServiceProvider;
 use App\ServiceProvider\MonologServiceProvider;
 use App\ServiceProvider\NegotiationServiceProvider;
@@ -20,7 +20,7 @@ use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvi
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider as ChubbyphpDoctrineOrmServiceProvider;
 use Chubbyphp\Negotiation\ServiceProvider\NegotiationServiceProvider as ChubbyphpNegotiationServiceProvider;
 use Chubbyphp\Serialization\ServiceProvider\SerializationServiceProvider as ChubbyphpSerializationServiceProvider;
-use Chubbyphp\Validation\Provider\ValidationProvider as ChubbyphpValidationProvider;
+use Chubbyphp\Validation\ServiceProvider\ValidationServiceProvider as ChubbyphpValidationServiceProvider;
 use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 
@@ -37,11 +37,11 @@ return static function () {
     $container->register(new ChubbyphpDoctrineOrmServiceProvider());
     $container->register(new ChubbyphpNegotiationServiceProvider());
     $container->register(new ChubbyphpSerializationServiceProvider());
-    $container->register(new ChubbyphpValidationProvider());
+    $container->register(new ChubbyphpValidationServiceProvider());
 
     $container->register(new ApiHttpServiceProvider());
     $container->register(new DeserializationServiceProvider());
-    $container->register(new DoctrineServiceProvider());
+    $container->register(new DoctrineOrmServiceProvider());
     $container->register(new FactoryServiceProvider());
     $container->register(new MonologServiceProvider());
     $container->register(new NegotiationServiceProvider());

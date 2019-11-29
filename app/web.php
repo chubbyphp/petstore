@@ -27,7 +27,7 @@ return static function (string $env) {
     set_error_handler([new ErrorHandler(), 'errorToException']);
 
     /** @var Container $container */
-    $container = (require __DIR__.'/container.php')($env);
+    $container = (require __DIR__.'/container.php')();
     $container->register(new MiddlewareServiceProvider());
     $container->register(new RequestHandlerServiceProvider());
     $container->register(new ChubbyphpFrameworkProvider());
@@ -35,11 +35,11 @@ return static function (string $env) {
     // always load this service provider last
     // so that the values of other service providers can be overwritten.
     $container->register(new ConfigServiceProvider(
-        new ConfigProvider([
+        (new ConfigProvider([
             new DevConfig(__DIR__.'/..'),
             new PhpunitConfig(__DIR__.'/..'),
             new ProdConfig(__DIR__.'/..'),
-        ])
+        ]))->get($env)
     ));
 
     return new Application([

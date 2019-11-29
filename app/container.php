@@ -24,8 +24,8 @@ use Chubbyphp\Validation\Provider\ValidationProvider;
 use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 
-return static function (string $env) {
-    $container = new Container(['env' => $env]);
+return static function () {
+    $container = new Container();
 
     $container[PsrContainer::class] = static function () use ($container) {
         return new PsrContainer($container);

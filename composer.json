@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.2",
         "chubbyphp/chubbyphp-api-http": "^3.2",
-        "chubbyphp/chubbyphp-config": "^2.0.1",
+        "chubbyphp/chubbyphp-config": "^2.1",
         "chubbyphp/chubbyphp-cors": "^1.1",
         "chubbyphp/chubbyphp-deserialization": "^2.14.2",
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.4.1",

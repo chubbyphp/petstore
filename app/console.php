@@ -20,18 +20,20 @@ require __DIR__.'/../vendor/autoload.php';
 
 $input = new ArgvInput();
 
+$env = $input->getParameterOption(['--env', '-e'], 'dev');
+
 /** @var Container $container */
-$container = (require __DIR__.'/container.php')($input->getParameterOption(['--env', '-e'], 'dev'));
+$container = (require __DIR__.'/container.php')();
 $container->register(new ConsoleServiceProvider());
 
 // always load this service provider last
 // so that the values of other service providers can be overwritten.
 $container->register(new ConfigServiceProvider(
-    new ConfigProvider([
+    (new ConfigProvider([
         new DevConfig(__DIR__.'/..'),
         new PhpunitConfig(__DIR__.'/..'),
         new ProdConfig(__DIR__.'/..'),
-    ])
+    ]))->get($env)
 ));
 
 $console = new Application();

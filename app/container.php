@@ -14,13 +14,13 @@ use App\ServiceProvider\ProxyManagerServiceProvider;
 use App\ServiceProvider\RepositoryServiceProvider;
 use App\ServiceProvider\SerializationServiceProvider;
 use App\ServiceProvider\ValidationServiceProvider;
-use Chubbyphp\ApiHttp\Provider\ApiHttpProvider;
-use Chubbyphp\Deserialization\Provider\DeserializationProvider;
-use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider;
-use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider;
-use Chubbyphp\Negotiation\Provider\NegotiationProvider;
-use Chubbyphp\Serialization\Provider\SerializationProvider;
-use Chubbyphp\Validation\Provider\ValidationProvider;
+use Chubbyphp\ApiHttp\Provider\ApiHttpProvider as ChubbphpApiHttpProvider;
+use Chubbyphp\Deserialization\ServiceProvider\DeserializationServiceProvider as ChubbyphpDeserializationServiceProvider;
+use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider as ChubbyphpDoctrineDbalServiceProvider;
+use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider as ChubbyphpDoctrineOrmServiceProvider;
+use Chubbyphp\Negotiation\Provider\NegotiationProvider as ChubbyphpNegotiationProvider;
+use Chubbyphp\Serialization\Provider\SerializationProvider as ChubbyphpSerializationProvider;
+use Chubbyphp\Validation\Provider\ValidationProvider as ChubbyphpValidationProvider;
 use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 
@@ -31,23 +31,23 @@ return static function () {
         return new PsrContainer($container);
     };
 
-    $container->register(new ApiHttpProvider());
-    $container->register(new DeserializationProvider());
-    $container->register(new DoctrineDbalServiceProvider());
-    $container->register(new DoctrineOrmServiceProvider());
-    $container->register(new MonologServiceProvider());
-    $container->register(new NegotiationProvider());
-    $container->register(new SerializationProvider());
-    $container->register(new ValidationProvider());
+    $container->register(new ChubbphpApiHttpProvider());
+    $container->register(new ChubbyphpDeserializationServiceProvider());
+    $container->register(new ChubbyphpDoctrineDbalServiceProvider());
+    $container->register(new ChubbyphpDoctrineOrmServiceProvider());
+    $container->register(new ChubbyphpNegotiationProvider());
+    $container->register(new ChubbyphpSerializationProvider());
+    $container->register(new ChubbyphpValidationProvider());
 
     $container->register(new ApiHttpServiceProvider());
     $container->register(new DeserializationServiceProvider());
     $container->register(new DoctrineServiceProvider());
     $container->register(new FactoryServiceProvider());
+    $container->register(new MonologServiceProvider());
     $container->register(new NegotiationServiceProvider());
     $container->register(new ProxyManagerServiceProvider());
-    $container->register(new SerializationServiceProvider());
     $container->register(new RepositoryServiceProvider());
+    $container->register(new SerializationServiceProvider());
     $container->register(new ValidationServiceProvider());
 
     return $container;

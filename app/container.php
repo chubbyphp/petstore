@@ -18,7 +18,7 @@ use Chubbyphp\ApiHttp\Provider\ApiHttpProvider as ChubbphpApiHttpProvider;
 use Chubbyphp\Deserialization\ServiceProvider\DeserializationServiceProvider as ChubbyphpDeserializationServiceProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider as ChubbyphpDoctrineDbalServiceProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider as ChubbyphpDoctrineOrmServiceProvider;
-use Chubbyphp\Negotiation\Provider\NegotiationProvider as ChubbyphpNegotiationProvider;
+use Chubbyphp\Negotiation\ServiceProvider\NegotiationServiceProvider as ChubbyphpNegotiationServiceProvider;
 use Chubbyphp\Serialization\ServiceProvider\SerializationServiceProvider as ChubbyphpSerializationServiceProvider;
 use Chubbyphp\Validation\Provider\ValidationProvider as ChubbyphpValidationProvider;
 use Pimple\Container;
@@ -35,7 +35,7 @@ return static function () {
     $container->register(new ChubbyphpDeserializationServiceProvider());
     $container->register(new ChubbyphpDoctrineDbalServiceProvider());
     $container->register(new ChubbyphpDoctrineOrmServiceProvider());
-    $container->register(new ChubbyphpNegotiationProvider());
+    $container->register(new ChubbyphpNegotiationServiceProvider());
     $container->register(new ChubbyphpSerializationServiceProvider());
     $container->register(new ChubbyphpValidationProvider());
 

@@ -4,51 +4,46 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\ServiceProvider\ApiHttpServiceProvider;
-use App\ServiceProvider\DeserializationServiceProvider;
-use App\ServiceProvider\DoctrineOrmServiceProvider;
-use App\ServiceProvider\FactoryServiceProvider;
-use App\ServiceProvider\MonologServiceProvider;
-use App\ServiceProvider\NegotiationServiceProvider;
-use App\ServiceProvider\ProxyManagerServiceProvider;
-use App\ServiceProvider\RepositoryServiceProvider;
-use App\ServiceProvider\SerializationServiceProvider;
-use App\ServiceProvider\ValidationServiceProvider;
-use Chubbyphp\ApiHttp\ServiceProvider\ApiHttpServiceProvider as ChubbphpApiHttpServiceProvider;
-use Chubbyphp\Deserialization\ServiceProvider\DeserializationServiceProvider as ChubbyphpDeserializationServiceProvider;
-use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider as ChubbyphpDoctrineDbalServiceProvider;
-use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider as ChubbyphpDoctrineOrmServiceProvider;
-use Chubbyphp\Negotiation\ServiceProvider\NegotiationServiceProvider as ChubbyphpNegotiationServiceProvider;
-use Chubbyphp\Serialization\ServiceProvider\SerializationServiceProvider as ChubbyphpSerializationServiceProvider;
-use Chubbyphp\Validation\ServiceProvider\ValidationServiceProvider as ChubbyphpValidationServiceProvider;
-use Pimple\Container;
-use Pimple\Psr11\Container as PsrContainer;
+use App\ServiceFactory\ApiHttpServiceFactory;
+use App\ServiceFactory\DeserializationServiceFactory;
+use App\ServiceFactory\DoctrineOrmServiceFactory;
+use App\ServiceFactory\FactoryServiceFactory;
+use App\ServiceFactory\MonologServiceFactory;
+use App\ServiceFactory\NegotiationServiceFactory;
+use App\ServiceFactory\ProxyManagerServiceFactory;
+use App\ServiceFactory\RepositoryServiceFactory;
+use App\ServiceFactory\SerializationServiceFactory;
+use App\ServiceFactory\ValidationServiceFactory;
+use Chubbyphp\ApiHttp\ServiceFactory\ApiHttpServiceFactory as ChubbphpApiHttpServiceFactory;
+use Chubbyphp\Container\Container;
+use Chubbyphp\Deserialization\ServiceFactory\DeserializationServiceFactory as ChubbyphpDeserializationServiceFactory;
+use Chubbyphp\DoctrineDbServiceProvider\ServiceFactory\DoctrineDbalServiceFactory as ChubbyphpDoctrineDbalServiceFactory;
+use Chubbyphp\DoctrineDbServiceProvider\ServiceFactory\DoctrineOrmServiceFactory as ChubbyphpDoctrineOrmServiceFactory;
+use Chubbyphp\Negotiation\ServiceFactory\NegotiationServiceFactory as ChubbyphpNegotiationServiceFactory;
+use Chubbyphp\Serialization\ServiceFactory\SerializationServiceFactory as ChubbyphpSerializationServiceFactory;
+use Chubbyphp\Validation\ServiceFactory\ValidationServiceFactory as ChubbyphpValidationServiceFactory;
 
 return static function () {
     $container = new Container();
 
-    $container[PsrContainer::class] = static function () use ($container) {
-        return new PsrContainer($container);
-    };
+    $container->factories((new ChubbphpApiHttpServiceFactory())());
+    $container->factories((new ChubbyphpDeserializationServiceFactory())());
+    $container->factories((new ChubbyphpDoctrineDbalServiceFactory())());
+    $container->factories((new ChubbyphpDoctrineOrmServiceFactory())());
+    $container->factories((new ChubbyphpNegotiationServiceFactory())());
+    $container->factories((new ChubbyphpSerializationServiceFactory())());
+    $container->factories((new ChubbyphpValidationServiceFactory())());
 
-    $container->register(new ChubbphpApiHttpServiceProvider());
-    $container->register(new ChubbyphpDeserializationServiceProvider());
-    $container->register(new ChubbyphpDoctrineDbalServiceProvider());
-    $container->register(new ChubbyphpDoctrineOrmServiceProvider());
-    $container->register(new ChubbyphpNegotiationServiceProvider());
-    $container->register(new ChubbyphpSerializationServiceProvider());
-    $container->register(new ChubbyphpValidationServiceProvider());
-
-    $container->register(new ApiHttpServiceProvider());
-    $container->register(new DeserializationServiceProvider());
-    $container->register(new DoctrineOrmServiceProvider());
-    $container->register(new FactoryServiceProvider());
-    $container->register(new MonologServiceProvider());
-    $container->register(new NegotiationServiceProvider());
-    $container->register(new ProxyManagerServiceProvider());
-    $container->register(new RepositoryServiceProvider());
-    $container->register(new SerializationServiceProvider());
-    $container->register(new ValidationServiceProvider());
+    $container->factories((new ApiHttpServiceFactory())());
+    $container->factories((new DeserializationServiceFactory())());
+    $container->factories((new DoctrineOrmServiceFactory())());
+    $container->factories((new FactoryServiceFactory())());
+    $container->factories((new MonologServiceFactory())());
+    $container->factories((new NegotiationServiceFactory())());
+    $container->factories((new ProxyManagerServiceFactory())());
+    $container->factories((new RepositoryServiceFactory())());
+    $container->factories((new SerializationServiceFactory())());
+    $container->factories((new ValidationServiceFactory())());
 
     return $container;
 };

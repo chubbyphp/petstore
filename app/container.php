@@ -14,7 +14,7 @@ use App\ServiceProvider\ProxyManagerServiceProvider;
 use App\ServiceProvider\RepositoryServiceProvider;
 use App\ServiceProvider\SerializationServiceProvider;
 use App\ServiceProvider\ValidationServiceProvider;
-use Chubbyphp\ApiHttp\Provider\ApiHttpProvider as ChubbphpApiHttpProvider;
+use Chubbyphp\ApiHttp\ServiceProvider\ApiHttpServiceProvider as ChubbphpApiHttpServiceProvider;
 use Chubbyphp\Deserialization\ServiceProvider\DeserializationServiceProvider as ChubbyphpDeserializationServiceProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineDbalServiceProvider as ChubbyphpDoctrineDbalServiceProvider;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceProvider\DoctrineOrmServiceProvider as ChubbyphpDoctrineOrmServiceProvider;
@@ -31,7 +31,7 @@ return static function () {
         return new PsrContainer($container);
     };
 
-    $container->register(new ChubbphpApiHttpProvider());
+    $container->register(new ChubbphpApiHttpServiceProvider());
     $container->register(new ChubbyphpDeserializationServiceProvider());
     $container->register(new ChubbyphpDoctrineDbalServiceProvider());
     $container->register(new ChubbyphpDoctrineOrmServiceProvider());

@@ -20,7 +20,6 @@ use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotAcceptableMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
-use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -82,12 +81,12 @@ final class SerializationServiceFactoryTest extends TestCase
         self::assertMappingConfig($mappingConfigs, BadRequest::class, BadRequestMapping::class);
         self::assertMappingConfig($mappingConfigs, NotAcceptable::class, NotAcceptableMapping::class);
         self::assertMappingConfig($mappingConfigs, NotFound::class, NotFoundMapping::class);
-        self::assertMappingConfig($mappingConfigs, Pet::class, PetMapping::class, [FastRouteRouter::class]);
+        self::assertMappingConfig($mappingConfigs, Pet::class, PetMapping::class, [RouterInterface::class]);
         self::assertMappingConfig(
             $mappingConfigs,
             PetCollection::class,
             PetCollectionMapping::class,
-            [FastRouteRouter::class]
+            [RouterInterface::class]
         );
         self::assertMappingConfig($mappingConfigs, UnprocessableEntity::class, UnprocessableEntityMapping::class);
         self::assertMappingConfig($mappingConfigs, UnsupportedMediaType::class, UnsupportedMediaTypeMapping::class);
@@ -101,9 +100,9 @@ final class SerializationServiceFactoryTest extends TestCase
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
             Call::create('get')->with('serializer.mappingConfigs')->willReturn([
-                Pet::class => new MappingConfig(PetMapping::class, [FastRouteRouter::class]),
+                Pet::class => new MappingConfig(PetMapping::class, [RouterInterface::class]),
             ]),
-            Call::create('get')->with(FastRouteRouter::class)->willReturn($router),
+            Call::create('get')->with(RouterInterface::class)->willReturn($router),
         ]);
 
         $factories = (new SerializationServiceFactory())();

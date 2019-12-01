@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ServiceFactory;
 
 use App\ApiHttp\Factory\InvalidParametersFactory;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\StreamFactory;
 
@@ -22,7 +23,7 @@ final class ApiHttpServiceFactory
             'api-http.stream.factory' => static function () {
                 return new StreamFactory();
             },
-            InvalidParametersFactory::class => static function () {
+            InvalidParametersFactoryInterface::class => static function () {
                 return new InvalidParametersFactory();
             },
         ];

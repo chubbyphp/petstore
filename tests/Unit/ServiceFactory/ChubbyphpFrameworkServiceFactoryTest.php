@@ -7,7 +7,6 @@ namespace App\Tests\Unit\ServiceFactory;
 use App\ServiceFactory\ChubbyphpFrameworkServiceFactory;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\RouterMiddleware;
-use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -67,7 +66,7 @@ final class ChubbyphpFrameworkServiceFactoryTest extends TestCase
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(FastRouteRouter::class)->willReturn($router),
+            Call::create('get')->with(RouterInterface::class)->willReturn($router),
             Call::create('get')->with('api-http.response.factory')->willReturn($responseFactory),
         ]);
 
@@ -81,7 +80,7 @@ final class ChubbyphpFrameworkServiceFactoryTest extends TestCase
         );
     }
 
-    public function testFastRouteRouter(): void
+    public function testRouter(): void
     {
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
@@ -91,11 +90,11 @@ final class ChubbyphpFrameworkServiceFactoryTest extends TestCase
 
         $factories = (new ChubbyphpFrameworkServiceFactory())();
 
-        self::assertArrayHasKey(FastRouteRouter::class, $factories);
+        self::assertArrayHasKey(RouterInterface::class, $factories);
 
         self::assertInstanceOf(
-            FastRouteRouter::class,
-            $factories[FastRouteRouter::class]($container)
+            RouterInterface::class,
+            $factories[RouterInterface::class]($container)
         );
     }
 

@@ -22,6 +22,7 @@ use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\Group;
 use Chubbyphp\Framework\Router\Route;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Psr\Container\ContainerInterface;
 
 final class ChubbyphpFrameworkServiceFactory
@@ -41,11 +42,11 @@ final class ChubbyphpFrameworkServiceFactory
             },
             RouterMiddleware::class => static function (ContainerInterface $container) {
                 return new RouterMiddleware(
-                    $container->get(FastRouteRouter::class),
+                    $container->get(RouterInterface::class),
                     $container->get('api-http.response.factory')
                 );
             },
-            FastRouteRouter::class => static function (ContainerInterface $container) {
+            RouterInterface::class => static function (ContainerInterface $container) {
                 return new FastRouteRouter($container->get('routes'), $container->get('routerCacheFile'));
             },
             'routes' => static function (ContainerInterface $container) {

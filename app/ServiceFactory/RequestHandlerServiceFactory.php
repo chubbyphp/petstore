@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory;
 
-use App\ApiHttp\Factory\InvalidParametersFactory;
+use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
 use App\Model\Pet;
@@ -18,7 +18,7 @@ use App\RequestHandler\IndexRequestHandler;
 use App\RequestHandler\PingRequestHandler;
 use App\RequestHandler\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler;
 use App\RequestHandler\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
-use Chubbyphp\Framework\Router\FastRouteRouter;
+use Chubbyphp\Framework\Router\RouterInterface;
 use Psr\Container\ContainerInterface;
 
 final class RequestHandlerServiceFactory
@@ -31,7 +31,7 @@ final class RequestHandlerServiceFactory
         return [
             CreateRequestHandler::class.Pet::class => static function (ContainerInterface $container) {
                 return new CreateRequestHandler(
-                    $container->get(InvalidParametersFactory::class),
+                    $container->get(InvalidParametersFactoryInterface::class),
                     $container->get(PetFactory::class),
                     $container->get(PetRepository::class),
                     $container->get('api-http.request.manager'),
@@ -47,7 +47,7 @@ final class RequestHandlerServiceFactory
             },
             ListRequestHandler::class.Pet::class => static function (ContainerInterface $container) {
                 return new ListRequestHandler(
-                    $container->get(InvalidParametersFactory::class),
+                    $container->get(InvalidParametersFactoryInterface::class),
                     $container->get(PetCollectionFactory::class),
                     $container->get(PetRepository::class),
                     $container->get('api-http.request.manager'),
@@ -63,7 +63,7 @@ final class RequestHandlerServiceFactory
             },
             UpdateRequestHandler::class.Pet::class => static function (ContainerInterface $container) {
                 return new UpdateRequestHandler(
-                    $container->get(InvalidParametersFactory::class),
+                    $container->get(InvalidParametersFactoryInterface::class),
                     $container->get(PetRepository::class),
                     $container->get('api-http.request.manager'),
                     $container->get('api-http.response.manager'),
@@ -85,7 +85,7 @@ final class RequestHandlerServiceFactory
             IndexRequestHandler::class => static function (ContainerInterface $container) {
                 return new IndexRequestHandler(
                     $container->get('api-http.response.factory'),
-                    $container->get(FastRouteRouter::class)
+                    $container->get(RouterInterface::class)
                 );
             },
             PingRequestHandler::class => static function (ContainerInterface $container) {

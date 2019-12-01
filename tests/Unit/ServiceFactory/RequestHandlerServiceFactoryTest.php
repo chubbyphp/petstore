@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceFactory;
 
-use App\ApiHttp\Factory\InvalidParametersFactory;
 use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\CollectionFactoryInterface;
@@ -25,7 +24,6 @@ use App\RequestHandler\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
 use App\ServiceFactory\RequestHandlerServiceFactory;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
-use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -74,7 +72,7 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(InvalidParametersFactory::class)->willReturn($invalidParametersFactory),
+            Call::create('get')->with(InvalidParametersFactoryInterface::class)->willReturn($invalidParametersFactory),
             Call::create('get')->with(PetFactory::class)->willReturn($petFactory),
             Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
             Call::create('get')->with('api-http.request.manager')->willReturn($requestManager),
@@ -138,7 +136,7 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(InvalidParametersFactory::class)->willReturn($invalidParametersFactory),
+            Call::create('get')->with(InvalidParametersFactoryInterface::class)->willReturn($invalidParametersFactory),
             Call::create('get')->with(PetCollectionFactory::class)->willReturn($petCollectionFactory),
             Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
             Call::create('get')->with('api-http.request.manager')->willReturn($requestManager),
@@ -199,7 +197,7 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(InvalidParametersFactory::class)->willReturn($invalidParametersFactory),
+            Call::create('get')->with(InvalidParametersFactoryInterface::class)->willReturn($invalidParametersFactory),
             Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
             Call::create('get')->with('api-http.request.manager')->willReturn($requestManager),
             Call::create('get')->with('api-http.response.manager')->willReturn($responseManager),
@@ -275,7 +273,7 @@ final class RequestHandlerServiceFactoryTest extends TestCase
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
             Call::create('get')->with('api-http.response.factory')->willReturn($responseFactory),
-            Call::create('get')->with(FastRouteRouter::class)->willReturn($router),
+            Call::create('get')->with(RouterInterface::class)->willReturn($router),
         ]);
 
         $factories = (new RequestHandlerServiceFactory())();

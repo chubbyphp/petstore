@@ -16,22 +16,22 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * php: ^7.2
  * [chubbyphp/chubbyphp-api-http][3]: ^3.3
  * [chubbyphp/chubbyphp-config][4]: ^2.1
- * [chubbyphp/chubbyphp-cors][5]: ^1.1
- * [chubbyphp/chubbyphp-deserialization][6]: ^2.15
- * [chubbyphp/chubbyphp-doctrine-db-service-provider][7]: ^1.4
- * [chubbyphp/chubbyphp-framework][8]: ^2.4
- * [chubbyphp/chubbyphp-negotiation][9]: ^1.4
- * [chubbyphp/chubbyphp-serialization][10]: ^2.12
- * [chubbyphp/chubbyphp-validation][11]: ^3.6
- * [doctrine/orm][12]: ^2.6.4
- * [monolog/monolog][13]: ^2.0
- * [nikic/fast-route][14]: ^1.3
- * [ocramius/proxy-manager][15]: ^2.2.3
- * [pimple/pimple][16]: ^3.2.3
- * [ramsey/uuid][17]: ^3.8
+ * [chubbyphp/chubbyphp-container][5]: ^1.0
+ * [chubbyphp/chubbyphp-cors][6]: ^1.1
+ * [chubbyphp/chubbyphp-deserialization][7]: ^2.15
+ * [chubbyphp/chubbyphp-doctrine-db-service-provider][8]: ^1.5
+ * [chubbyphp/chubbyphp-framework][9]: ^2.5
+ * [chubbyphp/chubbyphp-negotiation][10]: ^1.5
+ * [chubbyphp/chubbyphp-serialization][11]: ^2.12
+ * [chubbyphp/chubbyphp-validation][12]: ^3.6
+ * [doctrine/orm][13]: ^2.7
+ * [monolog/monolog][14]: ^2.0.1
+ * [nikic/fast-route][15]: ^1.3
+ * [ocramius/proxy-manager][16]: ^2.2.3
+ * [ramsey/uuid][17]: ^3.9.1
  * [slim/psr7][18]: ^0.6
- * [swagger-api/swagger-ui][19]: ^3.24
- * [symfony/console][20]: ^4.3.5
+ * [swagger-api/swagger-ui][19]: ^3.24.3
+ * [symfony/console][20]: ^4.4.1|^5.0.1
 
 ## Environment
 
@@ -145,21 +145,21 @@ composer setup:dev
 
  * [App\Repository\PetRepository][150]
 
-### ServiceProvider
+### ServiceFactory
 
- * [App\ServiceProvider\ApiHttpServiceProvider][160]
- * [App\ServiceProvider\ConsoleServiceProvider][161]
- * [App\ServiceProvider\RequestHandlerServiceProvider][162]
- * [App\ServiceProvider\DeserializationServiceProvider][163]
- * [App\ServiceProvider\DoctrineServiceProvider][164]
- * [App\ServiceProvider\FactoryServiceProvider][165]
- * [App\ServiceProvider\MiddlewareServiceProvider][166]
- * [App\ServiceProvider\MonologServiceProvider][167]
- * [App\ServiceProvider\NegotiationServiceProvider][168]
- * [App\ServiceProvider\ProxyManagerServiceProvider][169]
- * [App\ServiceProvider\RespositoryServiceProvider][170]
- * [App\ServiceProvider\SerializationServiceProvider][171]
- * [App\ServiceProvider\ValidationServiceProvider][172]
+ * [App\ServiceFactory\ApiHttpServiceFactory][160]
+ * [App\ServiceFactory\ConsoleServiceFactory][161]
+ * [App\ServiceFactory\RequestHandlerServiceFactory][162]
+ * [App\ServiceFactory\DeserializationServiceFactory][163]
+ * [App\ServiceFactory\DoctrineServiceFactory][164]
+ * [App\ServiceFactory\FactoryServiceFactory][165]
+ * [App\ServiceFactory\MiddlewareServiceFactory][166]
+ * [App\ServiceFactory\MonologServiceFactory][167]
+ * [App\ServiceFactory\NegotiationServiceFactory][168]
+ * [App\ServiceFactory\ProxyManagerServiceFactory][169]
+ * [App\ServiceFactory\RespositoryServiceFactory][170]
+ * [App\ServiceFactory\SerializationServiceFactory][171]
+ * [App\ServiceFactory\ValidationServiceFactory][172]
 
 ## Copyright
 
@@ -169,18 +169,18 @@ Dominik Zogg 2018
 
 [3]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
 [4]: https://packagist.org/packages/chubbyphp/chubbyphp-config
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-doctrine-db-service-provider
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[11]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[12]: https://packagist.org/packages/doctrine/orm
-[13]: https://packagist.org/packages/monolog/monolog
-[14]: https://packagist.org/packages/nikic/fast-route
-[15]: https://packagist.org/packages/ocramius/proxy-manager
-[16]: https://packagist.org/packages/pimple/pimple
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-container
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-doctrine-db-service-provider
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
+[12]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[13]: https://packagist.org/packages/doctrine/orm
+[14]: https://packagist.org/packages/monolog/monolog
+[15]: https://packagist.org/packages/nikic/fast-route
+[16]: https://packagist.org/packages/ocramius/proxy-manager
 [17]: https://packagist.org/packages/ramsey/uuid
 [18]: https://packagist.org/packages/slim/psr7
 [19]: https://packagist.org/packages/swagger-api/swagger-ui
@@ -223,16 +223,16 @@ Dominik Zogg 2018
 
 [150]: app/Repository/PetRepository.php
 
-[160]: app/ServiceProvider/ApiHttpServiceProvider.php
-[161]: app/ServiceProvider/ConsoleServiceProvider.php
-[162]: app/ServiceProvider/RequestHandlerServiceProvider.php
-[163]: app/ServiceProvider/DeserializationServiceProvider.php
-[164]: app/ServiceProvider/DoctrineServiceProvider.php
-[165]: app/ServiceProvider/FactoryServiceProvider.php
-[166]: app/ServiceProvider/MiddlewareServiceProvider.php
-[167]: app/ServiceProvider/MonologServiceProvider.php
-[168]: app/ServiceProvider/NegotiationServiceProvider.php
-[169]: app/ServiceProvider/ProxyManagerServiceProvider.php
-[170]: app/ServiceProvider/RespositoryServiceProvider.php
-[171]: app/ServiceProvider/SerializationServiceProvider.php
-[172]: app/ServiceProvider/ValidationServiceProvider.php
+[160]: app/ServiceFactory/ApiHttpServiceFactory.php
+[161]: app/ServiceFactory/ConsoleServiceFactory.php
+[162]: app/ServiceFactory/RequestHandlerServiceFactory.php
+[163]: app/ServiceFactory/DeserializationServiceFactory.php
+[164]: app/ServiceFactory/DoctrineServiceFactory.php
+[165]: app/ServiceFactory/FactoryServiceFactory.php
+[166]: app/ServiceFactory/MiddlewareServiceFactory.php
+[167]: app/ServiceFactory/MonologServiceFactory.php
+[168]: app/ServiceFactory/NegotiationServiceFactory.php
+[169]: app/ServiceFactory/ProxyManagerServiceFactory.php
+[170]: app/ServiceFactory/RespositoryServiceFactory.php
+[171]: app/ServiceFactory/SerializationServiceFactory.php
+[172]: app/ServiceFactory/ValidationServiceFactory.php

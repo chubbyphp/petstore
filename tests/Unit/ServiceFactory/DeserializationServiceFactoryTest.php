@@ -50,7 +50,16 @@ final class DeserializationServiceFactoryTest extends TestCase
         self::assertCount(4, $decoderTypes);
 
         self::assertInstanceOf(JsonTypeDecoder::class, array_shift($decoderTypes));
-        self::assertInstanceOf(JsonxTypeDecoder::class, array_shift($decoderTypes));
+
+        $jsonxTypeDecoder = array_shift($decoderTypes);
+
+        self::assertInstanceOf(JsonxTypeDecoder::class, $jsonxTypeDecoder);
+
+        $contentTypeReflection = new \ReflectionProperty($jsonxTypeDecoder, 'contentType');
+        $contentTypeReflection->setAccessible(true);
+
+        self::assertSame('application/jsonx+xml', $contentTypeReflection->getValue($jsonxTypeDecoder));
+
         self::assertInstanceOf(UrlEncodedTypeDecoder::class, array_shift($decoderTypes));
         self::assertInstanceOf(YamlTypeDecoder::class, array_shift($decoderTypes));
     }

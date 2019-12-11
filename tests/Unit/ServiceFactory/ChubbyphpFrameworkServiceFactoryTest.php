@@ -28,7 +28,7 @@ final class ChubbyphpFrameworkServiceFactoryTest extends TestCase
     {
         $factories = (new ChubbyphpFrameworkServiceFactory())();
 
-        self::assertCount(4, $factories);
+        self::assertCount(3, $factories);
     }
 
     public function testExceptionMiddleware(): void
@@ -84,7 +84,6 @@ final class ChubbyphpFrameworkServiceFactoryTest extends TestCase
     {
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('routes')->willReturn([]),
             Call::create('get')->with('routerCacheFile')->willReturn(sys_get_temp_dir().'/router-'.uniqid().uniqid()),
         ]);
 
@@ -96,21 +95,5 @@ final class ChubbyphpFrameworkServiceFactoryTest extends TestCase
             RouterInterface::class,
             $factories[RouterInterface::class]($container)
         );
-    }
-
-    public function testRoutes(): void
-    {
-        /** @var ContainerInterface|MockObject $container */
-        $container = $this->getMockByCalls(ContainerInterface::class);
-
-        $factories = (new ChubbyphpFrameworkServiceFactory())();
-
-        self::assertArrayHasKey('routes', $factories);
-
-        $routes = $factories['routes']($container);
-
-        self::assertIsArray($routes);
-
-        self::assertCount(9, $routes);
     }
 }

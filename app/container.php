@@ -16,23 +16,23 @@ use App\ServiceFactory\SerializationServiceFactory;
 use App\ServiceFactory\ValidationServiceFactory;
 use Chubbyphp\ApiHttp\ServiceFactory\ApiHttpServiceFactory as ChubbphpApiHttpServiceFactory;
 use Chubbyphp\Container\Container;
-use Chubbyphp\Deserialization\ServiceFactory\DeserializationServiceFactory as ChubbyphpDeserializationServiceFactory;
-use Chubbyphp\DoctrineDbServiceProvider\ServiceFactory\DoctrineDbalServiceFactory as ChubbyphpDoctrineDbalServiceFactory;
-use Chubbyphp\DoctrineDbServiceProvider\ServiceFactory\DoctrineOrmServiceFactory as ChubbyphpDoctrineOrmServiceFactory;
-use Chubbyphp\Negotiation\ServiceFactory\NegotiationServiceFactory as ChubbyphpNegotiationServiceFactory;
-use Chubbyphp\Serialization\ServiceFactory\SerializationServiceFactory as ChubbyphpSerializationServiceFactory;
-use Chubbyphp\Validation\ServiceFactory\ValidationServiceFactory as ChubbyphpValidationServiceFactory;
+use Chubbyphp\Deserialization\ServiceFactory\DeserializationServiceFactory as CDeserializationServiceFactory;
+use Chubbyphp\DoctrineDbServiceProvider\ServiceFactory\DoctrineDbalServiceFactory as CDoctrineDbalServiceFactory;
+use Chubbyphp\DoctrineDbServiceProvider\ServiceFactory\DoctrineOrmServiceFactory as CDoctrineOrmServiceFactory;
+use Chubbyphp\Negotiation\ServiceFactory\NegotiationServiceFactory as CNegotiationServiceFactory;
+use Chubbyphp\Serialization\ServiceFactory\SerializationServiceFactory as CSerializationServiceFactory;
+use Chubbyphp\Validation\ServiceFactory\ValidationServiceFactory as CValidationServiceFactory;
 
 return static function () {
     $container = new Container();
 
     $container->factories((new ChubbphpApiHttpServiceFactory())());
-    $container->factories((new ChubbyphpDeserializationServiceFactory())());
-    $container->factories((new ChubbyphpDoctrineDbalServiceFactory())());
-    $container->factories((new ChubbyphpDoctrineOrmServiceFactory())());
-    $container->factories((new ChubbyphpNegotiationServiceFactory())());
-    $container->factories((new ChubbyphpSerializationServiceFactory())());
-    $container->factories((new ChubbyphpValidationServiceFactory())());
+    $container->factories((new CDeserializationServiceFactory())());
+    $container->factories((new CDoctrineDbalServiceFactory())());
+    $container->factories((new CDoctrineOrmServiceFactory())());
+    $container->factories((new CNegotiationServiceFactory())());
+    $container->factories((new CSerializationServiceFactory())());
+    $container->factories((new CValidationServiceFactory())());
 
     $container->factories((new ApiHttpServiceFactory())());
     $container->factories((new DeserializationServiceFactory())());

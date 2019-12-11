@@ -78,7 +78,7 @@ final class PetRepositoryTest extends TestCase
 
         /** @var AbstractQuery|MockObject $countQuery */
         $countQuery = $this->getMockByCalls(AbstractQuery::class, [
-            Call::create('getSingleScalarResult')->with()->willReturn(count($items)),
+            Call::create('getSingleScalarResult')->with()->willReturn((string) count($items)),
         ]);
 
         /** @var AbstractQuery|MockObject $itemsQuery */

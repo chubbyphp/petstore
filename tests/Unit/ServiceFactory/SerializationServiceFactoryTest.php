@@ -61,7 +61,21 @@ final class SerializationServiceFactoryTest extends TestCase
         self::assertCount(4, $encoderTypes);
 
         self::assertInstanceOf(JsonTypeEncoder::class, array_shift($encoderTypes));
-        self::assertInstanceOf(JsonxTypeEncoder::class, array_shift($encoderTypes));
+
+        $jsonxTypeEncoder = array_shift($encoderTypes);
+
+        self::assertInstanceOf(JsonxTypeEncoder::class, $jsonxTypeEncoder);
+
+        $prettyPrintReflection = new \ReflectionProperty($jsonxTypeEncoder, 'prettyPrint');
+        $prettyPrintReflection->setAccessible(true);
+
+        self::assertSame(false, $prettyPrintReflection->getValue($jsonxTypeEncoder));
+
+        $contentTypeReflection = new \ReflectionProperty($jsonxTypeEncoder, 'contentType');
+        $contentTypeReflection->setAccessible(true);
+
+        self::assertSame('application/jsonx+xml', $contentTypeReflection->getValue($jsonxTypeEncoder));
+
         self::assertInstanceOf(UrlEncodedTypeEncoder::class, array_shift($encoderTypes));
         self::assertInstanceOf(YamlTypeEncoder::class, array_shift($encoderTypes));
     }

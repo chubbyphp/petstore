@@ -74,8 +74,8 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                         ::create(
                             $this->router->generatePath($this->getListRouteName(), [], $queryParams)
                         )
-                        ->setAttributes(['method' => 'GET'])
-                        ->getLink()
+                            ->setAttributes(['method' => 'GET'])
+                            ->getLink()
                     ;
                 }
             )),

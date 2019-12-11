@@ -20,34 +20,32 @@ final class ProxyManagerServiceFactory
             'proxymanager.factory' => static function () {
                 return new LazyLoadingValueHolderFactory();
             },
-            'proxymanager.doctrine.dbal.connection_registry' => static function (ContainerInterface $container) {
-                return $container->get('proxymanager.factory')->createProxy(ConnectionRegistry::class,
-                    static function (
-                        &$wrappedObject,
-                        $proxy,
-                        $method,
-                        $parameters,
-                        &$initializer
-                    ) use ($container): void {
-                        $wrappedObject = $container->get('doctrine.dbal.connection_registry');
-                        $initializer = null;
-                    }
-                );
-            },
-            'proxymanager.doctrine.orm.manager_registry' => static function (ContainerInterface $container) {
-                return $container->get('proxymanager.factory')->createProxy(ManagerRegistry::class,
-                    static function (
-                        &$wrappedObject,
-                        $proxy,
-                        $method,
-                        $parameters,
-                        &$initializer
-                    ) use ($container): void {
-                        $wrappedObject = $container->get('doctrine.orm.manager_registry');
-                        $initializer = null;
-                    }
-                );
-            },
+            'proxymanager.doctrine.dbal.connection_registry' => $this->getProxy(
+                ConnectionRegistry::class,
+                'doctrine.dbal.connection_registry'
+            ),
+            'proxymanager.doctrine.orm.manager_registry' => $this->getProxy(
+                ManagerRegistry::class,
+                'doctrine.orm.manager_registry'
+            ),
         ];
+    }
+
+    private function getProxy(string $class, string $id): \Closure
+    {
+        return static function (ContainerInterface $container) use ($class, $id) {
+            return $container->get('proxymanager.factory')->createProxy($class,
+                static function (
+                    &$wrappedObject,
+                    $proxy,
+                    $method,
+                    $parameters,
+                    &$initializer
+                ) use ($container, $id): void {
+                    $wrappedObject = $container->get($id);
+                    $initializer = null;
+                }
+            );
+        };
     }
 }

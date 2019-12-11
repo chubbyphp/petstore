@@ -16,6 +16,9 @@ use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * @covers \App\ServiceFactory\MiddlewareServiceFactory
@@ -63,8 +66,25 @@ final class MiddlewareServiceFactoryTest extends TestCase
 
     public function testCorsMiddleware(): void
     {
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->getMockByCalls(ServerRequestInterface::class, [
+            Call::create('getHeaderLine')->with('Origin')->willReturn('https://myproject.com'),
+            Call::create('getMethod')->with()->willReturn('GET'),
+        ]);
+
+        /** @var ResponseInterface|MockObject $response */
+        $response = $this->getMockByCalls(ResponseInterface::class, [
+            Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://myproject.com')->willReturnSelf(),
+            Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
+        ]);
+
         /** @var ResponseFactoryInterface|MockObject $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+
+        /** @var RequestHandlerInterface|MockObject $handler */
+        $handler = $this->getMockByCalls(RequestHandlerInterface::class, [
+            Call::create('handle')->with($request)->willReturn($response),
+        ]);
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
@@ -86,9 +106,11 @@ final class MiddlewareServiceFactoryTest extends TestCase
 
         self::assertArrayHasKey(CorsMiddleware::class, $factories);
 
-        self::assertInstanceOf(
-            CorsMiddleware::class,
-            $factories[CorsMiddleware::class]($container)
-        );
+        /** @var CorsMiddleware $corsMiddleware */
+        $corsMiddleware = $factories[CorsMiddleware::class]($container);
+
+        self::assertInstanceOf(CorsMiddleware::class, $corsMiddleware);
+
+        self::assertSame($response, $corsMiddleware->process($request, $handler));
     }
 }

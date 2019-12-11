@@ -47,69 +47,38 @@ final class ChubbyphpFrameworkServiceFactory
                 );
             },
             RouterInterface::class => static function (ContainerInterface $container) {
-                return new FastRouteRouter($container->get('routes'), $container->get('routerCacheFile'));
-            },
-            'routes' => static function (ContainerInterface $container) {
-                $acceptAndContentTypeMiddleware = new LazyMiddleware(
-                    $container,
-                    AcceptAndContentTypeMiddleware::class
-                );
-                $indexRequestHandler = new LazyRequestHandler(
-                    $container,
-                    IndexRequestHandler::class
-                );
-                $swaggerIndexRequestHandler = new LazyRequestHandler(
-                    $container,
-                    SwaggerIndexRequestHandler::class
-                );
-                $swaggerYamlRequestHandler = new LazyRequestHandler(
-                    $container,
-                    SwaggerYamlRequestHandler::class
-                );
-                $pingRequestHandler = new LazyRequestHandler(
-                    $container,
-                    PingRequestHandler::class
-                );
-                $petListRequestHandler = new LazyRequestHandler(
-                    $container,
-                    ListRequestHandler::class.Pet::class
-                );
-                $petCreateRequestHandler = new LazyRequestHandler(
-                    $container,
-                    CreateRequestHandler::class.Pet::class
-                );
-                $petReadRequestHandler = new LazyRequestHandler(
-                    $container,
-                    ReadRequestHandler::class.Pet::class
-                );
-                $petUpdateRequestHandler = new LazyRequestHandler(
-                    $container,
-                    UpdateRequestHandler::class.Pet::class
-                );
-                $petDeleteRequestHandler = new LazyRequestHandler(
-                    $container,
-                    DeleteRequestHandler::class.Pet::class
-                );
+                $acceptAndContentType = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
 
-                return Group::create('')
-                    ->route(Route::get('/', 'index', $indexRequestHandler))
-                    ->group(Group::create('/api')
-                        ->route(Route::get('', 'swagger_index', $swaggerIndexRequestHandler))
-                        ->route(Route::get('/swagger', 'swagger_yml', $swaggerYamlRequestHandler))
-                        ->route(Route::get('/ping', 'ping', $pingRequestHandler)
-                            ->middleware($acceptAndContentTypeMiddleware)
+                $index = new LazyRequestHandler($container, IndexRequestHandler::class);
+                $swaggerIndex = new LazyRequestHandler($container, SwaggerIndexRequestHandler::class);
+                $swaggerYaml = new LazyRequestHandler($container, SwaggerYamlRequestHandler::class);
+                $ping = new LazyRequestHandler($container, PingRequestHandler::class);
+                $petList = new LazyRequestHandler($container, ListRequestHandler::class.Pet::class);
+                $petCreate = new LazyRequestHandler($container, CreateRequestHandler::class.Pet::class);
+                $petRead = new LazyRequestHandler($container, ReadRequestHandler::class.Pet::class);
+                $petUpdate = new LazyRequestHandler($container, UpdateRequestHandler::class.Pet::class);
+                $petDelete = new LazyRequestHandler($container, DeleteRequestHandler::class.Pet::class);
+
+                return new FastRouteRouter(
+                    Group::create('')
+                        ->route(Route::get('/', 'index', $index))
+                        ->group(
+                            Group::create('/api')
+                                ->route(Route::get('', 'swagger_index', $swaggerIndex))
+                                ->route(Route::get('/swagger', 'swagger_yml', $swaggerYaml))
+                                ->route(Route::get('/ping', 'ping', $ping)->middleware($acceptAndContentType))
+                                ->group(
+                                    Group::create('/pets')
+                                        ->route(Route::get('', 'pet_list', $petList))
+                                        ->route(Route::post('', 'pet_create', $petCreate))
+                                        ->route(Route::get('/{id}', 'pet_read', $petRead))
+                                        ->route(Route::put('/{id}', 'pet_update', $petUpdate))
+                                        ->route(Route::delete('/{id}', 'pet_delete', $petDelete))
+                                        ->middleware($acceptAndContentType)
+                                )
                         )
-                        ->group(Group::create('/pets')
-                            ->route(Route::get('', 'pet_list', $petListRequestHandler))
-                            ->route(Route::post('', 'pet_create', $petCreateRequestHandler))
-                            ->route(Route::get('/{id}', 'pet_read', $petReadRequestHandler))
-                            ->route(Route::put('/{id}', 'pet_update', $petUpdateRequestHandler))
-                            ->route(Route::delete('/{id}', 'pet_delete', $petDeleteRequestHandler))
-                            ->middleware($acceptAndContentTypeMiddleware)
-                        )
-                    )
-                    ->getRoutes()
-                ;
+                        ->getRoutes(),
+                    $container->get('routerCacheFile'));
             },
         ];
     }

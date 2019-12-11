@@ -58,8 +58,8 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                         ::create(
                             $this->router->generatePath($this->getReadRouteName(), ['id' => $model->getId()])
                         )
-                        ->setAttributes(['method' => 'GET'])
-                        ->getLink()
+                            ->setAttributes(['method' => 'GET'])
+                            ->getLink()
                     ;
                 }
             )),
@@ -69,8 +69,8 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                         ::create(
                             $this->router->generatePath($this->getUpdateRouteName(), ['id' => $model->getId()])
                         )
-                        ->setAttributes(['method' => 'PUT'])
-                        ->getLink()
+                            ->setAttributes(['method' => 'PUT'])
+                            ->getLink()
                     ;
                 }
             )),
@@ -80,8 +80,8 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
                         ::create(
                             $this->router->generatePath($this->getDeleteRouteName(), ['id' => $model->getId()])
                         )
-                        ->setAttributes(['method' => 'DELETE'])
-                        ->getLink()
+                            ->setAttributes(['method' => 'DELETE'])
+                            ->getLink()
                     ;
                 }
             )),

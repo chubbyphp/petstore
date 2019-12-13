@@ -39,6 +39,7 @@ Add the following environment variable to your system, for example within `~./ba
 
 ```sh
 export USER_ID=$(id -u)
+export GROUP_ID=$(id -g)
 ```
 
 ### Docker

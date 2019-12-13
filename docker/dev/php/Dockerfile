@@ -41,10 +41,15 @@ COPY dev/php/files /
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-ARG HOST_USER_ID
+ARG USER_ID
+ARG GROUP_ID
 
-RUN if [ -n "$HOST_USER_ID" ] && [ "$HOST_USER_ID" -lt 60001 ]; then \
-        usermod -u ${HOST_USER_ID} -o www-data; \
+RUN if [ -n "$GROUP_ID" ] && [ "$GROUP_ID" -lt 60001 ]; then \
+        groupmod -g ${GROUP_ID} -o www-data; \
+    fi
+
+RUN if [ -n "$USER_ID" ] && [ "$USER_ID" -lt 60001 ]; then \
+        usermod -u ${USER_ID} -o www-data; \
     fi
 
 RUN usermod -s /bin/bash www-data && \

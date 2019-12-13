@@ -7,7 +7,8 @@ services:
       dockerfile: ./dev/php/Dockerfile
       context: ./docker
       args:
-        HOST_USER_ID: ${USER_ID}
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
     environment:
       SSH_AUTH_SOCK: /ssh-agent
     volumes:

@@ -33,11 +33,11 @@ class ProdConfig extends AbstractConfig
                 'connection' => [
                     'driver' => 'pdo_pgsql',
                     'charset' => 'utf8',
-                    'user' => $_ENV['DATABASE_USER'],
-                    'password' => $_ENV['DATABASE_PASS'],
-                    'host' => $_ENV['DATABASE_HOST'],
-                    'port' => $_ENV['DATABASE_PORT'],
-                    'dbname' => $_ENV['DATABASE_NAME'],
+                    'user' => getenv('DATABASE_USER'),
+                    'password' => getenv('DATABASE_PASS'),
+                    'host' => getenv('DATABASE_HOST'),
+                    'port' => getenv('DATABASE_PORT'),
+                    'dbname' => getenv('DATABASE_NAME'),
                 ],
             ],
             'doctrine.orm.em.options' => [

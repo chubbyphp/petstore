@@ -18,11 +18,11 @@ final class DevConfigTest extends TestCase
 {
     public function testGetConfig(): void
     {
-        $_ENV['DATABASE_USER'] = 'database_dev_user';
-        $_ENV['DATABASE_PASS'] = 'database_dev_pass';
-        $_ENV['DATABASE_HOST'] = 'database_dev_host';
-        $_ENV['DATABASE_PORT'] = 'database_dev_port';
-        $_ENV['DATABASE_NAME'] = 'database_dev_name';
+        putenv('DATABASE_USER=database_dev_user');
+        putenv('DATABASE_PASS=database_dev_pass');
+        putenv('DATABASE_HOST=database_dev_host');
+        putenv('DATABASE_PORT=database_dev_port');
+        putenv('DATABASE_NAME=database_dev_name');
 
         $config = new DevConfig('/path/to/root');
 

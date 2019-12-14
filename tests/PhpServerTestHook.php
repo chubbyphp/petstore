@@ -64,7 +64,7 @@ final class PhpServerTestHook implements BeforeTestHook
     private function startServer(): void
     {
         $command = sprintf(
-            'php -S localhost:%d -t %s %s',
+            'APP_ENV=phpunit php -S localhost:%d -t %s %s',
             self::PHP_SERVER_PORT,
             realpath(__DIR__.'/../public'),
             realpath(__DIR__.'/../public/index_phpunit.php')

@@ -18,11 +18,11 @@ final class PhpunitConfigTest extends TestCase
 {
     public function testGetConfig(): void
     {
-        $_ENV['DATABASE_USER'] = 'database_phpunit_user';
-        $_ENV['DATABASE_PASS'] = 'database_phpunit_pass';
-        $_ENV['DATABASE_HOST'] = 'database_phpunit_host';
-        $_ENV['DATABASE_PORT'] = 'database_phpunit_port';
-        $_ENV['DATABASE_NAME'] = 'database_phpunit_name';
+        putenv('DATABASE_USER=database_phpunit_user');
+        putenv('DATABASE_PASS=database_phpunit_pass');
+        putenv('DATABASE_HOST=database_phpunit_host');
+        putenv('DATABASE_PORT=database_phpunit_port');
+        putenv('DATABASE_NAME=database_phpunit_name');
 
         $config = new PhpunitConfig('/path/to/root');
 

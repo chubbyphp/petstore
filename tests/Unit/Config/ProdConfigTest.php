@@ -17,11 +17,11 @@ final class ProdConfigTest extends TestCase
 {
     public function testGetConfig(): void
     {
-        $_ENV['DATABASE_USER'] = 'database_prod_user';
-        $_ENV['DATABASE_PASS'] = 'database_prod_pass';
-        $_ENV['DATABASE_HOST'] = 'database_prod_host';
-        $_ENV['DATABASE_PORT'] = 'database_prod_port';
-        $_ENV['DATABASE_NAME'] = 'database_prod_name';
+        putenv('DATABASE_USER=database_prod_user');
+        putenv('DATABASE_PASS=database_prod_pass');
+        putenv('DATABASE_HOST=database_prod_host');
+        putenv('DATABASE_PORT=database_prod_port');
+        putenv('DATABASE_NAME=database_prod_name');
 
         $config = new ProdConfig('/path/to/root');
 

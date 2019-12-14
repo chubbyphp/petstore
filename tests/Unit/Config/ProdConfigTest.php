@@ -17,6 +17,12 @@ final class ProdConfigTest extends TestCase
 {
     public function testGetConfig(): void
     {
+        $_ENV['DATABASE_USER'] = 'database_prod_user';
+        $_ENV['DATABASE_PASS'] = 'database_prod_pass';
+        $_ENV['DATABASE_HOST'] = 'database_prod_host';
+        $_ENV['DATABASE_PORT'] = 'database_prod_port';
+        $_ENV['DATABASE_NAME'] = 'database_prod_name';
+
         $config = new ProdConfig('/path/to/root');
 
         self::assertSame([
@@ -39,13 +45,13 @@ final class ProdConfigTest extends TestCase
                     ],
                 ],
                 'connection' => [
-                    'charset' => 'utf8',
-                    'dbname' => 'petstore',
                     'driver' => 'pdo_pgsql',
-                    'host' => 'postgres',
-                    'port' => 5432,
-                    'password' => 'root',
-                    'user' => 'root',
+                    'charset' => 'utf8',
+                    'user' => 'database_prod_user',
+                    'password' => 'database_prod_pass',
+                    'host' => 'database_prod_host',
+                    'port' => 'database_prod_port',
+                    'dbname' => 'database_prod_name',
                 ],
             ],
             'doctrine.orm.em.options' => [

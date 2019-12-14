@@ -18,6 +18,12 @@ final class DevConfigTest extends TestCase
 {
     public function testGetConfig(): void
     {
+        $_ENV['DATABASE_USER'] = 'database_dev_user';
+        $_ENV['DATABASE_PASS'] = 'database_dev_pass';
+        $_ENV['DATABASE_HOST'] = 'database_dev_host';
+        $_ENV['DATABASE_PORT'] = 'database_dev_port';
+        $_ENV['DATABASE_NAME'] = 'database_dev_name';
+
         $config = new DevConfig('/path/to/root');
 
         self::assertSame([
@@ -42,13 +48,13 @@ final class DevConfigTest extends TestCase
                     ],
                 ],
                 'connection' => [
-                    'charset' => 'utf8',
-                    'dbname' => 'petstore',
                     'driver' => 'pdo_pgsql',
-                    'host' => 'postgres',
-                    'port' => 5432,
-                    'password' => 'root',
-                    'user' => 'root',
+                    'charset' => 'utf8',
+                    'user' => 'database_dev_user',
+                    'password' => 'database_dev_pass',
+                    'host' => 'database_dev_host',
+                    'port' => 'database_dev_port',
+                    'dbname' => 'database_dev_name',
                 ],
             ],
             'doctrine.orm.em.options' => [

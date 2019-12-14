@@ -18,6 +18,12 @@ final class PhpunitConfigTest extends TestCase
 {
     public function testGetConfig(): void
     {
+        $_ENV['DATABASE_USER'] = 'database_phpunit_user';
+        $_ENV['DATABASE_PASS'] = 'database_phpunit_pass';
+        $_ENV['DATABASE_HOST'] = 'database_phpunit_host';
+        $_ENV['DATABASE_PORT'] = 'database_phpunit_port';
+        $_ENV['DATABASE_NAME'] = 'database_phpunit_name';
+
         $config = new PhpunitConfig('/path/to/root');
 
         self::assertSame([
@@ -42,13 +48,13 @@ final class PhpunitConfigTest extends TestCase
                     ],
                 ],
                 'connection' => [
-                    'charset' => 'utf8',
-                    'dbname' => 'petstore_phpunit',
                     'driver' => 'pdo_pgsql',
-                    'host' => 'postgres',
-                    'port' => 5432,
-                    'password' => 'root',
-                    'user' => 'root',
+                    'charset' => 'utf8',
+                    'user' => 'database_phpunit_user',
+                    'password' => 'database_phpunit_pass',
+                    'host' => 'database_phpunit_host',
+                    'port' => 'database_phpunit_port',
+                    'dbname' => 'database_phpunit_name_phpunit',
                 ],
             ],
             'doctrine.orm.em.options' => [

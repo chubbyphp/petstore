@@ -10,6 +10,12 @@ services:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
     environment:
+      APP_ENV: dev
+      DATABASE_USER: root
+      DATABASE_PASS: root
+      DATABASE_HOST: postgres
+      DATABASE_NAME: petstore
+      DATABASE_PORT: 5432
       SSH_AUTH_SOCK: /ssh-agent
     volumes:
       - ./:/var/www/html

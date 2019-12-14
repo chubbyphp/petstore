@@ -10,7 +10,7 @@ class PhpunitConfig extends DevConfig
     {
         $config = parent::getConfig();
 
-        $config['doctrine.dbal.db.options']['connection']['dbname'] = 'petstore_phpunit';
+        $config['doctrine.dbal.db.options']['connection']['dbname'] .= '_phpunit';
 
         return $config;
     }

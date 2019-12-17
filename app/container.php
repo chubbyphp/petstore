@@ -14,7 +14,7 @@ use App\ServiceFactory\ProxyManagerServiceFactory;
 use App\ServiceFactory\RepositoryServiceFactory;
 use App\ServiceFactory\SerializationServiceFactory;
 use App\ServiceFactory\ValidationServiceFactory;
-use Chubbyphp\ApiHttp\ServiceFactory\ApiHttpServiceFactory as ChubbphpApiHttpServiceFactory;
+use Chubbyphp\ApiHttp\ServiceFactory\ApiHttpServiceFactory as CApiHttpServiceFactory;
 use Chubbyphp\Container\Container;
 use Chubbyphp\Deserialization\ServiceFactory\DeserializationServiceFactory as CDeserializationServiceFactory;
 use Chubbyphp\DoctrineDbServiceProvider\ServiceFactory\DoctrineDbalServiceFactory as CDoctrineDbalServiceFactory;
@@ -26,7 +26,7 @@ use Chubbyphp\Validation\ServiceFactory\ValidationServiceFactory as CValidationS
 return static function () {
     $container = new Container();
 
-    $container->factories((new ChubbphpApiHttpServiceFactory())());
+    $container->factories((new CApiHttpServiceFactory())());
     $container->factories((new CDeserializationServiceFactory())());
     $container->factories((new CDoctrineDbalServiceFactory())());
     $container->factories((new CDoctrineOrmServiceFactory())());

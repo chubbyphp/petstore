@@ -17,6 +17,8 @@ services:
       DATABASE_NAME: petstore
       DATABASE_PORT: 5432
       SSH_AUTH_SOCK: /ssh-agent
+      BLACKFIRE_CLIENT_ID: ${BLACKFIRE_CLIENT_ID}
+      BLACKFIRE_CLIENT_TOKEN: ${BLACKFIRE_CLIENT_TOKEN}
     volumes:
       - ./:/var/www/html
       - ~/.bash_aliases:/var/www/.bash_aliases
@@ -25,6 +27,11 @@ services:
       - $SSH_AUTH_SOCK:/ssh-agent
     depends_on:
       - postgres
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
+      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
   postgres:
     container_name: petstore-postgres
     hostname: pestore-postgres

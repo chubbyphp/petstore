@@ -28,6 +28,8 @@ services:
     depends_on:
       - postgres
   blackfire:
+    container_name: petstore-blackfire
+    hostname: petstore-blackfire
     image: blackfire/blackfire
     environment:
       BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}

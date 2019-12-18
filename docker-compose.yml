@@ -24,6 +24,7 @@ services:
       - ~/.bash_aliases:/var/www/.bash_aliases
       - ~/.bash_history:/var/www/.bash_history
       - ~/.gitconfig:/var/www/.gitconfig
+      - ~/.gitignore:/var/www/.gitignore
       - $SSH_AUTH_SOCK:/ssh-agent
     depends_on:
       - postgres

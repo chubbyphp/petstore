@@ -49,7 +49,7 @@ services:
       dockerfile: ./prod/nginx/Dockerfile
       context: ./docker
     ports:
-      - "1337:443"
+      - "10443:443"
     volumes:
       - ./:/var/www/html
     depends_on:

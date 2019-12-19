@@ -49,7 +49,7 @@ docker-compose up -d
 docker-compose exec php bash
 ```
 
-https://localhost:1337
+https://localhost:10443
 
 ## Installation
 

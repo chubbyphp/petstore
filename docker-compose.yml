@@ -49,6 +49,7 @@ services:
       dockerfile: ./prod/nginx/Dockerfile
       context: ./docker
     ports:
+      - "10080:80"
       - "10443:443"
     volumes:
       - ./:/var/www/html

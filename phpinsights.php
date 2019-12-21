@@ -16,6 +16,7 @@ use SlevomatCodingStandard\Sniffs\Classes\SuperfluousAbstractClassNamingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousInterfaceNamingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousTraitNamingSniff;
+use SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff;
@@ -35,6 +36,7 @@ return [
         SuperfluousInterfaceNamingSniff::class,
         SuperfluousTraitNamingSniff::class,
         UnnecessaryStringConcatSniff::class,
+        UnusedPrivateElementsSniff::class, // many to one reference without get/set
         UselessOverridingMethodSniff::class, // cause visibility change on expections __construct,
     ],
     'config' => [

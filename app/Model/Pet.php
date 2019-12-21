@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
 
 final class Pet implements ModelInterface
@@ -33,10 +35,16 @@ final class Pet implements ModelInterface
      */
     private $tag;
 
+    /**
+     * @var Collection
+     */
+    private $vaccinations;
+
     public function __construct()
     {
         $this->id = Uuid::uuid4()->toString();
         $this->createdAt = new \DateTime();
+        $this->vaccinations = new ArrayCollection();
     }
 
     public function getId(): string
@@ -79,10 +87,36 @@ final class Pet implements ModelInterface
         return $this->tag;
     }
 
+    public function addVaccination(Vaccination $vaccination): void
+    {
+        $this->vaccinations->add($vaccination);
+    }
+
+    public function removeVaccination(Vaccination $vaccination): void
+    {
+        $this->vaccinations->removeElement($vaccination);
+    }
+
+    /**
+     * @return array<int, Vaccination>
+     */
+    public function getVaccinations(): array
+    {
+        return $this->vaccinations->toArray();
+    }
+
     public function reset(): void
     {
         foreach (get_object_vars(new self()) as $property => $value) {
             if (in_array($property, ['id', 'createdAt'], true)) {
+                continue;
+            }
+
+            if (in_array($property, ['vaccinations'], true)) {
+                foreach ($this->{$property} as $many) {
+                    $many->reset();
+                }
+
                 continue;
             }
 

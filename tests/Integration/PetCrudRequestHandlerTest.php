@@ -113,7 +113,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
     {
         $pet = $this->create();
 
-        $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789'], false);
+        $this::assertPet(
+            $pet,
+            ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => [['name' => 'Rabies']]],
+            false
+        );
     }
 
     public function testListWithUnsupportedAccept(): void
@@ -240,7 +244,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $found = false;
         foreach ($petCollection['_embedded']['items'] as $item) {
             if ($item['id'] === $pet['id']) {
-                $this::assertPet($item, ['name' => 'Kathy', 'tag' => '134.456.789'], false);
+                $this::assertPet($item, ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => []], false);
                 $found = true;
             }
         }
@@ -341,7 +345,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $pet = json_decode($response['body'], true);
 
-        $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789'], false);
+        $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => []], false);
     }
 
     public function testUpdateWithUnsupportedAccept(): void
@@ -491,7 +495,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $pet = json_decode($response['body'], true);
 
-        $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789'], true);
+        $this::assertPet(
+            $pet,
+            ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => [['name' => 'Rabies']]],
+            true
+        );
     }
 
     public function testUpdate(): void
@@ -516,7 +524,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $pet = json_decode($response['body'], true);
 
-        $this::assertPet($pet, ['name' => 'Momo', 'tag' => null], true);
+        $this::assertPet($pet, ['name' => 'Momo', 'tag' => null, 'vaccinations' => []], true);
     }
 
     public function testDeleteWithUnsupportedAccept(): void
@@ -600,7 +608,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
-            json_encode(['name' => 'Kathy', 'tag' => '134.456.789'])
+            json_encode(['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => [['name' => 'Rabies']]])
         );
 
         self::assertSame(201, $response['status']['code']);
@@ -614,13 +622,14 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         return $pet;
     }
 
-    private static function assertPet(array $pet, array $expectedValues, bool $updated): void
+    private static function assertPet(array $pet, array $expectedPet, bool $updated): void
     {
         self::assertArrayHasKey('id', $pet);
         self::assertArrayHasKey('createdAt', $pet);
         self::assertArrayHasKey('updatedAt', $pet);
         self::assertArrayHasKey('name', $pet);
         self::assertArrayHasKey('tag', $pet);
+        self::assertArrayHasKey('vaccinations', $pet);
         self::assertArrayHasKey('_links', $pet);
         self::assertArrayHasKey('read', $pet['_links']);
         self::assertArrayHasKey('update', $pet['_links']);
@@ -636,8 +645,12 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
             self::assertNull($pet['updatedAt']);
         }
 
-        self::assertSame($expectedValues['name'], $pet['name']);
-        self::assertSame($expectedValues['tag'], $pet['tag']);
+        self::assertSame($expectedPet['name'], $pet['name']);
+        self::assertSame($expectedPet['tag'], $pet['tag']);
+        foreach ($expectedPet['vaccinations'] as $i => $expectedVaccination) {
+            self::assertVaccination($pet['vaccinations'][$i], $expectedVaccination);
+        }
+        self::assertSame(count($expectedPet['vaccinations']), count($pet['vaccinations']));
         self::assertSame([
             'href' => sprintf('/api/pets/%s', $pet['id']),
             'templated' => false,
@@ -663,5 +676,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
             ],
         ], $pet['_links']['delete']);
         self::assertSame('pet', $pet['_type']);
+    }
+
+    private static function assertVaccination(array $vaccination, array $expectedVaccination): void
+    {
+        self::assertArrayHasKey('name', $vaccination);
+
+        self::assertSame($expectedVaccination['name'], $vaccination['name']);
+        self::assertSame('vaccination', $vaccination['_type']);
     }
 }

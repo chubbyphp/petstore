@@ -8,7 +8,9 @@ use App\Collection\PetCollection;
 use App\Mapping\MappingConfig;
 use App\Mapping\Validation\PetCollectionMapping;
 use App\Mapping\Validation\PetMapping;
+use App\Mapping\Validation\VaccinationMapping;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use App\ServiceFactory\ValidationServiceFactory;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -43,10 +45,11 @@ final class ValidationServiceFactoryTest extends TestCase
 
         self::assertIsArray($mappingConfigs);
 
-        self::assertCount(2, $mappingConfigs);
+        self::assertCount(3, $mappingConfigs);
 
         self::assertMappingConfig($mappingConfigs, PetCollection::class, PetCollectionMapping::class);
         self::assertMappingConfig($mappingConfigs, Pet::class, PetMapping::class);
+        self::assertMappingConfig($mappingConfigs, Vaccination::class, VaccinationMapping::class);
     }
 
     public function testObjectMappings(): void

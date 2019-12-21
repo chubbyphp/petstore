@@ -6,6 +6,7 @@ namespace App\Tests\Unit\Mapping\Deserialization;
 
 use App\Mapping\Deserialization\PetMapping;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
 use PHPUnit\Framework\TestCase;
@@ -46,6 +47,7 @@ final class PetMappingTest extends TestCase
                 ->getMapping(),
             DenormalizationFieldMappingBuilder::createConvertType('tag', ConvertTypeFieldDenormalizer::TYPE_STRING)
                 ->getMapping(),
+            DenormalizationFieldMappingBuilder::createEmbedMany('vaccinations', Vaccination::class)->getMapping(),
         ], $fieldMappings);
     }
 }

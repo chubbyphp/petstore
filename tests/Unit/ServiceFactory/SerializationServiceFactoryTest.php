@@ -8,7 +8,9 @@ use App\Collection\PetCollection;
 use App\Mapping\MappingConfig;
 use App\Mapping\Serialization\PetCollectionMapping;
 use App\Mapping\Serialization\PetMapping;
+use App\Mapping\Serialization\VaccinationMapping;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use App\ServiceFactory\SerializationServiceFactory;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotAcceptable;
@@ -90,7 +92,7 @@ final class SerializationServiceFactoryTest extends TestCase
 
         self::assertIsArray($mappingConfigs);
 
-        self::assertCount(7, $mappingConfigs);
+        self::assertCount(8, $mappingConfigs);
 
         self::assertMappingConfig($mappingConfigs, BadRequest::class, BadRequestMapping::class);
         self::assertMappingConfig($mappingConfigs, NotAcceptable::class, NotAcceptableMapping::class);
@@ -104,6 +106,7 @@ final class SerializationServiceFactoryTest extends TestCase
         );
         self::assertMappingConfig($mappingConfigs, UnprocessableEntity::class, UnprocessableEntityMapping::class);
         self::assertMappingConfig($mappingConfigs, UnsupportedMediaType::class, UnsupportedMediaTypeMapping::class);
+        self::assertMappingConfig($mappingConfigs, Vaccination::class, VaccinationMapping::class);
     }
 
     public function testObjectMappings(): void

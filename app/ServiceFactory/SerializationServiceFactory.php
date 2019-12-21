@@ -8,7 +8,9 @@ use App\Collection\PetCollection;
 use App\Mapping\MappingConfig;
 use App\Mapping\Serialization\PetCollectionMapping;
 use App\Mapping\Serialization\PetMapping;
+use App\Mapping\Serialization\VaccinationMapping;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotAcceptable;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
@@ -55,6 +57,7 @@ final class SerializationServiceFactory
                     PetCollection::class => new MappingConfig(PetCollectionMapping::class, [RouterInterface::class]),
                     UnprocessableEntity::class => new MappingConfig(UnprocessableEntityMapping::class),
                     UnsupportedMediaType::class => new MappingConfig(UnsupportedMediaTypeMapping::class),
+                    Vaccination::class => new MappingConfig(VaccinationMapping::class),
                 ];
             },
             'serializer.normalizer.objectmappings' => function (ContainerInterface $container) {

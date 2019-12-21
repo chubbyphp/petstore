@@ -8,7 +8,9 @@ use App\Collection\PetCollection;
 use App\Mapping\MappingConfig;
 use App\Mapping\Validation\PetCollectionMapping;
 use App\Mapping\Validation\PetMapping;
+use App\Mapping\Validation\VaccinationMapping;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use Chubbyphp\Validation\Mapping\CallableValidationMappingProvider;
 use Chubbyphp\Validation\Mapping\ValidationMappingProviderInterface;
 use Psr\Container\ContainerInterface;
@@ -25,6 +27,7 @@ final class ValidationServiceFactory
                 return [
                     PetCollection::class => new MappingConfig(PetCollectionMapping::class),
                     Pet::class => new MappingConfig(PetMapping::class),
+                    Vaccination::class => new MappingConfig(VaccinationMapping::class),
                 ];
             },
             'validator.mappings' => function (ContainerInterface $container) {

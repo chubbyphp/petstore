@@ -7,8 +7,10 @@ namespace App\ServiceFactory;
 use App\Collection\PetCollection;
 use App\Mapping\Deserialization\PetCollectionMapping;
 use App\Mapping\Deserialization\PetMapping;
+use App\Mapping\Deserialization\VaccinationMapping;
 use App\Mapping\MappingConfig;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
@@ -39,6 +41,7 @@ final class DeserializationServiceFactory
                 return [
                     PetCollection::class => new MappingConfig(PetCollectionMapping::class),
                     Pet::class => new MappingConfig(PetMapping::class),
+                    Vaccination::class => new MappingConfig(VaccinationMapping::class),
                 ];
             },
             'deserializer.denormalizer.objectmappings' => function (ContainerInterface $container) {

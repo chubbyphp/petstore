@@ -4,39 +4,38 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Mapping\Validation;
 
-use App\Mapping\Validation\PetMapping;
-use App\Model\Pet;
+use App\Mapping\Validation\VaccinationMapping;
+use App\Model\Vaccination;
 use Chubbyphp\Validation\Constraint\NotBlankConstraint;
 use Chubbyphp\Validation\Constraint\NotNullConstraint;
 use Chubbyphp\Validation\Constraint\TypeConstraint;
-use Chubbyphp\Validation\Constraint\ValidConstraint;
 use Chubbyphp\Validation\Mapping\ValidationPropertyMappingBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \App\Mapping\Validation\PetMapping
+ * @covers \App\Mapping\Validation\VaccinationMapping
  *
  * @internal
  */
-final class PetMappingTest extends TestCase
+final class VaccinationMappingTest extends TestCase
 {
     public function testGetClass(): void
     {
-        $mapping = new PetMapping();
+        $mapping = new VaccinationMapping();
 
-        self::assertSame(Pet::class, $mapping->getClass());
+        self::assertSame(Vaccination::class, $mapping->getClass());
     }
 
     public function testGetValidationClassMapping(): void
     {
-        $mapping = new PetMapping();
+        $mapping = new VaccinationMapping();
 
         self::assertNull($mapping->getValidationClassMapping('/path'));
     }
 
     public function testGetValidationPropertyMappings(): void
     {
-        $mapping = new PetMapping();
+        $mapping = new VaccinationMapping();
 
         $propertyMappings = $mapping->getValidationPropertyMappings('/path');
 
@@ -45,13 +44,6 @@ final class PetMappingTest extends TestCase
                 new NotNullConstraint(),
                 new NotBlankConstraint(),
                 new TypeConstraint('string'),
-            ])->getMapping(),
-            ValidationPropertyMappingBuilder::create('tag', [
-                new NotBlankConstraint(),
-                new TypeConstraint('string'),
-            ])->getMapping(),
-            ValidationPropertyMappingBuilder::create('vaccinations', [
-                new ValidConstraint(),
             ])->getMapping(),
         ], $propertyMappings);
     }

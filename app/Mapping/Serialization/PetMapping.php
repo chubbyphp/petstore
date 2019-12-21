@@ -28,6 +28,7 @@ final class PetMapping extends AbstractModelMapping
         $normalizationFieldMappings = parent::getNormalizationFieldMappings($path);
         $normalizationFieldMappings[] = NormalizationFieldMappingBuilder::create('name')->getMapping();
         $normalizationFieldMappings[] = NormalizationFieldMappingBuilder::create('tag')->getMapping();
+        $normalizationFieldMappings[] = NormalizationFieldMappingBuilder::createEmbedMany('vaccinations')->getMapping();
 
         return $normalizationFieldMappings;
     }

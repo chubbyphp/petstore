@@ -7,8 +7,10 @@ namespace App\Tests\Unit\ServiceFactory;
 use App\Collection\PetCollection;
 use App\Mapping\Deserialization\PetCollectionMapping;
 use App\Mapping\Deserialization\PetMapping;
+use App\Mapping\Deserialization\VaccinationMapping;
 use App\Mapping\MappingConfig;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use App\ServiceFactory\DeserializationServiceFactory;
 use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
@@ -74,10 +76,11 @@ final class DeserializationServiceFactoryTest extends TestCase
 
         self::assertIsArray($mappingConfigs);
 
-        self::assertCount(2, $mappingConfigs);
+        self::assertCount(3, $mappingConfigs);
 
         self::assertMappingConfig($mappingConfigs, PetCollection::class, PetCollectionMapping::class);
         self::assertMappingConfig($mappingConfigs, Pet::class, PetMapping::class);
+        self::assertMappingConfig($mappingConfigs, Vaccination::class, VaccinationMapping::class);
     }
 
     public function testObjectMappings(): void

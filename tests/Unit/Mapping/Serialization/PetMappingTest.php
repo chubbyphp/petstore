@@ -36,6 +36,7 @@ final class PetMappingTest extends ModelMappingTest
             NormalizationFieldMappingBuilder::createDateTime('updatedAt', \DateTime::ATOM)->getMapping(),
             NormalizationFieldMappingBuilder::create('name')->getMapping(),
             NormalizationFieldMappingBuilder::create('tag')->getMapping(),
+            NormalizationFieldMappingBuilder::createEmbedMany('vaccinations')->getMapping(),
         ], $fieldMappings);
     }
 

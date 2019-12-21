@@ -74,7 +74,7 @@
             "@test:insights"
         ],
         "test:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
-        "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=91 --verbose --coverage=build/phpunit --test-framework-options='--testsuite=Unit'",
+        "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=94 --verbose --coverage=build/phpunit --test-framework-options='--testsuite=Unit'",
         "test:insights": "mkdir -p build && bash -c 'vendor/bin/phpinsights analyse -v --no-interaction --min-quality=96 --disable-security-check | tee build/phpinsights.log; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
         "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/phpunit.result.cache",
         "test:lint": "mkdir -p build && find app tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",

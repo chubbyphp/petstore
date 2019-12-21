@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory;
 
 use App\Mapping\Orm\PetMapping;
+use App\Mapping\Orm\VaccinationMapping;
 use App\Model\Pet;
+use App\Model\Vaccination;
 use App\ServiceFactory\DoctrineOrmServiceFactory;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
@@ -41,6 +43,7 @@ final class DoctrineOrmServiceFactoryTest extends TestCase
                     'namespace' => 'App\Model',
                     'map' => [
                         Pet::class => PetMapping::class,
+                        Vaccination::class => VaccinationMapping::class,
                     ],
                 ],
             ],

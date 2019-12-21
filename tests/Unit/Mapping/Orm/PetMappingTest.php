@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Mapping\Orm;
 
 use App\Mapping\Orm\PetMapping;
+use App\Model\Vaccination;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -26,27 +27,33 @@ final class PetMappingTest extends TestCase
         $classMetadata = $this->getMockByCalls(ClassMetadata::class, [
             Call::create('setPrimaryTable')->with(['name' => 'pet']),
             Call::create('mapField')->with([
-                'id' => true,
                 'fieldName' => 'id',
                 'type' => 'guid',
+                'id' => true,
             ]),
             Call::create('mapField')->with([
                 'fieldName' => 'createdAt',
                 'type' => 'datetime',
             ]),
             Call::create('mapField')->with([
+                'nullable' => true,
                 'fieldName' => 'updatedAt',
                 'type' => 'datetime',
-                'nullable' => true,
             ]),
             Call::create('mapField')->with([
                 'fieldName' => 'name',
                 'type' => 'string',
             ]),
             Call::create('mapField')->with([
+                'nullable' => true,
                 'fieldName' => 'tag',
                 'type' => 'string',
-                'nullable' => true,
+            ]),
+            Call::create('mapOneToMany')->with([
+                'fieldName' => 'vaccinations',
+                'targetEntity' => Vaccination::class,
+                'mappedBy' => 'pet',
+                'cascade' => ['ALL'],
             ]),
         ]);
 

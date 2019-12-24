@@ -14,24 +14,24 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 ## Requirements
 
  * php: ^7.2
- * [chubbyphp/chubbyphp-api-http][3]: ^3.3
+ * [chubbyphp/chubbyphp-api-http][3]: ^3.3.1
  * [chubbyphp/chubbyphp-config][4]: ^2.1
  * [chubbyphp/chubbyphp-container][5]: ^1.0
  * [chubbyphp/chubbyphp-cors][6]: ^1.1
- * [chubbyphp/chubbyphp-deserialization][7]: ^2.15
- * [chubbyphp/chubbyphp-doctrine-db-service-provider][8]: ^1.5
+ * [chubbyphp/chubbyphp-deserialization][7]: ^2.15.2
+ * [chubbyphp/chubbyphp-doctrine-db-service-provider][8]: ^1.6
  * [chubbyphp/chubbyphp-framework][9]: ^2.5
- * [chubbyphp/chubbyphp-negotiation][10]: ^1.5
- * [chubbyphp/chubbyphp-serialization][11]: ^2.12
- * [chubbyphp/chubbyphp-validation][12]: ^3.6
+ * [chubbyphp/chubbyphp-negotiation][10]: ^1.5.1
+ * [chubbyphp/chubbyphp-serialization][11]: ^2.12.2
+ * [chubbyphp/chubbyphp-validation][12]: ^3.7
  * [doctrine/orm][13]: ^2.7
- * [monolog/monolog][14]: ^2.0.1
+ * [monolog/monolog][14]: ^2.0.2
  * [nikic/fast-route][15]: ^1.3
  * [ocramius/proxy-manager][16]: ^2.2.3
- * [ramsey/uuid][17]: ^3.9.1
+ * [ramsey/uuid][17]: ^3.9.2
  * [slim/psr7][18]: ^0.6
  * [swagger-api/swagger-ui][19]: ^3.24.3
- * [symfony/console][20]: ^4.4.1|^5.0.1
+ * [symfony/console][20]: ^4.4.2|^5.0.2
 
 ## Environment
 

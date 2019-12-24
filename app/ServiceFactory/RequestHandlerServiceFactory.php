@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory;
 
-use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
 use App\Model\Pet;
@@ -31,7 +30,6 @@ final class RequestHandlerServiceFactory
         return [
             CreateRequestHandler::class.Pet::class => static function (ContainerInterface $container) {
                 return new CreateRequestHandler(
-                    $container->get(InvalidParametersFactoryInterface::class),
                     $container->get(PetFactory::class),
                     $container->get(PetRepository::class),
                     $container->get('api-http.request.manager'),
@@ -47,7 +45,6 @@ final class RequestHandlerServiceFactory
             },
             ListRequestHandler::class.Pet::class => static function (ContainerInterface $container) {
                 return new ListRequestHandler(
-                    $container->get(InvalidParametersFactoryInterface::class),
                     $container->get(PetCollectionFactory::class),
                     $container->get(PetRepository::class),
                     $container->get('api-http.request.manager'),
@@ -63,7 +60,6 @@ final class RequestHandlerServiceFactory
             },
             UpdateRequestHandler::class.Pet::class => static function (ContainerInterface $container) {
                 return new UpdateRequestHandler(
-                    $container->get(InvalidParametersFactoryInterface::class),
                     $container->get(PetRepository::class),
                     $container->get('api-http.request.manager'),
                     $container->get('api-http.response.manager'),

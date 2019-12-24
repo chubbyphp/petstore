@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\RequestHandler\Crud;
 
-use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Collection\CollectionInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Crud\ListRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
-use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
+use Chubbyphp\Validation\Error\ErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -42,17 +41,10 @@ final class ListRequestHandlerTest extends TestCase
         $response = $this->getMockByCalls(ResponseInterface::class);
 
         /** @var ErrorInterface|MockObject $error */
-        $error = $this->getMockByCalls(ErrorInterface::class);
-
-        $invalidParameters = [
-            ['name' => 'offset', 'reason' => 'notinteger', 'details' => []],
-        ];
-
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class, [
-            Call::create('createInvalidParameters')
-                ->with([$error])
-                ->willReturn($invalidParameters),
+        $error = $this->getMockByCalls(ErrorInterface::class, [
+            Call::create('getPath')->with()->willReturn('offset'),
+            Call::create('getKey')->with()->willReturn('notinteger'),
+            Call::create('getArguments')->with()->willReturn([]),
         ]);
 
         /** @var CollectionInterface|MockObject $collection */
@@ -77,8 +69,11 @@ final class ListRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (BadRequest $apiProblem) use ($invalidParameters): void {
-                        self::assertSame($invalidParameters, $apiProblem->getInvalidParameters());
+                    new ArgumentCallback(function (BadRequest $apiProblem): void {
+                        self::assertSame(
+                            [['name' => 'offset', 'reason' => 'notinteger', 'details' => []]],
+                            $apiProblem->getInvalidParameters()
+                        );
                     }),
                     'application/json',
                     null
@@ -92,7 +87,6 @@ final class ListRequestHandlerTest extends TestCase
         ]);
 
         $requestHandler = new ListRequestHandler(
-            $invalidParametersFactory,
             $factory,
             $repository,
             $requestManager,
@@ -112,9 +106,6 @@ final class ListRequestHandlerTest extends TestCase
 
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
-
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
 
         /** @var CollectionInterface|MockObject $collection */
         $collection = $this->getMockByCalls(CollectionInterface::class);
@@ -156,7 +147,6 @@ final class ListRequestHandlerTest extends TestCase
         ]);
 
         $requestHandler = new ListRequestHandler(
-            $invalidParametersFactory,
             $factory,
             $repository,
             $requestManager,

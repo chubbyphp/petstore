@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceFactory;
 
-use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\CollectionFactoryInterface;
 use App\Factory\Model\PetFactory;
@@ -52,9 +51,6 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
     public function testPetCreateRequestHandler(): void
     {
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
-
         /** @var ModelFactoryInterface|MockObject $petFactory */
         $petFactory = $this->getMockByCalls(ModelFactoryInterface::class);
 
@@ -72,7 +68,6 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(InvalidParametersFactoryInterface::class)->willReturn($invalidParametersFactory),
             Call::create('get')->with(PetFactory::class)->willReturn($petFactory),
             Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
             Call::create('get')->with('api-http.request.manager')->willReturn($requestManager),
@@ -116,9 +111,6 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
     public function testPetListRequestHandler(): void
     {
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
-
         /** @var CollectionFactoryInterface|MockObject $petCollectionFactory */
         $petCollectionFactory = $this->getMockByCalls(CollectionFactoryInterface::class);
 
@@ -136,7 +128,6 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(InvalidParametersFactoryInterface::class)->willReturn($invalidParametersFactory),
             Call::create('get')->with(PetCollectionFactory::class)->willReturn($petCollectionFactory),
             Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
             Call::create('get')->with('api-http.request.manager')->willReturn($requestManager),
@@ -180,9 +171,6 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
     public function testPetUpdateRequestHandler(): void
     {
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
-
         /** @var RepositoryInterface|MockObject $petRepository */
         $petRepository = $this->getMockByCalls(RepositoryInterface::class);
 
@@ -197,7 +185,6 @@ final class RequestHandlerServiceFactoryTest extends TestCase
 
         /** @var ContainerInterface|MockObject $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(InvalidParametersFactoryInterface::class)->willReturn($invalidParametersFactory),
             Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
             Call::create('get')->with('api-http.request.manager')->willReturn($requestManager),
             Call::create('get')->with('api-http.response.manager')->willReturn($responseManager),

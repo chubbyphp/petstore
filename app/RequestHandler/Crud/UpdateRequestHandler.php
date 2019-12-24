@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\RequestHandler\Crud;
 
-use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
@@ -14,6 +13,7 @@ use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
+use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
 use Chubbyphp\Validation\Error\ErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -22,11 +22,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class UpdateRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var InvalidParametersFactoryInterface
-     */
-    private $errorFactory;
-
     /**
      * @var RepositoryInterface
      */
@@ -48,13 +43,11 @@ final class UpdateRequestHandler implements RequestHandlerInterface
     private $validator;
 
     public function __construct(
-        InvalidParametersFactoryInterface $errorFactory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
         ValidatorInterface $validator
     ) {
-        $this->errorFactory = $errorFactory;
         $this->repository = $repository;
         $this->requestManager = $requestManager;
         $this->responseManager = $responseManager;
@@ -107,7 +100,7 @@ final class UpdateRequestHandler implements RequestHandlerInterface
     private function createValidationErrorResponse(array $errors, string $accept): ResponseInterface
     {
         return $this->responseManager->createFromApiProblem(
-            new UnprocessableEntity($this->errorFactory->createInvalidParameters($errors)),
+            new UnprocessableEntity((new ApiProblemErrorMessages($errors))->getMessages()),
             $accept
         );
     }

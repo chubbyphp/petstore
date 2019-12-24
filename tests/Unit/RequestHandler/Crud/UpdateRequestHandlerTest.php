@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\RequestHandler\Crud;
 
-use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Crud\UpdateRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
-use Chubbyphp\ApiHttp\Error\ErrorInterface;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
@@ -19,6 +17,7 @@ use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
+use Chubbyphp\Validation\Error\ErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -45,9 +44,6 @@ final class UpdateRequestHandlerTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
-
         /** @var RepositoryInterface|MockObject $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
             Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn(null),
@@ -71,7 +67,6 @@ final class UpdateRequestHandlerTest extends TestCase
         $validator = $this->getMockByCalls(ValidatorInterface::class);
 
         $requestHandler = new UpdateRequestHandler(
-            $invalidParametersFactory,
             $repository,
             $requestManager,
             $responseManager,
@@ -94,17 +89,10 @@ final class UpdateRequestHandlerTest extends TestCase
         $response = $this->getMockByCalls(ResponseInterface::class);
 
         /** @var ErrorInterface|MockObject $error */
-        $error = $this->getMockByCalls(ErrorInterface::class);
-
-        $invalidParameters = [
-            ['name' => 'name', 'reason' => 'notunique', 'details' => []],
-        ];
-
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class, [
-            Call::create('createInvalidParameters')
-                ->with([$error])
-                ->willReturn($invalidParameters),
+        $error = $this->getMockByCalls(ErrorInterface::class, [
+            Call::create('getPath')->with()->willReturn('name'),
+            Call::create('getKey')->with()->willReturn('notunique'),
+            Call::create('getArguments')->with()->willReturn([]),
         ]);
 
         /** @var ModelInterface|MockObject $model */
@@ -138,8 +126,11 @@ final class UpdateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (UnprocessableEntity $apiProblem) use ($invalidParameters): void {
-                        self::assertSame($invalidParameters, $apiProblem->getInvalidParameters());
+                    new ArgumentCallback(function (UnprocessableEntity $apiProblem): void {
+                        self::assertSame(
+                            [['name' => 'name', 'reason' => 'notunique', 'details' => []]],
+                            $apiProblem->getInvalidParameters()
+                        );
                     }),
                     'application/json',
                     null
@@ -153,7 +144,6 @@ final class UpdateRequestHandlerTest extends TestCase
         ]);
 
         $requestHandler = new UpdateRequestHandler(
-            $invalidParametersFactory,
             $repository,
             $requestManager,
             $responseManager,
@@ -174,9 +164,6 @@ final class UpdateRequestHandlerTest extends TestCase
 
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
-
-        /** @var InvalidParametersFactoryInterface|MockObject $invalidParametersFactory */
-        $invalidParametersFactory = $this->getMockByCalls(InvalidParametersFactoryInterface::class);
 
         /** @var ModelInterface|MockObject $model */
         $model = $this->getMockByCalls(ModelInterface::class, [
@@ -228,7 +215,6 @@ final class UpdateRequestHandlerTest extends TestCase
         ]);
 
         $requestHandler = new UpdateRequestHandler(
-            $invalidParametersFactory,
             $repository,
             $requestManager,
             $responseManager,

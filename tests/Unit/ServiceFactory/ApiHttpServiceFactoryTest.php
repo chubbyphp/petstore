@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceFactory;
 
-use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\ServiceFactory\ApiHttpServiceFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -21,7 +20,7 @@ final class ApiHttpServiceFactoryTest extends TestCase
     {
         $factories = (new ApiHttpServiceFactory())();
 
-        self::assertCount(3, $factories);
+        self::assertCount(2, $factories);
     }
 
     public function testResponseFactory(): void
@@ -40,17 +39,5 @@ final class ApiHttpServiceFactoryTest extends TestCase
         self::assertArrayHasKey('api-http.stream.factory', $factories);
 
         self::assertInstanceOf(StreamFactoryInterface::class, $factories['api-http.stream.factory']());
-    }
-
-    public function testInvalidParametersFactory(): void
-    {
-        $factories = (new ApiHttpServiceFactory())();
-
-        self::assertArrayHasKey(InvalidParametersFactoryInterface::class, $factories);
-
-        self::assertInstanceOf(
-            InvalidParametersFactoryInterface::class,
-            $factories[InvalidParametersFactoryInterface::class]()
-        );
     }
 }

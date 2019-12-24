@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\RequestHandler\Crud;
 
-use App\ApiHttp\Factory\InvalidParametersFactoryInterface;
 use App\Collection\CollectionInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
@@ -12,6 +11,7 @@ use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
+use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,11 +19,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ListRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var InvalidParametersFactoryInterface
-     */
-    private $errorFactory;
-
     /**
      * @var CollectionFactoryInterface
      */
@@ -50,14 +45,12 @@ final class ListRequestHandler implements RequestHandlerInterface
     private $validator;
 
     public function __construct(
-        InvalidParametersFactoryInterface $errorFactory,
         CollectionFactoryInterface $factory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
         ValidatorInterface $validator
     ) {
-        $this->errorFactory = $errorFactory;
         $this->factory = $factory;
         $this->repository = $repository;
         $this->requestManager = $requestManager;
@@ -74,7 +67,7 @@ final class ListRequestHandler implements RequestHandlerInterface
 
         if ([] !== $errors = $this->validator->validate($collection)) {
             return $this->responseManager->createFromApiProblem(
-                new BadRequest($this->errorFactory->createInvalidParameters($errors)),
+                new BadRequest((new ApiProblemErrorMessages($errors))->getMessages()),
                 $accept
             );
         }

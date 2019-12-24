@@ -70,12 +70,6 @@ composer setup:dev
 
 ## Structure
 
-### ApiHttp
-
-Http related stuff like negitiation, deserialization, serialization.
-
- * [App\ApiHttp][50]
-
 ### Collection
 
 Collections are sortable, filterable paginated lists of models.
@@ -152,8 +146,6 @@ Dominik Zogg 2019
 [20]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
-
-[50]: app/ApiHttp/Factory
 
 [60]: app/Collection
 

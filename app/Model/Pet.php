@@ -36,7 +36,7 @@ final class Pet implements ModelInterface
     private $tag;
 
     /**
-     * @var Collection
+     * @var Collection<int, Vaccination>
      */
     private $vaccinations;
 

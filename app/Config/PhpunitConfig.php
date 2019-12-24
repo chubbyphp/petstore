@@ -6,6 +6,9 @@ namespace App\Config;
 
 class PhpunitConfig extends DevConfig
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function getConfig(): array
     {
         $config = parent::getConfig();

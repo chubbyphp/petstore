@@ -8,6 +8,9 @@ use Monolog\Logger;
 
 class ProdConfig extends AbstractConfig
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function getConfig(): array
     {
         $cacheDir = $this->getCacheDir();

@@ -60,8 +60,8 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
         $contentType = $request->getAttribute('contentType');
 
-        /** @var ModelInterface $model */
         if (null === $model = $this->repository->findById($id)) {
+            /* @var ModelInterface $model */
             return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 

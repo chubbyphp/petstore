@@ -29,7 +29,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [nikic/fast-route][15]: ^1.3
  * [ocramius/proxy-manager][16]: ^2.2.3
  * [ramsey/uuid][17]: ^3.9.2
- * [slim/psr7][18]: ^0.6
+ * [slim/psr7][18]: ^1.0
  * [swagger-api/swagger-ui][19]: ^3.24.3
  * [symfony/console][20]: ^4.4.2|^5.0.2
 

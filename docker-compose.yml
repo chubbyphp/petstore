@@ -42,6 +42,8 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+    ports:
+      - "15432:5432"
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx

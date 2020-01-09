@@ -54,6 +54,10 @@ docker-compose exec php bash
 * http://localhost:10080
 * https://localhost:10443
 
+### DBs
+
+ * jdbc:postgresql://localhost:15432/petstore?user=root&password=root
+
 ## Installation
 
 Through [Composer](http://getcomposer.org) as [chubbyphp/petstore][40].

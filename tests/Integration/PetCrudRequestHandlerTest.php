@@ -244,7 +244,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $found = false;
         foreach ($petCollection['_embedded']['items'] as $item) {
             if ($item['id'] === $pet['id']) {
-                $this::assertPet($item, ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => []], false);
+                $this::assertPet(
+                    $item,
+                    ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => [['name' => 'Rabies']]],
+                    false
+                );
                 $found = true;
             }
         }
@@ -345,7 +349,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $pet = json_decode($response['body'], true);
 
-        $this::assertPet($pet, ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => []], false);
+        $this::assertPet(
+            $pet,
+            ['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => [['name' => 'Rabies']]],
+            false
+        );
     }
 
     public function testUpdateWithUnsupportedAccept(): void

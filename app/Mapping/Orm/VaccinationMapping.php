@@ -17,6 +17,10 @@ final class VaccinationMapping implements ClassMapMappingInterface
         $builder->setTable('vaccination');
         $builder->createField('id', 'guid')->isPrimaryKey()->build();
         $builder->addField('name', 'string');
-        $builder->addManyToOne('pet', Pet::class, 'vaccinations');
+        $builder->createManyToOne('pet', Pet::class)
+            ->inversedBy('vaccinations')
+            ->addJoinColumn('pet_id', 'id', false, false, 'CASCADE')
+            ->build()
+        ;
     }
 }

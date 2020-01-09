@@ -39,6 +39,16 @@ final class VaccinationMappingTest extends TestCase
                 'fieldName' => 'pet',
                 'targetEntity' => Pet::class,
                 'inversedBy' => 'vaccinations',
+                'joinColumns' => [
+                    [
+                        'name' => 'pet_id',
+                        'referencedColumnName' => 'id',
+                        'nullable' => false,
+                        'unique' => false,
+                        'onDelete' => 'CASCADE',
+                        'columnDefinition' => null,
+                    ],
+                ],
             ]),
         ]);
 

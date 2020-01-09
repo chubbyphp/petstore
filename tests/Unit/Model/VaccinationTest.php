@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model;
 
+use App\Model\Pet;
 use App\Model\Vaccination;
+use App\Tests\Helper\AssertHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,19 +22,14 @@ final class VaccinationTest extends TestCase
 
         self::assertRegExp('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $vaccination->getId());
 
+        $pet = new Pet();
+
+        self::assertNull(AssertHelper::readProperty('pet', $vaccination));
+
         $vaccination->setName('Rabies');
+        $vaccination->setPet($pet);
 
         self::assertSame('Rabies', $vaccination->getName());
-
-        $id = $vaccination->getId();
-
-        $vaccination->reset();
-
-        self::assertSame($id, $vaccination->getId());
-
-        $reflectionProperty = new \ReflectionProperty($vaccination, 'name');
-        $reflectionProperty->setAccessible(true);
-
-        self::assertNull($reflectionProperty->getValue($vaccination));
+        self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination));
     }
 }

@@ -87,14 +87,16 @@ final class Pet implements ModelInterface
         return $this->tag;
     }
 
-    public function addVaccination(Vaccination $vaccination): void
+    /**
+     * @param array<int, Vaccination> $vaccinations
+     */
+    public function setVaccinations(array $vaccinations): void
     {
-        $this->vaccinations->add($vaccination);
-    }
-
-    public function removeVaccination(Vaccination $vaccination): void
-    {
-        $this->vaccinations->removeElement($vaccination);
+        $this->vaccinations->clear();
+        foreach ($vaccinations as $vaccination) {
+            $vaccination->setPet($this);
+            $this->vaccinations->add($vaccination);
+        }
     }
 
     /**
@@ -102,21 +104,13 @@ final class Pet implements ModelInterface
      */
     public function getVaccinations(): array
     {
-        return $this->vaccinations->toArray();
+        return $this->vaccinations->getValues();
     }
 
     public function reset(): void
     {
         foreach (get_object_vars(new self()) as $property => $value) {
             if (in_array($property, ['id', 'createdAt'], true)) {
-                continue;
-            }
-
-            if (in_array($property, ['vaccinations'], true)) {
-                foreach ($this->{$property} as $many) {
-                    $many->reset();
-                }
-
                 continue;
             }
 

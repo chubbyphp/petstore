@@ -20,6 +20,11 @@ final class PetMapping implements ClassMapMappingInterface
         $builder->addField('updatedAt', 'datetime', ['nullable' => true]);
         $builder->addField('name', 'string');
         $builder->addField('tag', 'string', ['nullable' => true]);
-        $builder->createOneToMany('vaccinations', Vaccination::class)->mappedBy('pet')->cascadeAll()->build();
+        $builder->createOneToMany('vaccinations', Vaccination::class)
+            ->mappedBy('pet')
+            ->cascadeAll()
+            ->orphanRemoval()
+            ->build()
+        ;
     }
 }

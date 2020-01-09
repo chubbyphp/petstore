@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Model;
 use App\Model\ModelInterface;
 use App\Model\Pet;
 use App\Model\Vaccination;
+use App\Tests\Helper\AssertHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,8 +40,8 @@ final class PetTest extends TestCase
         $pet->setUpdatedAt($now);
         $pet->setName('Lucas');
         $pet->setTag('2018 OHIO DOG 87123 LUCAS');
-        $pet->addVaccination($vaccination1);
-        $pet->addVaccination($vaccination2);
+        $pet->setVaccinations([$vaccination2]);
+        $pet->setVaccinations([$vaccination1, $vaccination2]);
 
         self::assertSame($now, $pet->getUpdatedAt());
         self::assertSame('Lucas', $pet->getName());
@@ -53,11 +54,11 @@ final class PetTest extends TestCase
         self::assertSame($vaccination1, array_shift($vaccinations));
         self::assertSame($vaccination2, array_shift($vaccinations));
 
-        $reflectionProperty = new \ReflectionProperty(Vaccination::class, 'name');
-        $reflectionProperty->setAccessible(true);
-
-        self::assertSame('Rabies', $reflectionProperty->getValue($vaccination1));
-        self::assertSame('Feline Acquired Immune Deficiency Syndrome', $reflectionProperty->getValue($vaccination2));
+        self::assertSame('Rabies', AssertHelper::readProperty('name', $vaccination1));
+        self::assertSame(
+            'Feline Acquired Immune Deficiency Syndrome',
+            AssertHelper::readProperty('name', $vaccination2)
+        );
 
         $id = $pet->getId();
         $createdAt = $pet->getCreatedAt();
@@ -69,15 +70,6 @@ final class PetTest extends TestCase
 
         self::assertNull($pet->getUpdatedAt());
         self::assertNull($pet->getTag());
-
-        $vaccinations = $pet->getVaccinations();
-
-        self::assertNull($reflectionProperty->getValue(array_shift($vaccinations)));
-        self::assertNull($reflectionProperty->getValue(array_shift($vaccinations)));
-
-        $pet->removeVaccination($vaccination1);
-        $pet->removeVaccination($vaccination2);
-
         self::assertCount(0, $pet->getVaccinations());
     }
 }

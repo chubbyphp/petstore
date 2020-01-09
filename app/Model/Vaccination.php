@@ -43,14 +43,8 @@ final class Vaccination
         return $this->name;
     }
 
-    public function reset(): void
+    public function setPet(?Pet $pet): void
     {
-        foreach (get_object_vars(new self()) as $property => $value) {
-            if (in_array($property, ['id'], true)) {
-                continue;
-            }
-
-            $this->{$property} = $value;
-        }
+        $this->pet = $pet;
     }
 }

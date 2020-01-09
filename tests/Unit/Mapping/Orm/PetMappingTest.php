@@ -54,6 +54,7 @@ final class PetMappingTest extends TestCase
                 'targetEntity' => Vaccination::class,
                 'mappedBy' => 'pet',
                 'cascade' => ['ALL'],
+                'orphanRemoval' => true,
             ]),
         ]);
 

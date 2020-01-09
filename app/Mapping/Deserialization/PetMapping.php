@@ -6,7 +6,9 @@ namespace App\Mapping\Deserialization;
 
 use App\Model\Pet;
 use App\Model\Vaccination;
+use Chubbyphp\Deserialization\Accessor\MethodAccessor;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
+use Chubbyphp\Deserialization\Denormalizer\Relation\EmbedManyFieldDenormalizer;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
@@ -37,7 +39,11 @@ final class PetMapping implements DenormalizationObjectMappingInterface
                 ->getMapping(),
             DenormalizationFieldMappingBuilder::createConvertType('tag', ConvertTypeFieldDenormalizer::TYPE_STRING)
                 ->getMapping(),
-            DenormalizationFieldMappingBuilder::createEmbedMany('vaccinations', Vaccination::class)->getMapping(),
+            DenormalizationFieldMappingBuilder::create('vaccinations')
+                ->setFieldDenormalizer(
+                    new EmbedManyFieldDenormalizer(Vaccination::class, new MethodAccessor('vaccinations'))
+                )
+                ->getMapping(),
         ];
     }
 }

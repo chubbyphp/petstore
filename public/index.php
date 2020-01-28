@@ -6,4 +6,4 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 /** @var Chubbyphp\Framework\Application $web */
 $web = (require __DIR__ . '/../app/web.php')(getenv('APP_ENV'));
-$web->send($web->handle((new ServerRequestFactory())->createFromGlobals()));
+$web->emit($web->handle((new ServerRequestFactory())->createFromGlobals()));

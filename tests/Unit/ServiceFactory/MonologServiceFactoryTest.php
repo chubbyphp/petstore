@@ -11,6 +11,7 @@ use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\Handler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Processor\UidProcessor;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -52,7 +53,7 @@ final class MonologServiceFactoryTest extends TestCase
 
         self::assertInstanceOf(Logger::class, $logger);
 
-        /** @var array<int, Handler> $logger */
+        /** @var array<int, Handler> $handlers */
         $handlers = $logger->getHandlers();
 
         self::assertCount(1, $handlers);
@@ -69,6 +70,16 @@ final class MonologServiceFactoryTest extends TestCase
         $formatter = $streamHandler->getFormatter();
 
         self::assertInstanceOf(LogstashFormatter::class, $formatter);
+
+        /** @var array<int, callable> $processors */
+        $processors = $logger->getProcessors();
+
+        self::assertCount(1, $processors);
+
+        /** @var UidProcessor $uidProcessor */
+        $uidProcessor = array_shift($processors);
+
+        self::assertInstanceOf(UidProcessor::class, $uidProcessor);
     }
 
     public function testLogger(): void

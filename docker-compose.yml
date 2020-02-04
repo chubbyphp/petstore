@@ -43,7 +43,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     ports:
-      - "15432:5432"
+      - '15432:5432'
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx
@@ -51,9 +51,39 @@ services:
       dockerfile: ./prod/nginx/Dockerfile
       context: ./docker
     ports:
-      - "10080:80"
-      - "10443:443"
+      - '10080:80'
+      - '10443:443'
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html:ro
     depends_on:
       - php
+  elasticsearch:
+    container_name: petstore-elasticsearch
+    hostname: petstore-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: '-Xms256m -Xmx256m'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - '19200:9200'
+  filebeat:
+    container_name: petstore-filebeat
+    hostname: petstore-filebeat
+    image: docker.elastic.co/beats/filebeat:7.5.2
+    volumes:
+      - ./docker/dev/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./:/var/www/html:ro
+    depends_on:
+      - elasticsearch
+  kibana:
+    container_name: petstore-kibana
+    hostname: petstore-kibana
+    image: docker.elastic.co/kibana/kibana:7.5.2
+    ports:
+      - '15601:5601'
+    depends_on:
+      - elasticsearch

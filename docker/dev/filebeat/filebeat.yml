@@ -2,6 +2,7 @@ filebeat.inputs:
   - type: log
     paths:
       - /var/www/html/var/log/dev/*.log
+    json.keys_under_root: true
 
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]

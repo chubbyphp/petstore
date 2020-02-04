@@ -4,5 +4,8 @@ filebeat.inputs:
       - /var/www/html/var/log/dev/*.log
     json.keys_under_root: true
 
+setup.kibana:
+  host: "kibana:5601"
+
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]

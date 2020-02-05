@@ -22,17 +22,11 @@ abstract class AbstractConfig implements ConfigInterface
     {
         return [
             'cache' => $this->getCacheDir(),
-            'log' => $this->getLogDir(),
         ];
     }
 
     protected function getCacheDir(): string
     {
         return $this->rootDir.'/var/cache/'.$this->getEnv();
-    }
-
-    protected function getLogDir(): string
-    {
-        return $this->rootDir.'/var/log/'.$this->getEnv();
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\ServiceFactory;
 
 use Monolog\Formatter\LogstashFormatter;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
@@ -25,10 +25,7 @@ final class MonologServiceFactory
                 return new Logger(
                     $monolog['name'],
                     [
-                        (new StreamHandler(
-                            $monolog['path'],
-                            $monolog['level']
-                        ))->setFormatter(new LogstashFormatter('app')),
+                        new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $monolog['level'])
                     ],
                     [
                         new UidProcessor(),

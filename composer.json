@@ -49,7 +49,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "config:clean-directories": "bin/console config:clean-directories cache log",
+        "config:clean-directories": "bin/console config:clean-directories cache",
         "database:create": "bin/console dbal:database:create --if-not-exists",
         "database:drop": "bin/console dbal:database:drop --if-exists --force",
         "database:schema:update": "bin/console orm:schema-tool:update --complete --force --dump-sql",

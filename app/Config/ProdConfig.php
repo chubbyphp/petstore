@@ -14,7 +14,6 @@ class ProdConfig extends AbstractConfig
     public function getConfig(): array
     {
         $cacheDir = $this->getCacheDir();
-        $logDir = $this->getLogDir();
 
         return [
             'cors' => [
@@ -51,7 +50,6 @@ class ProdConfig extends AbstractConfig
             ],
             'monolog' => [
                 'name' => 'petstore',
-                'path' => $logDir.'/application.log',
                 'level' => Logger::NOTICE,
             ],
             'routerCacheFile' => $cacheDir.'/routes.php',

@@ -47,13 +47,14 @@ services:
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx
-    build:
-      dockerfile: ./prod/nginx/Dockerfile
-      context: ./docker
+    image: nginx:1.17.8
     ports:
       - '10080:80'
       - '10443:443'
     volumes:
+      - ./docker/prod/nginx/certificate_key:/etc/nginx/certificate_key:ro
+      - ./docker/prod/nginx/certificate:/etc/nginx/certificate:ro
+      - ./docker/prod/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./:/var/www/html:ro
     depends_on:
       - php

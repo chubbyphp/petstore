@@ -63,13 +63,21 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: '-Xms256m -Xmx256m'
+      ES_JAVA_OPTS: '-Xms128m -Xmx128m'
     ulimits:
       memlock:
         soft: -1
         hard: -1
     ports:
       - '19200:9200'
+  kibana:
+    container_name: petstore-kibana
+    hostname: petstore-kibana
+    image: docker.elastic.co/kibana/kibana:7.5.2
+    ports:
+      - '15601:5601'
+    depends_on:
+      - elasticsearch
   filebeat:
     container_name: petstore-filebeat
     hostname: petstore-filebeat
@@ -79,11 +87,4 @@ services:
       - ./:/var/www/html:ro
     depends_on:
       - elasticsearch
-  kibana:
-    container_name: petstore-kibana
-    hostname: petstore-kibana
-    image: docker.elastic.co/kibana/kibana:7.5.2
-    ports:
-      - '15601:5601'
-    depends_on:
-      - elasticsearch
+      - kibana

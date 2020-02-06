@@ -1,0 +1,24 @@
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+    - type: docker
+      templates:
+        - condition.contains:
+            docker.container.name: petstore-php
+          config:
+            - type: log
+              paths:
+                - /var/www/html/var/log/*/*.log
+              json.keys_under_root: true
+
+processors:
+- add_cloud_metadata: ~
+
+output.elasticsearch:
+  hosts: 'elasticsearch:9200'

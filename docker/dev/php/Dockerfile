@@ -69,14 +69,7 @@ RUN if [ -n "$USER_ID" ] && [ "$USER_ID" -lt 60001 ]; then \
 RUN usermod -s /bin/bash www-data && \
     echo 'www-data ALL=(ALL) NOPASSWD: ALL' > '/etc/sudoers.d/www-data'
 
-RUN mkdir -p /var/www \
-    && chown -R www-data:www-data /var/www \
-    && touch /var/log/php-cli.err.log \
-    && chown www-data:www-data /var/log/php-cli.err.log \
-    && touch /var/log/php-fpm.log \
-    && chown www-data:www-data /var/log/php-fpm.log \
-    && touch /var/log/php-fpm.err.log \
-    && chown www-data:www-data /var/log/php-fpm.err.log
+RUN mkdir -p /var/www && chown www-data:www-data /var/www
 
 USER www-data
 

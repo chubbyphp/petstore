@@ -14,7 +14,7 @@ filebeat.autodiscover:
           config:
             - type: log
               paths:
-                - /var/www/html/var/log/*/*.log
+                - /var/log/application/*.log
               json.keys_under_root: true
 
 processors:

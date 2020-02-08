@@ -95,7 +95,7 @@ services:
       - ./docker/prod/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./:/var/www/html:ro
+      - ./var/log/dev:/var/log/application:ro
     depends_on:
       - elasticsearch
       - kibana

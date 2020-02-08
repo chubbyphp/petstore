@@ -9,9 +9,6 @@ services:
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
-    labels:
-      co.elastic.logs/enabled: true
-      co.elastic.logs/fileset.stderr: error
     environment:
       APP_ENV: dev
       DATABASE_USER: root
@@ -42,6 +39,7 @@ services:
     container_name: petstore-postgres
     hostname: pestore-postgres
     image: postgres:12
+    command: -c log_statement=all -c log_error_verbosity=VERBOSE
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
@@ -51,11 +49,6 @@ services:
     container_name: petstore-nginx
     hostname: petstore-nginx
     image: nginx:1.17.8
-    labels:
-      co.elastic.logs/enabled: true
-      co.elastic.logs/module: nginx
-      co.elastic.logs/fileset.stdout: access
-      co.elastic.logs/fileset.stderr: error
     ports:
       - '10080:80'
       - '10443:443'

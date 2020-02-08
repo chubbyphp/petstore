@@ -6,17 +6,37 @@ filebeat.config:
 filebeat.autodiscover:
   providers:
     - type: docker
-      hints.enabled: true
-      hints.default_config.enabled: false
-    - type: docker
       templates:
-        - condition.contains:
-            docker.container.name: petstore-php
+        - condition.equals:
+            docker.container.name: "petstore-nginx"
           config:
+            - module: nginx
+              access:
+                enabled: true
+                input:
+                  type: container
+                  paths:
+                    - /var/lib/docker/containers/${data.docker.container.id}/*.log
+        - condition.equals:
+            docker.container.name: "petstore-php"
+          config:
+            - type: container
+              paths:
+                - /var/lib/docker/containers/${data.docker.container.id}/*.log
             - type: log
               paths:
                 - /var/log/application/*.log
               json.keys_under_root: true
+        - condition.equals:
+            docker.container.name: "petstore-postgres"
+          config:
+            - module: postgresql
+              log:
+                enabled: true
+                input:
+                  type: container
+                  paths:
+                    - /var/lib/docker/containers/${data.docker.container.id}/*.log
 
 processors:
 - add_cloud_metadata: ~

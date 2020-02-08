@@ -10,6 +10,7 @@ services:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
     labels:
+      co.elastic.logs/enabled: true
       co.elastic.logs/fileset.stderr: error
     environment:
       APP_ENV: dev
@@ -51,6 +52,7 @@ services:
     hostname: petstore-nginx
     image: nginx:1.17.8
     labels:
+      co.elastic.logs/enabled: true
       co.elastic.logs/module: nginx
       co.elastic.logs/fileset.stdout: access
       co.elastic.logs/fileset.stderr: error
@@ -93,9 +95,9 @@ services:
     user: root
     volumes:
       - ./docker/prod/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./var/log/dev:/var/log/application:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./var/log/dev:/var/log/application:ro
     depends_on:
       - elasticsearch
       - kibana

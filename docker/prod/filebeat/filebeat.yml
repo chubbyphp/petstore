@@ -37,6 +37,22 @@ filebeat.autodiscover:
                   type: container
                   paths:
                     - /var/lib/docker/containers/${data.docker.container.id}/*.log
+        # - condition.equals:
+        #     docker.container.name: "petstore-elasticsearch"
+        #   config:
+        #     - module: elasticsearch
+        #       server:
+        #         enabled: true
+        #         input:
+        #           type: container
+        #           paths:
+        #             - /var/lib/docker/containers/${data.docker.container.id}/*.log
+        - condition.equals:
+            docker.container.name: "petstore-filebeat"
+          config:
+            - type: container
+              paths:
+                - /var/lib/docker/containers/${data.docker.container.id}/*.log
 
 processors:
 - add_cloud_metadata: ~

@@ -185,12 +185,17 @@ class ModelMappingTest extends TestCase
             /**
              * @var string
              */
-            private $listRouteName;
+            private $readRouteName;
 
             /**
              * @var string
              */
-            private $createRouteName;
+            private $updateRouteName;
+
+            /**
+             * @var string
+             */
+            private $deleteRouteName;
 
             public function __construct(
                 RouterInterface $router,

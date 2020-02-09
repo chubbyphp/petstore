@@ -1,7 +1,7 @@
 # petstore
 
-[![Build Status](https://api.travis-ci.org/chubbyphp/petstore.png?branch=chubbyphp-framework)](https://travis-ci.org/chubbyphp/petstore)
-[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp-framework)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp-framework)
+[![Build Status](https://api.travis-ci.org/chubbyphp/petstore.png?branch=chubbyphp)](https://travis-ci.org/chubbyphp/petstore)
+[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp)
 
 ## Description
 
@@ -59,7 +59,7 @@ docker-compose exec php bash
 Through [Composer](http://getcomposer.org) as [chubbyphp/petstore][40].
 
 ```bash
-composer create-project chubbyphp/petstore myproject "dev-chubbyphp-framework"
+composer create-project chubbyphp/petstore myproject "dev-chubbyphp"
 ```
 
 ## Setup

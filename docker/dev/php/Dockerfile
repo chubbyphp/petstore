@@ -58,16 +58,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 ARG USER_ID
 ARG GROUP_ID
 
-RUN if [ -n "$GROUP_ID" ] && [ "$GROUP_ID" -lt 60001 ]; then \
-        groupmod -g ${GROUP_ID} -o www-data; \
-    fi
-
-RUN if [ -n "$USER_ID" ] && [ "$USER_ID" -lt 60001 ]; then \
-        usermod -u ${USER_ID} -o www-data; \
-    fi
-
-RUN usermod -s /bin/bash www-data && \
-    echo 'www-data ALL=(ALL) NOPASSWD: ALL' > '/etc/sudoers.d/www-data'
+RUN groupmod -g ${GROUP_ID} -o www-data \
+    && usermod -u ${USER_ID} -s /bin/bash -o www-data \
+    && echo 'www-data ALL=(ALL) NOPASSWD: ALL' > '/etc/sudoers.d/www-data'
 
 RUN mkdir -p /var/www && chown -R www-data:www-data /var/www
 

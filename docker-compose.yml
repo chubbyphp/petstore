@@ -7,8 +7,8 @@ services:
       dockerfile: ./dev/php/Dockerfile
       context: ./docker
       args:
-        USER_ID: ${USER_ID}
-        GROUP_ID: ${GROUP_ID}
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
     environment:
       APP_ENV: dev
       DATABASE_USER: root

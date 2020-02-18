@@ -5,7 +5,7 @@ info:
   license:
     name: MIT
 servers:
-  - url: https://localhost:10080
+  - url: http://localhost:10080
   - url: https://localhost:10443
 paths:
   /api/ping:

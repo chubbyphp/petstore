@@ -14,7 +14,7 @@ final class SwaggerRequestHandlerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api'
+            '/api/swagger/index'
         );
 
         self::assertSame(200, $response['status']['code']);
@@ -27,7 +27,7 @@ final class SwaggerRequestHandlerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/swagger'
+            '/api/swagger/yml'
         );
 
         self::assertSame(200, $response['status']['code']);

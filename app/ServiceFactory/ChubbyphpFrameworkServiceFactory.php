@@ -50,9 +50,9 @@ final class ChubbyphpFrameworkServiceFactory
                 $acceptAndContentType = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
 
                 $index = new LazyRequestHandler($container, IndexRequestHandler::class);
+                $ping = new LazyRequestHandler($container, PingRequestHandler::class);
                 $swaggerIndex = new LazyRequestHandler($container, SwaggerIndexRequestHandler::class);
                 $swaggerYaml = new LazyRequestHandler($container, SwaggerYamlRequestHandler::class);
-                $ping = new LazyRequestHandler($container, PingRequestHandler::class);
                 $petList = new LazyRequestHandler($container, ListRequestHandler::class.Pet::class);
                 $petCreate = new LazyRequestHandler($container, CreateRequestHandler::class.Pet::class);
                 $petRead = new LazyRequestHandler($container, ReadRequestHandler::class.Pet::class);
@@ -64,9 +64,9 @@ final class ChubbyphpFrameworkServiceFactory
                         ->route(Route::get('/', 'index', $index))
                         ->group(
                             Group::create('/api')
-                                ->route(Route::get('', 'swagger_index', $swaggerIndex))
-                                ->route(Route::get('/swagger', 'swagger_yml', $swaggerYaml))
-                                ->route(Route::get('/ping', 'ping', $ping)->middleware($acceptAndContentType))
+                            ->route(Route::get('/ping', 'ping', $ping)->middleware($acceptAndContentType))
+                                ->route(Route::get('/swagger/index', 'swagger_index', $swaggerIndex))
+                                ->route(Route::get('/swagger/yml', 'swagger_yml', $swaggerYaml))
                                 ->group(
                                     Group::create('/pets')
                                         ->route(Route::get('', 'pet_list', $petList))

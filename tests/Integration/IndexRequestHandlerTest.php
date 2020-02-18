@@ -19,6 +19,6 @@ final class IndexRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame(302, $response['status']['code']);
 
-        self::assertStringEndsWith('/api', $response['headers']['location'][0]);
+        self::assertStringEndsWith('/api/swagger/index', $response['headers']['location'][0]);
     }
 }

@@ -67,7 +67,7 @@ final class PhpServerTestHook implements BeforeTestHook
             'APP_ENV=phpunit php -S localhost:%d -t %s %s',
             self::PHP_SERVER_PORT,
             realpath(__DIR__.'/../public'),
-            realpath(__DIR__.'/../public/index_phpunit.php')
+            realpath(__DIR__.'/../public/index.php')
         );
 
         echo $command.PHP_EOL.PHP_EOL;

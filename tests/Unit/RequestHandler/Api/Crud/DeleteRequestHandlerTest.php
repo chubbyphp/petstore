@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\RequestHandler\Crud;
+namespace App\Tests\Unit\RequestHandler\Api\Crud;
 
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
-use App\RequestHandler\Crud\DeleteRequestHandler;
+use App\RequestHandler\Api\Crud\DeleteRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @covers \App\RequestHandler\Crud\DeleteRequestHandler
+ * @covers \App\RequestHandler\Api\Crud\DeleteRequestHandler
  *
  * @internal
  */

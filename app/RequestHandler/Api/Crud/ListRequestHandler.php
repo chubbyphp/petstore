@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\RequestHandler\Crud;
+namespace App\RequestHandler\Api\Crud;
 
-use App\Factory\ModelFactoryInterface;
-use App\Model\ModelInterface;
+use App\Collection\CollectionInterface;
+use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
@@ -17,10 +17,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class CreateRequestHandler implements RequestHandlerInterface
+final class ListRequestHandler implements RequestHandlerInterface
 {
     /**
-     * @var ModelFactoryInterface
+     * @var CollectionFactoryInterface
      */
     private $factory;
 
@@ -45,7 +45,7 @@ final class CreateRequestHandler implements RequestHandlerInterface
     private $validator;
 
     public function __construct(
-        ModelFactoryInterface $factory,
+        CollectionFactoryInterface $factory,
         RepositoryInterface $repository,
         RequestManagerInterface $requestManager,
         ResponseManagerInterface $responseManager,
@@ -61,23 +61,21 @@ final class CreateRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $accept = $request->getAttribute('accept');
-        $contentType = $request->getAttribute('contentType');
 
-        /** @var ModelInterface $model */
-        $model = $this->requestManager->getDataFromRequestBody($request, $this->factory->create(), $contentType);
+        /** @var CollectionInterface $collection */
+        $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
 
-        if ([] !== $errors = $this->validator->validate($model)) {
+        if ([] !== $errors = $this->validator->validate($collection)) {
             return $this->responseManager->createFromApiProblem(
-                new UnprocessableEntity((new ApiProblemErrorMessages($errors))->getMessages()),
+                new BadRequest((new ApiProblemErrorMessages($errors))->getMessages()),
                 $accept
             );
         }
 
-        $this->repository->persist($model);
-        $this->repository->flush();
+        $this->repository->resolveCollection($collection);
 
         $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
 
-        return $this->responseManager->create($model, $accept, 201, $context);
+        return $this->responseManager->create($collection, $accept, 200, $context);
     }
 }

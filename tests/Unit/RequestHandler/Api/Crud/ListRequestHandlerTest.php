@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\RequestHandler\Crud;
+namespace App\Tests\Unit\RequestHandler\Api\Crud;
 
 use App\Collection\CollectionInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
-use App\RequestHandler\Crud\ListRequestHandler;
+use App\RequestHandler\Api\Crud\ListRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @covers \App\RequestHandler\Crud\ListRequestHandler
+ * @covers \App\RequestHandler\Api\Crud\ListRequestHandler
  *
  * @internal
  */

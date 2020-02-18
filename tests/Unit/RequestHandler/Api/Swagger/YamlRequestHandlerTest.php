@@ -2,50 +2,46 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\RequestHandler;
+namespace App\Tests\Unit\RequestHandler\Api\Swagger;
 
-use App\RequestHandler\PingRequestHandler;
+use App\RequestHandler\Api\Swagger\YamlRequestHandler;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
-use Chubbyphp\Serialization\SerializerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers \App\RequestHandler\PingRequestHandler
+ * @covers \App\RequestHandler\Api\Swagger\YamlRequestHandler
  *
  * @internal
  */
-final class PingRequestHandlerTest extends TestCase
+final class YamlRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
     public function testHandle(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
-        ]);
+        $request = $this->getMockByCalls(ServerRequestInterface::class);
 
-        /** @var StreamInterface|MockObject $body */
-        $body = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('{"date": "now"}'),
-        ]);
+        /** @var StreamInterface|MockObject $responseStream */
+        $responseStream = $this->getMockByCalls(StreamInterface::class);
 
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Content-Type', 'application/json')->willReturnSelf(),
+            Call::create('withHeader')->with('Content-Type', 'application/x-yaml')->willReturnSelf(),
             Call::create('withHeader')
                 ->with('Cache-Control', 'no-cache, no-store, must-revalidate')
                 ->willReturnSelf(),
             Call::create('withHeader')->with('Pragma', 'no-cache')->willReturnSelf(),
             Call::create('withHeader')->with('Expires', '0')->willReturnSelf(),
-            Call::create('getBody')->with()->willReturn($body),
+            Call::create('withBody')->with($responseStream)->willReturnSelf(),
         ]);
 
         /** @var ResponseFactoryInterface|MockObject $responseFactory */
@@ -53,21 +49,19 @@ final class PingRequestHandlerTest extends TestCase
             Call::create('createResponse')->with(200, '')->willReturn($response),
         ]);
 
-        /** @var SerializerInterface|MockObject $serializer */
-        $serializer = $this->getMockByCalls(SerializerInterface::class, [
-            Call::create('encode')
+        /** @var StreamFactoryInterface|MockObject $streamFactory */
+        $streamFactory = $this->getMockByCalls(StreamFactoryInterface::class, [
+            Call::create('createStreamFromFile')
                 ->with(
-                    new ArgumentCallback(function ($data): void {
-                        self::assertIsArray($data);
-
-                        self::assertArrayHasKey('date', $data);
+                    new ArgumentCallback(function (string $path): void {
+                        self::assertRegExp('#swagger/swagger\.yml$#', $path);
                     }),
-                    'application/json'
+                    'r'
                 )
-                ->willReturn('{"date": "now"}'),
+                ->willReturn($responseStream),
         ]);
 
-        $requestHandler = new PingRequestHandler($responseFactory, $serializer);
+        $requestHandler = new YamlRequestHandler($responseFactory, $streamFactory);
 
         self::assertSame($response, $requestHandler->handle($request));
     }

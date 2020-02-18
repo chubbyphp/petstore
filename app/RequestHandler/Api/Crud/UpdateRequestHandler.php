@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\RequestHandler\Crud;
+namespace App\RequestHandler\Api\Crud;
 
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;

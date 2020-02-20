@@ -43,12 +43,11 @@ RUN mkdir -p /tmp/blackfire \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.4/mods-available/blackfire.ini \
     && ln -s /etc/php/7.4/mods-available/blackfire.ini /etc/php/7.4/cli/conf.d/30-blackfire.ini \
     && ln -s /etc/php/7.4/mods-available/blackfire.ini /etc/php/7.4/fpm/conf.d/30-blackfire.ini \
-    && rm -rf /tmp/blackfire
-
-RUN mkdir -p /tmp/blackfire \
+    && rm -rf /tmp/blackfire \
+    && mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
-    && rm -Rf /tmp/blackfire
+    && rm -rf /tmp/blackfire
 
 COPY prod/php/files /
 COPY dev/php/files /

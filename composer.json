@@ -14,7 +14,7 @@
         "chubbyphp/chubbyphp-framework": "^2.7",
         "chubbyphp/chubbyphp-negotiation": "^1.5.1",
         "chubbyphp/chubbyphp-serialization": "^2.12.2",
-        "chubbyphp/chubbyphp-validation": "^3.7",
+        "chubbyphp/chubbyphp-validation": "^3.8",
         "doctrine/orm": "^2.7",
         "monolog/monolog": "^2.0.2",
         "nikic/fast-route": "^1.3",

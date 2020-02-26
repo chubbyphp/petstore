@@ -69,7 +69,7 @@ final class SortConstraint implements ConstraintInterface
 
         if (!in_array($field, $this->allowedFields, true)) {
             $errors[] = new Error(
-                $path,
+                $path.'.'.$field,
                 'constraint.sort.field.notallowed',
                 ['field' => $field, 'allowedFields' => $this->allowedFields]
             );
@@ -77,7 +77,7 @@ final class SortConstraint implements ConstraintInterface
 
         if (!is_string($order)) {
             $errors[] = new Error(
-                $path,
+                $path.'.'.$field,
                 'constraint.sort.order.invalidtype',
                 ['field' => $field, 'type' => is_object($order) ? get_class($order) : gettype($order)]
             );
@@ -87,7 +87,7 @@ final class SortConstraint implements ConstraintInterface
 
         if (!in_array($order, self::ALLOWED_ORDERS, true)) {
             $errors[] = new Error(
-                $path,
+                $path.'.'.$field,
                 'constraint.sort.order.notallowed',
                 ['field' => $field, 'order' => $order, 'allowedOrders' => self::ALLOWED_ORDERS]
             );

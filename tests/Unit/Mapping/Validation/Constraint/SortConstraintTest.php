@@ -56,12 +56,12 @@ final class SortConstraintTest extends TestCase
         self::assertEquals(
             [
                 new Error(
-                    'path',
+                    'path.unknown',
                     'constraint.sort.field.notallowed',
                     ['field' => 'unknown', 'allowedFields' => ['name']]
                 ),
                 new Error(
-                    'path',
+                    'path.unknown',
                     'constraint.sort.order.notallowed',
                     ['field' => 'unknown', 'order' => 'test', 'allowedOrders' => ['asc', 'desc']]
                 ),
@@ -80,22 +80,22 @@ final class SortConstraintTest extends TestCase
         self::assertEquals(
             [
                 new Error(
-                    'path',
+                    'path.unknown1',
                     'constraint.sort.field.notallowed',
                     ['field' => 'unknown1', 'allowedFields' => ['name']]
                 ),
                 new Error(
-                    'path',
+                    'path.unknown1',
                     'constraint.sort.order.invalidtype',
                     ['field' => 'unknown1', 'type' => \stdClass::class]
                 ),
                 new Error(
-                    'path',
+                    'path.unknown2',
                     'constraint.sort.field.notallowed',
                     ['field' => 'unknown2', 'allowedFields' => ['name']]
                 ),
                 new Error(
-                    'path',
+                    'path.unknown2',
                     'constraint.sort.order.invalidtype',
                     ['field' => 'unknown2', 'type' => 'integer']
                 ),

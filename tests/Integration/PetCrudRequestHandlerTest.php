@@ -183,7 +183,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                     ],
                 ],
                 [
-                    'name' => 'filters[name2]',
+                    'name' => 'filters.name2',
                     'reason' => 'constraint.map.field.notallowed',
                     'details' => [
                         'field' => 'name2',
@@ -191,7 +191,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                     ],
                 ],
                 [
-                    'name' => 'sort',
+                    'name' => 'sort.name',
                     'reason' => 'constraint.sort.order.notallowed',
                     'details' => [
                         'field' => 'name',

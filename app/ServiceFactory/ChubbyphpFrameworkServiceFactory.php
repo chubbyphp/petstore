@@ -11,9 +11,8 @@ use App\RequestHandler\Api\Crud\ListRequestHandler;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\RequestHandler\Api\PingRequestHandler;
-use App\RequestHandler\Api\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler;
-use App\RequestHandler\Api\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
-use App\RequestHandler\IndexRequestHandler;
+use App\RequestHandler\Api\Swagger\IndexRequestHandler;
+use App\RequestHandler\Api\Swagger\YamlRequestHandler;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
@@ -49,10 +48,9 @@ final class ChubbyphpFrameworkServiceFactory
             RouterInterface::class => static function (ContainerInterface $container) {
                 $acceptAndContentType = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
 
-                $index = new LazyRequestHandler($container, IndexRequestHandler::class);
                 $ping = new LazyRequestHandler($container, PingRequestHandler::class);
-                $swaggerIndex = new LazyRequestHandler($container, SwaggerIndexRequestHandler::class);
-                $swaggerYaml = new LazyRequestHandler($container, SwaggerYamlRequestHandler::class);
+                $index = new LazyRequestHandler($container, IndexRequestHandler::class);
+                $yaml = new LazyRequestHandler($container, YamlRequestHandler::class);
                 $petList = new LazyRequestHandler($container, ListRequestHandler::class.Pet::class);
                 $petCreate = new LazyRequestHandler($container, CreateRequestHandler::class.Pet::class);
                 $petRead = new LazyRequestHandler($container, ReadRequestHandler::class.Pet::class);
@@ -61,12 +59,11 @@ final class ChubbyphpFrameworkServiceFactory
 
                 return new FastRouteRouter(
                     Group::create('')
-                        ->route(Route::get('/', 'index', $index))
                         ->group(
                             Group::create('/api')
                             ->route(Route::get('/ping', 'ping', $ping)->middleware($acceptAndContentType))
-                                ->route(Route::get('/swagger/index', 'swagger_index', $swaggerIndex))
-                                ->route(Route::get('/swagger/yml', 'swagger_yml', $swaggerYaml))
+                                ->route(Route::get('/swagger/index', 'swagger_index', $index))
+                                ->route(Route::get('/swagger/yaml', 'swagger_yaml', $yaml))
                                 ->group(
                                     Group::create('/pets')
                                         ->route(Route::get('', 'pet_list', $petList))

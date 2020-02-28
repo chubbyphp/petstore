@@ -14,10 +14,8 @@ use App\RequestHandler\Api\Crud\ListRequestHandler;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\RequestHandler\Api\PingRequestHandler;
-use App\RequestHandler\Api\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler;
-use App\RequestHandler\Api\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
-use App\RequestHandler\IndexRequestHandler;
-use Chubbyphp\Framework\Router\RouterInterface;
+use App\RequestHandler\Api\Swagger\IndexRequestHandler;
+use App\RequestHandler\Api\Swagger\YamlRequestHandler;
 use Psr\Container\ContainerInterface;
 
 final class RequestHandlerServiceFactory
@@ -66,22 +64,16 @@ final class RequestHandlerServiceFactory
                     $container->get('validator')
                 );
             },
-            SwaggerIndexRequestHandler::class => static function (ContainerInterface $container) {
-                return new SwaggerIndexRequestHandler(
-                    $container->get('api-http.response.factory'),
-                    $container->get('api-http.stream.factory')
-                );
-            },
-            SwaggerYamlRequestHandler::class => static function (ContainerInterface $container) {
-                return new SwaggerYamlRequestHandler(
-                    $container->get('api-http.response.factory'),
-                    $container->get('api-http.stream.factory')
-                );
-            },
             IndexRequestHandler::class => static function (ContainerInterface $container) {
                 return new IndexRequestHandler(
                     $container->get('api-http.response.factory'),
-                    $container->get(RouterInterface::class)
+                    $container->get('api-http.stream.factory')
+                );
+            },
+            YamlRequestHandler::class => static function (ContainerInterface $container) {
+                return new YamlRequestHandler(
+                    $container->get('api-http.response.factory'),
+                    $container->get('api-http.stream.factory')
                 );
             },
             PingRequestHandler::class => static function (ContainerInterface $container) {

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Mapping\Validation;
 
 use App\Collection\PetCollection;
-use App\Mapping\Validation\Constraint\SortConstraint;
 use App\Mapping\Validation\PetCollectionMapping;
 use Chubbyphp\Validation\Constraint\MapConstraint;
 use Chubbyphp\Validation\Constraint\NotBlankConstraint;
+use Chubbyphp\Validation\Constraint\SortConstraint;
 use Chubbyphp\Validation\Constraint\TypeConstraint;
 use Chubbyphp\Validation\Mapping\ValidationPropertyMappingBuilder;
 use PHPUnit\Framework\TestCase;

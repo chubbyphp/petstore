@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Mapping\Validation;
 
 use App\Collection\PetCollection;
-use App\Mapping\Validation\Constraint\SortConstraint;
 use Chubbyphp\Validation\Constraint\MapConstraint;
 use Chubbyphp\Validation\Constraint\NotBlankConstraint;
+use Chubbyphp\Validation\Constraint\SortConstraint;
 use Chubbyphp\Validation\Constraint\TypeConstraint;
 use Chubbyphp\Validation\Mapping\ValidationClassMappingInterface;
 use Chubbyphp\Validation\Mapping\ValidationMappingProviderInterface;

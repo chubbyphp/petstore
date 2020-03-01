@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "chubbyphp/chubbyphp-api-http": "^3.3.1",
+        "chubbyphp/chubbyphp-api-http": "^3.4",
         "chubbyphp/chubbyphp-config": "^2.1",
         "chubbyphp/chubbyphp-container": "^1.0",
         "chubbyphp/chubbyphp-cors": "^1.1",

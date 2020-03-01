@@ -14,6 +14,7 @@ use App\RequestHandler\Api\PingRequestHandler;
 use App\RequestHandler\Api\Swagger\IndexRequestHandler;
 use App\RequestHandler\Api\Swagger\YamlRequestHandler;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
+use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\Middleware\RouterMiddleware;
@@ -47,6 +48,7 @@ final class ChubbyphpFrameworkServiceFactory
             },
             RouterInterface::class => static function (ContainerInterface $container) {
                 $acceptAndContentType = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
+                $apiExceptionMiddleware = new LazyMiddleware($container, ApiExceptionMiddleware::class);
 
                 $ping = new LazyRequestHandler($container, PingRequestHandler::class);
                 $index = new LazyRequestHandler($container, IndexRequestHandler::class);
@@ -61,7 +63,10 @@ final class ChubbyphpFrameworkServiceFactory
                     Group::create('')
                         ->group(
                             Group::create('/api')
-                            ->route(Route::get('/ping', 'ping', $ping)->middleware($acceptAndContentType))
+                                ->route(Route::get('/ping', 'ping', $ping)
+                                    ->middleware($acceptAndContentType)
+                                    ->middleware($apiExceptionMiddleware)
+                                )
                                 ->route(Route::get('/swagger/index', 'swagger_index', $index))
                                 ->route(Route::get('/swagger/yaml', 'swagger_yaml', $yaml))
                                 ->group(
@@ -72,6 +77,7 @@ final class ChubbyphpFrameworkServiceFactory
                                         ->route(Route::put('/{id}', 'pet_update', $petUpdate))
                                         ->route(Route::delete('/{id}', 'pet_delete', $petDelete))
                                         ->middleware($acceptAndContentType)
+                                        ->middleware($apiExceptionMiddleware)
                                 )
                         )
                         ->getRoutes(),

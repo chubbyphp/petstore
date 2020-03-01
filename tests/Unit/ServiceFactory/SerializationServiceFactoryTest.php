@@ -17,11 +17,13 @@ use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotAcceptable;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnsupportedMediaType;
+use Chubbyphp\ApiHttp\ApiProblem\ServerError\InternalServerError;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\BadRequestMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotAcceptableMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
+use Chubbyphp\ApiHttp\Serialization\ApiProblem\ServerError\InternalServerErrorMapping;
 use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -92,9 +94,10 @@ final class SerializationServiceFactoryTest extends TestCase
 
         self::assertIsArray($mappingConfigs);
 
-        self::assertCount(8, $mappingConfigs);
+        self::assertCount(9, $mappingConfigs);
 
         self::assertMappingConfig($mappingConfigs, BadRequest::class, BadRequestMapping::class);
+        self::assertMappingConfig($mappingConfigs, InternalServerError::class, InternalServerErrorMapping::class);
         self::assertMappingConfig($mappingConfigs, NotAcceptable::class, NotAcceptableMapping::class);
         self::assertMappingConfig($mappingConfigs, NotFound::class, NotFoundMapping::class);
         self::assertMappingConfig($mappingConfigs, Pet::class, PetMapping::class, [RouterInterface::class]);

@@ -7,6 +7,7 @@ namespace App\Tests\Unit\ServiceFactory;
 use App\ServiceFactory\MiddlewareServiceFactory;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
+use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
 use Chubbyphp\Mock\Call;
@@ -19,6 +20,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @covers \App\ServiceFactory\MiddlewareServiceFactory
@@ -33,7 +35,7 @@ final class MiddlewareServiceFactoryTest extends TestCase
     {
         $factories = (new MiddlewareServiceFactory())();
 
-        self::assertCount(2, $factories);
+        self::assertCount(3, $factories);
     }
 
     public function testAcceptAndContentTypeMiddleware(): void
@@ -61,6 +63,31 @@ final class MiddlewareServiceFactoryTest extends TestCase
         self::assertInstanceOf(
             AcceptAndContentTypeMiddleware::class,
             $factories[AcceptAndContentTypeMiddleware::class]($container)
+        );
+    }
+
+    public function testApiExceptionMiddleware(): void
+    {
+        /** @var ResponseManagerInterface|MockObject $responseManager */
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
+
+        /** @var LoggerInterface|MockObject $logger */
+        $logger = $this->getMockByCalls(LoggerInterface::class);
+
+        /** @var ContainerInterface|MockObject $container */
+        $container = $this->getMockByCalls(ContainerInterface::class, [
+            Call::create('get')->with('api-http.response.manager')->willReturn($responseManager),
+            Call::create('get')->with('debug')->willReturn(true),
+            Call::create('get')->with('logger')->willReturn($logger),
+        ]);
+
+        $factories = (new MiddlewareServiceFactory())();
+
+        self::assertArrayHasKey(ApiExceptionMiddleware::class, $factories);
+
+        self::assertInstanceOf(
+            ApiExceptionMiddleware::class,
+            $factories[ApiExceptionMiddleware::class]($container)
         );
     }
 

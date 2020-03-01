@@ -16,11 +16,13 @@ use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotAcceptable;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnsupportedMediaType;
+use Chubbyphp\ApiHttp\ApiProblem\ServerError\InternalServerError;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\BadRequestMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotAcceptableMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
+use Chubbyphp\ApiHttp\Serialization\ApiProblem\ServerError\InternalServerErrorMapping;
 use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Encoder\JsonTypeEncoder;
 use Chubbyphp\Serialization\Encoder\JsonxTypeEncoder;
@@ -51,6 +53,7 @@ final class SerializationServiceFactory
             'serializer.mappingConfigs' => static function () {
                 return [
                     BadRequest::class => new MappingConfig(BadRequestMapping::class),
+                    InternalServerError::class => new MappingConfig(InternalServerErrorMapping::class),
                     NotAcceptable::class => new MappingConfig(NotAcceptableMapping::class),
                     NotFound::class => new MappingConfig(NotFoundMapping::class),
                     Pet::class => new MappingConfig(PetMapping::class, [RouterInterface::class]),

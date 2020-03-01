@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ServiceFactory;
 
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
+use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
 use Chubbyphp\Cors\Negotiation\MethodNegotiator;
@@ -24,6 +25,13 @@ final class MiddlewareServiceFactory
                     $container->get('negotiator.acceptNegotiator'),
                     $container->get('negotiator.contentTypeNegotiator'),
                     $container->get('api-http.response.manager')
+                );
+            },
+            ApiExceptionMiddleware::class => static function (ContainerInterface $container) {
+                return new ApiExceptionMiddleware(
+                    $container->get('api-http.response.manager'),
+                    $container->get('debug'),
+                    $container->get('logger')
                 );
             },
             CorsMiddleware::class => static function (ContainerInterface $container) {

@@ -10,7 +10,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 ## Requirements
 
  * php: ^7.2
- * [chubbyphp/chubbyphp-api-http][3]: ^3.3.1
+ * [chubbyphp/chubbyphp-api-http][3]: ^3.4
  * [chubbyphp/chubbyphp-config][4]: ^2.1
  * [chubbyphp/chubbyphp-container][5]: ^1.0
  * [chubbyphp/chubbyphp-cors][6]: ^1.1
@@ -19,7 +19,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-framework][9]: ^2.7
  * [chubbyphp/chubbyphp-negotiation][10]: ^1.5.1
  * [chubbyphp/chubbyphp-serialization][11]: ^2.12.2
- * [chubbyphp/chubbyphp-validation][12]: ^3.7
+ * [chubbyphp/chubbyphp-validation][12]: ^3.9
  * [doctrine/orm][13]: ^2.7
  * [monolog/monolog][14]: ^2.0.2
  * [nikic/fast-route][15]: ^1.3

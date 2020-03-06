@@ -11,6 +11,7 @@ RUN apt-get update -y && apt-get install -y \
     locales \
     openssh-client \
     sudo \
+    supervisor \
     tzdata \
     unzip \
     vim
@@ -69,4 +70,4 @@ RUN composer global require hirak/prestissimo
 
 WORKDIR /var/www/html
 
-CMD ["/usr/sbin/php-fpm7.4", "-c", "/etc/php/7.4/fpm/php-fpm.conf", "-F"]
+CMD ["/usr/bin/supervisord"]

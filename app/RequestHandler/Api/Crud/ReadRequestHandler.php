@@ -11,6 +11,7 @@ use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ramsey\Uuid\Uuid;
 
 final class ReadRequestHandler implements RequestHandlerInterface
 {
@@ -37,7 +38,7 @@ final class ReadRequestHandler implements RequestHandlerInterface
         $id = $request->getAttribute('id');
         $accept = $request->getAttribute('accept');
 
-        if (null === $model = $this->repository->findById($id)) {
+        if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
             return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 

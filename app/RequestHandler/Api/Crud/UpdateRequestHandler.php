@@ -19,6 +19,7 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ramsey\Uuid\Uuid;
 
 final class UpdateRequestHandler implements RequestHandlerInterface
 {
@@ -60,7 +61,7 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
         $contentType = $request->getAttribute('contentType');
 
-        if (null === $model = $this->repository->findById($id)) {
+        if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
             /** @var ModelInterface $model */
             return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }

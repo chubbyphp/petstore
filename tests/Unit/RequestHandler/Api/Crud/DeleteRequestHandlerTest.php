@@ -25,7 +25,37 @@ final class DeleteRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testCreateResourceNotFound(): void
+    public function testCreateResourceNotFoundInvalidUuid(): void
+    {
+        /** @var ServerRequestInterface|MockObject $request */
+        $request = $this->getMockByCalls(ServerRequestInterface::class, [
+            Call::create('getAttribute')->with('id', null)->willReturn('1234'),
+            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
+        ]);
+
+        /** @var ResponseInterface|MockObject $response */
+        $response = $this->getMockByCalls(ResponseInterface::class);
+
+        /** @var RepositoryInterface|MockObject $repository */
+        $repository = $this->getMockByCalls(RepositoryInterface::class);
+
+        /** @var ResponseManagerInterface|MockObject $responseManager */
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
+            Call::create('createFromApiProblem')
+                ->with(
+                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
+                    'application/json',
+                    null
+                )
+                ->willReturn($response),
+        ]);
+
+        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
+
+        self::assertSame($response, $requestHandler->handle($request));
+    }
+
+    public function testCreateResourceNotFoundMissingModel(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [

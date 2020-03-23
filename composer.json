@@ -19,7 +19,7 @@
         "monolog/monolog": "^2.0.2",
         "nikic/fast-route": "^1.3",
         "ocramius/proxy-manager": "^2.2.3",
-        "ramsey/uuid": "^3.9.2",
+        "ramsey/uuid": "^4.0",
         "slim/psr7": "^1.0",
         "swagger-api/swagger-ui": "^3.24.3",
         "symfony/console": "^4.4.2|^5.0.2"

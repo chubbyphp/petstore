@@ -8,6 +8,7 @@ use App\Repository\RepositoryInterface;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
+use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -42,8 +43,11 @@ final class ReadRequestHandler implements RequestHandlerInterface
             return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
-        $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
+        return $this->responseManager->create($model, $accept, 200, $this->getNormalizerContext($request));
+    }
 
-        return $this->responseManager->create($model, $accept, 200, $context);
+    private function getNormalizerContext(ServerRequestInterface $request): NormalizerContextInterface
+    {
+        return NormalizerContextBuilder::create()->setRequest($request)->getContext();
     }
 }

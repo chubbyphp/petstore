@@ -138,9 +138,7 @@ final class UpdateRequestHandlerTest extends TestCase
         ]);
 
         /** @var ModelInterface|MockObject $model */
-        $model = $this->getMockByCalls(ModelInterface::class, [
-            Call::create('reset')->with(),
-        ]);
+        $model = $this->getMockByCalls(ModelInterface::class);
 
         /** @var RepositoryInterface|MockObject $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
@@ -155,6 +153,7 @@ final class UpdateRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                        self::assertTrue($context->isClearMissing());
                         self::assertSame(
                             ['id', 'createdAt', 'updatedAt', '_links'],
                             $context->getAllowedAdditionalFields()
@@ -209,7 +208,6 @@ final class UpdateRequestHandlerTest extends TestCase
 
         /** @var ModelInterface|MockObject $model */
         $model = $this->getMockByCalls(ModelInterface::class, [
-            Call::create('reset')->with(),
             Call::create('setUpdatedAt')->with(new ArgumentInstanceOf(\DateTime::class)),
         ]);
 
@@ -228,6 +226,7 @@ final class UpdateRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                        self::assertTrue($context->isClearMissing());
                         self::assertSame(
                             ['id', 'createdAt', 'updatedAt', '_links'],
                             $context->getAllowedAdditionalFields()

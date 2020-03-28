@@ -13,6 +13,7 @@ use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
+use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
 use Chubbyphp\Validation\Error\ErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
@@ -66,12 +67,13 @@ final class UpdateRequestHandler implements RequestHandlerInterface
             return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
-        $model->reset();
-
-        $context = $this->getDenormalizerContext();
-
         /** @var ModelInterface $model */
-        $model = $this->requestManager->getDataFromRequestBody($request, $model, $contentType, $context);
+        $model = $this->requestManager->getDataFromRequestBody(
+            $request,
+            $model,
+            $contentType,
+            $this->getDenormalizerContext()
+        );
 
         if ([] !== $errors = $this->validator->validate($model)) {
             return $this->createValidationErrorResponse($errors, $accept);
@@ -82,15 +84,14 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $this->repository->persist($model);
         $this->repository->flush();
 
-        $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
-
-        return $this->responseManager->create($model, $accept, 200, $context);
+        return $this->responseManager->create($model, $accept, 200, $this->getNormalizerContext($request));
     }
 
     private function getDenormalizerContext(): DenormalizerContextInterface
     {
         return DenormalizerContextBuilder::create()
             ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
+            ->setClearMissing(true)
             ->getContext()
         ;
     }
@@ -104,5 +105,10 @@ final class UpdateRequestHandler implements RequestHandlerInterface
             new UnprocessableEntity((new ApiProblemErrorMessages($errors))->getMessages()),
             $accept
         );
+    }
+
+    private function getNormalizerContext(ServerRequestInterface $request): NormalizerContextInterface
+    {
+        return NormalizerContextBuilder::create()->setRequest($request)->getContext();
     }
 }

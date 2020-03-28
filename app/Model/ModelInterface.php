@@ -13,6 +13,4 @@ interface ModelInterface
     public function setUpdatedAt(\DateTime $updatedAt): void;
 
     public function getUpdatedAt(): ?\DateTime;
-
-    public function reset(): void;
 }

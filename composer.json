@@ -9,7 +9,7 @@
         "chubbyphp/chubbyphp-config": "^2.1",
         "chubbyphp/chubbyphp-container": "^1.0",
         "chubbyphp/chubbyphp-cors": "^1.1",
-        "chubbyphp/chubbyphp-deserialization": "^2.15.2",
+        "chubbyphp/chubbyphp-deserialization": "2.16",
         "chubbyphp/chubbyphp-doctrine-db-service-provider": "^1.6",
         "chubbyphp/chubbyphp-framework": "^2.7",
         "chubbyphp/chubbyphp-negotiation": "^1.5.1",

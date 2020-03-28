@@ -11,6 +11,7 @@ use App\RequestHandler\Api\Crud\CreateRequestHandler;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -62,7 +63,14 @@ final class CreateRequestHandlerTest extends TestCase
         /** @var RequestManagerInterface|MockObject $requestManager */
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
             Call::create('getDataFromRequestBody')
-                ->with($request, $model, 'application/json', null)
+                ->with(
+                    $request,
+                    $model,
+                    'application/json',
+                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                        self::assertTrue($context->isClearMissing());
+                    })
+                )
                 ->willReturn($model),
         ]);
 
@@ -126,7 +134,14 @@ final class CreateRequestHandlerTest extends TestCase
         /** @var RequestManagerInterface|MockObject $requestManager */
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
             Call::create('getDataFromRequestBody')
-                ->with($request, $model, 'application/json', null)
+                ->with(
+                    $request,
+                    $model,
+                    'application/json',
+                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                        self::assertTrue($context->isClearMissing());
+                    })
+                )
                 ->willReturn($model),
         ]);
 

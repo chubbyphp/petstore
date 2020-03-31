@@ -31,7 +31,7 @@
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
         "chubbyphp/chubbyphp-mock": "^1.4.5",
-        "infection/infection": "^0.15.3",
+        "infection/infection": "^0.16.1",
         "mavimo/phpstan-junit": "^0.3",
         "php-coveralls/php-coveralls": "^2.2",
         "phploc/phploc": "^5.0",

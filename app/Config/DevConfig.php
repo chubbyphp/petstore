@@ -17,7 +17,7 @@ class DevConfig extends ProdConfig
         $config = parent::getConfig();
 
         $config['cors']['allow-origin'] = [
-            '^https?://localhost:3000' => AllowOriginRegex::class,
+            '^https?://localhost' => AllowOriginRegex::class,
         ];
 
         $config['debug'] = true;

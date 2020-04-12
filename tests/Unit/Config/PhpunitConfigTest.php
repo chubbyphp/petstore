@@ -29,7 +29,7 @@ final class PhpunitConfigTest extends TestCase
         self::assertSame([
             'cors' => [
                 'allow-origin' => [
-                    '^https?://localhost:3000' => AllowOriginRegex::class,
+                    '^https?://localhost' => AllowOriginRegex::class,
                 ],
                 'allow-methods' => ['DELETE', 'GET', 'POST', 'PUT'],
                 'allow-headers' => [

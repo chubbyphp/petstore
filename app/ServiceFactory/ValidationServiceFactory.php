@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\ServiceFactory;
 
 use App\Collection\PetCollection;
-use App\Mapping\MappingConfig;
 use App\Mapping\Validation\PetCollectionMapping;
 use App\Mapping\Validation\PetMapping;
 use App\Mapping\Validation\VaccinationMapping;
 use App\Model\Pet;
 use App\Model\Vaccination;
-use Chubbyphp\Validation\Mapping\CallableValidationMappingProvider;
-use Chubbyphp\Validation\Mapping\ValidationMappingProviderInterface;
+use Chubbyphp\Validation\Mapping\LazyValidationMappingProvider;
 use Psr\Container\ContainerInterface;
 
 final class ValidationServiceFactory
@@ -23,39 +21,22 @@ final class ValidationServiceFactory
     public function __invoke(): array
     {
         return [
-            'validator.mappingConfigs' => static function () {
+            PetCollectionMapping::class => static function () {
+                return new PetCollectionMapping();
+            },
+            PetMapping::class => static function () {
+                return new PetMapping();
+            },
+            VaccinationMapping::class => static function () {
+                return new VaccinationMapping();
+            },
+            'validator.mappings' => static function (ContainerInterface $container) {
                 return [
-                    PetCollection::class => new MappingConfig(PetCollectionMapping::class),
-                    Pet::class => new MappingConfig(PetMapping::class),
-                    Vaccination::class => new MappingConfig(VaccinationMapping::class),
+                    new LazyValidationMappingProvider($container, PetCollectionMapping::class, PetCollection::class),
+                    new LazyValidationMappingProvider($container, PetMapping::class, Pet::class),
+                    new LazyValidationMappingProvider($container, VaccinationMapping::class, Vaccination::class),
                 ];
             },
-            'validator.mappings' => function (ContainerInterface $container) {
-                $mappings = [];
-                foreach ($container->get('validator.mappingConfigs') as $class => $mappingConfig) {
-                    $resolver = function () use ($container, $mappingConfig) {
-                        return $this->resolve($container, $mappingConfig);
-                    };
-
-                    $mappings[] = new CallableValidationMappingProvider($class, $resolver);
-                }
-
-                return $mappings;
-            },
         ];
-    }
-
-    private function resolve(
-        ContainerInterface $container,
-        MappingConfig $mappingConfig
-    ): ValidationMappingProviderInterface {
-        $mappingClass = $mappingConfig->getMappingClass();
-
-        $dependencies = [];
-        foreach ($mappingConfig->getDependencies() as $dependency) {
-            $dependencies[] = $container->get($dependency);
-        }
-
-        return new $mappingClass(...$dependencies);
     }
 }

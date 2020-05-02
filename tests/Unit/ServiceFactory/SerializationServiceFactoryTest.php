@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory;
 
 use App\Collection\PetCollection;
-use App\Mapping\MappingConfig;
 use App\Mapping\Serialization\PetCollectionMapping;
 use App\Mapping\Serialization\PetMapping;
 use App\Mapping\Serialization\VaccinationMapping;
@@ -24,17 +23,15 @@ use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ServerError\InternalServerErrorMapping;
+use Chubbyphp\Container\Container;
 use Chubbyphp\Framework\Router\RouterInterface;
-use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Encoder\JsonTypeEncoder;
 use Chubbyphp\Serialization\Encoder\JsonxTypeEncoder;
 use Chubbyphp\Serialization\Encoder\UrlEncodedTypeEncoder;
 use Chubbyphp\Serialization\Encoder\YamlTypeEncoder;
-use Chubbyphp\Serialization\Mapping\CallableNormalizationObjectMapping;
-use PHPUnit\Framework\MockObject\MockObject;
+use Chubbyphp\Serialization\Mapping\LazyNormalizationObjectMapping;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * @covers \App\ServiceFactory\SerializationServiceFactory
@@ -49,7 +46,7 @@ final class SerializationServiceFactoryTest extends TestCase
     {
         $factories = (new SerializationServiceFactory())();
 
-        self::assertCount(3, $factories);
+        self::assertCount(11, $factories);
     }
 
     public function testEncoderTypes(): void
@@ -84,82 +81,50 @@ final class SerializationServiceFactoryTest extends TestCase
         self::assertInstanceOf(YamlTypeEncoder::class, array_shift($encoderTypes));
     }
 
-    public function testMappingConfigs(): void
-    {
-        $factories = (new SerializationServiceFactory())();
-
-        self::assertArrayHasKey('serializer.mappingConfigs', $factories);
-
-        $mappingConfigs = $factories['serializer.mappingConfigs']();
-
-        self::assertIsArray($mappingConfigs);
-
-        self::assertCount(9, $mappingConfigs);
-
-        self::assertMappingConfig($mappingConfigs, BadRequest::class, BadRequestMapping::class);
-        self::assertMappingConfig($mappingConfigs, InternalServerError::class, InternalServerErrorMapping::class);
-        self::assertMappingConfig($mappingConfigs, NotAcceptable::class, NotAcceptableMapping::class);
-        self::assertMappingConfig($mappingConfigs, NotFound::class, NotFoundMapping::class);
-        self::assertMappingConfig($mappingConfigs, Pet::class, PetMapping::class, [RouterInterface::class]);
-        self::assertMappingConfig(
-            $mappingConfigs,
-            PetCollection::class,
-            PetCollectionMapping::class,
-            [RouterInterface::class]
-        );
-        self::assertMappingConfig($mappingConfigs, UnprocessableEntity::class, UnprocessableEntityMapping::class);
-        self::assertMappingConfig($mappingConfigs, UnsupportedMediaType::class, UnsupportedMediaTypeMapping::class);
-        self::assertMappingConfig($mappingConfigs, Vaccination::class, VaccinationMapping::class);
-    }
-
     public function testObjectMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
-
-        /** @var ContainerInterface|MockObject $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('serializer.mappingConfigs')->willReturn([
-                Pet::class => new MappingConfig(PetMapping::class, [RouterInterface::class]),
-            ]),
-            Call::create('get')->with(RouterInterface::class)->willReturn($router),
-        ]);
+        $expectedMappings = [
+            BadRequestMapping::class => BadRequest::class,
+            InternalServerErrorMapping::class => InternalServerError::class,
+            NotAcceptableMapping::class => NotAcceptable::class,
+            NotFoundMapping::class => NotFound::class,
+            PetCollectionMapping::class => PetCollection::class,
+            PetMapping::class => Pet::class,
+            UnprocessableEntityMapping::class => UnprocessableEntity::class,
+            UnsupportedMediaTypeMapping::class => UnsupportedMediaType::class,
+            VaccinationMapping::class => Vaccination::class,
+        ];
 
         $factories = (new SerializationServiceFactory())();
+
+        $container = new Container();
+        $container->factory(RouterInterface::class, function () {
+            return $this->getMockByCalls(RouterInterface::class);
+        });
+
+        $container->factory('serializer.normalizer.objectmappings', $factories['serializer.normalizer.objectmappings']);
+
+        foreach ($expectedMappings as $mappingClass => $class) {
+            $container->factory($mappingClass, $factories[$mappingClass]);
+        }
 
         self::assertArrayHasKey('serializer.normalizer.objectmappings', $factories);
 
-        $mappings = $factories['serializer.normalizer.objectmappings']($container);
+        $mappings = $container->get('serializer.normalizer.objectmappings');
 
         self::assertIsArray($mappings);
 
-        self::assertCount(1, $mappings);
+        self::assertCount(count($expectedMappings), $mappings);
 
-        /** @var CallableNormalizationObjectMapping $mapping */
-        $mapping = array_shift($mappings);
+        foreach ($expectedMappings as $mappingClass => $class) {
+            /** @var LazyNormalizationObjectMapping $mapping */
+            $mapping = array_shift($mappings);
 
-        self::assertInstanceOf(CallableNormalizationObjectMapping::class, $mapping);
+            self::assertInstanceOf(LazyNormalizationObjectMapping::class, $mapping);
 
-        $mapping->getNormalizationType();
-    }
+            self::assertSame($class, $mapping->getClass());
 
-    /**
-     * @param array<string, MappingConfig> $mappingConfigs
-     */
-    private function assertMappingConfig(
-        array $mappingConfigs,
-        string $class,
-        string $mappingClass,
-        array $dependencies = []
-    ): void {
-        self::assertArrayHasKey($class, $mappingConfigs);
-
-        /** @var MappingConfig $mappingConfig */
-        $mappingConfig = $mappingConfigs[$class];
-
-        self::assertInstanceOf(MappingConfig::class, $mappingConfig);
-
-        self::assertSame($mappingClass, $mappingConfig->getMappingClass());
-        self::assertSame($dependencies, $mappingConfig->getDependencies());
+            $mapping->getNormalizationFieldMappings('path');
+        }
     }
 }

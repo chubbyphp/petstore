@@ -8,20 +8,16 @@ use App\Collection\PetCollection;
 use App\Mapping\Deserialization\PetCollectionMapping;
 use App\Mapping\Deserialization\PetMapping;
 use App\Mapping\Deserialization\VaccinationMapping;
-use App\Mapping\MappingConfig;
 use App\Model\Pet;
 use App\Model\Vaccination;
 use App\ServiceFactory\DeserializationServiceFactory;
+use Chubbyphp\Container\Container;
 use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
-use Chubbyphp\Deserialization\Mapping\CallableDenormalizationObjectMapping;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
-use PHPUnit\Framework\MockObject\MockObject;
+use Chubbyphp\Deserialization\Mapping\LazyDenormalizationObjectMapping;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * @covers \App\ServiceFactory\DeserializationServiceFactory
@@ -30,13 +26,11 @@ use Psr\Container\ContainerInterface;
  */
 final class DeserializationServiceFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testFactories(): void
     {
         $factories = (new DeserializationServiceFactory())();
 
-        self::assertCount(3, $factories);
+        self::assertCount(5, $factories);
     }
 
     public function testDecoderTypes(): void
@@ -66,68 +60,43 @@ final class DeserializationServiceFactoryTest extends TestCase
         self::assertInstanceOf(YamlTypeDecoder::class, array_shift($decoderTypes));
     }
 
-    public function testMappingConfigs(): void
-    {
-        $factories = (new DeserializationServiceFactory())();
-
-        self::assertArrayHasKey('deserializer.mappingConfigs', $factories);
-
-        $mappingConfigs = $factories['deserializer.mappingConfigs']();
-
-        self::assertIsArray($mappingConfigs);
-
-        self::assertCount(3, $mappingConfigs);
-
-        self::assertMappingConfig($mappingConfigs, PetCollection::class, PetCollectionMapping::class);
-        self::assertMappingConfig($mappingConfigs, Pet::class, PetMapping::class);
-        self::assertMappingConfig($mappingConfigs, Vaccination::class, VaccinationMapping::class);
-    }
-
     public function testObjectMappings(): void
     {
-        /** @var ContainerInterface|MockObject $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('deserializer.mappingConfigs')->willReturn([
-                Pet::class => new MappingConfig(PetMapping::class, ['dependencyClass']),
-            ]),
-            Call::create('get')->with('dependencyClass')->willReturn(new \stdClass()),
-        ]);
+        $expectedMappings = [
+            PetCollectionMapping::class => PetCollection::class,
+            PetMapping::class => Pet::class,
+            VaccinationMapping::class => Vaccination::class,
+        ];
 
         $factories = (new DeserializationServiceFactory())();
+
+        $container = new Container();
+        $container->factory(
+            'deserializer.denormalizer.objectmappings',
+            $factories['deserializer.denormalizer.objectmappings']
+        );
+
+        foreach ($expectedMappings as $mappingClass => $class) {
+            $container->factory($mappingClass, $factories[$mappingClass]);
+        }
 
         self::assertArrayHasKey('deserializer.denormalizer.objectmappings', $factories);
 
-        $mappings = $factories['deserializer.denormalizer.objectmappings']($container);
+        $mappings = $container->get('deserializer.denormalizer.objectmappings');
 
         self::assertIsArray($mappings);
 
-        self::assertCount(1, $mappings);
+        self::assertCount(count($expectedMappings), $mappings);
 
-        /** @var CallableDenormalizationObjectMapping $mapping */
-        $mapping = array_shift($mappings);
+        foreach ($expectedMappings as $mappingClass => $class) {
+            /** @var LazyDenormalizationObjectMapping $mapping */
+            $mapping = array_shift($mappings);
 
-        self::assertInstanceOf(CallableDenormalizationObjectMapping::class, $mapping);
+            self::assertInstanceOf(LazyDenormalizationObjectMapping::class, $mapping);
 
-        $mapping->getDenormalizationFactory('path');
-    }
+            self::assertSame($class, $mapping->getClass());
 
-    /**
-     * @param array<string, MappingConfig> $mappingConfigs
-     */
-    private function assertMappingConfig(
-        array $mappingConfigs,
-        string $class,
-        string $mappingClass,
-        array $dependencies = []
-    ): void {
-        self::assertArrayHasKey($class, $mappingConfigs);
-
-        /** @var MappingConfig $mappingConfig */
-        $mappingConfig = $mappingConfigs[$class];
-
-        self::assertInstanceOf(MappingConfig::class, $mappingConfig);
-
-        self::assertSame($mappingClass, $mappingConfig->getMappingClass());
-        self::assertSame($dependencies, $mappingConfig->getDependencies());
+            $mapping->getDenormalizationFieldMappings('path');
+        }
     }
 }

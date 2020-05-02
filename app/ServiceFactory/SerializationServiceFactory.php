@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ServiceFactory;
 
 use App\Collection\PetCollection;
-use App\Mapping\MappingConfig;
 use App\Mapping\Serialization\PetCollectionMapping;
 use App\Mapping\Serialization\PetMapping;
 use App\Mapping\Serialization\VaccinationMapping;
@@ -28,8 +27,7 @@ use Chubbyphp\Serialization\Encoder\JsonTypeEncoder;
 use Chubbyphp\Serialization\Encoder\JsonxTypeEncoder;
 use Chubbyphp\Serialization\Encoder\UrlEncodedTypeEncoder;
 use Chubbyphp\Serialization\Encoder\YamlTypeEncoder;
-use Chubbyphp\Serialization\Mapping\CallableNormalizationObjectMapping;
-use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
+use Chubbyphp\Serialization\Mapping\LazyNormalizationObjectMapping;
 use Psr\Container\ContainerInterface;
 
 final class SerializationServiceFactory
@@ -50,45 +48,46 @@ final class SerializationServiceFactory
 
                 return $encoderTypes;
             },
-            'serializer.mappingConfigs' => static function () {
+            BadRequestMapping::class => static function () {
+                return new BadRequestMapping();
+            },
+            InternalServerErrorMapping::class => static function () {
+                return new InternalServerErrorMapping();
+            },
+            NotAcceptableMapping::class => static function () {
+                return new NotAcceptableMapping();
+            },
+            NotFoundMapping::class => static function () {
+                return new NotFoundMapping();
+            },
+            PetCollectionMapping::class => static function (ContainerInterface $container) {
+                return new PetCollectionMapping($container->get(RouterInterface::class));
+            },
+            PetMapping::class => static function (ContainerInterface $container) {
+                return new PetMapping($container->get(RouterInterface::class));
+            },
+            UnprocessableEntityMapping::class => static function () {
+                return new UnprocessableEntityMapping();
+            },
+            UnsupportedMediaTypeMapping::class => static function () {
+                return new UnsupportedMediaTypeMapping();
+            },
+            VaccinationMapping::class => static function () {
+                return new VaccinationMapping();
+            },
+            'serializer.normalizer.objectmappings' => static function (ContainerInterface $container) {
                 return [
-                    BadRequest::class => new MappingConfig(BadRequestMapping::class),
-                    InternalServerError::class => new MappingConfig(InternalServerErrorMapping::class),
-                    NotAcceptable::class => new MappingConfig(NotAcceptableMapping::class),
-                    NotFound::class => new MappingConfig(NotFoundMapping::class),
-                    Pet::class => new MappingConfig(PetMapping::class, [RouterInterface::class]),
-                    PetCollection::class => new MappingConfig(PetCollectionMapping::class, [RouterInterface::class]),
-                    UnprocessableEntity::class => new MappingConfig(UnprocessableEntityMapping::class),
-                    UnsupportedMediaType::class => new MappingConfig(UnsupportedMediaTypeMapping::class),
-                    Vaccination::class => new MappingConfig(VaccinationMapping::class),
+                    new LazyNormalizationObjectMapping($container, BadRequestMapping::class, BadRequest::class),
+                    new LazyNormalizationObjectMapping($container, InternalServerErrorMapping::class, InternalServerError::class),
+                    new LazyNormalizationObjectMapping($container, NotAcceptableMapping::class, NotAcceptable::class),
+                    new LazyNormalizationObjectMapping($container, NotFoundMapping::class, NotFound::class),
+                    new LazyNormalizationObjectMapping($container, PetCollectionMapping::class, PetCollection::class),
+                    new LazyNormalizationObjectMapping($container, PetMapping::class, Pet::class),
+                    new LazyNormalizationObjectMapping($container, UnprocessableEntityMapping::class, UnprocessableEntity::class),
+                    new LazyNormalizationObjectMapping($container, UnsupportedMediaTypeMapping::class, UnsupportedMediaType::class),
+                    new LazyNormalizationObjectMapping($container, VaccinationMapping::class, Vaccination::class),
                 ];
             },
-            'serializer.normalizer.objectmappings' => function (ContainerInterface $container) {
-                $mappings = [];
-                foreach ($container->get('serializer.mappingConfigs') as $class => $mappingConfig) {
-                    $resolver = function () use ($container, $mappingConfig) {
-                        return $this->resolve($container, $mappingConfig);
-                    };
-
-                    $mappings[] = new CallableNormalizationObjectMapping($class, $resolver);
-                }
-
-                return $mappings;
-            },
         ];
-    }
-
-    private function resolve(
-        ContainerInterface $container,
-        MappingConfig $mappingConfig
-    ): NormalizationObjectMappingInterface {
-        $mappingClass = $mappingConfig->getMappingClass();
-
-        $dependencies = [];
-        foreach ($mappingConfig->getDependencies() as $dependency) {
-            $dependencies[] = $container->get($dependency);
-        }
-
-        return new $mappingClass(...$dependencies);
     }
 }

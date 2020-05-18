@@ -19,6 +19,7 @@ use Chubbyphp\Framework\ErrorHandler;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\Middleware\RouterMiddleware;
+use PSR7Sessions\Storageless\Http\SessionMiddleware;
 
 require __DIR__.'/../vendor/autoload.php';
 
@@ -43,5 +44,6 @@ return static function (string $env) {
         new LazyMiddleware($container, ExceptionMiddleware::class),
         new LazyMiddleware($container, CorsMiddleware::class),
         new LazyMiddleware($container, RouterMiddleware::class),
+        new LazyMiddleware($container, SessionMiddleware::class),
     ]);
 };

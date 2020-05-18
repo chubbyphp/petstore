@@ -12,6 +12,7 @@ use App\ServiceFactory\MonologServiceFactory;
 use App\ServiceFactory\NegotiationServiceFactory;
 use App\ServiceFactory\ProxyManagerServiceFactory;
 use App\ServiceFactory\RepositoryServiceFactory;
+use App\ServiceFactory\SecurityServiceFactory;
 use App\ServiceFactory\SerializationServiceFactory;
 use App\ServiceFactory\ValidationServiceFactory;
 use Chubbyphp\ApiHttp\ServiceFactory\ApiHttpServiceFactory as CApiHttpServiceFactory;
@@ -42,6 +43,7 @@ return static function () {
     $container->factories((new NegotiationServiceFactory())());
     $container->factories((new ProxyManagerServiceFactory())());
     $container->factories((new RepositoryServiceFactory())());
+    $container->factories((new SecurityServiceFactory())());
     $container->factories((new SerializationServiceFactory())());
     $container->factories((new ValidationServiceFactory())());
 

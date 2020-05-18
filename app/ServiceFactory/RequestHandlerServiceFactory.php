@@ -8,6 +8,7 @@ use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
 use App\Model\Pet;
 use App\Repository\PetRepository;
+use App\Repository\UserRepository;
 use App\RequestHandler\Api\Crud\CreateRequestHandler;
 use App\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
@@ -16,6 +17,8 @@ use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\RequestHandler\Api\PingRequestHandler;
 use App\RequestHandler\Api\Swagger\IndexRequestHandler;
 use App\RequestHandler\Api\Swagger\YamlRequestHandler;
+use App\Security\Authentication\PasswordManager;
+use App\Security\Authentication\SessionLoginRequestHandler;
 use Psr\Container\ContainerInterface;
 
 final class RequestHandlerServiceFactory
@@ -80,6 +83,14 @@ final class RequestHandlerServiceFactory
                 return new PingRequestHandler(
                     $container->get('api-http.response.factory'),
                     $container->get('serializer')
+                );
+            },
+            SessionLoginRequestHandler::class => static function (ContainerInterface $container) {
+                return new SessionLoginRequestHandler(
+                    $container->get('deserializer.decoder'),
+                    $container->get(PasswordManager::class),
+                    $container->get('api-http.response.manager'),
+                    $container->get(UserRepository::class)
                 );
             },
         ];

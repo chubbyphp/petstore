@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory;
 
+use App\Repository\UserRepository;
+use App\Security\Authentication\PasswordManager;
+use App\Security\Authentication\PasswordManagerInterface;
+use App\Security\UserRepositoryInterface;
+use Chubbyphp\Validation\ValidatorInterface;
 use Doctrine\Common\Persistence\ConnectionRegistry;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
@@ -27,6 +32,18 @@ final class ProxyManagerServiceFactory
             'proxymanager.doctrine.orm.manager_registry' => $this->getProxy(
                 ManagerRegistry::class,
                 'doctrine.orm.manager_registry'
+            ),
+            'proxymanager.'.PasswordManager::class => $this->getProxy(
+                PasswordManagerInterface::class,
+                PasswordManager::class
+            ),
+            'proxymanager.'.UserRepository::class => $this->getProxy(
+                UserRepositoryInterface::class,
+                UserRepository::class
+            ),
+            'proxymanager.validator' => $this->getProxy(
+                ValidatorInterface::class,
+                'validator'
             ),
         ];
     }

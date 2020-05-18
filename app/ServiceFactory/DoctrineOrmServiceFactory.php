@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\ServiceFactory;
 
 use App\Mapping\Orm\PetMapping;
+use App\Mapping\Orm\UserMapping;
 use App\Mapping\Orm\VaccinationMapping;
 use App\Model\Pet;
+use App\Model\User;
 use App\Model\Vaccination;
 
 final class DoctrineOrmServiceFactory
@@ -25,6 +27,7 @@ final class DoctrineOrmServiceFactory
                             'namespace' => 'App\Model',
                             'map' => [
                                 Pet::class => PetMapping::class,
+                                User::class => UserMapping::class,
                                 Vaccination::class => VaccinationMapping::class,
                             ],
                         ],

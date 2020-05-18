@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory;
 
+use App\Command\CreateUserCommand;
+use App\Repository\UserRepository;
+use App\Security\Authentication\PasswordManager;
 use Chubbyphp\Config\Command\CleanDirectoriesCommand;
 use Chubbyphp\DoctrineDbServiceProvider\Command\CreateDatabaseDoctrineCommand;
 use Chubbyphp\DoctrineDbServiceProvider\Command\DropDatabaseDoctrineCommand;
@@ -36,6 +39,12 @@ final class ConsoleServiceFactory
 
                 return [
                     new CleanDirectoriesCommand($container->get('chubbyphp.config.directories')),
+
+                    new CreateUserCommand(
+                        $container->get('proxymanager.'.PasswordManager::class),
+                        $container->get('proxymanager.'.UserRepository::class),
+                        $container->get('proxymanager.validator')
+                    ),
 
                     // doctrine dbal
                     new CreateDatabaseDoctrineCommand($connectionRegistry),

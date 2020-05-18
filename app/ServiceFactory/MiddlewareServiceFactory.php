@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory;
 
+use App\Security\Authentication\AuthenticationMiddleware;
+use App\Security\Authentication\SessionAuthentication;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Cors\CorsMiddleware;
@@ -11,6 +13,7 @@ use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
 use Chubbyphp\Cors\Negotiation\MethodNegotiator;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
 use Psr\Container\ContainerInterface;
+use PSR7Sessions\Storageless\Http\SessionMiddleware;
 
 final class MiddlewareServiceFactory
 {
@@ -51,6 +54,20 @@ final class MiddlewareServiceFactory
                     $cors['allow-credentials'],
                     $cors['max-age']
                 );
+            },
+            SessionMiddleware::class => static function (ContainerInterface $container) {
+                $sessionConfig = $container->get('session');
+
+                return SessionMiddleware::fromAsymmetricKeyDefaults(
+                    $sessionConfig['privateKey'],
+                    $sessionConfig['publicKey'],
+                    $sessionConfig['expirationTime']
+                );
+            },
+            AuthenticationMiddleware::class => static function (ContainerInterface $container) {
+                return new AuthenticationMiddleware([
+                    $container->get(SessionAuthentication::class),
+                ], $container->get('api-http.response.manager'));
             },
         ];
     }

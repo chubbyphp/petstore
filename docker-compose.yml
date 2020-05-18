@@ -19,6 +19,21 @@ services:
       SSH_AUTH_SOCK: /ssh-agent
       BLACKFIRE_CLIENT_ID: ${BLACKFIRE_CLIENT_ID}
       BLACKFIRE_CLIENT_TOKEN: ${BLACKFIRE_CLIENT_TOKEN}
+      SESSION_PRIVATE_KEY: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIBOgIBAAJBAJNAsPcOIrnHVuFrIcFDEVKiyGtoelgo+RxxjwFBvd2G9ZJ+4fkS
+        pEtqMhUCqzXBHhAu81Abe1iNo4miZuF/IrcCAwEAAQJAGi0LyD8pCSFYXmXu8C39
+        7FSnkABYj0dpURcWtsB7Ad/wzB9jV3XKIIS4M7fRmMMXye6K5bC6DpYd04w08rxV
+        AQIhAMLnUTChNOuj44IhxyQ/bSJn7aMwfqC4xHH8MBcxCxvBAiEAwWl4rj+JqCq8
+        3CcXX2VTqc14473Kp2Uy4XEZWT/UPHcCIGPyCMFeOWwIy9bkiWE+ITG+h67iZFz4
+        wswM3YBXBvJBAiAfj1xX4ppNzJuAuQhBUsFyJcsiLmgRJJxG2TOvspCpRQIhAJOW
+        MYkOnMGdcadWGIVEQOwrp4mSND+c7cbVOetqS/Tf
+        -----END RSA PRIVATE KEY-----
+      SESSION_PUBLIC_KEY: |
+        -----BEGIN PUBLIC KEY-----
+        MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJNAsPcOIrnHVuFrIcFDEVKiyGtoelgo
+        +RxxjwFBvd2G9ZJ+4fkSpEtqMhUCqzXBHhAu81Abe1iNo4miZuF/IrcCAwEAAQ==
+        -----END PUBLIC KEY-----
     volumes:
       - ./:/var/www/html
       - ~/.bash_aliases:/var/www/.bash_aliases

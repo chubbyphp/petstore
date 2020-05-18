@@ -55,6 +55,11 @@ class ProdConfig extends AbstractConfig
                 'level' => Logger::NOTICE,
             ],
             'routerCacheFile' => $cacheDir.'/routes.php',
+            'session' => [
+                'privateKey' => getenv('SESSION_PRIVATE_KEY'),
+                'publicKey' => getenv('SESSION_PUBLIC_KEY'),
+                'expirationTime' => 2000,
+            ],
         ];
     }
 

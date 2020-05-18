@@ -13,12 +13,14 @@ use App\Model\Vaccination;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotAcceptable;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
+use Chubbyphp\ApiHttp\ApiProblem\ClientError\Unauthorized;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnsupportedMediaType;
 use Chubbyphp\ApiHttp\ApiProblem\ServerError\InternalServerError;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\BadRequestMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotAcceptableMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
+use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnauthorizedMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ServerError\InternalServerErrorMapping;
@@ -66,6 +68,9 @@ final class SerializationServiceFactory
             PetMapping::class => static function (ContainerInterface $container) {
                 return new PetMapping($container->get(RouterInterface::class));
             },
+            UnauthorizedMapping::class => static function () {
+                return new UnauthorizedMapping();
+            },
             UnprocessableEntityMapping::class => static function () {
                 return new UnprocessableEntityMapping();
             },
@@ -84,6 +89,7 @@ final class SerializationServiceFactory
                     new LazyNormalizationObjectMapping($container, PetCollectionMapping::class, PetCollection::class),
                     new LazyNormalizationObjectMapping($container, PetMapping::class, Pet::class),
                     new LazyNormalizationObjectMapping($container, UnprocessableEntityMapping::class, UnprocessableEntity::class),
+                    new LazyNormalizationObjectMapping($container, UnauthorizedMapping::class, Unauthorized::class),
                     new LazyNormalizationObjectMapping($container, UnsupportedMediaTypeMapping::class, UnsupportedMediaType::class),
                     new LazyNormalizationObjectMapping($container, VaccinationMapping::class, Vaccination::class),
                 ];

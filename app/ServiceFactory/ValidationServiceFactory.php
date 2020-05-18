@@ -7,8 +7,10 @@ namespace App\ServiceFactory;
 use App\Collection\PetCollection;
 use App\Mapping\Validation\PetCollectionMapping;
 use App\Mapping\Validation\PetMapping;
+use App\Mapping\Validation\UserMapping;
 use App\Mapping\Validation\VaccinationMapping;
 use App\Model\Pet;
+use App\Model\User;
 use App\Model\Vaccination;
 use Chubbyphp\Validation\Mapping\LazyValidationMappingProvider;
 use Psr\Container\ContainerInterface;
@@ -27,6 +29,9 @@ final class ValidationServiceFactory
             PetMapping::class => static function () {
                 return new PetMapping();
             },
+            UserMapping::class => static function () {
+                return new UserMapping();
+            },
             VaccinationMapping::class => static function () {
                 return new VaccinationMapping();
             },
@@ -34,6 +39,7 @@ final class ValidationServiceFactory
                 return [
                     new LazyValidationMappingProvider($container, PetCollectionMapping::class, PetCollection::class),
                     new LazyValidationMappingProvider($container, PetMapping::class, Pet::class),
+                    new LazyValidationMappingProvider($container, UserMapping::class, User::class),
                     new LazyValidationMappingProvider($container, VaccinationMapping::class, Vaccination::class),
                 ];
             },

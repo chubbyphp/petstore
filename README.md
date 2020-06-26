@@ -16,18 +16,19 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-cors][6]: ^1.1.1
  * [chubbyphp/chubbyphp-deserialization][7]: ^2.17
  * [chubbyphp/chubbyphp-doctrine-db-service-provider][8]: ^1.6.1
- * [chubbyphp/chubbyphp-framework][9]: ^2.8
- * [chubbyphp/chubbyphp-negotiation][10]: ^1.5.3
- * [chubbyphp/chubbyphp-serialization][11]: ^2.13.1
- * [chubbyphp/chubbyphp-validation][12]: ^3.9
- * [doctrine/orm][13]: ^2.7.2
- * [monolog/monolog][14]: ^2.0.2
- * [nikic/fast-route][15]: ^1.3
- * [ocramius/proxy-manager][16]: ^2.2.3
- * [ramsey/uuid][17]: ^4.0.1
- * [slim/psr7][18]: ^1.0
- * [swagger-api/swagger-ui][19]: ^3.25
- * [symfony/console][20]: ^4.4.7|^5.0.7
+ * [chubbyphp/chubbyphp-framework][9]: ^3.0
+ * [chubbyphp/chubbyphp-framework-router-fastroute][10]: ^1.0
+ * [chubbyphp/chubbyphp-negotiation][11]: ^1.5.3
+ * [chubbyphp/chubbyphp-serialization][12]: ^2.13.1
+ * [chubbyphp/chubbyphp-validation][13]: ^3.9
+ * [doctrine/orm][14]: ^2.7.2
+ * [monolog/monolog][15]: ^2.0.2
+ * [nikic/fast-route][16]: ^1.3
+ * [ocramius/proxy-manager][17]: ^2.2.3
+ * [ramsey/uuid][18]: ^4.0.1
+ * [slim/psr7][19]: ^1.0
+ * [swagger-api/swagger-ui][20]: ^3.25
+ * [symfony/console][21]: ^4.4.7|^5.0.7
 
 ## Environment
 
@@ -133,17 +134,18 @@ Dominik Zogg 2020
 [7]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
 [8]: https://packagist.org/packages/chubbyphp/chubbyphp-doctrine-db-service-provider
 [9]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[11]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[12]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[13]: https://packagist.org/packages/doctrine/orm
-[14]: https://packagist.org/packages/monolog/monolog
-[15]: https://packagist.org/packages/nikic/fast-route
-[16]: https://packagist.org/packages/ocramius/proxy-manager
-[17]: https://packagist.org/packages/ramsey/uuid
-[18]: https://packagist.org/packages/slim/psr7
-[19]: https://packagist.org/packages/swagger-api/swagger-ui
-[20]: https://packagist.org/packages/symfony/console
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[12]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
+[13]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[14]: https://packagist.org/packages/doctrine/orm
+[15]: https://packagist.org/packages/monolog/monolog
+[16]: https://packagist.org/packages/nikic/fast-route
+[17]: https://packagist.org/packages/ocramius/proxy-manager
+[18]: https://packagist.org/packages/ramsey/uuid
+[19]: https://packagist.org/packages/slim/psr7
+[20]: https://packagist.org/packages/swagger-api/swagger-ui
+[21]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

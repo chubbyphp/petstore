@@ -19,7 +19,7 @@ use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\Middleware\RouterMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
-use Chubbyphp\Framework\Router\FastRouteRouter;
+use Chubbyphp\Framework\Router\FastRoute\Router;
 use Chubbyphp\Framework\Router\Group;
 use Chubbyphp\Framework\Router\Route;
 use Chubbyphp\Framework\Router\RouterInterface;
@@ -59,11 +59,12 @@ final class ChubbyphpFrameworkServiceFactory
                 $petUpdate = new LazyRequestHandler($container, UpdateRequestHandler::class.Pet::class);
                 $petDelete = new LazyRequestHandler($container, DeleteRequestHandler::class.Pet::class);
 
-                return new FastRouteRouter(
+                return new Router(
                     Group::create('')
                         ->group(
                             Group::create('/api')
-                                ->route(Route::get('/ping', 'ping', $ping)
+                                ->route(
+                                    Route::get('/ping', 'ping', $ping)
                                     ->middleware($acceptAndContentType)
                                     ->middleware($apiExceptionMiddleware)
                                 )
@@ -81,7 +82,8 @@ final class ChubbyphpFrameworkServiceFactory
                                 )
                         )
                         ->getRoutes(),
-                    $container->get('routerCacheFile'));
+                    $container->get('routerCacheFile')
+                );
             },
         ];
     }

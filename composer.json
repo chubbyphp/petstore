@@ -62,7 +62,7 @@
             "@database:create --env=dev",
             "@database:schema:update --env=dev",
             "@database:schema:validate --env=dev",
-            "@config:clean-directories"
+            "@config:clean-directories --env=dev"
         ],
         "test": [
             "@test:lint",

@@ -15,6 +15,7 @@ use Chubbyphp\Container\Container;
 use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\XmlTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
 use Chubbyphp\Deserialization\Mapping\LazyDenormalizationObjectMapping;
 use PHPUnit\Framework\TestCase;
@@ -43,21 +44,13 @@ final class DeserializationServiceFactoryTest extends TestCase
 
         self::assertIsArray($decoderTypes);
 
-        self::assertCount(4, $decoderTypes);
+        self::assertCount(5, $decoderTypes);
 
-        self::assertInstanceOf(JsonTypeDecoder::class, array_shift($decoderTypes));
-
-        $jsonxTypeDecoder = array_shift($decoderTypes);
-
-        self::assertInstanceOf(JsonxTypeDecoder::class, $jsonxTypeDecoder);
-
-        $contentTypeReflection = new \ReflectionProperty($jsonxTypeDecoder, 'contentType');
-        $contentTypeReflection->setAccessible(true);
-
-        self::assertSame('application/jsonx+xml', $contentTypeReflection->getValue($jsonxTypeDecoder));
-
-        self::assertInstanceOf(UrlEncodedTypeDecoder::class, array_shift($decoderTypes));
-        self::assertInstanceOf(YamlTypeDecoder::class, array_shift($decoderTypes));
+        self::assertInstanceOf(JsonTypeDecoder::class, \array_shift($decoderTypes));
+        self::assertInstanceOf(JsonxTypeDecoder::class, \array_shift($decoderTypes));
+        self::assertInstanceOf(UrlEncodedTypeDecoder::class, \array_shift($decoderTypes));
+        self::assertInstanceOf(XmlTypeDecoder::class, \array_shift($decoderTypes));
+        self::assertInstanceOf(YamlTypeDecoder::class, \array_shift($decoderTypes));
     }
 
     public function testObjectMappings(): void
@@ -86,11 +79,11 @@ final class DeserializationServiceFactoryTest extends TestCase
 
         self::assertIsArray($mappings);
 
-        self::assertCount(count($expectedMappings), $mappings);
+        self::assertCount(\count($expectedMappings), $mappings);
 
         foreach ($expectedMappings as $mappingClass => $class) {
             /** @var LazyDenormalizationObjectMapping $mapping */
-            $mapping = array_shift($mappings);
+            $mapping = \array_shift($mappings);
 
             self::assertInstanceOf(LazyDenormalizationObjectMapping::class, $mapping);
 

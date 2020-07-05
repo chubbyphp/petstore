@@ -26,6 +26,7 @@ use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Encoder\JsonTypeEncoder;
 use Chubbyphp\Serialization\Encoder\JsonxTypeEncoder;
 use Chubbyphp\Serialization\Encoder\UrlEncodedTypeEncoder;
+use Chubbyphp\Serialization\Encoder\XmlTypeEncoder;
 use Chubbyphp\Serialization\Encoder\YamlTypeEncoder;
 use Chubbyphp\Serialization\Mapping\LazyNormalizationObjectMapping;
 use Psr\Container\ContainerInterface;
@@ -42,8 +43,9 @@ final class SerializationServiceFactory
                 $encoderTypes = [];
 
                 $encoderTypes[] = new JsonTypeEncoder();
-                $encoderTypes[] = new JsonxTypeEncoder(false, 'application/jsonx+xml');
+                $encoderTypes[] = new JsonxTypeEncoder();
                 $encoderTypes[] = new UrlEncodedTypeEncoder();
+                $encoderTypes[] = new XmlTypeEncoder();
                 $encoderTypes[] = new YamlTypeEncoder();
 
                 return $encoderTypes;

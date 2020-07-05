@@ -24,7 +24,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
@@ -36,6 +36,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
+                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -57,7 +58,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.16',
@@ -69,6 +70,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
+                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -84,14 +86,14 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
-            json_encode(['name' => ''])
+            \json_encode(['name' => ''])
         );
 
         self::assertSame(422, $response['status']['code']);
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc4918#section-11.2',
@@ -134,7 +136,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
@@ -146,6 +148,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
+                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -166,7 +169,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.1',
@@ -220,7 +223,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $petCollection = json_decode($response['body'], true);
+        $petCollection = \json_decode($response['body'], true);
 
         self::assertArrayHasKey('offset', $petCollection);
         self::assertArrayHasKey('limit', $petCollection);
@@ -238,10 +241,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         self::assertSame(20, $petCollection['limit']);
         self::assertSame(['name' => 'desc'], $petCollection['sort']);
         self::assertGreaterThanOrEqual(1, $petCollection['count']);
-        self::assertGreaterThanOrEqual(1, count($petCollection['_embedded']['items']));
-        self::assertSame($petCollection['count'], count($petCollection['_embedded']['items']));
+        self::assertGreaterThanOrEqual(1, \count($petCollection['_embedded']['items']));
+        self::assertSame($petCollection['count'], \count($petCollection['_embedded']['items']));
 
         $found = false;
+
         foreach ($petCollection['_embedded']['items'] as $item) {
             if ($item['id'] === $pet['id']) {
                 $this::assertPet(
@@ -288,7 +292,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
@@ -300,6 +304,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
+                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -320,7 +325,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
@@ -337,7 +342,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $response = $this->httpRequest(
             'GET',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
             ]
@@ -347,7 +352,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $pet = json_decode($response['body'], true);
+        $pet = \json_decode($response['body'], true);
 
         $this::assertPet(
             $pet,
@@ -370,7 +375,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
@@ -382,6 +387,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
+                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -403,7 +409,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.16',
@@ -415,6 +421,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
+                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -436,7 +443,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
@@ -453,19 +460,19 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
-            json_encode(['name' => ''])
+            \json_encode(['name' => ''])
         );
 
         self::assertSame(422, $response['status']['code']);
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc4918#section-11.2',
@@ -489,19 +496,19 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
-            json_encode($existingPet)
+            \json_encode($existingPet)
         );
 
         self::assertSame(200, $response['status']['code']);
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $pet = json_decode($response['body'], true);
+        $pet = \json_decode($response['body'], true);
 
         $this::assertPet(
             $pet,
@@ -516,12 +523,12 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
-            json_encode([
+            \json_encode([
                 'name' => 'Momo',
             ])
         );
@@ -530,7 +537,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $pet = json_decode($response['body'], true);
+        $pet = \json_decode($response['body'], true);
 
         $this::assertPet($pet, ['name' => 'Momo', 'tag' => null, 'vaccinations' => []], true);
     }
@@ -549,7 +556,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
@@ -561,6 +568,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
+                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -581,7 +589,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = json_decode($response['body'], true);
+        $apiProblem = \json_decode($response['body'], true);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
@@ -598,7 +606,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         $response = $this->httpRequest(
             'DELETE',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
             ]
@@ -616,14 +624,14 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
-            json_encode(['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => [['name' => 'Rabies']]])
+            \json_encode(['name' => 'Kathy', 'tag' => '134.456.789', 'vaccinations' => [['name' => 'Rabies']]])
         );
 
         self::assertSame(201, $response['status']['code']);
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
 
-        $pet = json_decode($response['body'], true);
+        $pet = \json_decode($response['body'], true);
 
         self::assertIsArray($pet);
 
@@ -655,12 +663,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame($expectedPet['name'], $pet['name']);
         self::assertSame($expectedPet['tag'], $pet['tag']);
+
         foreach ($expectedPet['vaccinations'] as $i => $expectedVaccination) {
             self::assertVaccination($pet['vaccinations'][$i], $expectedVaccination);
         }
-        self::assertSame(count($expectedPet['vaccinations']), count($pet['vaccinations']));
+        self::assertSame(\count($expectedPet['vaccinations']), \count($pet['vaccinations']));
         self::assertSame([
-            'href' => sprintf('/api/pets/%s', $pet['id']),
+            'href' => \sprintf('/api/pets/%s', $pet['id']),
             'templated' => false,
             'rel' => [],
             'attributes' => [
@@ -668,7 +677,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
             ],
         ], $pet['_links']['read']);
         self::assertSame([
-            'href' => sprintf('/api/pets/%s', $pet['id']),
+            'href' => \sprintf('/api/pets/%s', $pet['id']),
             'templated' => false,
             'rel' => [],
             'attributes' => [
@@ -676,7 +685,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
             ],
         ], $pet['_links']['update']);
         self::assertSame([
-            'href' => sprintf('/api/pets/%s', $pet['id']),
+            'href' => \sprintf('/api/pets/%s', $pet['id']),
             'templated' => false,
             'rel' => [],
             'attributes' => [

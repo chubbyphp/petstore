@@ -13,6 +13,7 @@ use App\Model\Vaccination;
 use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
+use Chubbyphp\Deserialization\Decoder\XmlTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
 use Chubbyphp\Deserialization\Mapping\LazyDenormalizationObjectMapping;
 use Psr\Container\ContainerInterface;
@@ -28,8 +29,9 @@ final class DeserializationServiceFactory
             'deserializer.decodertypes' => static function () {
                 return [
                     new JsonTypeDecoder(),
-                    new JsonxTypeDecoder('application/jsonx+xml'),
+                    new JsonxTypeDecoder(),
                     new UrlEncodedTypeDecoder(),
+                    new XmlTypeDecoder(),
                     new YamlTypeDecoder(),
                 ];
             },

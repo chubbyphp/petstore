@@ -9,10 +9,9 @@ use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Link\LinkBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
-use Chubbyphp\Serialization\Mapping\NormalizationLinkMapping;
+use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
-use Chubbyphp\Serialization\Normalizer\CallbackLinkNormalizer;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
@@ -57,36 +56,37 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     public function getNormalizationLinkMappings(string $path): array
     {
         return [
-            new NormalizationLinkMapping('list', [], new CallbackLinkNormalizer(
-                function (string $path, CollectionInterface $collection, NormalizerContextInterface $context) {
-                    $queryParams = [];
-                    if (null !== $request = $context->getRequest()) {
-                        $queryParams = $request->getQueryParams();
-                    }
+            NormalizationLinkMappingBuilder::createCallback('list', function (
+                string $path,
+                CollectionInterface $collection,
+                NormalizerContextInterface $context
+            ) {
+                $queryParams = [];
 
-                    /** @var array<string, array|string|float|int|bool> $queryParams */
-                    $queryParams = array_merge($queryParams, [
-                        'offset' => $collection->getOffset(),
-                        'limit' => $collection->getLimit(),
-                    ]);
-
-                    return LinkBuilder
-                        ::create(
-                            $this->router->generatePath($this->getListRouteName(), [], $queryParams)
-                        )
-                            ->setAttributes(['method' => 'GET'])
-                            ->getLink()
-                    ;
+                if (null !== $request = $context->getRequest()) {
+                    $queryParams = $request->getQueryParams();
                 }
-            )),
-            new NormalizationLinkMapping('create', [], new CallbackLinkNormalizer(
-                function () {
-                    return LinkBuilder::create($this->router->generatePath($this->getCreateRouteName()))
-                        ->setAttributes(['method' => 'POST'])
+
+                /** @var array<string, array|bool|float|int|string> $queryParams */
+                $queryParams = \array_merge($queryParams, [
+                    'offset' => $collection->getOffset(),
+                    'limit' => $collection->getLimit(),
+                ]);
+
+                return LinkBuilder
+                    ::create(
+                        $this->router->generatePath($this->getListRouteName(), [], $queryParams)
+                    )
+                        ->setAttributes(['method' => 'GET'])
                         ->getLink()
-                    ;
-                }
-            )),
+                ;
+            })->getMapping(),
+            NormalizationLinkMappingBuilder::createCallback('create', function () {
+                return LinkBuilder::create($this->router->generatePath($this->getCreateRouteName()))
+                    ->setAttributes(['method' => 'POST'])
+                    ->getLink()
+                ;
+            })->getMapping(),
         ];
     }
 

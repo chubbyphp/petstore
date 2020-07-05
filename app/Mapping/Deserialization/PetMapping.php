@@ -39,11 +39,11 @@ final class PetMapping implements DenormalizationObjectMappingInterface
                 ->getMapping(),
             DenormalizationFieldMappingBuilder::createConvertType('tag', ConvertTypeFieldDenormalizer::TYPE_STRING)
                 ->getMapping(),
-            DenormalizationFieldMappingBuilder::create('vaccinations')
-                ->setFieldDenormalizer(
-                    new EmbedManyFieldDenormalizer(Vaccination::class, new MethodAccessor('vaccinations'))
-                )
-                ->getMapping(),
+            DenormalizationFieldMappingBuilder::create(
+                'vaccinations',
+                false,
+                new EmbedManyFieldDenormalizer(Vaccination::class, new MethodAccessor('vaccinations'))
+            )->getMapping(),
         ];
     }
 }

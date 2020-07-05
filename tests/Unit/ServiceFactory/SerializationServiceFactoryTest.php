@@ -29,6 +29,7 @@ use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Encoder\JsonTypeEncoder;
 use Chubbyphp\Serialization\Encoder\JsonxTypeEncoder;
 use Chubbyphp\Serialization\Encoder\UrlEncodedTypeEncoder;
+use Chubbyphp\Serialization\Encoder\XmlTypeEncoder;
 use Chubbyphp\Serialization\Encoder\YamlTypeEncoder;
 use Chubbyphp\Serialization\Mapping\LazyNormalizationObjectMapping;
 use PHPUnit\Framework\TestCase;
@@ -59,26 +60,13 @@ final class SerializationServiceFactoryTest extends TestCase
 
         self::assertIsArray($encoderTypes);
 
-        self::assertCount(4, $encoderTypes);
+        self::assertCount(5, $encoderTypes);
 
-        self::assertInstanceOf(JsonTypeEncoder::class, array_shift($encoderTypes));
-
-        $jsonxTypeEncoder = array_shift($encoderTypes);
-
-        self::assertInstanceOf(JsonxTypeEncoder::class, $jsonxTypeEncoder);
-
-        $prettyPrintReflection = new \ReflectionProperty($jsonxTypeEncoder, 'prettyPrint');
-        $prettyPrintReflection->setAccessible(true);
-
-        self::assertSame(false, $prettyPrintReflection->getValue($jsonxTypeEncoder));
-
-        $contentTypeReflection = new \ReflectionProperty($jsonxTypeEncoder, 'contentType');
-        $contentTypeReflection->setAccessible(true);
-
-        self::assertSame('application/jsonx+xml', $contentTypeReflection->getValue($jsonxTypeEncoder));
-
-        self::assertInstanceOf(UrlEncodedTypeEncoder::class, array_shift($encoderTypes));
-        self::assertInstanceOf(YamlTypeEncoder::class, array_shift($encoderTypes));
+        self::assertInstanceOf(JsonTypeEncoder::class, \array_shift($encoderTypes));
+        self::assertInstanceOf(JsonxTypeEncoder::class, \array_shift($encoderTypes));
+        self::assertInstanceOf(UrlEncodedTypeEncoder::class, \array_shift($encoderTypes));
+        self::assertInstanceOf(XmlTypeEncoder::class, \array_shift($encoderTypes));
+        self::assertInstanceOf(YamlTypeEncoder::class, \array_shift($encoderTypes));
     }
 
     public function testObjectMappings(): void
@@ -114,11 +102,11 @@ final class SerializationServiceFactoryTest extends TestCase
 
         self::assertIsArray($mappings);
 
-        self::assertCount(count($expectedMappings), $mappings);
+        self::assertCount(\count($expectedMappings), $mappings);
 
         foreach ($expectedMappings as $mappingClass => $class) {
             /** @var LazyNormalizationObjectMapping $mapping */
-            $mapping = array_shift($mappings);
+            $mapping = \array_shift($mappings);
 
             self::assertInstanceOf(LazyNormalizationObjectMapping::class, $mapping);
 

@@ -16,7 +16,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-cors][6]: ^1.1.1
  * [chubbyphp/chubbyphp-deserialization][7]: ^2.17
  * [chubbyphp/chubbyphp-doctrine-db-service-provider][8]: ^1.6.1
- * [chubbyphp/chubbyphp-framework][9]: ^3.0
+ * [chubbyphp/chubbyphp-framework][9]: ^3.1
  * [chubbyphp/chubbyphp-framework-router-fastroute][10]: ^1.0
  * [chubbyphp/chubbyphp-negotiation][11]: ^1.5.3
  * [chubbyphp/chubbyphp-serialization][12]: ^2.13.1

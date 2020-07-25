@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory;
 
-use Doctrine\Common\Persistence\ConnectionRegistry;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ConnectionRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use Psr\Container\ContainerInterface;
 

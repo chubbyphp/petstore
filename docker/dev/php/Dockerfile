@@ -31,13 +31,15 @@ RUN apt-get update -y && apt-get install -y \
     php7.4-mbstring \
     php7.4-opcache \
     php7.4-pgsql \
-    php7.4-phpdbg \
     php7.4-readline \
     php7.4-xml \
     php7.4-zip \
     php-apcu \
     php-ast \
+    php-pcov \
     php-xdebug
+
+RUN phpdismod pcov && phpdismod xdebug
 
 RUN mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") | tar zxp -C /tmp/blackfire \

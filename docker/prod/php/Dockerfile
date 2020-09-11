@@ -30,7 +30,6 @@ RUN apt-get update -y && apt-get install -y \
     php7.4-mbstring \
     php7.4-opcache \
     php7.4-pgsql \
-    php7.4-phpdbg \
     php7.4-readline \
     php7.4-xml \
     php7.4-zip \

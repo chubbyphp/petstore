@@ -75,11 +75,29 @@ Collections are sortable, filterable paginated lists of models.
 
  * [App\Collection][60]
 
-### Config
+### Factory
 
-Enviroment based configurations, dev, phpunit, prod. Credentials where used fom enviroment variables.
+Factories to create collections, model or whatever you need to be created.
 
- * [App\Config][70]
+ * [App\Factory][70]
+
+### Mapping
+
+Mappings are used for deserialization, orm, serialization and validation defintions. They are all done in PHP.
+
+ * [App\Mapping][80]
+
+### Model
+
+Models, entities, documents what ever fits your purpose the best.
+
+ * [App\Model][90]
+
+### Repository
+
+Repositories get data from storages like databases, elasticsearch, redis or whereever your models are stored or cached.
+
+ * [App\Repository][100]
 
 ### RequestHandler
 
@@ -87,37 +105,13 @@ RequestHandler alias Controller, or Controller actions to be more precise.
 There is a directory with generic crud controllers. If you like the idea adapt them for your generic use case, if not drop them.
 I highly recommend to not extend them.
 
- * [App\RequestHandler][80]
-
-### Factory
-
-Factories to create collections, model or whatever you need to be created.
-
- * [App\Factory][90]
-
-### Mapping
-
-Mappings are used for deserialization, orm, serialization and validation defintions. They are all done in PHP.
-
- * [App\Mapping][100]
-
-### Model
-
-Models, entities, documents what ever fits your purpose the best.
-
- * [App\Model][110]
-
-### Repository
-
-Repositories get data from storages like databases, elasticsearch, redis or whereever your models are stored or cached.
-
- * [App\Repository][120]
+ * [App\RequestHandler][110]
 
 ### ServiceFactory
 
 Service factories are the glue code of the dependeny injection container.
 
- * [App\ServiceFactory][130]
+ * [App\ServiceFactory][120]
 
 ## Copyright
 
@@ -147,16 +141,14 @@ Dominik Zogg 2020
 
 [60]: src/Collection
 
-[70]: src/Config
+[70]: src/Factory
 
-[80]: src/RequestHandler
+[80]: src/Mapping
 
-[90]: src/Factory
+[90]: src/Model
 
-[100]: src/Mapping
+[100]: src/Repository
 
-[110]: src/Model
+[110]: src/RequestHandler
 
-[120]: src/Repository
-
-[130]: src/ServiceFactory
+[120]: src/ServiceFactory

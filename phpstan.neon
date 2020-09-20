@@ -2,4 +2,4 @@ parameters:
     ignoreErrors:
         -
             message: '#Method App\\Repository\\PetRepository\:\:findById\(\) should return App\\Model\\ModelInterface\|null but returns object\|null\.#'
-            path: %currentWorkingDirectory%/app/Repository/PetRepository.php
+            path: %currentWorkingDirectory%/src/Repository/PetRepository.php

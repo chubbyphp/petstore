@@ -1,7 +1,7 @@
 {
     "source": {
         "directories": [
-            "app"
+            "src"
         ]
     },
     "timeout": 10,

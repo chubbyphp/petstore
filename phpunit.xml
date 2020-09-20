@@ -22,11 +22,11 @@
     </extensions>
     <filter>
         <whitelist>
-            <directory>./app</directory>
+            <directory>./src</directory>
             <exclude>
-                <file>./app/console.php</file>
-                <file>./app/container.php</file>
-                <file>./app/web.php</file>
+                <file>./src/console.php</file>
+                <file>./src/container.php</file>
+                <file>./src/web.php</file>
             </exclude>
         </whitelist>
     </filter>

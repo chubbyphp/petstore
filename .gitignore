@@ -3,4 +3,5 @@
 .vscode/
 build/
 composer.lock
+var/
 vendor/

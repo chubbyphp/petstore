@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
+use App\Tests\AssertTrait;
+
 /**
  * @internal
  * @coversNothing
  */
 final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
 {
+    use AssertTrait;
+
     public function testCreateWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
@@ -36,7 +40,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
-                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -70,7 +73,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
-                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -148,7 +150,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
-                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -304,7 +305,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
-                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -387,7 +387,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
-                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -421,7 +420,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
-                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -568,7 +566,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
-                'application/xml',
                 'application/x-yaml',
             ],
             '_type' => 'apiProblem',
@@ -652,11 +649,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         self::assertArrayHasKey('delete', $pet['_links']);
         self::assertArrayHasKey('_type', $pet);
 
-        self::assertRegExp(self::UUID_PATTERN, $pet['id']);
-        self::assertRegExp(self::DATE_PATTERN, $pet['createdAt']);
+        self::assertMatchesRegularExpression(self::UUID_PATTERN, $pet['id']);
+        self::assertMatchesRegularExpression(self::DATE_PATTERN, $pet['createdAt']);
 
         if ($updated) {
-            self::assertRegExp(self::DATE_PATTERN, $pet['updatedAt']);
+            self::assertMatchesRegularExpression(self::DATE_PATTERN, $pet['updatedAt']);
         } else {
             self::assertNull($pet['updatedAt']);
         }

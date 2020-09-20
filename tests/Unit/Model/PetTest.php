@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Model;
 use App\Model\ModelInterface;
 use App\Model\Pet;
 use App\Model\Vaccination;
+use App\Tests\AssertTrait;
 use App\Tests\Helper\AssertHelper;
 use PHPUnit\Framework\TestCase;
 
@@ -17,13 +18,15 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetTest extends TestCase
 {
+    use AssertTrait;
+
     public function testGetSet(): void
     {
         $pet = new Pet();
 
         self::assertInstanceOf(ModelInterface::class, $pet);
 
-        self::assertRegExp('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $pet->getId());
+        self::assertMatchesRegularExpression('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $pet->getId());
         self::assertInstanceOf(\DateTime::class, $pet->getCreatedAt());
         self::assertNull($pet->getUpdatedAt());
         self::assertNull($pet->getTag());

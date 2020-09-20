@@ -5,7 +5,8 @@ declare(strict_types=1);
 $finder = PhpCsFixer\Finder::create()
     ->files()
     ->name('*.php')
-    ->in(__DIR__ . '/app')
+    ->in(__DIR__ . '/config')
+    ->in(__DIR__ . '/src')
     ->in(__DIR__ . '/tests')
 ;
 

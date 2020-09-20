@@ -10,25 +10,23 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 ## Requirements
 
  * php: ^7.2
- * [chubbyphp/chubbyphp-api-http][3]: ^3.4
- * [chubbyphp/chubbyphp-config][4]: ^2.1.1
- * [chubbyphp/chubbyphp-container][5]: ^1.0.3
- * [chubbyphp/chubbyphp-cors][6]: ^1.1.1
- * [chubbyphp/chubbyphp-deserialization][7]: ^2.17
- * [chubbyphp/chubbyphp-doctrine-db-service-provider][8]: ^2.0
- * [chubbyphp/chubbyphp-framework][9]: ^3.1
- * [chubbyphp/chubbyphp-framework-router-fastroute][10]: ^1.0
- * [chubbyphp/chubbyphp-negotiation][11]: ^1.5.3
- * [chubbyphp/chubbyphp-serialization][12]: ^2.13.1
- * [chubbyphp/chubbyphp-validation][13]: ^3.9
- * [doctrine/orm][14]: ^2.7.2
- * [monolog/monolog][15]: ^2.0.2
- * [nikic/fast-route][16]: ^1.3
- * [ocramius/proxy-manager][17]: ^2.2.3
- * [ramsey/uuid][18]: ^4.0.1
- * [slim/psr7][19]: ^1.0
- * [swagger-api/swagger-ui][20]: ^3.25
- * [symfony/console][21]: ^4.4.7|^5.0.7
+ * [chubbyphp/chubbyphp-api-http][2]: ^4.0
+ * [chubbyphp/chubbyphp-cors][3]: ^1.2
+ * [chubbyphp/chubbyphp-deserialization][4]: ^3.0
+ * [chubbyphp/chubbyphp-framework-router-fastroute][5]: ^1.0
+ * [chubbyphp/chubbyphp-framework][6]: ^3.1
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0
+ * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.0
+ * [chubbyphp/chubbyphp-laminas-config][9]: ^1.1
+ * [chubbyphp/chubbyphp-negotiation][10]: ^1.7
+ * [chubbyphp/chubbyphp-serialization][11]: ^3.0
+ * [chubbyphp/chubbyphp-validation][12]: ^3.11
+ * [doctrine/orm][13]: ^2.7.3
+ * [monolog/monolog][14]: ^2.1.1
+ * [ramsey/uuid][15]: ^4.0.1
+ * [slim/psr7][16]: ^1.1
+ * [swagger-api/swagger-ui][17]: ^3.28
+ * [symfony/console][18]: ^4.4.11|^5.1.3
 
 ## Environment
 
@@ -127,40 +125,38 @@ Dominik Zogg 2020
 
 [1]: https://github.com/chubbyphp/chubbyphp-framework
 
-[3]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
-[4]: https://packagist.org/packages/chubbyphp/chubbyphp-config
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-container
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-doctrine-db-service-provider
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
-[11]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[12]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[13]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[14]: https://packagist.org/packages/doctrine/orm
-[15]: https://packagist.org/packages/monolog/monolog
-[16]: https://packagist.org/packages/nikic/fast-route
-[17]: https://packagist.org/packages/ocramius/proxy-manager
-[18]: https://packagist.org/packages/ramsey/uuid
-[19]: https://packagist.org/packages/slim/psr7
-[20]: https://packagist.org/packages/swagger-api/swagger-ui
-[21]: https://packagist.org/packages/symfony/console
+[2]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
+[3]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
+[4]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
+[12]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[13]: https://packagist.org/packages/doctrine/orm
+[14]: https://packagist.org/packages/monolog/monolog
+[15]: https://packagist.org/packages/ramsey/uuid
+[16]: https://packagist.org/packages/slim/psr7
+[17]: https://packagist.org/packages/swagger-api/swagger-ui
+[18]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 
-[60]: app/Collection
+[60]: src/Collection
 
-[70]: app/Config
+[70]: src/Config
 
-[80]: app/RequestHandler
+[80]: src/RequestHandler
 
-[90]: app/Factory
+[90]: src/Factory
 
-[100]: app/Mapping
+[100]: src/Mapping
 
-[110]: app/Model
+[110]: src/Model
 
-[120]: app/Repository
+[120]: src/Repository
 
-[130]: app/ServiceFactory
+[130]: src/ServiceFactory

@@ -9,7 +9,6 @@ use App\Model\Pet;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,7 +22,7 @@ final class VaccinationMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var ClassMetadata|MockObject $classMetadata */
+        /** @var ClassMetadata $classMetadata */
         $classMetadata = $this->getMockByCalls(ClassMetadata::class, [
             Call::create('setPrimaryTable')->with(['name' => 'vaccination']),
             Call::create('mapField')->with([

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler\Api\Swagger;
 
 use App\RequestHandler\Api\Swagger\IndexRequestHandler;
+use App\Tests\AssertTrait;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -23,6 +24,7 @@ use Psr\Http\Message\StreamInterface;
  */
 final class IndexRequestHandlerTest extends TestCase
 {
+    use AssertTrait;
     use MockByCallsTrait;
 
     public function testHandle(): void
@@ -54,7 +56,7 @@ final class IndexRequestHandlerTest extends TestCase
             Call::create('createStreamFromFile')
                 ->with(
                     new ArgumentCallback(function (string $path): void {
-                        self::assertRegExp('#swagger/index\.html$#', $path);
+                        self::assertMatchesRegularExpression('#swagger/index\.html$#', $path);
                     }),
                     'r'
                 )

@@ -22,11 +22,9 @@ use App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory;
 use App\ServiceFactory\Deserialization\TypeDecodersFactory;
 use App\ServiceFactory\Factory\Collection\PetCollectionFactoryFactory;
 use App\ServiceFactory\Factory\Model\PetFactoryFactory;
-use App\ServiceFactory\Framework\ExceptionMiddlewareFactory;
-use App\ServiceFactory\Framework\MiddlewaresFactory;
-use App\ServiceFactory\Framework\RouterFactory;
-use App\ServiceFactory\Framework\RouterMiddlewareFactory;
-use App\ServiceFactory\Framework\RoutesFactory;
+use App\ServiceFactory\Framework\CallableResolverFactory;
+use App\ServiceFactory\Framework\RouteCollectorFactory;
+use App\ServiceFactory\Framework\RouteParserFactory;
 use App\ServiceFactory\Http\ResponseFactoryFactory;
 use App\ServiceFactory\Http\StreamFactoryFactory;
 use App\ServiceFactory\Logger\LoggerFactory;
@@ -58,10 +56,6 @@ use Chubbyphp\Deserialization\Decoder\TypeDecoderInterface;
 use Chubbyphp\Deserialization\DeserializerInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 use Chubbyphp\Deserialization\ServiceFactory\DeserializerFactory;
-use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
-use Chubbyphp\Framework\Middleware\RouterMiddleware;
-use Chubbyphp\Framework\Router\RouteInterface;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuCacheFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\EntityManagerFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Persistence\Mapping\Driver\ClassMapDriverFactory;
@@ -84,8 +78,10 @@ use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Interfaces\CallableResolverInterface;
+use Slim\Interfaces\RouteCollectorInterface;
+use Slim\Interfaces\RouteParserInterface;
 use Symfony\Component\Console\Command\Command;
 
 $rootDir = \realpath(__DIR__.'/..');
@@ -106,6 +102,9 @@ return [
     'debug' => false,
     'dependencies' => [
         'factories' => [
+            CallableResolverInterface::class => CallableResolverFactory::class,
+            RouteCollectorInterface::class => RouteCollectorFactory::class,
+            RouteParserInterface::class => RouteParserFactory::class,
             AcceptAndContentTypeMiddleware::class => AcceptAndContentTypeMiddlewareFactory::class,
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
             AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
@@ -118,10 +117,8 @@ return [
             DenormalizationObjectMappingInterface::class.'[]' => DenormalizationObjectMappingsFactory::class,
             DeserializerInterface::class => DeserializerFactory::class,
             EntityManager::class => EntityManagerFactory::class,
-            ExceptionMiddleware::class => ExceptionMiddlewareFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
-            MiddlewareInterface::class.'[]' => MiddlewaresFactory::class,
             NormalizationObjectMappingInterface::class.'[]' => NormalizationObjectMappingsFactory::class,
             Pet::class.CreateRequestHandler::class => PetCreateRequestHandlerFactory::class,
             Pet::class.DeleteRequestHandler::class => PetDeleteRequestHandlerFactory::class,
@@ -135,9 +132,6 @@ return [
             RequestManagerInterface::class => RequestManagerFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
             ResponseManagerInterface::class => ResponseManagerFactory::class,
-            RouteInterface::class.'[]' => RoutesFactory::class,
-            RouterInterface::class => RouterFactory::class,
-            RouterMiddleware::class => RouterMiddlewareFactory::class,
             SerializerInterface::class => SerializerFactory::class,
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             SwaggerIndexRequestHandler::class => SwaggerIndexRequestHandlerFactory::class,

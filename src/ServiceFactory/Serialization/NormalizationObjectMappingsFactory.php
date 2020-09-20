@@ -13,9 +13,9 @@ use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ServerError\InternalServerErrorMapping;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Psr\Container\ContainerInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 final class NormalizationObjectMappingsFactory
 {
@@ -24,8 +24,8 @@ final class NormalizationObjectMappingsFactory
      */
     public function __invoke(ContainerInterface $container): array
     {
-        /** @var RouterInterface $router */
-        $router = $container->get(RouterInterface::class);
+        /** @var RouteParserInterface $router */
+        $router = $container->get(RouteParserInterface::class);
 
         return [
             new BadRequestMapping(),

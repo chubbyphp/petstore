@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Mapping\Serialization;
 
 use App\Collection\CollectionInterface;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Link\LinkBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
@@ -13,15 +12,16 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
     /**
-     * @var RouterInterface
+     * @var RouteParserInterface
      */
     protected $router;
 
-    public function __construct(RouterInterface $router)
+    public function __construct(RouteParserInterface $router)
     {
         $this->router = $router;
     }
@@ -75,14 +75,14 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
 
                 return LinkBuilder
                     ::create(
-                        $this->router->generatePath($this->getListRouteName(), [], $queryParams)
+                        $this->router->urlFor($this->getListRouteName(), [], $queryParams)
                     )
                         ->setAttributes(['method' => 'GET'])
                         ->getLink()
                 ;
             })->getMapping(),
             NormalizationLinkMappingBuilder::createCallback('create', function () {
-                return LinkBuilder::create($this->router->generatePath($this->getCreateRouteName()))
+                return LinkBuilder::create($this->router->urlFor($this->getCreateRouteName()))
                     ->setAttributes(['method' => 'POST'])
                     ->getLink()
                 ;

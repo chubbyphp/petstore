@@ -14,11 +14,11 @@ use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ServerError\InternalServerErrorMapping;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\ServiceFactory\Serialization\NormalizationObjectMappingsFactory
@@ -31,12 +31,12 @@ final class NormalizationObjectMappingsFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
-        /** @var RouterInterface $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         /** @var ContainerInterface $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(RouterInterface::class)->willReturn($router),
+            Call::create('get')->with(RouteParserInterface::class)->willReturn($router),
         ]);
 
         $factory = new NormalizationObjectMappingsFactory();

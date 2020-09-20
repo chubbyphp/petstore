@@ -6,7 +6,6 @@ namespace App\Tests\Unit\Mapping\Serialization;
 
 use App\Mapping\Serialization\AbstractModelMapping;
 use App\Model\ModelInterface;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
@@ -14,6 +13,7 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Slim\Interfaces\RouteParserInterface;
 
 /**
  * @covers \App\Mapping\Serialization\AbstractModelMapping
@@ -26,8 +26,8 @@ class ModelMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
@@ -36,8 +36,8 @@ class ModelMappingTest extends TestCase
 
     public function testGetNormalizationType(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
@@ -46,8 +46,8 @@ class ModelMappingTest extends TestCase
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
@@ -62,8 +62,8 @@ class ModelMappingTest extends TestCase
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
@@ -74,15 +74,15 @@ class ModelMappingTest extends TestCase
 
     public function testGetNormalizationLinkMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
-        $router = $this->getMockByCalls(RouterInterface::class, [
-            Call::create('generatePath')
+        /** @var RouteParserInterface|MockObject $router */
+        $router = $this->getMockByCalls(RouteParserInterface::class, [
+            Call::create('urlFor')
                 ->with($this->getReadRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'], [])
                 ->willReturn(sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86')),
-            Call::create('generatePath')
+            Call::create('urlFor')
                 ->with($this->getUpdateRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'], [])
                 ->willReturn(sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86')),
-            Call::create('generatePath')
+            Call::create('urlFor')
                 ->with($this->getDeleteRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'], [])
                 ->willReturn(sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86')),
         ]);
@@ -169,7 +169,7 @@ class ModelMappingTest extends TestCase
         return '/api/collection/%s';
     }
 
-    protected function getModelMapping(RouterInterface $router): AbstractModelMapping
+    protected function getModelMapping(RouteParserInterface $router): AbstractModelMapping
     {
         return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getReadRoute(), $this->getUpdateRoute(), $this->getDeleteRoute()) extends AbstractModelMapping {
             /**
@@ -198,7 +198,7 @@ class ModelMappingTest extends TestCase
             private $deleteRouteName;
 
             public function __construct(
-                RouterInterface $router,
+                RouteParserInterface $router,
                 string $class,
                 string $normalizationType,
                 string $readRouteName,

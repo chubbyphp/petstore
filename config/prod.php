@@ -22,11 +22,12 @@ use App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory;
 use App\ServiceFactory\Deserialization\TypeDecodersFactory;
 use App\ServiceFactory\Factory\Collection\PetCollectionFactoryFactory;
 use App\ServiceFactory\Factory\Model\PetFactoryFactory;
-use App\ServiceFactory\Framework\ExceptionMiddlewareFactory;
-use App\ServiceFactory\Framework\MiddlewaresFactory;
-use App\ServiceFactory\Framework\RouterFactory;
-use App\ServiceFactory\Framework\RouterMiddlewareFactory;
-use App\ServiceFactory\Framework\RoutesFactory;
+use App\ServiceFactory\Framework\ErrorHandlerFactory;
+use App\ServiceFactory\Framework\FastRouteRouterFactory;
+use App\ServiceFactory\Framework\NotFoundHandlerFactory;
+use App\ServiceFactory\Framework\ResponseFactory;
+use App\ServiceFactory\Framework\ServerRequestErrorResponseGeneratorFactory;
+use App\ServiceFactory\Framework\ServerRequestFactory;
 use App\ServiceFactory\Http\ResponseFactoryFactory;
 use App\ServiceFactory\Http\StreamFactoryFactory;
 use App\ServiceFactory\Logger\LoggerFactory;
@@ -58,10 +59,6 @@ use Chubbyphp\Deserialization\Decoder\TypeDecoderInterface;
 use Chubbyphp\Deserialization\DeserializerInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 use Chubbyphp\Deserialization\ServiceFactory\DeserializerFactory;
-use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
-use Chubbyphp\Framework\Middleware\RouterMiddleware;
-use Chubbyphp\Framework\Router\RouteInterface;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuCacheFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\EntityManagerFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Persistence\Mapping\Driver\ClassMapDriverFactory;
@@ -81,10 +78,33 @@ use Chubbyphp\Validation\ValidatorInterface;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\EntityManager;
+use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
+use Laminas\HttpHandlerRunner\RequestHandlerRunner;
+use Laminas\Stratigility\Middleware\ErrorHandler;
+use Mezzio\ApplicationPipeline;
+use Mezzio\Container\ApplicationPipelineFactory;
+use Mezzio\Container\EmitterFactory;
+use Mezzio\Container\MiddlewareContainerFactory;
+use Mezzio\Container\MiddlewareFactoryFactory;
+use Mezzio\Container\RequestHandlerRunnerFactory;
+use Mezzio\Handler\NotFoundHandler;
+use Mezzio\MiddlewareContainer;
+use Mezzio\MiddlewareFactory;
+use Mezzio\Response\ServerRequestErrorResponseGenerator;
+use Mezzio\Router\Middleware\DispatchMiddleware;
+use Mezzio\Router\Middleware\DispatchMiddlewareFactory;
+use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
+use Mezzio\Router\Middleware\MethodNotAllowedMiddlewareFactory;
+use Mezzio\Router\Middleware\RouteMiddleware;
+use Mezzio\Router\Middleware\RouteMiddlewareFactory;
+use Mezzio\Router\RouteCollector;
+use Mezzio\Router\RouteCollectorFactory;
+use Mezzio\Router\RouterInterface;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 
@@ -110,6 +130,7 @@ return [
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
             AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
+            ApplicationPipeline::class => ApplicationPipelineFactory::class,
             Cache::class => ApcuCacheFactory::class,
             Command::class.'[]' => CommandsFactory::class,
             ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
@@ -117,12 +138,18 @@ return [
             CorsMiddleware::class => CorsMiddlewareFactory::class,
             DenormalizationObjectMappingInterface::class.'[]' => DenormalizationObjectMappingsFactory::class,
             DeserializerInterface::class => DeserializerFactory::class,
+            DispatchMiddleware::class => DispatchMiddlewareFactory::class,
+            EmitterInterface::class => EmitterFactory::class,
             EntityManager::class => EntityManagerFactory::class,
-            ExceptionMiddleware::class => ExceptionMiddlewareFactory::class,
+            ErrorHandler::class => ErrorHandlerFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
-            MiddlewareInterface::class.'[]' => MiddlewaresFactory::class,
+            MethodNotAllowedMiddleware::class => MethodNotAllowedMiddlewareFactory::class,
+            MiddlewareContainer::class => MiddlewareContainerFactory::class,
+            MiddlewareFactory::class => MiddlewareFactoryFactory::class,
+            MiddlewareFactory::class => MiddlewareFactoryFactory::class,
             NormalizationObjectMappingInterface::class.'[]' => NormalizationObjectMappingsFactory::class,
+            NotFoundHandler::class => NotFoundHandlerFactory::class,
             Pet::class.CreateRequestHandler::class => PetCreateRequestHandlerFactory::class,
             Pet::class.DeleteRequestHandler::class => PetDeleteRequestHandlerFactory::class,
             Pet::class.ListRequestHandler::class => PetListRequestHandlerFactory::class,
@@ -132,13 +159,17 @@ return [
             PetFactory::class => PetFactoryFactory::class,
             PetRepository::class => PetRepositoryFactory::class,
             PingRequestHandler::class => PingRequestHandlerFactory::class,
+            RequestHandlerRunner::class => RequestHandlerRunnerFactory::class,
             RequestManagerInterface::class => RequestManagerFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
+            ResponseInterface::class => ResponseFactory::class,
             ResponseManagerInterface::class => ResponseManagerFactory::class,
-            RouteInterface::class.'[]' => RoutesFactory::class,
-            RouterInterface::class => RouterFactory::class,
-            RouterMiddleware::class => RouterMiddlewareFactory::class,
+            RouteCollector::class => RouteCollectorFactory::class,
+            RouteMiddleware::class => RouteMiddlewareFactory::class,
+            RouterInterface::class => FastRouteRouterFactory::class,
             SerializerInterface::class => SerializerFactory::class,
+            ServerRequestErrorResponseGenerator::class => ServerRequestErrorResponseGeneratorFactory::class,
+            ServerRequestInterface::class => ServerRequestFactory::class,
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             SwaggerIndexRequestHandler::class => SwaggerIndexRequestHandlerFactory::class,
             SwaggerYamlRequestHandler::class => SwaggerYamlRequestHandlerFactory::class,

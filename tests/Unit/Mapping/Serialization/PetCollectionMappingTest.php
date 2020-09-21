@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Collection\PetCollection;
 use App\Mapping\Serialization\AbstractCollectionMapping;
 use App\Mapping\Serialization\PetCollectionMapping;
-use Chubbyphp\Framework\Router\RouterInterface;
+use Mezzio\Router\RouterInterface;
 
 /**
  * @covers \App\Mapping\Serialization\PetCollectionMapping

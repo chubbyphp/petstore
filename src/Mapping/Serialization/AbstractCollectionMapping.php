@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Mapping\Serialization;
 
 use App\Collection\CollectionInterface;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Link\LinkBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
@@ -13,6 +12,7 @@ use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
+use Mezzio\Router\RouterInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
@@ -75,14 +75,14 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
 
                 return LinkBuilder
                     ::create(
-                        $this->router->generatePath($this->getListRouteName(), [], $queryParams)
+                        $this->router->generateUri($this->getListRouteName()).'?'.http_build_query($queryParams)
                     )
                         ->setAttributes(['method' => 'GET'])
                         ->getLink()
                 ;
             })->getMapping(),
             NormalizationLinkMappingBuilder::createCallback('create', function () {
-                return LinkBuilder::create($this->router->generatePath($this->getCreateRouteName()))
+                return LinkBuilder::create($this->router->generateUri($this->getCreateRouteName()))
                     ->setAttributes(['method' => 'POST'])
                     ->getLink()
                 ;

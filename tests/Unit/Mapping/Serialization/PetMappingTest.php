@@ -7,9 +7,9 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Mapping\Serialization\AbstractModelMapping;
 use App\Mapping\Serialization\PetMapping;
 use App\Model\Pet;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
+use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Mapping\Serialization;
 
 use App\Model\ModelInterface;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Serialization\Link\LinkBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
+use Mezzio\Router\RouterInterface;
 
 abstract class AbstractModelMapping implements NormalizationObjectMappingInterface
 {
@@ -54,7 +54,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
             NormalizationLinkMappingBuilder::createCallback('read', function (string $path, ModelInterface $model) {
                 return LinkBuilder
                     ::create(
-                        $this->router->generatePath($this->getReadRouteName(), ['id' => $model->getId()])
+                        $this->router->generateUri($this->getReadRouteName(), ['id' => $model->getId()])
                     )
                         ->setAttributes(['method' => 'GET'])
                         ->getLink()
@@ -63,7 +63,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
             NormalizationLinkMappingBuilder::createCallback('update', function (string $path, ModelInterface $model) {
                 return LinkBuilder
                     ::create(
-                        $this->router->generatePath($this->getUpdateRouteName(), ['id' => $model->getId()])
+                        $this->router->generateUri($this->getUpdateRouteName(), ['id' => $model->getId()])
                     )
                         ->setAttributes(['method' => 'PUT'])
                         ->getLink()
@@ -72,7 +72,7 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
             NormalizationLinkMappingBuilder::createCallback('delete', function (string $path, ModelInterface $model) {
                 return LinkBuilder
                     ::create(
-                        $this->router->generatePath($this->getDeleteRouteName(), ['id' => $model->getId()])
+                        $this->router->generateUri($this->getDeleteRouteName(), ['id' => $model->getId()])
                     )
                         ->setAttributes(['method' => 'DELETE'])
                         ->getLink()

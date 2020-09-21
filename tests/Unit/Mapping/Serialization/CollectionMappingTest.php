@@ -7,12 +7,12 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Collection\AbstractCollection;
 use App\Collection\CollectionInterface;
 use App\Mapping\Serialization\AbstractCollectionMapping;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
+use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -76,10 +76,10 @@ class CollectionMappingTest extends TestCase
     {
         /** @var RouterInterface|MockObject $router */
         $router = $this->getMockByCalls(RouterInterface::class, [
-            Call::create('generatePath')
-                ->with($this->getListRoute(), [], ['key' => 'value', 'offset' => 0, 'limit' => 20])
-                ->willReturn(sprintf('%s?offset=0&limit=20', $this->getCollectionPath())),
-            Call::create('generatePath')
+            Call::create('generateUri')
+                ->with($this->getListRoute(), [], [])
+                ->willReturn(sprintf('%s', $this->getCollectionPath())),
+            Call::create('generateUri')
                 ->with($this->getCreateRoute(), [], [])
                 ->willReturn(sprintf('%s', $this->getCollectionPath())),
         ]);
@@ -114,7 +114,7 @@ class CollectionMappingTest extends TestCase
         $create = $linkMappings[1]->getLinkNormalizer()->normalizeLink('/', $object, $context);
 
         self::assertSame([
-            'href' => sprintf('%s?offset=0&limit=20', $this->getCollectionPath()),
+            'href' => sprintf('%s?key=value&offset=0&limit=20', $this->getCollectionPath()),
             'templated' => false,
             'rel' => [],
             'attributes' => [

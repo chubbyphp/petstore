@@ -5,7 +5,7 @@
 
 ## Description
 
-A simple skeleton to build api's based on the [chubbyphp-framework][1].
+A simple skeleton to build api's based on the [mezzio][1] framework.
 
 ## Requirements
 
@@ -13,15 +13,15 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-api-http][2]: ^4.0
  * [chubbyphp/chubbyphp-cors][3]: ^1.2
  * [chubbyphp/chubbyphp-deserialization][4]: ^3.0
- * [chubbyphp/chubbyphp-framework-router-fastroute][5]: ^1.0
- * [chubbyphp/chubbyphp-framework][6]: ^3.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0
- * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.0
- * [chubbyphp/chubbyphp-laminas-config][9]: ^1.1
- * [chubbyphp/chubbyphp-negotiation][10]: ^1.7
- * [chubbyphp/chubbyphp-serialization][11]: ^3.0
- * [chubbyphp/chubbyphp-validation][12]: ^3.11
- * [doctrine/orm][13]: ^2.7.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][5]: ^1.0
+ * [chubbyphp/chubbyphp-laminas-config-factory][6]: ^1.0
+ * [chubbyphp/chubbyphp-laminas-config][7]: ^1.1
+ * [chubbyphp/chubbyphp-negotiation][8]: ^1.7
+ * [chubbyphp/chubbyphp-serialization][9]: ^3.0
+ * [chubbyphp/chubbyphp-validation][10]: ^3.11
+ * [doctrine/orm][11]: ^2.7.3
+ * [mezzio/mezzio-fastroute][12]: ^3.0.3
+ * [mezzio/mezzio][13]: ^3.2.2
  * [monolog/monolog][14]: ^2.1.1
  * [ramsey/uuid][15]: ^4.0.1
  * [slim/psr7][16]: ^1.1
@@ -58,7 +58,7 @@ docker-compose exec php bash
 Through [Composer](http://getcomposer.org) as [chubbyphp/petstore][40].
 
 ```bash
-composer create-project chubbyphp/petstore myproject "dev-chubbyphp"
+composer create-project chubbyphp/petstore myproject "dev-mezzio"
 ```
 
 ## Setup
@@ -122,15 +122,15 @@ Dominik Zogg 2020
 [2]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
 [3]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
 [4]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[11]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[12]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[13]: https://packagist.org/packages/doctrine/orm
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[11]: https://packagist.org/packages/doctrine/orm
+[12]: https://packagist.org/packages/mezzio/mezzio-fastroute
+[13]: https://packagist.org/packages/mezzio/mezzio
 [14]: https://packagist.org/packages/monolog/monolog
 [15]: https://packagist.org/packages/ramsey/uuid
 [16]: https://packagist.org/packages/slim/psr7

@@ -14,9 +14,9 @@ use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\NotFoundMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnprocessableEntityMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ClientError\UnsupportedMediaTypeMapping;
 use Chubbyphp\ApiHttp\Serialization\ApiProblem\ServerError\InternalServerErrorMapping;
-use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
+use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 

@@ -3,3 +3,6 @@ parameters:
         -
             message: '#Method App\\Repository\\PetRepository\:\:findById\(\) should return App\\Model\\ModelInterface\|null but returns object\|null\.#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php
+        -
+            message: '#Class Mezzio\\ApplicationPipeline not found\.#'
+            path: %currentWorkingDirectory%/src/web.php

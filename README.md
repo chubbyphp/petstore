@@ -5,7 +5,7 @@
 
 ## Description
 
-A simple skeleton to build api's based on the [slim][1].
+A simple skeleton to build api's based on the [slim][1] framework.
 
 ## Requirements
 

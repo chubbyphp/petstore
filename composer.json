@@ -1,7 +1,7 @@
 {
     "name": "chubbyphp/chubbyphp-framework-skeleton",
-    "description": "A minimal skeleton for chubbyphp-framework",
-    "keywords": ["chubbyphp", "framework", "skeleton"],
+    "description": "A minimal skeleton for slim framework",
+    "keywords": ["chubbyphp", "framework", "slim", "skeleton"],
     "license": "MIT",
     "authors": [
         {

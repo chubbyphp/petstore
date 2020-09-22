@@ -10,7 +10,6 @@ use App\Mapping\Validation\VaccinationMapping;
 use App\ServiceFactory\Validation\ValidationMappingProviderFactory;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * @covers \App\ServiceFactory\Validation\ValidationMappingProviderFactory
@@ -23,12 +22,9 @@ final class ValidationMappingProviderFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
-        /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class);
-
         $factory = new ValidationMappingProviderFactory();
 
-        $service = $factory($container);
+        $service = $factory();
 
         self::assertEquals([
             new PetCollectionMapping(),

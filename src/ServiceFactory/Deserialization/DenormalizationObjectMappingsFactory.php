@@ -8,14 +8,13 @@ use App\Mapping\Deserialization\PetCollectionMapping;
 use App\Mapping\Deserialization\PetMapping;
 use App\Mapping\Deserialization\VaccinationMapping;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
-use Psr\Container\ContainerInterface;
 
 final class DenormalizationObjectMappingsFactory
 {
     /**
      * @return array<int, DenormalizationObjectMappingInterface>
      */
-    public function __invoke(ContainerInterface $container): array
+    public function __invoke(): array
     {
         return [
             new PetCollectionMapping(),

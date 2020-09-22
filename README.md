@@ -1,7 +1,7 @@
 # petstore
 
-[![Build Status](https://api.travis-ci.org/chubbyphp/petstore.png?branch=chubbyphp)](https://travis-ci.org/chubbyphp/petstore)
-[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp)
+[![Build Status](https://api.travis-ci.org/chubbyphp/petstore.png?branch=mezzio)](https://travis-ci.org/chubbyphp/petstore)
+[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=mezzio)](https://coveralls.io/github/chubbyphp/petstore?branch=mezzio)
 
 ## Description
 

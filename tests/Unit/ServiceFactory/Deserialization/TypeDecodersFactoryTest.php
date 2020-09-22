@@ -11,7 +11,6 @@ use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * @covers \App\ServiceFactory\Deserialization\TypeDecodersFactory
@@ -24,12 +23,9 @@ final class TypeDecodersFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
-        /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class);
-
         $factory = new TypeDecodersFactory();
 
-        $typeDecoders = $factory($container);
+        $typeDecoders = $factory();
 
         self::assertIsArray($typeDecoders);
 

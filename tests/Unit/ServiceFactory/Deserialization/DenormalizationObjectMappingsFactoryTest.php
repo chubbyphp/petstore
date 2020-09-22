@@ -10,7 +10,6 @@ use App\Mapping\Deserialization\VaccinationMapping;
 use App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * @covers \App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory
@@ -23,12 +22,9 @@ final class DenormalizationObjectMappingsFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
-        /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class);
-
         $factory = new DenormalizationObjectMappingsFactory();
 
-        $service = $factory($container);
+        $service = $factory();
 
         self::assertEquals([
             new PetCollectionMapping(),

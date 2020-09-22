@@ -9,14 +9,13 @@ use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\TypeDecoderInterface;
 use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
 use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
-use Psr\Container\ContainerInterface;
 
 final class TypeDecodersFactory
 {
     /**
      * @return array<int, TypeDecoderInterface>
      */
-    public function __invoke(ContainerInterface $container): array
+    public function __invoke(): array
     {
         return [
             new JsonTypeDecoder(),

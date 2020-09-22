@@ -7,6 +7,7 @@ namespace App\Mapping\Serialization;
 use App\Model\Vaccination;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
+use Chubbyphp\Serialization\Mapping\NormalizationLinkMappingInterface;
 use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 
 final class VaccinationMapping implements NormalizationObjectMappingInterface
@@ -22,7 +23,7 @@ final class VaccinationMapping implements NormalizationObjectMappingInterface
     }
 
     /**
-     * @return array<NormalizationFieldMappingInterface>
+     * @return array<int, NormalizationFieldMappingInterface>
      */
     public function getNormalizationFieldMappings(string $path): array
     {
@@ -31,11 +32,17 @@ final class VaccinationMapping implements NormalizationObjectMappingInterface
         ];
     }
 
+    /**
+     * @return array<int, NormalizationFieldMappingInterface>
+     */
     public function getNormalizationEmbeddedFieldMappings(string $path): array
     {
         return [];
     }
 
+    /**
+     * @return array<int, NormalizationLinkMappingInterface>
+     */
     public function getNormalizationLinkMappings(string $path): array
     {
         return [];

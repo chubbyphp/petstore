@@ -5,6 +5,13 @@ language: php
 services:
   - postgresql
 
+addons:
+  sonarcloud:
+    organization: "chubbyphp"
+
+git:
+  depth: false
+
 env:
   global:
     - APP_ENV=phpunit
@@ -45,3 +52,4 @@ script:
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls --coverage_clover=build/phpunit/clover.xml --json_path=build/coveralls.json -v
+  - sonar-scanner

@@ -38,7 +38,7 @@ services:
   postgres:
     container_name: petstore-postgres
     hostname: pestore-postgres
-    image: postgres:12
+    image: postgres:13
     command: -c log_statement=all -c log_error_verbosity=VERBOSE
     environment:
       POSTGRES_USER: root
@@ -48,21 +48,20 @@ services:
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx
-    image: nginx:1.17.8
+    build:
+      dockerfile: ./dev/nginx/Dockerfile
+      context: ./docker
     ports:
       - '10080:80'
       - '10443:443'
     volumes:
-      - ./docker/prod/nginx/certificate_key:/etc/nginx/certificate_key:ro
-      - ./docker/prod/nginx/certificate:/etc/nginx/certificate:ro
-      - ./docker/prod/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./:/var/www/html:ro
     depends_on:
       - php
   elasticsearch:
     container_name: petstore-elasticsearch
     hostname: petstore-elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
     environment:
       discovery.type: single-node
       ES_JAVA_OPTS: '-Xms128m -Xmx128m'
@@ -75,7 +74,7 @@ services:
   kibana:
     container_name: petstore-kibana
     hostname: petstore-kibana
-    image: docker.elastic.co/kibana/kibana:7.5.2
+    image: docker.elastic.co/kibana/kibana:7.9.2
     ports:
       - '15601:5601'
     depends_on:
@@ -83,7 +82,7 @@ services:
   filebeat:
     container_name: petstore-filebeat
     hostname: petstore-filebeat
-    image: docker.elastic.co/beats/filebeat:7.5.2
+    image: docker.elastic.co/beats/filebeat:7.9.2
     command: --strict.perms=false
     user: root
     volumes:

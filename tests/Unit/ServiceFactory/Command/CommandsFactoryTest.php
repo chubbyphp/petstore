@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceFactory\Command;
 
-use App\Command\CleanDirectoriesCommand;
 use App\ServiceFactory\Command\CommandsFactory;
 use App\Tests\Helper\AssertHelper;
+use Chubbyphp\CleanDirectories\Command\CleanDirectoriesCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
 use Chubbyphp\Laminas\Config\Doctrine\ORM\Tools\Console\Command\EntityManagerCommand;

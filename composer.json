@@ -12,6 +12,7 @@
     "require": {
         "php": "^7.2",
         "chubbyphp/chubbyphp-api-http": "^4.0",
+        "chubbyphp/chubbyphp-clean-directories": "^1.0",
         "chubbyphp/chubbyphp-cors": "^1.2",
         "chubbyphp/chubbyphp-deserialization": "^3.0",
         "chubbyphp/chubbyphp-laminas-config-doctrine": "^1.0",

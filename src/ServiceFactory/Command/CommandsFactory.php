@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory\Command;
 
-use App\Command\CleanDirectoriesCommand;
+use Chubbyphp\CleanDirectories\ServiceFactory\CleanDirectoriesCommandFactory;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
 use Chubbyphp\Laminas\Config\Doctrine\ORM\Tools\Console\Command\EntityManagerCommand;
@@ -37,7 +37,7 @@ final class CommandsFactory
     public function __invoke(ContainerInterface $container): array
     {
         return [
-            new CleanDirectoriesCommand($container->get('config')['directories']),
+            (new CleanDirectoriesCommandFactory())($container),
             new EntityManagerCommand(new DatabaseCreateCommand(), $container),
             new EntityManagerCommand(new DatabaseDropCommand(), $container),
             new EntityManagerCommand(new ReservedWordsCommand(), $container),

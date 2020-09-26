@@ -11,21 +11,22 @@ A simple skeleton to build api's based on the [slim][1] framework.
 
  * php: ^7.2
  * [chubbyphp/chubbyphp-api-http][2]: ^4.0
- * [chubbyphp/chubbyphp-cors][3]: ^1.2
- * [chubbyphp/chubbyphp-deserialization][4]: ^3.0
- * [chubbyphp/chubbyphp-laminas-config-doctrine][5]: ^1.0
- * [chubbyphp/chubbyphp-laminas-config-factory][6]: ^1.0
- * [chubbyphp/chubbyphp-laminas-config][7]: ^1.1
- * [chubbyphp/chubbyphp-negotiation][8]: ^1.7
- * [chubbyphp/chubbyphp-serialization][9]: ^3.0
- * [chubbyphp/chubbyphp-validation][10]: ^3.11
- * [doctrine/orm][11]: ^2.7.3
- * [monolog/monolog][12]: ^2.1.1
- * [ramsey/uuid][13]: ^4.0.1
- * [slim/psr7][14]: ^1.1
- * [slim/slim][15]: ^4.5
- * [swagger-api/swagger-ui][16]: ^3.28
- * [symfony/console][17]: ^4.4.11|^5.1.3
+ * [chubbyphp/chubbyphp-clean-directories][3]: ^1.0
+ * [chubbyphp/chubbyphp-cors][4]: ^1.2
+ * [chubbyphp/chubbyphp-deserialization][5]: ^3.0
+ * [chubbyphp/chubbyphp-laminas-config][6]: ^1.1
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0
+ * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.0
+ * [chubbyphp/chubbyphp-negotiation][9]: ^1.7
+ * [chubbyphp/chubbyphp-serialization][10]: ^3.0
+ * [chubbyphp/chubbyphp-validation][11]: ^3.11
+ * [doctrine/orm][12]: ^2.7.3
+ * [monolog/monolog][13]: ^2.1.1
+ * [ramsey/uuid][14]: ^4.0.1
+ * [slim/psr7][15]: ^1.1
+ * [slim/slim][16]: ^4.5
+ * [swagger-api/swagger-ui][17]: ^3.28
+ * [symfony/console][18]: ^4.4.11|^5.1.3
 
 ## Environment
 
@@ -119,21 +120,22 @@ Dominik Zogg 2020
 [1]: https://github.com/slimphp/slim
 
 [2]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
-[3]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
-[4]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[11]: https://packagist.org/packages/doctrine/orm
-[12]: https://packagist.org/packages/monolog/monolog
-[13]: https://packagist.org/packages/ramsey/uuid
-[14]: https://packagist.org/packages/slim/psr7
-[15]: https://packagist.org/packages/slim/slim
-[16]: https://packagist.org/packages/swagger-api/swagger-ui
-[17]: https://packagist.org/packages/symfony/console
+[3]: https://packagist.org/packages/chubbyphp/chubbyphp-clean-directories
+[4]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[12]: https://packagist.org/packages/doctrine/orm
+[13]: https://packagist.org/packages/monolog/monolog
+[14]: https://packagist.org/packages/ramsey/uuid
+[15]: https://packagist.org/packages/slim/psr7
+[16]: https://packagist.org/packages/slim/slim
+[17]: https://packagist.org/packages/swagger-api/swagger-ui
+[18]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

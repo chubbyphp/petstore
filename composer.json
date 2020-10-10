@@ -34,7 +34,6 @@
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
         "chubbyphp/chubbyphp-mock": "^1.4.5",
         "infection/infection": "^0.15.3|^0.16.4|^0.17.2",
-        "mavimo/phpstan-junit": "^0.3",
         "php-coveralls/php-coveralls": "^2.2",
         "phploc/phploc": "^5.0|^6.0.2",
         "phpstan/extension-installer": "^1.0.4",

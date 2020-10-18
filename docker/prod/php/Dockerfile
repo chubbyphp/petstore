@@ -23,6 +23,9 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" > /etc/apt/
     # keys.andreas-puls.de
 
 RUN apt-get update -y && apt-get install -y \
+    php7.4-apcu \
+    php7.4-apcu-bc \
+    php7.4-ast \
     php7.4-cli \
     php7.4-curl \
     php7.4-fpm \
@@ -32,9 +35,7 @@ RUN apt-get update -y && apt-get install -y \
     php7.4-pgsql \
     php7.4-readline \
     php7.4-xml \
-    php7.4-zip \
-    php7.4-apcu \
-    php7.4-ast
+    php7.4-zip
 
 COPY prod/nginx/files /
 

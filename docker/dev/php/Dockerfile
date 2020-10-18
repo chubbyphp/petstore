@@ -34,10 +34,10 @@ RUN apt-get update -y && apt-get install -y \
     php7.4-readline \
     php7.4-xml \
     php7.4-zip \
-    php-apcu \
-    php-ast \
-    php-pcov \
-    php-xdebug
+    php7.4-apcu \
+    php7.4-ast \
+    php7.4-pcov \
+    php7.4-xdebug
 
 RUN phpdismod pcov && phpdismod xdebug
 

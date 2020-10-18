@@ -33,8 +33,8 @@ RUN apt-get update -y && apt-get install -y \
     php7.4-readline \
     php7.4-xml \
     php7.4-zip \
-    php-apcu \
-    php-ast
+    php7.4-apcu \
+    php7.4-ast
 
 COPY prod/nginx/files /
 

@@ -20,13 +20,13 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [chubbyphp/chubbyphp-negotiation][9]: ^1.7
  * [chubbyphp/chubbyphp-serialization][10]: ^3.0
  * [chubbyphp/chubbyphp-validation][11]: ^3.11
- * [doctrine/orm][12]: ^2.7.3
+ * [doctrine/orm][12]: ^2.7.4
  * [monolog/monolog][13]: ^2.1.1
- * [ramsey/uuid][14]: ^4.0.1
- * [slim/psr7][15]: ^1.1
+ * [ramsey/uuid][14]: ^4.1.1
+ * [slim/psr7][15]: ^1.2
  * [slim/slim][16]: ^4.5
- * [swagger-api/swagger-ui][17]: ^3.28
- * [symfony/console][18]: ^4.4.11|^5.1.3
+ * [swagger-api/swagger-ui][17]: ^3.35.2
+ * [symfony/console][18]: ^4.4.15|^5.1.7
 
 ## Environment
 

@@ -21,24 +21,24 @@
         "chubbyphp/chubbyphp-negotiation": "^1.7",
         "chubbyphp/chubbyphp-serialization": "^3.0",
         "chubbyphp/chubbyphp-validation": "^3.11",
-        "doctrine/orm": "^2.7.3",
+        "doctrine/orm": "^2.7.4",
         "mezzio/mezzio-fastroute": "^3.0.3",
         "mezzio/mezzio": "^3.2.2",
         "monolog/monolog": "^2.1.1",
-        "ramsey/uuid": "^4.1",
-        "slim/psr7": "^1.1",
-        "swagger-api/swagger-ui": "^3.28",
-        "symfony/console": "^4.4.11|^5.1.3"
+        "ramsey/uuid": "^4.1.1",
+        "slim/psr7": "^1.2",
+        "swagger-api/swagger-ui": "^3.35.2",
+        "symfony/console": "^4.4.15|^5.1.7"
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
         "chubbyphp/chubbyphp-mock": "^1.4.5",
-        "infection/infection": "^0.15.3|^0.16.4|^0.17.2",
-        "php-coveralls/php-coveralls": "^2.2",
+        "infection/infection": "^0.15.3|^0.16.4|^0.18.0",
+        "php-coveralls/php-coveralls": "^2.4.1",
         "phploc/phploc": "^5.0|^6.0.2",
-        "phpstan/extension-installer": "^1.0.4",
-        "phpstan/phpstan": "^0.12.37",
-        "phpunit/phpunit": "^8.5.8|^9.3.7"
+        "phpstan/extension-installer": "^1.0.5",
+        "phpstan/phpstan": "^0.12.50",
+        "phpunit/phpunit": "^8.5.8|^9.4.1"
     },
     "autoload": {
         "psr-4": { "App\\": "src/" }
@@ -48,11 +48,6 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
     },
     "scripts": {
         "clean-directories": "bin/console clean-directories cache log",
@@ -78,13 +73,13 @@
             "@test:cs",
             "@test:insights"
         ],
-        "test:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
+        "test:cs": "mkdir -p build && PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
         "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=96 --verbose --coverage=build/phpunit",
-        "test:insights": "mkdir -p build && bash -c 'vendor/bin/phpinsights analyse src -v --no-interaction --min-quality=95 --disable-security-check | tee build/phpinsights.log; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
+        "test:insights": "mkdir -p build && bash -c 'vendor/bin/phpinsights analyse -v --no-interaction --min-quality=95 --disable-security-check | tee build/phpinsights.log; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
         "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/result.cache",
         "test:lint": "mkdir -p build && find src tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",
         "test:loc": "mkdir -p build && vendor/bin/phploc src --verbose | tee build/phploc.log",
-        "test:static-analysis": "mkdir -p build && bash -c 'vendor/bin/phpstan analyse src --no-progress --level=7 --error-format=junit | tee build/phpstan.junit.xml; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
+        "test:static-analysis": "mkdir -p build && bash -c 'vendor/bin/phpstan analyse src --no-progress --level=8 --error-format=junit | tee build/phpstan.junit.xml; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
         "test:unit": "vendor/bin/phpunit --testsuite=Unit --coverage-text --coverage-clover=build/phpunit/clover.xml --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/junit.xml --cache-result-file=build/phpunit/result.cache"
     }
 }

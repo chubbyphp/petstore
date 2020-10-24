@@ -70,8 +70,6 @@ RUN mkdir -p /var/www && chown -R www-data:www-data /var/www
 
 USER www-data
 
-RUN composer global require hirak/prestissimo
-
 WORKDIR /var/www/html
 
 CMD ["/usr/bin/supervisord"]

@@ -15,7 +15,7 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-cors][4]: ^1.2
  * [chubbyphp/chubbyphp-deserialization][5]: ^3.0
  * [chubbyphp/chubbyphp-laminas-config][6]: ^1.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0.2
  * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.0
  * [chubbyphp/chubbyphp-negotiation][9]: ^1.7
  * [chubbyphp/chubbyphp-serialization][10]: ^3.0
@@ -26,8 +26,8 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [monolog/monolog][15]: ^2.1.1
  * [ramsey/uuid][16]: ^4.1.1
  * [slim/psr7][17]: ^1.2
- * [swagger-api/swagger-ui][18]: ^3.35.2
- * [symfony/console][19]: ^4.4.15|^5.1.7
+ * [swagger-api/swagger-ui][18]: ^3.36
+ * [symfony/console][19]: ^5.1.7
 
 ## Environment
 

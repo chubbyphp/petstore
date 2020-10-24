@@ -45,8 +45,6 @@ RUN mkdir -p /var/www && chown -R www-data:www-data /var/www
 
 USER www-data
 
-RUN composer global require hirak/prestissimo
-
 WORKDIR /var/www/html
 
 CMD ["/usr/sbin/php-fpm7.4", "-c", "/etc/php/7.4/fpm/php-fpm.conf", "-F"]

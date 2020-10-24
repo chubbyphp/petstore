@@ -15,7 +15,7 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [chubbyphp/chubbyphp-cors][4]: ^1.2
  * [chubbyphp/chubbyphp-deserialization][5]: ^3.0
  * [chubbyphp/chubbyphp-laminas-config][6]: ^1.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0.2
  * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.0
  * [chubbyphp/chubbyphp-negotiation][9]: ^1.7
  * [chubbyphp/chubbyphp-serialization][10]: ^3.0
@@ -25,8 +25,8 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [ramsey/uuid][14]: ^4.1.1
  * [slim/psr7][15]: ^1.2
  * [slim/slim][16]: ^4.5
- * [swagger-api/swagger-ui][17]: ^3.35.2
- * [symfony/console][18]: ^4.4.15|^5.1.7
+ * [swagger-api/swagger-ui][17]: ^3.36
+ * [symfony/console][18]: ^5.1.7
 
 ## Environment
 

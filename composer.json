@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.2|^8.0",
         "chubbyphp/chubbyphp-api-http": "^4.0",
         "chubbyphp/chubbyphp-clean-directories": "^1.0",
         "chubbyphp/chubbyphp-cors": "^1.2",
@@ -38,6 +38,10 @@
         "phpstan/extension-installer": "^1.0.5",
         "phpstan/phpstan": "^0.12.51",
         "phpunit/phpunit": "^8.5.8|^9.4.2"
+    },
+    "conflict": {
+        "composer/composer": "<1.10.16",
+        "ocramius/package-versions": ">=1.10"
     },
     "autoload": {
         "psr-4": { "App\\": "src/" }

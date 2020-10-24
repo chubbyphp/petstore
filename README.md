@@ -27,7 +27,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [ramsey/uuid][16]: ^4.1.1
  * [slim/psr7][17]: ^1.2
  * [swagger-api/swagger-ui][18]: ^3.36
- * [symfony/console][19]: ^5.1.7
+ * [symfony/console][19]: ^4.4.15|^5.1.7
 
 ## Environment
 

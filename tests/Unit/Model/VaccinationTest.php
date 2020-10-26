@@ -6,8 +6,8 @@ namespace App\Tests\Unit\Model;
 
 use App\Model\Pet;
 use App\Model\Vaccination;
-use App\Tests\AssertTrait;
 use App\Tests\Helper\AssertHelper;
+use App\Tests\Helper\AssertTrait;
 use PHPUnit\Framework\TestCase;
 
 /**

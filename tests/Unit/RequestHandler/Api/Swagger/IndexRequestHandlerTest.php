@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler\Api\Swagger;
 
 use App\RequestHandler\Api\Swagger\IndexRequestHandler;
-use App\Tests\AssertTrait;
+use App\Tests\Helper\AssertTrait;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;

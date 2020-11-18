@@ -67,7 +67,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                     $queryParams = $request->getQueryParams();
                 }
 
-                /** @var array<string, array|bool|float|int|string> $queryParams */
+                /** @var array<string, string> $queryParams */
                 $queryParams = \array_merge($queryParams, [
                     'offset' => $collection->getOffset(),
                     'limit' => $collection->getLimit(),

@@ -24,30 +24,29 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" > /etc/apt/
     # keys.andreas-puls.de
 
 RUN apt-get update -y && apt-get install -y \
-    php7.4-apcu \
-    php7.4-apcu-bc \
-    php7.4-ast \
-    php7.4-cli \
-    php7.4-curl \
-    php7.4-fpm \
-    php7.4-json \
-    php7.4-mbstring \
-    php7.4-opcache \
-    php7.4-pcov \
-    php7.4-pgsql \
-    php7.4-readline \
-    php7.4-xdebug \
-    php7.4-xml \
-    php7.4-zip
+    php8.0-apcu \
+    php8.0-ast \
+    php8.0-cli \
+    php8.0-curl \
+    php8.0-dev \
+    php8.0-fpm \
+    php8.0-mbstring \
+    php8.0-opcache \
+    php8.0-pgsql \
+    php8.0-readline \
+    php8.0-xdebug \
+    php8.0-xml \
+    php8.0-zip \
+    && pecl install pcov && echo 'extension=pcov.so' > /etc/php/8.0/mods-available/pcov.ini
 
 RUN phpdismod pcov && phpdismod xdebug
 
 RUN mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.4/mods-available/blackfire.ini \
-    && ln -s /etc/php/7.4/mods-available/blackfire.ini /etc/php/7.4/cli/conf.d/30-blackfire.ini \
-    && ln -s /etc/php/7.4/mods-available/blackfire.ini /etc/php/7.4/fpm/conf.d/30-blackfire.ini \
+    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/8.0/mods-available/blackfire.ini \
+    && ln -s /etc/php/8.0/mods-available/blackfire.ini /etc/php/8.0/cli/conf.d/30-blackfire.ini \
+    && ln -s /etc/php/8.0/mods-available/blackfire.ini /etc/php/8.0/fpm/conf.d/30-blackfire.ini \
     && rm -rf /tmp/blackfire \
     && mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire \

@@ -45,6 +45,17 @@ docker-compose up -d
 docker-compose exec php bash
 ```
 
+#### Aliases within the php container
+
+```sh
+php-fpm-restart
+
+xdebug-on
+xdebug-off
+pcov-on
+pcov-off
+```
+
 ### Urls
 
 * http://localhost:10080

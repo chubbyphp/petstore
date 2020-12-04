@@ -14,7 +14,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-clean-directories][3]: ^1.0
  * [chubbyphp/chubbyphp-cors][4]: ^1.2
  * [chubbyphp/chubbyphp-deserialization][5]: ^3.0
- * [chubbyphp/chubbyphp-framework][6]: ^3.1.1
+ * [chubbyphp/chubbyphp-framework][6]: ^3.2
  * [chubbyphp/chubbyphp-framework-router-fastroute][7]: ^1.0
  * [chubbyphp/chubbyphp-laminas-config][8]: ^1.1
  * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^1.0.2

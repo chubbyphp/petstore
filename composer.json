@@ -32,13 +32,13 @@
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
-        "chubbyphp/chubbyphp-mock": "^1.5",
-        "infection/infection": "^0.15.3|^0.16.4|^0.18.2",
-        "php-coveralls/php-coveralls": "^2.4.2",
+        "chubbyphp/chubbyphp-mock": "^1.5.1",
+        "infection/infection": "^0.15.3|^0.18.2|^0.20.2",
+        "php-coveralls/php-coveralls": "^2.4.3",
         "phploc/phploc": "^5.0|^6.0.2",
-        "phpstan/extension-installer": "^1.0.5",
-        "phpstan/phpstan": "^0.12.51",
-        "phpunit/phpunit": "^8.5.8|^9.4.2"
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^0.12.64",
+        "phpunit/phpunit": "^8.5.13|^9.5"
     },
     "conflict": {
         "composer/composer": "<1.10.16"

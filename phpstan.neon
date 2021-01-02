@@ -1,5 +1,8 @@
 parameters:
     ignoreErrors:
         -
-            message: '#Method App\\Repository\\PetRepository\:\:findById\(\) should return App\\Model\\ModelInterface\|null but returns object\|null\.#'
+            message: '#PHPDoc tag @var for variable \$entityRepository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T#'
+            path: %currentWorkingDirectory%/src/Repository/PetRepository.php
+        -
+            message: '#Unable to resolve the template type T in call to method Doctrine\\ORM\\EntityManager\:\:find\(\)#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php

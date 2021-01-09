@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
+        "php": "^7.4|^8.0",
         "chubbyphp/chubbyphp-api-http": "^4.0",
         "chubbyphp/chubbyphp-clean-directories": "^1.0",
         "chubbyphp/chubbyphp-cors": "^1.2",
@@ -32,16 +32,13 @@
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
-        "chubbyphp/chubbyphp-mock": "^1.5.1",
-        "infection/infection": "^0.15.3|^0.18.2|^0.20.2",
+        "chubbyphp/chubbyphp-mock": "^1.6",
+        "infection/infection": "^0.20.2",
         "php-coveralls/php-coveralls": "^2.4.3",
-        "phploc/phploc": "^5.0|^6.0.2",
+        "phploc/phploc": "^6.0.2",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12.64",
-        "phpunit/phpunit": "^8.5.13|^9.5"
-    },
-    "conflict": {
-        "composer/composer": "<1.10.16"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": { "App\\": "src/" }
@@ -73,12 +70,10 @@
             "@test:infection",
             "@test:static-analysis",
             "@test:loc",
-            "@test:cs",
-            "@test:insights"
+            "@test:cs"
         ],
         "test:cs": "mkdir -p build && PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
         "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=97 --verbose --coverage=build/phpunit",
-        "test:insights": "mkdir -p build && bash -c 'vendor/bin/phpinsights analyse -v --no-interaction --min-quality=94 --disable-security-check | tee build/phpinsights.log; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
         "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/result.cache",
         "test:lint": "mkdir -p build && find src tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",
         "test:loc": "mkdir -p build && vendor/bin/phploc src --verbose | tee build/phploc.log",

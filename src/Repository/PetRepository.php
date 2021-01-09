@@ -13,10 +13,7 @@ use Doctrine\ORM\EntityRepository;
 
 final class PetRepository implements RepositoryInterface
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

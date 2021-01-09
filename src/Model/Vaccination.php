@@ -8,20 +8,11 @@ use Ramsey\Uuid\Uuid;
 
 final class Vaccination
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private ?string $name = null;
 
-    /**
-     * @var Pet|null
-     */
-    private $pet;
+    private ?Pet $pet = null;
 
     public function __construct()
     {
@@ -38,7 +29,7 @@ final class Vaccination
         $this->name = $name;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

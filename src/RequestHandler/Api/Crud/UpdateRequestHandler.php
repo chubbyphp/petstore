@@ -24,25 +24,13 @@ use Ramsey\Uuid\Uuid;
 
 final class UpdateRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $repository;
+    private RepositoryInterface $repository;
 
-    /**
-     * @var RequestManagerInterface
-     */
-    private $requestManager;
+    private RequestManagerInterface $requestManager;
 
-    /**
-     * @var ResponseManagerInterface
-     */
-    private $responseManager;
+    private ResponseManagerInterface $responseManager;
 
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private ValidatorInterface $validator;
 
     public function __construct(
         RepositoryInterface $repository,

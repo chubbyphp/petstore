@@ -16,15 +16,9 @@ use Ramsey\Uuid\Uuid;
 
 final class ReadRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $repository;
+    private RepositoryInterface $repository;
 
-    /**
-     * @var ResponseManagerInterface
-     */
-    private $responseManager;
+    private ResponseManagerInterface $responseManager;
 
     public function __construct(
         RepositoryInterface $repository,

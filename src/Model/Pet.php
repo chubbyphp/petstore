@@ -10,35 +10,20 @@ use Ramsey\Uuid\Uuid;
 
 final class Pet implements ModelInterface
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
+    private \DateTime $createdAt;
 
-    /**
-     * @var \DateTime|null
-     */
-    private $updatedAt;
+    private ?\DateTime $updatedAt = null;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private ?string $name = null;
 
-    /**
-     * @var string|null
-     */
-    private $tag;
+    private ?string $tag = null;
 
     /**
      * @var Collection<int, Vaccination>
      */
-    private $vaccinations;
+    private Collection $vaccinations;
 
     public function __construct()
     {
@@ -72,7 +57,7 @@ final class Pet implements ModelInterface
         $this->name = $name;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

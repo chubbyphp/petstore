@@ -12,15 +12,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class PingRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
+    private SerializerInterface $serializer;
 
     public function __construct(
         ResponseFactoryInterface $responseFactory,

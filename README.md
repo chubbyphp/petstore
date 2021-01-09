@@ -9,7 +9,7 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
 
 ## Requirements
 
- * php: ^7.2
+ * php: ^7.4
  * [chubbyphp/chubbyphp-api-http][2]: ^4.0
  * [chubbyphp/chubbyphp-clean-directories ][3]: ^1.0
  * [chubbyphp/chubbyphp-cors][4]: ^1.2

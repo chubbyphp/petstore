@@ -8,35 +8,26 @@ use App\Model\ModelInterface;
 
 abstract class AbstractCollection implements CollectionInterface
 {
-    /**
-     * @var int
-     */
-    protected $offset = 0;
+    protected int $offset = 0;
 
-    /**
-     * @var int
-     */
-    protected $limit = self::LIMIT;
+    protected int $limit = self::LIMIT;
 
     /**
      * @var array<string, string>
      */
-    protected $filters = [];
+    protected array $filters = [];
 
     /**
      * @var array<string, string>
      */
-    protected $sort = [];
+    protected array $sort = [];
 
     /**
      * @var array<ModelInterface>
      */
-    protected $items = [];
+    protected array $items = [];
 
-    /**
-     * @var int
-     */
-    protected $count = 0;
+    protected int $count = 0;
 
     public function setOffset(int $offset): void
     {

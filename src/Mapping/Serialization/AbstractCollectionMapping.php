@@ -16,10 +16,7 @@ use Mezzio\Router\RouterInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
+    protected RouterInterface $router;
 
     public function __construct(RouterInterface $router)
     {
@@ -81,12 +78,9 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                         ->getLink()
                 ;
             })->getMapping(),
-            NormalizationLinkMappingBuilder::createCallback('create', function () {
-                return LinkBuilder::create($this->router->generateUri($this->getCreateRouteName()))
-                    ->setAttributes(['method' => 'POST'])
-                    ->getLink()
-                ;
-            })->getMapping(),
+            NormalizationLinkMappingBuilder::createCallback('create', fn () => LinkBuilder::create($this->router->generateUri($this->getCreateRouteName()))
+                ->setAttributes(['method' => 'POST'])
+                ->getLink())->getMapping(),
         ];
     }
 

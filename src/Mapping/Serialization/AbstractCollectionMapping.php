@@ -16,10 +16,7 @@ use Slim\Interfaces\RouteParserInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
-    /**
-     * @var RouteParserInterface
-     */
-    protected $router;
+    protected RouteParserInterface $router;
 
     public function __construct(RouteParserInterface $router)
     {
@@ -81,12 +78,9 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                         ->getLink()
                 ;
             })->getMapping(),
-            NormalizationLinkMappingBuilder::createCallback('create', function () {
-                return LinkBuilder::create($this->router->urlFor($this->getCreateRouteName()))
-                    ->setAttributes(['method' => 'POST'])
-                    ->getLink()
-                ;
-            })->getMapping(),
+            NormalizationLinkMappingBuilder::createCallback('create', fn () => LinkBuilder::create($this->router->urlFor($this->getCreateRouteName()))
+                ->setAttributes(['method' => 'POST'])
+                ->getLink())->getMapping(),
         ];
     }
 

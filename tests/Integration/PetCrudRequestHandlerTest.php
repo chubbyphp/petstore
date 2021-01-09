@@ -160,7 +160,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/pets?offset=test&filters[name2]=test&sort[name]=test',
+            '/api/pets?filters[name2]=test&sort[name]=test',
             [
                 'Accept' => 'application/json',
             ]
@@ -178,14 +178,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
             'detail' => null,
             'instance' => null,
             'invalidParameters' => [
-                [
-                    'name' => 'offset',
-                    'reason' => 'constraint.type.invalidtype',
-                    'details' => [
-                        'type' => 'string',
-                        'wishedType' => 'integer',
-                    ],
-                ],
                 [
                     'name' => 'filters.name2',
                     'reason' => 'constraint.map.field.notallowed',

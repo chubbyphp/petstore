@@ -12,15 +12,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class IndexRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var StreamFactoryInterface
-     */
-    private $streamFactory;
+    private StreamFactoryInterface $streamFactory;
 
     public function __construct(ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory)
     {

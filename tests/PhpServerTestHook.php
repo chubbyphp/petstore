@@ -11,10 +11,7 @@ final class PhpServerTestHook implements BeforeTestHook
     const PHP_SERVER_PORT = 49199;
     const ENV_INTEGRATION_ENDPOINT = 'INTEGRATION_ENDPOINT';
 
-    /**
-     * @var int|null
-     */
-    private $serverPid;
+    private ?int $serverPid = null;
 
     public function __destruct()
     {

@@ -28,6 +28,8 @@ services:
       - $SSH_AUTH_SOCK:/ssh-agent
     depends_on:
       - postgres
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   blackfire:
     container_name: petstore-blackfire
     hostname: petstore-blackfire

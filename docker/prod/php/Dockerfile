@@ -8,6 +8,7 @@ RUN apt-get update -y && apt-get install -y \
     curl \
     git \
     gnupg2 \
+    inetutils-ping \
     locales \
     openssh-client \
     sudo \

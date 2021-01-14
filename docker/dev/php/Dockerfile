@@ -44,14 +44,14 @@ RUN apt-get update -y && apt-get install -y \
 RUN phpdismod pcov && phpdismod xdebug
 
 RUN mkdir -p /tmp/blackfire \
-    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") | tar zxp -C /tmp/blackfire \
+    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/probe/php/linux/$(if [ $(uname -m) == "aarch64" ]; then echo 'arm64'; else echo 'amd64'; fi)/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.4/mods-available/blackfire.ini \
     && ln -s /etc/php/7.4/mods-available/blackfire.ini /etc/php/7.4/cli/conf.d/30-blackfire.ini \
     && ln -s /etc/php/7.4/mods-available/blackfire.ini /etc/php/7.4/fpm/conf.d/30-blackfire.ini \
     && rm -rf /tmp/blackfire \
     && mkdir -p /tmp/blackfire \
-    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire \
+    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux/arm64 | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
     && rm -rf /tmp/blackfire
 

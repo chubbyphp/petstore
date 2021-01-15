@@ -15,7 +15,8 @@ RUN apt-get update -y && apt-get install -y \
     supervisor \
     tzdata \
     unzip \
-    vim
+    vim \
+    zsh
 
 RUN locale-gen de_CH.UTF-8 && update-locale LANG=de_CH.UTF-8 LC_ALL=de_CH.UTF-8 \
     && cp -f /usr/share/zoneinfo/Europe/Zurich /etc/localtime && dpkg-reconfigure --frontend noninteractive tzdata

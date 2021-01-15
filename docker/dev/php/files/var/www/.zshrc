@@ -5,8 +5,8 @@ alias xdebug-off='sudo phpdismod xdebug && php-fpm-restart'
 alias pcov-on='sudo phpenmod pcov && php-fpm-restart'
 alias pcov-off='sudo phpdismod pcov && php-fpm-restart'
 
-export HISTFILE=~/.bash_history
+export HISTFILE=~/.zsh_history
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ~/.zsh_aliases ]; then
+    . ~/.zsh_aliases
 fi

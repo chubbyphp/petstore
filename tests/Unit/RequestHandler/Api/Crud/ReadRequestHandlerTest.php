@@ -44,7 +44,7 @@ final class ReadRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )
@@ -76,7 +76,7 @@ final class ReadRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )
@@ -114,7 +114,7 @@ final class ReadRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     200,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
+                    new ArgumentCallback(static function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

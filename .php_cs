@@ -14,6 +14,7 @@ $finder = PhpCsFixer\Finder::create()
 $config = require __DIR__ . '/vendor/chubbyphp/chubbyphp-dev-helper/phpcs.php';
 
 unset ($config['rules']['final_class']);
+unset ($config['rules']['static_lambda']);
 
 return PhpCsFixer\Config::create()
     ->setIndent($config['indent'])

@@ -43,7 +43,7 @@ final class DeleteRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )
@@ -75,7 +75,7 @@ final class DeleteRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )

@@ -28,9 +28,7 @@ final class ServerRequestErrorResponseGeneratorFactoryTest extends TestCase
 
         /** @var ContainerInterface $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ResponseInterface::class)->willReturn(static function () use ($response) {
-                return $response;
-            }),
+            Call::create('get')->with(ResponseInterface::class)->willReturn(static fn () => $response),
             Call::create('get')->with('config')->willReturn(['debug' => true]),
         ]);
 

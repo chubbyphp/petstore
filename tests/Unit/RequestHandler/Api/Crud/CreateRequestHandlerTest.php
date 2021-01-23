@@ -67,7 +67,7 @@ final class CreateRequestHandlerTest extends TestCase
                     $request,
                     $model,
                     'application/json',
-                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                    new ArgumentCallback(static function (DenormalizerContextInterface $context): void {
                         self::assertTrue($context->isClearMissing());
                     })
                 )
@@ -78,7 +78,7 @@ final class CreateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (UnprocessableEntity $apiProblem): void {
+                    new ArgumentCallback(static function (UnprocessableEntity $apiProblem): void {
                         self::assertSame(
                             [['name' => 'name', 'reason' => 'notunique', 'details' => []]],
                             $apiProblem->getInvalidParameters()
@@ -138,7 +138,7 @@ final class CreateRequestHandlerTest extends TestCase
                     $request,
                     $model,
                     'application/json',
-                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                    new ArgumentCallback(static function (DenormalizerContextInterface $context): void {
                         self::assertTrue($context->isClearMissing());
                     })
                 )
@@ -152,7 +152,7 @@ final class CreateRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     201,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
+                    new ArgumentCallback(static function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

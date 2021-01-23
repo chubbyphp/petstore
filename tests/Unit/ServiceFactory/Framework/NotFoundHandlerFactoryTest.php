@@ -28,9 +28,7 @@ final class NotFoundHandlerFactoryTest extends TestCase
 
         /** @var ContainerInterface $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ResponseInterface::class)->willReturn(static function () use ($response) {
-                return $response;
-            }),
+            Call::create('get')->with(ResponseInterface::class)->willReturn(static fn () => $response),
         ]);
 
         $factory = new NotFoundHandlerFactory();

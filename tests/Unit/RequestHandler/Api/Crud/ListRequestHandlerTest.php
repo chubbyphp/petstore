@@ -69,7 +69,7 @@ final class ListRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (BadRequest $apiProblem): void {
+                    new ArgumentCallback(static function (BadRequest $apiProblem): void {
                         self::assertSame(
                             [['name' => 'offset', 'reason' => 'notinteger', 'details' => []]],
                             $apiProblem->getInvalidParameters()
@@ -134,7 +134,7 @@ final class ListRequestHandlerTest extends TestCase
                     $collection,
                     'application/json',
                     200,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
+                    new ArgumentCallback(static function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

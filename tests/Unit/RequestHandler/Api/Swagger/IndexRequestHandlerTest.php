@@ -55,7 +55,7 @@ final class IndexRequestHandlerTest extends TestCase
         $streamFactory = $this->getMockByCalls(StreamFactoryInterface::class, [
             Call::create('createStreamFromFile')
                 ->with(
-                    new ArgumentCallback(function (string $path): void {
+                    new ArgumentCallback(static function (string $path): void {
                         self::assertMatchesRegularExpression('#swagger/index\.html$#', $path);
                     }),
                     'r'

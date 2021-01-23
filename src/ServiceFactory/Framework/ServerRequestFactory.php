@@ -10,8 +10,6 @@ final class ServerRequestFactory
 {
     public function __invoke(): \Closure
     {
-        return static function () {
-            return BaseFactory::createFromGlobals();
-        };
+        return static fn () => BaseFactory::createFromGlobals();
     }
 }

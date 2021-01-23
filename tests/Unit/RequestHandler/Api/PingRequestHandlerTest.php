@@ -57,7 +57,7 @@ final class PingRequestHandlerTest extends TestCase
         $serializer = $this->getMockByCalls(SerializerInterface::class, [
             Call::create('encode')
                 ->with(
-                    new ArgumentCallback(function ($data): void {
+                    new ArgumentCallback(static function ($data): void {
                         self::assertIsArray($data);
 
                         self::assertArrayHasKey('date', $data);

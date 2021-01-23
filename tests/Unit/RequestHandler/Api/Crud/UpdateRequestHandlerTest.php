@@ -54,7 +54,7 @@ final class UpdateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )
@@ -98,7 +98,7 @@ final class UpdateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
                     'application/json',
                     null
                 )
@@ -152,7 +152,7 @@ final class UpdateRequestHandlerTest extends TestCase
                     $request,
                     $model,
                     'application/json',
-                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                    new ArgumentCallback(static function (DenormalizerContextInterface $context): void {
                         self::assertTrue($context->isClearMissing());
                         self::assertSame(
                             ['id', 'createdAt', 'updatedAt', '_links'],
@@ -167,7 +167,7 @@ final class UpdateRequestHandlerTest extends TestCase
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
-                    new ArgumentCallback(function (UnprocessableEntity $apiProblem): void {
+                    new ArgumentCallback(static function (UnprocessableEntity $apiProblem): void {
                         self::assertSame(
                             [['name' => 'name', 'reason' => 'notunique', 'details' => []]],
                             $apiProblem->getInvalidParameters()
@@ -225,7 +225,7 @@ final class UpdateRequestHandlerTest extends TestCase
                     $request,
                     $model,
                     'application/json',
-                    new ArgumentCallback(function (DenormalizerContextInterface $context): void {
+                    new ArgumentCallback(static function (DenormalizerContextInterface $context): void {
                         self::assertTrue($context->isClearMissing());
                         self::assertSame(
                             ['id', 'createdAt', 'updatedAt', '_links'],
@@ -243,7 +243,7 @@ final class UpdateRequestHandlerTest extends TestCase
                     $model,
                     'application/json',
                     200,
-                    new ArgumentCallback(function (NormalizerContextInterface $context) use ($request): void {
+                    new ArgumentCallback(static function (NormalizerContextInterface $context) use ($request): void {
                         self::assertSame($request, $context->getRequest());
                     })
                 )

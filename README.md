@@ -10,28 +10,28 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
 ## Requirements
 
  * php: ^7.4
- * [chubbyphp/chubbyphp-api-http][2]: ^4.0
- * [chubbyphp/chubbyphp-clean-directories ][3]: ^1.0
- * [chubbyphp/chubbyphp-cors][4]: ^1.2
- * [chubbyphp/chubbyphp-deserialization][5]: ^3.0
- * [chubbyphp/chubbyphp-laminas-config][6]: ^1.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.0.2
- * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.0
- * [chubbyphp/chubbyphp-negotiation][9]: ^1.7
- * [chubbyphp/chubbyphp-serialization][10]: ^3.0
- * [chubbyphp/chubbyphp-validation][11]: ^3.11
- * [doctrine/orm][12]: ^2.7.4
+ * [chubbyphp/chubbyphp-api-http][2]: ^4.1
+ * [chubbyphp/chubbyphp-clean-directories ][3]: ^1.1
+ * [chubbyphp/chubbyphp-cors][4]: ^1.3
+ * [chubbyphp/chubbyphp-deserialization][5]: ^3.1
+ * [chubbyphp/chubbyphp-laminas-config][6]: ^1.2
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.2
+ * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.1
+ * [chubbyphp/chubbyphp-negotiation][9]: ^1.8
+ * [chubbyphp/chubbyphp-serialization][10]: ^3.1
+ * [chubbyphp/chubbyphp-validation][11]: ^3.12
+ * [doctrine/orm][12]: ^2.8.1
  * [mezzio/mezzio][13]: ^3.2.2
- * [mezzio/mezzio-fastroute][14]: ^3.0.3
- * [monolog/monolog][15]: ^2.1.1
+ * [mezzio/mezzio-fastroute][14]: ^3.1
+ * [monolog/monolog][15]: ^2.2
  * [ramsey/uuid][16]: ^4.1.1
- * [slim/psr7][17]: ^1.2
- * [swagger-api/swagger-ui][18]: ^3.36
- * [symfony/console][19]: ^4.4.15|^5.1.7
+ * [slim/psr7][17]: ^1.3
+ * [swagger-api/swagger-ui][18]: ^3.40
+ * [symfony/console][19]: ^5.2.1
 
 ## Environment
 
-Add the following environment variable to your system, for example within `~./bash_aliases`:
+Add the following environment variable to your system, for example within `~/.bash_aliases`:
 
 ```sh
 export USER_ID=$(id -u)

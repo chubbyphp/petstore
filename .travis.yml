@@ -24,10 +24,6 @@ env:
 matrix:
   include:
     - php: 7.4
-      env: composerargs="--prefer-lowest"
-    - php: 7.4
-#    - php: 8.0
-#      env: composerargs="--prefer-lowest --ignore-platform-reqs"
     - php: 8.0
       env: composerargs="--ignore-platform-reqs"
 

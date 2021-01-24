@@ -52,7 +52,7 @@ RUN mkdir -p /tmp/blackfire \
     && ln -s /etc/php/7.4/mods-available/blackfire.ini /etc/php/7.4/fpm/conf.d/30-blackfire.ini \
     && rm -rf /tmp/blackfire \
     && mkdir -p /tmp/blackfire \
-    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux/arm64 | tar zxp -C /tmp/blackfire \
+    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux/$(if [ $(uname -m) == "aarch64" ]; then echo 'arm64'; else echo 'amd64'; fi) | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
     && rm -rf /tmp/blackfire
 

@@ -24,19 +24,17 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" > /etc/apt/
     # keys.andreas-puls.de
 
 RUN apt-get update -y && apt-get install -y \
-    php7.4-apcu \
-    php7.4-apcu-bc \
-    php7.4-ast \
-    php7.4-cli \
-    php7.4-curl \
-    php7.4-fpm \
-    php7.4-json \
-    php7.4-mbstring \
-    php7.4-opcache \
-    php7.4-pgsql \
-    php7.4-readline \
-    php7.4-xml \
-    php7.4-zip
+    php8.0-apcu \
+    php8.0-ast \
+    php8.0-cli \
+    php8.0-curl \
+    php8.0-fpm \
+    php8.0-mbstring \
+    php8.0-opcache \
+    php8.0-pgsql \
+    php8.0-readline \
+    php8.0-xml \
+    php8.0-zip
 
 COPY prod/nginx/files /
 
@@ -48,4 +46,4 @@ USER www-data
 
 WORKDIR /var/www/html
 
-CMD ["/usr/sbin/php-fpm7.4", "-c", "/etc/php/7.4/fpm/php-fpm.conf", "-F"]
+CMD ["/usr/sbin/php-fpm8.0", "-c", "/etc/php/8.0/fpm/php-fpm.conf", "-F"]

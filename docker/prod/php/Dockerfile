@@ -36,7 +36,7 @@ RUN apt-get update -y && apt-get install -y \
     php8.0-xml \
     php8.0-zip
 
-COPY prod/nginx/files /
+COPY prod/php/files /
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 

@@ -1,6 +1,6 @@
 # petstore
 
-[![Build Status](https://api.travis-ci.org/chubbyphp/petstore.png?branch=mezzio)](https://travis-ci.org/chubbyphp/petstore)
+[![CI](https://github.com/chubbyphp/petstore/workflows/CI/badge.svg?branch=mezzio)](https://github.com/chubbyphp/petstore/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=mezzio)](https://coveralls.io/github/chubbyphp/petstore?branch=mezzio)
 
 ## Description

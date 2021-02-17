@@ -4,8 +4,8 @@ services:
     container_name: petstore-php
     hostname: petstore-php
     build:
-      dockerfile: ./dev/php/Dockerfile
-      context: ./docker
+      dockerfile: ./docker/dev/php/Dockerfile
+      context: ./
       args:
         USER_ID: ${USER_ID:-1000}
         GROUP_ID: ${GROUP_ID:-1000}
@@ -20,7 +20,7 @@ services:
       BLACKFIRE_CLIENT_ID: ${BLACKFIRE_CLIENT_ID}
       BLACKFIRE_CLIENT_TOKEN: ${BLACKFIRE_CLIENT_TOKEN}
     volumes:
-      - ./:/var/www/html
+      - ${PWD}:/var/www/html
       - ~/.bash_aliases:/var/www/.bash_aliases
       - ~/.bash_history:/var/www/.bash_history
       - ~/.gitconfig:/var/www/.gitconfig
@@ -53,13 +53,15 @@ services:
     container_name: petstore-nginx
     hostname: petstore-nginx
     build:
-      dockerfile: ./dev/nginx/Dockerfile
-      context: ./docker
+      dockerfile: ./docker/dev/nginx/Dockerfile
+      context: ./
+    environment:
+      APP_ENV: dev
     ports:
       - '10080:80'
       - '10443:443'
     volumes:
-      - ./:/var/www/html:ro
+      - ${PWD}:/var/www/html:ro
     depends_on:
       - php
   elasticsearch:

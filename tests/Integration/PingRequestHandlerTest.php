@@ -20,7 +20,7 @@ final class PingRequestHandlerTest extends AbstractIntegrationTest
             ]
         );
 
-        self::assertSame(406, $response['status']['code']);
+        self::assertSame(406, $response['status']['code'], $response['body'] ?? '');
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
@@ -54,7 +54,7 @@ final class PingRequestHandlerTest extends AbstractIntegrationTest
             ]
         );
 
-        self::assertSame(200, $response['status']['code']);
+        self::assertSame(200, $response['status']['code'], $response['body'] ?? '');
 
         self::assertSame('application/json', $response['headers']['content-type'][0]);
         self::assertSame('no-cache, no-store, must-revalidate', $response['headers']['cache-control'][0]);

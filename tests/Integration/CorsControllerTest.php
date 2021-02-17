@@ -21,7 +21,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
             ]
         );
 
-        self::assertSame(200, $response['status']['code']);
+        self::assertSame(200, $response['status']['code'], $response['body'] ?? '');
 
         self::assertSame('http://localhost:3000', $response['headers']['access-control-allow-origin'][0]);
         self::assertSame('false', $response['headers']['access-control-allow-credentials'][0]);
@@ -39,7 +39,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
             ]
         );
 
-        self::assertSame(200, $response['status']['code']);
+        self::assertSame(200, $response['status']['code'], $response['body'] ?? '');
 
         self::assertArrayNotHasKey('access-control-allow-origin', $response['headers']);
         self::assertArrayNotHasKey('access-control-allow-credentials', $response['headers']);
@@ -59,7 +59,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
             ]
         );
 
-        self::assertSame(204, $response['status']['code']);
+        self::assertSame(204, $response['status']['code'], $response['body'] ?? '');
 
         self::assertSame('https://localhost:3000', $response['headers']['access-control-allow-origin'][0]);
         self::assertSame('false', $response['headers']['access-control-allow-credentials'][0]);
@@ -83,7 +83,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
             ]
         );
 
-        self::assertSame(204, $response['status']['code']);
+        self::assertSame(204, $response['status']['code'], $response['body'] ?? '');
 
         self::assertArrayNotHasKey('access-control-allow-origin', $response['headers']);
         self::assertArrayNotHasKey('access-control-allow-credentials', $response['headers']);
@@ -91,22 +91,5 @@ final class CorsControllerTest extends AbstractIntegrationTest
         self::assertArrayNotHasKey('access-control-allow-method', $response['headers']);
         self::assertArrayNotHasKey('access-control-allow-headers', $response['headers']);
         self::assertArrayNotHasKey('access-control-max-age', $response['headers']);
-    }
-
-    public function testCorsOnAUnknownRoute(): void
-    {
-        $response = $this->httpRequest(
-            'OPTIONS',
-            '/some/route',
-            [
-                'Accept' => 'application/json',
-                'Origin' => 'https://unknown.local',
-                'Access-Control-Request-Method' => 'POST',
-                'Access-Control-Request-Headers' => 'Accept, Content-Type',
-            ]
-        );
-
-        // without asking the router this is not preventable with a middleware only design
-        self::assertSame(204, $response['status']['code']);
     }
 }

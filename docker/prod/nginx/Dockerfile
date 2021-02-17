@@ -1,3 +1,5 @@
 FROM nginx:1.17.8
 
-COPY prod/nginx/files /
+COPY docker/prod/nginx/files /
+
+COPY public /var/www/html/public

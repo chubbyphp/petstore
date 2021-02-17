@@ -17,7 +17,7 @@ final class SwaggerRequestHandlerTest extends AbstractIntegrationTest
             '/api/swagger/index'
         );
 
-        self::assertSame(200, $response['status']['code']);
+        self::assertSame(200, $response['status']['code'], $response['body'] ?? '');
 
         self::assertStringStartsWith('text/html', $response['headers']['content-type'][0]);
         self::assertStringContainsString('<title>Swagger UI</title>', $response['body']);
@@ -30,7 +30,7 @@ final class SwaggerRequestHandlerTest extends AbstractIntegrationTest
             '/api/swagger/yaml'
         );
 
-        self::assertSame(200, $response['status']['code']);
+        self::assertSame(200, $response['status']['code'], $response['body'] ?? '');
 
         self::assertStringStartsWith('application/x-yaml', $response['headers']['content-type'][0]);
 

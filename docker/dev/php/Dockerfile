@@ -10,6 +10,7 @@ RUN apt-get update -y && apt-get install -y \
     gnupg2 \
     inetutils-ping \
     locales \
+    netcat \
     openssh-client \
     sudo \
     supervisor \
@@ -56,8 +57,8 @@ RUN mkdir -p /tmp/blackfire \
     && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
     && rm -rf /tmp/blackfire
 
-COPY prod/php/files /
-COPY dev/php/files /
+COPY docker/prod/php/files /
+COPY docker/dev/php/files /
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 

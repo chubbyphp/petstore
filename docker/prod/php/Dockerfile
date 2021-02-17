@@ -8,10 +8,9 @@ RUN apt-get update -y && apt-get install -y \
     curl \
     git \
     gnupg2 \
-    inetutils-ping \
     locales \
+    netcat \
     openssh-client \
-    sudo \
     tzdata \
     unzip \
     vim
@@ -36,13 +35,24 @@ RUN apt-get update -y && apt-get install -y \
     php8.0-xml \
     php8.0-zip
 
-COPY prod/php/files /
+COPY docker/prod/php/files /
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-RUN mkdir -p /var/www && chown -R www-data:www-data /var/www
+COPY bin /var/www/html/bin
+COPY config /var/www/html/config
+COPY public /var/www/html/public
+COPY src /var/www/html/src
+COPY swagger /var/www/html/swagger
+COPY tests /var/www/html/tests
+COPY composer.json phpunit.xml /var/www/html/
+
+RUN chown -R www-data:www-data /var/www
 
 USER www-data
+
+RUN cd /var/www/html && \
+    composer install
 
 WORKDIR /var/www/html
 

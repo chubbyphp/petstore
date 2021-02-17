@@ -62,6 +62,13 @@
             "@database:schema:validate --env=dev",
             "@clean-directories --env=dev"
         ],
+        "setup:phpunit": [
+            "@database:drop --env=phpunit",
+            "@database:create --env=phpunit",
+            "@database:schema:update --env=phpunit",
+            "@database:schema:validate --env=phpunit",
+            "@clean-directories --env=phpunit"
+        ],
         "test": [
             "@test:lint",
             "@test:unit",
@@ -71,7 +78,7 @@
             "@test:loc",
             "@test:cs"
         ],
-        "test:cs": "mkdir -p build && PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
+        "test:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
         "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=97 --verbose --coverage=build/phpunit",
         "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/result.cache",
         "test:lint": "mkdir -p build && find src tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",

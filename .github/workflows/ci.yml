@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  docker-compose:
+    name: docker-compose
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: docker build / start
+        run: docker-compose -f docker-compose.ci.yml up -d
+      - name: wait for postgres
+        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'while ! nc -z postgres 5432; do sleep 0.1; done'
+      - name: composer setup:phpunit
+        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'composer setup:phpunit'
+      - name: composer test:integration
+        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'INTEGRATION_ENDPOINT=http://nginx composer test:integration'
+      - name: docker stop
+        run: docker-compose -f docker-compose.ci.yml stop
+  php74:
+    name: PHP 7.4
+    runs-on: ubuntu-20.04
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: wait for databases
+        run: |
+          while ! nc -z localhost 5432; do sleep 0.1; done
+      - name: composer test
+        uses: docker://chubbyphp/ci-php80:latest
+        env:
+          APP_ENV: phpunit
+          DATABASE_USER: root
+          DATABASE_PASS: root
+          DATABASE_HOST: 172.17.0.1
+          DATABASE_NAME: petstore
+          DATABASE_PORT: 5432
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+  php80:
+    name: PHP 8.0
+    runs-on: ubuntu-20.04
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: wait for databases
+        run: |
+          while ! nc -z localhost 5432; do sleep 0.1; done
+      - name: composer test
+        uses: docker://chubbyphp/ci-php80:latest
+        env:
+          APP_ENV: phpunit
+          DATABASE_USER: root
+          DATABASE_PASS: root
+          DATABASE_HOST: 172.17.0.1
+          DATABASE_NAME: petstore
+          DATABASE_PORT: 5432
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+      - name: sonarcloud.io
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

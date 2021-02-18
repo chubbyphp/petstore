@@ -20,14 +20,14 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-negotiation][9]: ^1.8
  * [chubbyphp/chubbyphp-serialization][10]: ^3.1
  * [chubbyphp/chubbyphp-validation][11]: ^3.12
- * [doctrine/orm][12]: ^2.8.1
- * [mezzio/mezzio][13]: ^3.2.2
+ * [doctrine/orm][12]: ^2.8.2
+ * [mezzio/mezzio][13]: ^3.3
  * [mezzio/mezzio-fastroute][14]: ^3.1
  * [monolog/monolog][15]: ^2.2
  * [ramsey/uuid][16]: ^4.1.1
  * [slim/psr7][17]: ^1.3
- * [swagger-api/swagger-ui][18]: ^3.40
- * [symfony/console][19]: ^5.2.1
+ * [swagger-api/swagger-ui][18]: ^3.43
+ * [symfony/console][19]: ^5.2.3
 
 ## Environment
 

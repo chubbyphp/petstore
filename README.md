@@ -22,12 +22,12 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-negotiation][11]: ^1.8
  * [chubbyphp/chubbyphp-serialization][12]: ^3.1
  * [chubbyphp/chubbyphp-validation][13]: ^3.12
- * [doctrine/orm][14]: ^2.8.1
+ * [doctrine/orm][14]: ^2.8.2
  * [monolog/monolog][15]: ^2.2
  * [ramsey/uuid][16]: ^4.1.1
  * [slim/psr7][17]: ^1.3
- * [swagger-api/swagger-ui][18]: ^3.40
- * [symfony/console][19]: ^5.2.1
+ * [swagger-api/swagger-ui][18]: ^3.43
+ * [symfony/console][19]: ^5.2.3
 
 ## Environment
 

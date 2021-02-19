@@ -32,13 +32,6 @@ services:
       - postgres
     extra_hosts:
       - "host.docker.internal:host-gateway"
-  blackfire:
-    container_name: petstore-blackfire
-    hostname: petstore-blackfire
-    image: blackfire/blackfire
-    environment:
-      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
-      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
   postgres:
     container_name: petstore-postgres
     hostname: pestore-postgres
@@ -64,31 +57,30 @@ services:
       - ${PWD}:/var/www/html:ro
     depends_on:
       - php
+  blackfire:
+    container_name: petstore-blackfire
+    hostname: petstore-blackfire
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
+      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
   elasticsearch:
     container_name: petstore-elasticsearch
     hostname: petstore-elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: '-Xms128m -Xmx128m'
+      ES_JAVA_OPTS: '-Xms256m -Xmx256m'
     ulimits:
       memlock:
         soft: -1
         hard: -1
     ports:
       - '19200:9200'
-  kibana:
-    container_name: petstore-kibana
-    hostname: petstore-kibana
-    image: docker.elastic.co/kibana/kibana:7.9.2
-    ports:
-      - '15601:5601'
-    depends_on:
-      - elasticsearch
   filebeat:
     container_name: petstore-filebeat
     hostname: petstore-filebeat
-    image: docker.elastic.co/beats/filebeat:7.9.2
+    image: docker.elastic.co/beats/filebeat:7.10.1
     command: --strict.perms=false
     user: root
     volumes:
@@ -98,4 +90,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - elasticsearch
-      - kibana
+  kibana:
+    container_name: petstore-kibana
+    hostname: petstore-kibana
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    ports:
+      - '15601:5601'
+    depends_on:
+      - elasticsearch

@@ -8,16 +8,6 @@ filebeat.autodiscover:
     - type: docker
       templates:
         - condition.equals:
-            docker.container.name: "petstore-nginx"
-          config:
-            - module: nginx
-              access:
-                enabled: true
-                input:
-                  type: container
-                  paths:
-                    - /var/lib/docker/containers/${data.docker.container.id}/*.log
-        - condition.equals:
             docker.container.name: "petstore-php"
           config:
             - type: container
@@ -37,22 +27,16 @@ filebeat.autodiscover:
                   type: container
                   paths:
                     - /var/lib/docker/containers/${data.docker.container.id}/*.log
-        # - condition.equals:
-        #     docker.container.name: "petstore-elasticsearch"
-        #   config:
-        #     - module: elasticsearch
-        #       server:
-        #         enabled: true
-        #         input:
-        #           type: container
-        #           paths:
-        #             - /var/lib/docker/containers/${data.docker.container.id}/*.log
         - condition.equals:
-            docker.container.name: "petstore-filebeat"
+            docker.container.name: "petstore-nginx"
           config:
-            - type: container
-              paths:
-                - /var/lib/docker/containers/${data.docker.container.id}/*.log
+            - module: nginx
+              access:
+                enabled: true
+                input:
+                  type: container
+                  paths:
+                    - /var/lib/docker/containers/${data.docker.container.id}/*.log
 
 processors:
 - add_cloud_metadata: ~

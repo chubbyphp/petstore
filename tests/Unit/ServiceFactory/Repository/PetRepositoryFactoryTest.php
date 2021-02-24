@@ -8,7 +8,7 @@ use App\Repository\PetRepository;
 use App\ServiceFactory\Repository\PetRepositoryFactory;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -23,12 +23,12 @@ final class PetRepositoryFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class);
+        /** @var DocumentManager $documentManager */
+        $documentManager = $this->getMockByCalls(DocumentManager::class);
 
         /** @var ContainerInterface $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(EntityManager::class)->willReturn($entityManager),
+            Call::create('get')->with(DocumentManager::class)->willReturn($documentManager),
         ]);
 
         $factory = new PetRepositoryFactory();

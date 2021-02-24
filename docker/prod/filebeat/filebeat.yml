@@ -18,9 +18,9 @@ filebeat.autodiscover:
                 - /var/log/application/*.log
               json.keys_under_root: true
         - condition.equals:
-            docker.container.name: "petstore-postgres"
+            docker.container.name: "petstore-mongo"
           config:
-            - module: postgresql
+            - module: mongodb
               log:
                 enabled: true
                 input:

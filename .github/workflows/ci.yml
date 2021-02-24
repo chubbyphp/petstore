@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v2
       - name: docker build / start
         run: docker-compose -f docker-compose.ci.yml up -d
-      - name: wait for postgres
-        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'while ! nc -z postgres 5432; do sleep 0.1; done'
+      - name: wait for mongo
+        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'while ! nc -z mongo 27017; do sleep 0.1; done'
       - name: composer setup:phpunit
         run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'composer setup:phpunit'
       - name: composer test:integration
@@ -26,56 +26,48 @@ jobs:
     name: PHP 7.4
     runs-on: ubuntu-20.04
     services:
-      postgres:
-        image: postgres:13
+      mongo:
+        image: mongo:4.4-bionic
         env:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: root
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: root
         ports:
-          - 5432:5432
+          - 27017:27017
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: wait for databases
         run: |
-          while ! nc -z localhost 5432; do sleep 0.1; done
+          while ! nc -z localhost 27017; do sleep 0.1; done
       - name: composer test
         uses: docker://chubbyphp/ci-php80:latest
         env:
           APP_ENV: phpunit
-          DATABASE_USER: root
-          DATABASE_PASS: root
-          DATABASE_HOST: 172.17.0.1
-          DATABASE_NAME: petstore
-          DATABASE_PORT: 5432
+          DATABASE_URI: mongodb://root:root@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php80:
     name: PHP 8.0
     runs-on: ubuntu-20.04
     services:
-      postgres:
-        image: postgres:13
+      mongo:
+        image: mongo:4.4-bionic
         env:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: root
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: root
         ports:
-          - 5432:5432
+          - 27017:27017
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: wait for databases
         run: |
-          while ! nc -z localhost 5432; do sleep 0.1; done
+          while ! nc -z localhost 27017; do sleep 0.1; done
       - name: composer test
         uses: docker://chubbyphp/ci-php80:latest
         env:
           APP_ENV: phpunit
-          DATABASE_USER: root
-          DATABASE_PASS: root
-          DATABASE_HOST: 172.17.0.1
-          DATABASE_NAME: petstore
-          DATABASE_PORT: 5432
+          DATABASE_URI: mongodb://root:root@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
       - name: sonarcloud.io

@@ -8,21 +8,16 @@ services:
       context: ./
     environment:
       APP_ENV: phpunit
-      DATABASE_USER: root
-      DATABASE_PASS: root
-      DATABASE_HOST: postgres
-      DATABASE_NAME: petstore
-      DATABASE_PORT: 5432
+      DATABASE_URI: mongodb://root:root@mongo:27017
     depends_on:
-      - postgres
-  postgres:
-    container_name: petstore-postgres
-    hostname: pestore-postgres
-    image: postgres:13
-    command: -c log_statement=all -c log_error_verbosity=VERBOSE
+      - mongo
+  mongo:
+    container_name: petstore-mongo
+    hostname: petstore-mongo
+    image: mongo:4.4-bionic
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx

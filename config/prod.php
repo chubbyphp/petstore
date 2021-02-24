@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Factory\Collection\PetCollectionFactory;
 use App\Factory\Model\PetFactory;
-use App\Mapping\Orm\PetMapping;
-use App\Mapping\Orm\VaccinationMapping;
+use App\Mapping\Odm\PetMapping;
+use App\Mapping\Odm\VaccinationMapping;
 use App\Model\Pet;
 use App\Model\Vaccination;
 use App\Repository\PetRepository;
@@ -63,7 +63,7 @@ use Chubbyphp\Framework\Middleware\RouterMiddleware;
 use Chubbyphp\Framework\Router\RouteInterface;
 use Chubbyphp\Framework\Router\RouterInterface;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuCacheFactory;
-use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\EntityManagerFactory;
+use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ODM\MongoDB\DocumentManagerFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Persistence\Mapping\Driver\ClassMapDriverFactory;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
 use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;
@@ -79,8 +79,8 @@ use Chubbyphp\Validation\ServiceFactory\ValidationMappingProviderRegistryFactory
 use Chubbyphp\Validation\ServiceFactory\ValidatorFactory;
 use Chubbyphp\Validation\ValidatorInterface;
 use Doctrine\Common\Cache\Cache;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -117,7 +117,7 @@ return [
             CorsMiddleware::class => CorsMiddlewareFactory::class,
             DenormalizationObjectMappingInterface::class.'[]' => DenormalizationObjectMappingsFactory::class,
             DeserializerInterface::class => DeserializerFactory::class,
-            EntityManager::class => EntityManagerFactory::class,
+            DocumentManager::class => DocumentManagerFactory::class,
             ExceptionMiddleware::class => ExceptionMiddlewareFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
@@ -159,17 +159,7 @@ return [
                 'namespace' => 'doctrine',
             ],
         ],
-        'dbal' => [
-            'connection' => [
-                'driver' => 'pdo_pgsql',
-                'charset' => 'utf8',
-                'user' => getenv('DATABASE_USER'),
-                'password' => getenv('DATABASE_PASS'),
-                'host' => getenv('DATABASE_HOST'),
-                'port' => getenv('DATABASE_PORT'),
-                'dbname' => getenv('DATABASE_NAME'),
-            ],
-        ],
+
         'driver' => [
             'classMap' => [
                 'map' => [
@@ -178,12 +168,26 @@ return [
                 ],
             ],
         ],
-        'orm' => [
+        'mongodb' => [
+            'client' => [
+                'uri' => getenv('DATABASE_URI'),
+                'driverOptions' => [
+                    'typeMap' => DocumentManager::CLIENT_TYPEMAP,
+                    'driver' => [
+                        'name' => 'doctrine-odm',
+                    ],
+                ],
+            ],
+        ],
+        'mongodbOdm' => [
             'configuration' => [
                 'metadataDriverImpl' => MappingDriver::class,
-                'proxyDir' => $cacheDir.'/doctrine/orm/proxies',
-                'proxyNamespace' => 'DoctrineORMProxy',
+                'proxyDir' => $cacheDir.'/doctrine/mongodbOdm/proxies',
+                'proxyNamespace' => 'DoctrineMongoDBODMProxy',
+                'hydratorDir' => $cacheDir.'/doctrine/mongodbOdm/hydrators',
+                'hydratorNamespace' => 'DoctrineMongoDBODMHydrators',
                 'metadataCacheImpl' => Cache::class,
+                'defaultDB' => 'petstore',
             ],
         ],
     ],

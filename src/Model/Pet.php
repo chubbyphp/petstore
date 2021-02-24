@@ -79,7 +79,6 @@ final class Pet implements ModelInterface
     {
         $this->vaccinations->clear();
         foreach ($vaccinations as $vaccination) {
-            $vaccination->setPet($this);
             $this->vaccinations->add($vaccination);
         }
     }

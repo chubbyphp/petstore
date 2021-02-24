@@ -8,16 +8,16 @@ use App\Collection\CollectionInterface;
 use App\Collection\PetCollection;
 use App\Model\ModelInterface;
 use App\Model\Pet;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 final class PetRepository implements RepositoryInterface
 {
-    private EntityManager $entityManager;
+    private DocumentManager $documentManager;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(DocumentManager $documentManager)
     {
-        $this->entityManager = $entityManager;
+        $this->documentManager = $documentManager;
     }
 
     /**
@@ -36,33 +36,32 @@ final class PetRepository implements RepositoryInterface
             );
         }
 
-        /** @var EntityRepository $entityRepository */
-        $entityRepository = $this->entityManager->getRepository(Pet::class);
+        /** @var DocumentRepository $documentRepository */
+        $documentRepository = $this->documentManager->getRepository(Pet::class);
 
-        $queryBuilder = $entityRepository->createQueryBuilder('p');
+        $queryBuilder = $documentRepository->createQueryBuilder();
 
         $filters = $petCollection->getFilters();
 
         if (isset($filters['name'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->like('p.name', ':name'));
-            $queryBuilder->setParameter('name', '%'.$filters['name'].'%');
+            $queryBuilder->field('name')->text($filters['name']);
         }
 
         $countQueryBuilder = clone $queryBuilder;
-        $countQueryBuilder->select($queryBuilder->expr()->count('p.id'));
+        $countQueryBuilder->count();
 
-        $petCollection->setCount((int) $countQueryBuilder->getQuery()->getSingleScalarResult());
+        $petCollection->setCount($countQueryBuilder->getQuery()->execute());
 
         $itemsQueryBuilder = clone $queryBuilder;
 
         foreach ($petCollection->getSort() as $field => $order) {
-            $itemsQueryBuilder->addOrderBy(sprintf('p.%s', $field), $order);
+            $itemsQueryBuilder->sort($field, $order);
         }
 
-        $itemsQueryBuilder->setFirstResult($petCollection->getOffset());
-        $itemsQueryBuilder->setMaxResults($petCollection->getLimit());
+        $itemsQueryBuilder->skip($petCollection->getOffset());
+        $itemsQueryBuilder->limit($petCollection->getLimit());
 
-        $petCollection->setItems($itemsQueryBuilder->getQuery()->getResult());
+        $petCollection->setItems($itemsQueryBuilder->getQuery()->execute()->toArray());
     }
 
     /**
@@ -70,7 +69,7 @@ final class PetRepository implements RepositoryInterface
      */
     public function findById(string $id): ?ModelInterface
     {
-        return $this->entityManager->find(Pet::class, $id);
+        return $this->documentManager->find(Pet::class, $id);
     }
 
     /**
@@ -89,7 +88,7 @@ final class PetRepository implements RepositoryInterface
             );
         }
 
-        $this->entityManager->persist($pet);
+        $this->documentManager->persist($pet);
     }
 
     /**
@@ -108,11 +107,11 @@ final class PetRepository implements RepositoryInterface
             );
         }
 
-        $this->entityManager->remove($pet);
+        $this->documentManager->remove($pet);
     }
 
     public function flush(): void
     {
-        $this->entityManager->flush();
+        $this->documentManager->flush();
     }
 }

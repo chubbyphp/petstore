@@ -29,8 +29,8 @@ RUN apt-get update -y && apt-get install -y \
     php8.0-curl \
     php8.0-fpm \
     php8.0-mbstring \
+    php8.0-mongodb \
     php8.0-opcache \
-    php8.0-pgsql \
     php8.0-readline \
     php8.0-xml \
     php8.0-zip

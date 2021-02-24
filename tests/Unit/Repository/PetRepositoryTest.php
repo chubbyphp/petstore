@@ -2,214 +2,222 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Repository;
-
-use App\Collection\CollectionInterface;
-use App\Collection\PetCollection;
-use App\Model\ModelInterface;
-use App\Model\Pet;
-use App\Repository\PetRepository;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Query\Expr\Func;
-use Doctrine\ORM\QueryBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-
-/**
- * @covers \App\Repository\PetRepository
- *
- * @internal
- */
-final class PetRepositoryTest extends TestCase
-{
-    use MockByCallsTrait;
-
-    public function testResolveCollectionWithWrongCollection(): void
+namespace Doctrine\ODM\MongoDB\Query {
+    class Query
     {
-        /** @var CollectionInterface|MockObject $collection */
-        $collection = $this->getMockByCalls(CollectionInterface::class);
+        public const TYPE_FIND = 1;
 
-        $collectionClass = get_class($collection);
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'App\Repository\PetRepository::resolveCollection() expects parameter 1 to be'
-                    .' App\Collection\PetCollection, %s given',
-                $collectionClass
-            )
-        );
-
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class);
-
-        $repository = new PetRepository($entityManager);
-        $repository->resolveCollection($collection);
+        /** @return array|int */
+        public function execute()
+        {
+        }
     }
+}
 
-    public function testResolveCollection(): void
+namespace App\Tests\Unit\Repository {
+    use App\Collection\CollectionInterface;
+    use App\Collection\PetCollection;
+    use App\Model\ModelInterface;
+    use App\Model\Pet;
+    use App\Repository\PetRepository;
+    use Chubbyphp\Mock\Call;
+    use Chubbyphp\Mock\MockByCallsTrait;
+    use Doctrine\ODM\MongoDB\DocumentManager;
+    use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+    use Doctrine\ODM\MongoDB\Query\Query;
+    use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
+    use PHPUnit\Framework\MockObject\MockObject;
+    use PHPUnit\Framework\TestCase;
+
+    /**
+     * @covers \App\Repository\PetRepository
+     *
+     * @internal
+     */
+    final class PetRepositoryTest extends TestCase
     {
-        $pet = new Pet();
+        use MockByCallsTrait;
 
-        $items = [$pet];
+        public function testResolveCollectionWithWrongCollection(): void
+        {
+            /** @var CollectionInterface|MockObject $collection */
+            $collection = $this->getMockByCalls(CollectionInterface::class);
 
-        $collection = new PetCollection();
-        $collection->setOffset(0);
-        $collection->setLimit(20);
-        $collection->setFilters(['name' => 'sample']);
-        $collection->setSort(['name' => 'asc']);
+            $collectionClass = get_class($collection);
 
-        /** @var Func|MockObject $likeNameFunc */
-        $likeNameFunc = $this->getMockByCalls(Func::class);
+            $this->expectException(\TypeError::class);
+            $this->expectExceptionMessage(
+                sprintf(
+                    'App\Repository\PetRepository::resolveCollection() expects parameter 1 to be'
+                        .' App\Collection\PetCollection, %s given',
+                    $collectionClass
+                )
+            );
 
-        /** @var Func|MockObject $countIdFunc */
-        $countIdFunc = $this->getMockByCalls(Func::class);
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class);
 
-        /** @var Expr|MockObject $expr */
-        $expr = $this->getMockByCalls(Expr::class, [
-            Call::create('like')->with('p.name', ':name')->willReturn($likeNameFunc),
-            Call::create('count')->with('p.id')->willReturn($countIdFunc),
-        ]);
+            $repository = new PetRepository($documentManager);
+            $repository->resolveCollection($collection);
+        }
 
-        /** @var AbstractQuery|MockObject $countQuery */
-        $countQuery = $this->getMockByCalls(AbstractQuery::class, [
-            Call::create('getSingleScalarResult')->with()->willReturn((string) count($items)),
-        ]);
+        public function testResolveCollection(): void
+        {
+            $pet = new Pet();
 
-        /** @var AbstractQuery|MockObject $itemsQuery */
-        $itemsQuery = $this->getMockByCalls(AbstractQuery::class, [
-            Call::create('getResult')->with(AbstractQuery::HYDRATE_OBJECT)->willReturn($items),
-        ]);
+            $items = [$pet];
 
-        /** @var QueryBuilder|MockObject $queryBuilder */
-        $queryBuilder = $this->getMockByCalls(QueryBuilder::class, [
-            Call::create('expr')->with()->willReturn($expr),
-            Call::create('andWhere')->with($likeNameFunc),
-            Call::create('setParameter')->with('name', '%sample%', null),
-            Call::create('expr')->with()->willReturn($expr),
-            Call::create('select')->with($countIdFunc),
-            Call::create('getQuery')->with()->willReturn($countQuery),
-            Call::create('addOrderBy')->with('p.name', 'asc'),
-            Call::create('setFirstResult')->with(0),
-            Call::create('setMaxResults')->with(20),
-            Call::create('getQuery')->with()->willReturn($itemsQuery),
-        ]);
+            $collection = new PetCollection();
+            $collection->setOffset(0);
+            $collection->setLimit(20);
+            $collection->setFilters(['name' => 'sample']);
+            $collection->setSort(['name' => 'asc']);
 
-        /** @var EntityRepository|MockObject $repository */
-        $repository = $this->getMockByCalls(EntityRepository::class, [
-            Call::create('createQueryBuilder')->with('p', null)->willReturn($queryBuilder),
-        ]);
+            /** @var Query|MockObject $countQuery */
+            $countQuery = $this->getMockByCalls(Query::class, [
+                Call::create('execute')->with()->willReturn(count($items)),
+            ]);
 
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class, [
-            Call::create('getRepository')->with(Pet::class)->willReturn($repository),
-        ]);
+            /** @var Query|MockObject $itemsQuery */
+            $itemsQuery = $this->getMockByCalls(Query::class, [
+                Call::create('execute')->with()->willReturn(new class($items) {
+                    private array $items;
 
-        $repository = new PetRepository($entityManager);
-        $repository->resolveCollection($collection);
-    }
+                    public function __construct(array $items)
+                    {
+                        $this->items = $items;
+                    }
 
-    public function testFindById(): void
-    {
-        $pet = new Pet();
+                    public function toArray(): array
+                    {
+                        return $this->items;
+                    }
+                }),
+            ]);
 
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class, [
-            Call::create('find')
-                ->with(Pet::class, '86c78085-edaf-4df9-95d0-563e45acf618', null, null)
-                ->willReturn($pet),
-        ]);
+            /** @var QueryBuilder|MockObject $queryBuilder */
+            $queryBuilder = $this->getMockByCalls(QueryBuilder::class, [
+                Call::create('field')->with('name')->willReturnSelf(),
+                Call::create('text')->with('sample')->willReturnSelf(),
+                Call::create('count')->with()->willReturnSelf(),
+                Call::create('getQuery')->with([])->willReturn($countQuery),
+                Call::create('sort')->with('name', 'asc')->willReturnSelf(),
+                Call::create('skip')->with(0)->willReturnSelf(),
+                Call::create('limit')->with(20)->willReturnSelf(),
+                Call::create('getQuery')->with([])->willReturn($itemsQuery),
+            ]);
 
-        $repository = new PetRepository($entityManager);
+            /** @var DocumentRepository|MockObject $repository */
+            $repository = $this->getMockByCalls(DocumentRepository::class, [
+                Call::create('createQueryBuilder')->with()->willReturn($queryBuilder),
+            ]);
 
-        self::assertSame($pet, $repository->findById('86c78085-edaf-4df9-95d0-563e45acf618'));
-    }
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class, [
+                Call::create('getRepository')->with(Pet::class)->willReturn($repository),
+            ]);
 
-    public function testPersistWithWrongModel(): void
-    {
-        /** @var ModelInterface|MockObject $model */
-        $model = $this->getMockByCalls(ModelInterface::class);
+            $repository = new PetRepository($documentManager);
+            $repository->resolveCollection($collection);
+        }
 
-        $modelClass = get_class($model);
+        public function testFindById(): void
+        {
+            $pet = new Pet();
 
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'App\Repository\PetRepository::persist() expects parameter 1 to be'
-                    .' App\Model\Pet, %s given',
-                $modelClass
-            )
-        );
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class, [
+                Call::create('find')
+                    ->with(Pet::class, '86c78085-edaf-4df9-95d0-563e45acf618', 0, null)
+                    ->willReturn($pet),
+            ]);
 
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class);
+            $repository = new PetRepository($documentManager);
 
-        $repository = new PetRepository($entityManager);
-        $repository->persist($model);
-    }
+            self::assertSame($pet, $repository->findById('86c78085-edaf-4df9-95d0-563e45acf618'));
+        }
 
-    public function testPersist(): void
-    {
-        $pet = new Pet();
+        public function testPersistWithWrongModel(): void
+        {
+            /** @var ModelInterface|MockObject $model */
+            $model = $this->getMockByCalls(ModelInterface::class);
 
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class, [
-            Call::create('persist')->with($pet),
-        ]);
+            $modelClass = get_class($model);
 
-        $repository = new PetRepository($entityManager);
-        $repository->persist($pet);
-    }
+            $this->expectException(\TypeError::class);
+            $this->expectExceptionMessage(
+                sprintf(
+                    'App\Repository\PetRepository::persist() expects parameter 1 to be'
+                        .' App\Model\Pet, %s given',
+                    $modelClass
+                )
+            );
 
-    public function testRemoveWithWrongModel(): void
-    {
-        /** @var ModelInterface|MockObject $model */
-        $model = $this->getMockByCalls(ModelInterface::class);
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class);
 
-        $modelClass = get_class($model);
+            $repository = new PetRepository($documentManager);
+            $repository->persist($model);
+        }
 
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'App\Repository\PetRepository::remove() expects parameter 1 to be'
-                    .' App\Model\Pet, %s given',
-                $modelClass
-            )
-        );
+        public function testPersist(): void
+        {
+            $pet = new Pet();
 
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class);
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class, [
+                Call::create('persist')->with($pet),
+            ]);
 
-        $repository = new PetRepository($entityManager);
-        $repository->remove($model);
-    }
+            $repository = new PetRepository($documentManager);
+            $repository->persist($pet);
+        }
 
-    public function testRemove(): void
-    {
-        $pet = new Pet();
+        public function testRemoveWithWrongModel(): void
+        {
+            /** @var ModelInterface|MockObject $model */
+            $model = $this->getMockByCalls(ModelInterface::class);
 
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class, [
-            Call::create('remove')->with($pet),
-        ]);
+            $modelClass = get_class($model);
 
-        $repository = new PetRepository($entityManager);
-        $repository->remove($pet);
-    }
+            $this->expectException(\TypeError::class);
+            $this->expectExceptionMessage(
+                sprintf(
+                    'App\Repository\PetRepository::remove() expects parameter 1 to be'
+                        .' App\Model\Pet, %s given',
+                    $modelClass
+                )
+            );
 
-    public function testFlush(): void
-    {
-        /** @var EntityManager|MockObject $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class, [
-            Call::create('flush')->with(null),
-        ]);
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class);
 
-        $repository = new PetRepository($entityManager);
-        $repository->flush();
+            $repository = new PetRepository($documentManager);
+            $repository->remove($model);
+        }
+
+        public function testRemove(): void
+        {
+            $pet = new Pet();
+
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class, [
+                Call::create('remove')->with($pet),
+            ]);
+
+            $repository = new PetRepository($documentManager);
+            $repository->remove($pet);
+        }
+
+        public function testFlush(): void
+        {
+            /** @var DocumentManager|MockObject $documentManager */
+            $documentManager = $this->getMockByCalls(DocumentManager::class, [
+                Call::create('flush')->with([]),
+            ]);
+
+            $repository = new PetRepository($documentManager);
+            $repository->flush();
+        }
     }
 }

@@ -1,5 +1,11 @@
 parameters:
     ignoreErrors:
         -
-            message: '#PHPDoc tag @var for variable \$entityRepository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T#'
+            message: '#Parameter \#1 \$count of method App\\Collection\\AbstractCollection\:\:setCount\(\) expects int, array\|int\|object\|null given#'
+            path: %currentWorkingDirectory%/src/Repository/PetRepository.php
+        -
+            message: '#Cannot call method toArray\(\) on array\|int\|object\|null\.#'
+            path: %currentWorkingDirectory%/src/Repository/PetRepository.php
+        -
+            message: '#Method App\\Repository\\PetRepository\:\:findById\(\) should return App\\Model\\ModelInterface\|null but returns object\|null\.#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php

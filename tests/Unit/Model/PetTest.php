@@ -58,12 +58,10 @@ final class PetTest extends TestCase
         self::assertSame($vaccination2, array_shift($vaccinations));
 
         self::assertSame('Rabies', AssertHelper::readProperty('name', $vaccination1));
-        self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination1));
 
         self::assertSame(
             'Feline Acquired Immune Deficiency Syndrome',
             AssertHelper::readProperty('name', $vaccination2)
         );
-        self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination2));
     }
 }

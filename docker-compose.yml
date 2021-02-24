@@ -11,11 +11,7 @@ services:
         GROUP_ID: ${GROUP_ID:-1000}
     environment:
       APP_ENV: dev
-      DATABASE_USER: root
-      DATABASE_PASS: root
-      DATABASE_HOST: postgres
-      DATABASE_NAME: petstore
-      DATABASE_PORT: 5432
+      DATABASE_URI: mongodb://root:root@mongo:27017
       SSH_AUTH_SOCK: /ssh-agent
       BLACKFIRE_CLIENT_ID: ${BLACKFIRE_CLIENT_ID}
       BLACKFIRE_CLIENT_TOKEN: ${BLACKFIRE_CLIENT_TOKEN}
@@ -29,19 +25,18 @@ services:
       - ~/.zsh_history:/var/www/.zsh_history
       - $SSH_AUTH_SOCK:/ssh-agent
     depends_on:
-      - postgres
+      - mongo
     extra_hosts:
       - "host.docker.internal:host-gateway"
-  postgres:
-    container_name: petstore-postgres
-    hostname: pestore-postgres
-    image: postgres:13
-    command: -c log_statement=all -c log_error_verbosity=VERBOSE
+  mongo:
+    container_name: petstore-mongo
+    hostname: petstore-mongo
+    image: mongo:4.4-bionic
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
-      - '15432:5432'
+      - '12717:27017'
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx

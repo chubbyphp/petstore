@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model;
 
-use App\Model\Pet;
 use App\Model\Vaccination;
-use App\Tests\Helper\AssertHelper;
 use App\Tests\Helper\AssertTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -22,17 +20,8 @@ final class VaccinationTest extends TestCase
     public function testGetSet(): void
     {
         $vaccination = new Vaccination();
-
-        self::assertMatchesRegularExpression('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $vaccination->getId());
-
-        $pet = new Pet();
-
-        self::assertNull(AssertHelper::readProperty('pet', $vaccination));
-
         $vaccination->setName('Rabies');
-        $vaccination->setPet($pet);
 
         self::assertSame('Rabies', $vaccination->getName());
-        self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination));
     }
 }

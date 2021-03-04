@@ -25,7 +25,7 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [ramsey/uuid][14]: ^4.1.1
  * [slim/psr7][15]: ^1.3
  * [slim/slim][16]: ^4.7.1
- * [swagger-api/swagger-ui][17]: ^3.43
+ * [swagger-api/swagger-ui][17]: ^3.44
  * [symfony/console][18]: ^5.2.3
 
 ## Environment

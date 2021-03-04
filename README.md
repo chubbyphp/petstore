@@ -52,7 +52,7 @@ docker-compose exec php bash
 
 ### DBs
 
- * jdbc:postgresql://localhost:15432/petstore?user=root&password=root
+ * jdbc:mongodb://root:root@localhost:12717/petstore
 
 ## Installation
 

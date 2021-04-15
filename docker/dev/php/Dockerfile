@@ -35,13 +35,12 @@ RUN apt-get update -y && apt-get install -y \
     php8.0-fpm \
     php8.0-mbstring \
     php8.0-opcache \
+    php8.0-pcov \
     php8.0-pgsql \
     php8.0-readline \
     php8.0-xdebug \
     php8.0-xml \
     php8.0-zip
-
-RUN pecl install pcov
 
 RUN phpdismod pcov && phpdismod xdebug
 

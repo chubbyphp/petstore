@@ -17,7 +17,7 @@ services:
       - postgres
   postgres:
     container_name: petstore-postgres
-    hostname: pestore-postgres
+    hostname: petstore-postgres
     image: postgres:13
     command: -c log_statement=all -c log_error_verbosity=VERBOSE
     environment:

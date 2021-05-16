@@ -14,20 +14,20 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-clean-directories][3]: ^1.1.1
  * [chubbyphp/chubbyphp-cors][4]: ^1.3
  * [chubbyphp/chubbyphp-deserialization][5]: ^3.1.1
- * [chubbyphp/chubbyphp-framework][6]: ^3.4.1
- * [chubbyphp/chubbyphp-framework-router-fastroute][7]: ^1.1
+ * [chubbyphp/chubbyphp-framework][6]: ^3.5
+ * [chubbyphp/chubbyphp-framework-router-fastroute][7]: ^1.2
  * [chubbyphp/chubbyphp-laminas-config][8]: ^1.2.1
  * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^1.2.1
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.1.1
  * [chubbyphp/chubbyphp-negotiation][11]: ^1.8.1
  * [chubbyphp/chubbyphp-serialization][12]: ^3.1.1
  * [chubbyphp/chubbyphp-validation][13]: ^3.12.1
- * [doctrine/orm][14]: ^2.8.2
+ * [doctrine/orm][14]: ^2.8.4
  * [monolog/monolog][15]: ^2.2
  * [ramsey/uuid][16]: ^4.1.1
- * [slim/psr7][17]: ^1.3
- * [swagger-api/swagger-ui][18]: ^3.44
- * [symfony/console][19]: ^5.2.3
+ * [slim/psr7][17]: ^1.4
+ * [swagger-api/swagger-ui][18]: ^3.48
+ * [symfony/console][19]: ^5.2.8
 
 ## Environment
 

@@ -19,15 +19,12 @@ use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\Group;
 use Chubbyphp\Framework\Router\Route;
-use Chubbyphp\Framework\Router\RouteInterface;
+use Chubbyphp\Framework\Router\Routes;
 use Psr\Container\ContainerInterface;
 
 final class RoutesFactory
 {
-    /**
-     * @return array<int, RouteInterface>
-     */
-    public function __invoke(ContainerInterface $container): array
+    public function __invoke(ContainerInterface $container): Routes
     {
         $acceptAndContentType = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
         $apiExceptionMiddleware = new LazyMiddleware($container, ApiExceptionMiddleware::class);
@@ -41,19 +38,21 @@ final class RoutesFactory
         $petUpdate = new LazyRequestHandler($container, Pet::class.UpdateRequestHandler::class);
         $petDelete = new LazyRequestHandler($container, Pet::class.DeleteRequestHandler::class);
 
-        return Group::create('', [
-            Group::create('/api', [
-                Route::get('/ping', 'ping', $ping, [$apiExceptionMiddleware, $acceptAndContentType]),
-                Route::get('/swagger/index', 'swagger_index', $index),
-                Route::get('/swagger/yaml', 'swagger_yaml', $yaml),
-                Group::create('/pets', [
-                    Route::get('', 'pet_list', $petList),
-                    Route::post('', 'pet_create', $petCreate),
-                    Route::get('/{id}', 'pet_read', $petRead),
-                    Route::put('/{id}', 'pet_update', $petUpdate),
-                    Route::delete('/{id}', 'pet_delete', $petDelete),
-                ], [$apiExceptionMiddleware, $acceptAndContentType]),
-            ]),
-        ])->getRoutes();
+        return new Routes(
+            Group::create('', [
+                Group::create('/api', [
+                    Route::get('/ping', 'ping', $ping, [$apiExceptionMiddleware, $acceptAndContentType]),
+                    Route::get('/swagger/index', 'swagger_index', $index),
+                    Route::get('/swagger/yaml', 'swagger_yaml', $yaml),
+                    Group::create('/pets', [
+                        Route::get('', 'pet_list', $petList),
+                        Route::post('', 'pet_create', $petCreate),
+                        Route::get('/{id}', 'pet_read', $petRead),
+                        Route::put('/{id}', 'pet_update', $petUpdate),
+                        Route::delete('/{id}', 'pet_delete', $petDelete),
+                    ], [$apiExceptionMiddleware, $acceptAndContentType]),
+                ]),
+            ])->getRoutes()
+        );
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mapping\Serialization;
 
 use App\Model\ModelInterface;
-use Chubbyphp\Framework\Router\RouterInterface;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Serialization\Link\LinkBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingBuilder;
 use Chubbyphp\Serialization\Mapping\NormalizationFieldMappingInterface;
@@ -15,11 +15,11 @@ use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 
 abstract class AbstractModelMapping implements NormalizationObjectMappingInterface
 {
-    protected RouterInterface $router;
+    protected UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(RouterInterface $router)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -50,19 +50,19 @@ abstract class AbstractModelMapping implements NormalizationObjectMappingInterfa
         return [
             NormalizationLinkMappingBuilder::createCallback('read', fn (string $path, ModelInterface $model) => LinkBuilder
                 ::create(
-                    $this->router->generatePath($this->getReadRouteName(), ['id' => $model->getId()])
+                    $this->urlGenerator->generatePath($this->getReadRouteName(), ['id' => $model->getId()])
                 )
                     ->setAttributes(['method' => 'GET'])
                     ->getLink())->getMapping(),
             NormalizationLinkMappingBuilder::createCallback('update', fn (string $path, ModelInterface $model) => LinkBuilder
                 ::create(
-                    $this->router->generatePath($this->getUpdateRouteName(), ['id' => $model->getId()])
+                    $this->urlGenerator->generatePath($this->getUpdateRouteName(), ['id' => $model->getId()])
                 )
                     ->setAttributes(['method' => 'PUT'])
                     ->getLink())->getMapping(),
             NormalizationLinkMappingBuilder::createCallback('delete', fn (string $path, ModelInterface $model) => LinkBuilder
                 ::create(
-                    $this->router->generatePath($this->getDeleteRouteName(), ['id' => $model->getId()])
+                    $this->urlGenerator->generatePath($this->getDeleteRouteName(), ['id' => $model->getId()])
                 )
                     ->setAttributes(['method' => 'DELETE'])
                     ->getLink())->getMapping(),

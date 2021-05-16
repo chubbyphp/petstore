@@ -18,7 +18,6 @@ use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
-use Chubbyphp\Framework\Router\Group;
 use Chubbyphp\Framework\Router\Route;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
@@ -52,19 +51,15 @@ final class RoutesFactoryTest extends TestCase
 
         $factory = new RoutesFactory();
 
-        self::assertEquals(Group::create('', [
-            Group::create('/api', [
-                Route::get('/ping', 'ping', $ping, [$apiExceptionMiddleware, $acceptAndContentType]),
-                Route::get('/swagger/index', 'swagger_index', $index),
-                Route::get('/swagger/yaml', 'swagger_yaml', $yaml),
-                Group::create('/pets', [
-                    Route::get('', 'pet_list', $petList),
-                    Route::post('', 'pet_create', $petCreate),
-                    Route::get('/{id}', 'pet_read', $petRead),
-                    Route::put('/{id}', 'pet_update', $petUpdate),
-                    Route::delete('/{id}', 'pet_delete', $petDelete),
-                ], [$apiExceptionMiddleware, $acceptAndContentType]),
-            ]),
-        ])->getRoutes(), $factory($container));
+        self::assertEquals([
+            'ping' => Route::get('/api/ping', 'ping', $ping, [$apiExceptionMiddleware, $acceptAndContentType]),
+            'swagger_index' => Route::get('/api/swagger/index', 'swagger_index', $index),
+            'swagger_yaml' => Route::get('/api/swagger/yaml', 'swagger_yaml', $yaml),
+            'pet_list' => Route::get('/api/pets', 'pet_list', $petList, [$apiExceptionMiddleware, $acceptAndContentType]),
+            'pet_create' => Route::post('/api/pets', 'pet_create', $petCreate, [$apiExceptionMiddleware, $acceptAndContentType]),
+            'pet_read' => Route::get('/api/pets/{id}', 'pet_read', $petRead, [$apiExceptionMiddleware, $acceptAndContentType]),
+            'pet_update' => Route::put('/api/pets/{id}', 'pet_update', $petUpdate, [$apiExceptionMiddleware, $acceptAndContentType]),
+            'pet_delete' => Route::delete('/api/pets/{id}', 'pet_delete', $petDelete, [$apiExceptionMiddleware, $acceptAndContentType]),
+        ], $factory($container)->getRoutesByName());
     }
 }

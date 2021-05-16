@@ -8,7 +8,7 @@ use App\ServiceFactory\Framework\MiddlewaresFactory;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
-use Chubbyphp\Framework\Middleware\RouterMiddleware;
+use Chubbyphp\Framework\Middleware\RouteMatcherMiddleware;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -32,7 +32,7 @@ final class MiddlewaresFactoryTest extends TestCase
         self::assertEquals([
             new LazyMiddleware($container, ExceptionMiddleware::class),
             new LazyMiddleware($container, CorsMiddleware::class),
-            new LazyMiddleware($container, RouterMiddleware::class),
+            new LazyMiddleware($container, RouteMatcherMiddleware::class),
         ], $factory($container));
     }
 }

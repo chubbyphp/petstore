@@ -18,7 +18,7 @@
         "chubbyphp/chubbyphp-framework": "^3.5",
         "chubbyphp/chubbyphp-framework-router-fastroute": "^1.2",
         "chubbyphp/chubbyphp-laminas-config": "^1.2.1",
-        "chubbyphp/chubbyphp-laminas-config-doctrine": "^1.2.1",
+        "chubbyphp/chubbyphp-laminas-config-doctrine": "^1.2.2",
         "chubbyphp/chubbyphp-laminas-config-factory": "^1.1.1",
         "chubbyphp/chubbyphp-negotiation": "^1.8.1",
         "chubbyphp/chubbyphp-serialization": "^3.1.1",

@@ -1,6 +1,12 @@
 parameters:
     ignoreErrors:
         -
+            message: '#Method App\\Mapping\\Orm\\PetMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T#'
+            path: %currentWorkingDirectory%/src/Mapping/Orm/PetMapping.php
+        -
+            message: '#Method App\\Mapping\\Orm\\VaccinationMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T#'
+            path: %currentWorkingDirectory%/src/Mapping/Orm/VaccinationMapping.php
+        -
             message: '#PHPDoc tag @var for variable \$entityRepository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php
         -

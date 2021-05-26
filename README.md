@@ -15,12 +15,12 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [chubbyphp/chubbyphp-cors][4]: ^1.3
  * [chubbyphp/chubbyphp-deserialization][5]: ^3.1.1
  * [chubbyphp/chubbyphp-laminas-config][6]: ^1.2.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.2.1
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.2.3
  * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.1.1
  * [chubbyphp/chubbyphp-negotiation][9]: ^1.8.1
  * [chubbyphp/chubbyphp-serialization][10]: ^3.1.1
  * [chubbyphp/chubbyphp-validation][11]: ^3.12.1
- * [doctrine/orm][12]: ^2.8.2
+ * [doctrine/orm][12]: ^2.9.1
  * [monolog/monolog][13]: ^2.2
  * [ramsey/uuid][14]: ^4.1.1
  * [slim/psr7][15]: ^1.3

@@ -17,12 +17,12 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-framework][6]: ^3.5
  * [chubbyphp/chubbyphp-framework-router-fastroute][7]: ^1.2
  * [chubbyphp/chubbyphp-laminas-config][8]: ^1.2.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^1.2.1
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^1.2.3
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.1.1
  * [chubbyphp/chubbyphp-negotiation][11]: ^1.8.1
  * [chubbyphp/chubbyphp-serialization][12]: ^3.1.1
  * [chubbyphp/chubbyphp-validation][13]: ^3.12.1
- * [doctrine/orm][14]: ^2.8.4
+ * [doctrine/orm][14]: ^2.9.1
  * [monolog/monolog][15]: ^2.2
  * [ramsey/uuid][16]: ^4.1.1
  * [slim/psr7][17]: ^1.4

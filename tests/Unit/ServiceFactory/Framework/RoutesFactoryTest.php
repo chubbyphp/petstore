@@ -37,29 +37,38 @@ final class RoutesFactoryTest extends TestCase
         /** @var ContainerInterface $container */
         $container = $this->getMockByCalls(ContainerInterface::class);
 
-        $acceptAndContentType = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
-        $apiExceptionMiddleware = new LazyMiddleware($container, ApiExceptionMiddleware::class);
-
-        $ping = new LazyRequestHandler($container, PingRequestHandler::class);
-        $index = new LazyRequestHandler($container, IndexRequestHandler::class);
-        $yaml = new LazyRequestHandler($container, YamlRequestHandler::class);
-        $petList = new LazyRequestHandler($container, Pet::class.ListRequestHandler::class);
-        $petCreate = new LazyRequestHandler($container, Pet::class.CreateRequestHandler::class);
-        $petRead = new LazyRequestHandler($container, Pet::class.ReadRequestHandler::class);
-        $petUpdate = new LazyRequestHandler($container, Pet::class.UpdateRequestHandler::class);
-        $petDelete = new LazyRequestHandler($container, Pet::class.DeleteRequestHandler::class);
+        $m = static fn (string $name) => new LazyMiddleware($container, $name);
+        $r = static fn (string $name) => new LazyRequestHandler($container, $name);
 
         $factory = new RoutesFactory();
 
         self::assertEquals([
-            'ping' => Route::get('/api/ping', 'ping', $ping, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'swagger_index' => Route::get('/api/swagger/index', 'swagger_index', $index),
-            'swagger_yaml' => Route::get('/api/swagger/yaml', 'swagger_yaml', $yaml),
-            'pet_list' => Route::get('/api/pets', 'pet_list', $petList, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_create' => Route::post('/api/pets', 'pet_create', $petCreate, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_read' => Route::get('/api/pets/{id}', 'pet_read', $petRead, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_update' => Route::put('/api/pets/{id}', 'pet_update', $petUpdate, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_delete' => Route::delete('/api/pets/{id}', 'pet_delete', $petDelete, [$apiExceptionMiddleware, $acceptAndContentType]),
+            'ping' => Route::get('/api/ping', 'ping', $r(PingRequestHandler::class), [
+                $m(ApiExceptionMiddleware::class),
+                $m(AcceptAndContentTypeMiddleware::class),
+            ]),
+            'swagger_index' => Route::get('/api/swagger/index', 'swagger_index', $r(IndexRequestHandler::class)),
+            'swagger_yaml' => Route::get('/api/swagger/yaml', 'swagger_yaml', $r(YamlRequestHandler::class)),
+            'pet_list' => Route::get('/api/pets', 'pet_list', $r(Pet::class.ListRequestHandler::class), [
+                $m(ApiExceptionMiddleware::class),
+                $m(AcceptAndContentTypeMiddleware::class),
+            ]),
+            'pet_create' => Route::post('/api/pets', 'pet_create', $r(Pet::class.CreateRequestHandler::class), [
+                $m(ApiExceptionMiddleware::class),
+                $m(AcceptAndContentTypeMiddleware::class),
+            ]),
+            'pet_read' => Route::get('/api/pets/{id}', 'pet_read', $r(Pet::class.ReadRequestHandler::class), [
+                $m(ApiExceptionMiddleware::class),
+                $m(AcceptAndContentTypeMiddleware::class),
+            ]),
+            'pet_update' => Route::put('/api/pets/{id}', 'pet_update', $r(Pet::class.UpdateRequestHandler::class), [
+                $m(ApiExceptionMiddleware::class),
+                $m(AcceptAndContentTypeMiddleware::class),
+            ]),
+            'pet_delete' => Route::delete('/api/pets/{id}', 'pet_delete', $r(Pet::class.DeleteRequestHandler::class), [
+                $m(ApiExceptionMiddleware::class),
+                $m(AcceptAndContentTypeMiddleware::class),
+            ]),
         ], $factory($container)->getRoutesByName());
     }
 }

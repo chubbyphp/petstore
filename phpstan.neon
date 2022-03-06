@@ -1,11 +1,20 @@
 parameters:
     ignoreErrors:
         -
+            message: '#Method App\\Mapping\\Odm\\PetMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ODM\\MongoDB\\Mapping\\ClassMetadata but does not specify its types\: T#'
+            path: %currentWorkingDirectory%/src/Mapping/Odm/PetMapping.php
+        -
+            message: '#Method App\\Mapping\\Odm\\VaccinationMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ODM\\MongoDB\\Mapping\\ClassMetadata but does not specify its types\: T#'
+            path: %currentWorkingDirectory%/src/Mapping/Odm/VaccinationMapping.php
+        -
+            message: '#PHPDoc tag @var for variable \$queryParams has no value type specified in iterable type array\.#'
+            path: %currentWorkingDirectory%/src/Mapping/Serialization/AbstractCollectionMapping.php
+        -
             message: '#Parameter \#1 \$count of method App\\Collection\\AbstractCollection\:\:setCount\(\) expects int, array\|int\|object\|null given#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php
         -
             message: '#Cannot call method toArray\(\) on array\|int\|object\|null\.#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php
         -
-            message: '#Method App\\Repository\\PetRepository\:\:findById\(\) should return App\\Model\\ModelInterface\|null but returns object\|null\.#'
+            message: '#PHPDoc tag @var for variable \$documentRepository contains generic class Doctrine\\ODM\\MongoDB\\Repository\\DocumentRepository but does not specify its types\: T#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php

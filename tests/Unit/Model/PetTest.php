@@ -8,7 +8,6 @@ use App\Model\ModelInterface;
 use App\Model\Pet;
 use App\Model\Vaccination;
 use App\Tests\Helper\AssertHelper;
-use App\Tests\Helper\AssertTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,8 +17,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetTest extends TestCase
 {
-    use AssertTrait;
-
     public function testGetSet(): void
     {
         $pet = new Pet();
@@ -27,12 +24,12 @@ final class PetTest extends TestCase
         self::assertInstanceOf(ModelInterface::class, $pet);
 
         self::assertMatchesRegularExpression('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $pet->getId());
-        self::assertInstanceOf(\DateTime::class, $pet->getCreatedAt());
+        self::assertInstanceOf(\DateTimeImmutable::class, $pet->getCreatedAt());
         self::assertNull($pet->getUpdatedAt());
         self::assertNull($pet->getTag());
         self::assertCount(0, $pet->getVaccinations());
 
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         $vaccination1 = new Vaccination();
         $vaccination1->setName('Rabies');

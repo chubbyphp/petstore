@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Model;
 
 use App\Model\Vaccination;
-use App\Tests\Helper\AssertTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,8 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class VaccinationTest extends TestCase
 {
-    use AssertTrait;
-
     public function testGetSet(): void
     {
         $vaccination = new Vaccination();

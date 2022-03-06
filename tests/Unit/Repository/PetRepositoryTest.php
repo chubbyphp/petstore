@@ -43,7 +43,7 @@ namespace App\Tests\Unit\Repository {
             /** @var CollectionInterface|MockObject $collection */
             $collection = $this->getMockByCalls(CollectionInterface::class);
 
-            $collectionClass = get_class($collection);
+            $collectionClass = \get_class($collection);
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(
@@ -73,12 +73,12 @@ namespace App\Tests\Unit\Repository {
             $collection->setFilters(['name' => 'sample']);
             $collection->setSort(['name' => 'asc']);
 
-            /** @var Query|MockObject $countQuery */
+            /** @var MockObject|Query $countQuery */
             $countQuery = $this->getMockByCalls(Query::class, [
-                Call::create('execute')->with()->willReturn(count($items)),
+                Call::create('execute')->with()->willReturn(\count($items)),
             ]);
 
-            /** @var Query|MockObject $itemsQuery */
+            /** @var MockObject|Query $itemsQuery */
             $itemsQuery = $this->getMockByCalls(Query::class, [
                 Call::create('execute')->with()->willReturn(new class($items) {
                     private array $items;
@@ -95,7 +95,7 @@ namespace App\Tests\Unit\Repository {
                 }),
             ]);
 
-            /** @var QueryBuilder|MockObject $queryBuilder */
+            /** @var MockObject|QueryBuilder $queryBuilder */
             $queryBuilder = $this->getMockByCalls(QueryBuilder::class, [
                 Call::create('field')->with('name')->willReturnSelf(),
                 Call::create('text')->with('sample')->willReturnSelf(),
@@ -139,10 +139,10 @@ namespace App\Tests\Unit\Repository {
 
         public function testPersistWithWrongModel(): void
         {
-            /** @var ModelInterface|MockObject $model */
+            /** @var MockObject|ModelInterface $model */
             $model = $this->getMockByCalls(ModelInterface::class);
 
-            $modelClass = get_class($model);
+            $modelClass = \get_class($model);
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(
@@ -175,10 +175,10 @@ namespace App\Tests\Unit\Repository {
 
         public function testRemoveWithWrongModel(): void
         {
-            /** @var ModelInterface|MockObject $model */
+            /** @var MockObject|ModelInterface $model */
             $model = $this->getMockByCalls(ModelInterface::class);
 
-            $modelClass = get_class($model);
+            $modelClass = \get_class($model);
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(

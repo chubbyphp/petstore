@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Mapping\Serialization;
 use App\Collection\PetCollection;
 use App\Mapping\Serialization\AbstractCollectionMapping;
 use App\Mapping\Serialization\PetCollectionMapping;
-use Chubbyphp\Framework\Router\RouterInterface;
+use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 
 /**
  * @covers \App\Mapping\Serialization\PetCollectionMapping
@@ -41,7 +41,7 @@ final class PetCollectionMappingTest extends CollectionMappingTest
         return '/api/pets';
     }
 
-    protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
+    protected function getCollectionMapping(UrlGeneratorInterface $router): AbstractCollectionMapping
     {
         return new PetCollectionMapping($router);
     }

@@ -19,28 +19,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ListRequestHandler implements RequestHandlerInterface
 {
-    private CollectionFactoryInterface $factory;
-
-    private RepositoryInterface $repository;
-
-    private RequestManagerInterface $requestManager;
-
-    private ResponseManagerInterface $responseManager;
-
-    private ValidatorInterface $validator;
-
     public function __construct(
-        CollectionFactoryInterface $factory,
-        RepositoryInterface $repository,
-        RequestManagerInterface $requestManager,
-        ResponseManagerInterface $responseManager,
-        ValidatorInterface $validator
+        private CollectionFactoryInterface $factory,
+        private RepositoryInterface $repository,
+        private RequestManagerInterface $requestManager,
+        private ResponseManagerInterface $responseManager,
+        private ValidatorInterface $validator
     ) {
-        $this->factory = $factory;
-        $this->repository = $repository;
-        $this->requestManager = $requestManager;
-        $this->responseManager = $responseManager;
-        $this->validator = $validator;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

@@ -12,9 +12,15 @@ final class Pet implements ModelInterface
 {
     private string $id;
 
-    private \DateTime $createdAt;
+    /**
+     * @var \DateTime|\DateTimeImmutable
+     */
+    private \DateTimeInterface $createdAt;
 
-    private ?\DateTime $updatedAt = null;
+    /**
+     * @var null|\DateTime|\DateTimeImmutable
+     */
+    private ?\DateTimeInterface $updatedAt = null;
 
     private ?string $name = null;
 
@@ -28,7 +34,7 @@ final class Pet implements ModelInterface
     public function __construct()
     {
         $this->id = Uuid::uuid4()->toString();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
         $this->vaccinations = new ArrayCollection();
     }
 
@@ -37,17 +43,26 @@ final class Pet implements ModelInterface
         return $this->id;
     }
 
-    public function getCreatedAt(): \DateTime
+    /**
+     * @return \DateTime|\DateTimeImmutable
+     */
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    /**
+     * @param \DateTime|\DateTimeImmutable $updatedAt
+     */
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    /**
+     * @return null|\DateTime|\DateTimeImmutable
+     */
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }

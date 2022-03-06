@@ -23,8 +23,8 @@ jobs:
         run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'INTEGRATION_ENDPOINT=http://nginx composer test:integration'
       - name: docker stop
         run: docker-compose -f docker-compose.ci.yml stop
-  php74:
-    name: PHP 7.4
+  php80:
+    name: PHP 8.0
     runs-on: ubuntu-20.04
     services:
       mongo:
@@ -47,8 +47,8 @@ jobs:
           DATABASE_URI: mongodb://root:root@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
-  php80:
-    name: PHP 8.0
+  php81:
+    name: PHP 8.1
     runs-on: ubuntu-20.04
     services:
       mongo:
@@ -65,7 +65,7 @@ jobs:
         run: |
           while ! nc -z localhost 27017; do sleep 0.1; done
       - name: composer test
-        uses: docker://chubbyphp/ci-php80:latest
+        uses: docker://chubbyphp/ci-php81:latest
         env:
           APP_ENV: phpunit
           DATABASE_URI: mongodb://root:root@172.17.0.1:27017

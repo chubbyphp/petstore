@@ -28,19 +28,19 @@ final class ReadRequestHandlerTest extends TestCase
 
     public function testCreateResourceNotFoundInvalidUuid(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('id', null)->willReturn('1234'),
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var RepositoryInterface|MockObject $repository */
+        /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class);
 
-        /** @var ResponseManagerInterface|MockObject $responseManager */
+        /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
@@ -58,21 +58,21 @@ final class ReadRequestHandlerTest extends TestCase
 
     public function testCreateResourceNotFoundMissingModel(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('id', null)->willReturn('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var RepositoryInterface|MockObject $repository */
+        /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
             Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn(null),
         ]);
 
-        /** @var ResponseManagerInterface|MockObject $responseManager */
+        /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
@@ -90,24 +90,24 @@ final class ReadRequestHandlerTest extends TestCase
 
     public function testSuccessful(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('id', null)->willReturn('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var ModelInterface|MockObject $model */
+        /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class);
 
-        /** @var RepositoryInterface|MockObject $repository */
+        /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
             Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn($model),
         ]);
 
-        /** @var ResponseManagerInterface|MockObject $responseManager */
+        /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('create')
                 ->with(

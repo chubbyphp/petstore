@@ -33,13 +33,13 @@ final class CreateRequestHandlerTest extends TestCase
 
     public function testCreateWithValidationError(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
             Call::create('getAttribute')->with('contentType', null)->willReturn('application/json'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
         /** @var ErrorInterface|MockObject $error */
@@ -49,18 +49,18 @@ final class CreateRequestHandlerTest extends TestCase
             Call::create('getArguments')->with()->willReturn([]),
         ]);
 
-        /** @var ModelInterface|MockObject $model */
+        /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class);
 
-        /** @var ModelFactoryInterface|MockObject $factory */
+        /** @var MockObject|ModelFactoryInterface $factory */
         $factory = $this->getMockByCalls(ModelFactoryInterface::class, [
             Call::create('create')->with()->willReturn($model),
         ]);
 
-        /** @var RepositoryInterface|MockObject $repository */
+        /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class);
 
-        /** @var RequestManagerInterface|MockObject $requestManager */
+        /** @var MockObject|RequestManagerInterface $requestManager */
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
             Call::create('getDataFromRequestBody')
                 ->with(
@@ -74,7 +74,7 @@ final class CreateRequestHandlerTest extends TestCase
                 ->willReturn($model),
         ]);
 
-        /** @var ResponseManagerInterface|MockObject $responseManager */
+        /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
@@ -90,7 +90,7 @@ final class CreateRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        /** @var ValidatorInterface|MockObject $validator */
+        /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
             Call::create('validate')->with($model, null, '')->willReturn([$error]),
         ]);
@@ -108,30 +108,30 @@ final class CreateRequestHandlerTest extends TestCase
 
     public function testSuccessful(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
             Call::create('getAttribute')->with('contentType', null)->willReturn('application/json'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var ModelInterface|MockObject $model */
+        /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class);
 
-        /** @var ModelFactoryInterface|MockObject $factory */
+        /** @var MockObject|ModelFactoryInterface $factory */
         $factory = $this->getMockByCalls(ModelFactoryInterface::class, [
             Call::create('create')->with()->willReturn($model),
         ]);
 
-        /** @var RepositoryInterface|MockObject $repository */
+        /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
             Call::create('persist')->with($model),
             Call::create('flush')->with(),
         ]);
 
-        /** @var RequestManagerInterface|MockObject $requestManager */
+        /** @var MockObject|RequestManagerInterface $requestManager */
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
             Call::create('getDataFromRequestBody')
                 ->with(
@@ -145,7 +145,7 @@ final class CreateRequestHandlerTest extends TestCase
                 ->willReturn($model),
         ]);
 
-        /** @var ResponseManagerInterface|MockObject $responseManager */
+        /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('create')
                 ->with(
@@ -159,7 +159,7 @@ final class CreateRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        /** @var ValidatorInterface|MockObject $validator */
+        /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
             Call::create('validate')->with($model, null, '')->willReturn([]),
         ]);

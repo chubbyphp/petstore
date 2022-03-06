@@ -34,7 +34,7 @@ final class PetRepositoryTest extends TestCase
         /** @var CollectionInterface|MockObject $collection */
         $collection = $this->getMockByCalls(CollectionInterface::class);
 
-        $collectionClass = get_class($collection);
+        $collectionClass = $collection::class;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
@@ -78,7 +78,7 @@ final class PetRepositoryTest extends TestCase
 
         /** @var AbstractQuery|MockObject $countQuery */
         $countQuery = $this->getMockByCalls(AbstractQuery::class, [
-            Call::create('getSingleScalarResult')->with()->willReturn((string) count($items)),
+            Call::create('getSingleScalarResult')->with()->willReturn((string) \count($items)),
         ]);
 
         /** @var AbstractQuery|MockObject $itemsQuery */
@@ -86,7 +86,7 @@ final class PetRepositoryTest extends TestCase
             Call::create('getResult')->with(AbstractQuery::HYDRATE_OBJECT)->willReturn($items),
         ]);
 
-        /** @var QueryBuilder|MockObject $queryBuilder */
+        /** @var MockObject|QueryBuilder $queryBuilder */
         $queryBuilder = $this->getMockByCalls(QueryBuilder::class, [
             Call::create('expr')->with()->willReturn($expr),
             Call::create('andWhere')->with($likeNameFunc),
@@ -132,16 +132,15 @@ final class PetRepositoryTest extends TestCase
 
     public function testPersistWithWrongModel(): void
     {
-        /** @var ModelInterface|MockObject $model */
+        /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class);
 
-        $modelClass = get_class($model);
+        $modelClass = $model::class;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
             sprintf(
-                'App\Repository\PetRepository::persist() expects parameter 1 to be'
-                    .' App\Model\Pet, %s given',
+                'App\Repository\PetRepository::persist() expects parameter 1 to be App\Model\Pet, %s given',
                 $modelClass
             )
         );
@@ -168,16 +167,15 @@ final class PetRepositoryTest extends TestCase
 
     public function testRemoveWithWrongModel(): void
     {
-        /** @var ModelInterface|MockObject $model */
+        /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class);
 
-        $modelClass = get_class($model);
+        $modelClass = $model::class;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
             sprintf(
-                'App\Repository\PetRepository::remove() expects parameter 1 to be'
-                    .' App\Model\Pet, %s given',
+                'App\Repository\PetRepository::remove() expects parameter 1 to be App\Model\Pet, %s given',
                 $modelClass
             )
         );

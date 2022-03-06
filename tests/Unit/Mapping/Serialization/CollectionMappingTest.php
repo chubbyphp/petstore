@@ -28,70 +28,70 @@ class CollectionMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var RouterInterface|MockObject $router */
+        /** @var MockObject|RouterInterface $router */
         $router = $this->getMockByCalls(RouterInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
-        self::assertSame($this->getClass(), $mapping->getClass());
+        static::assertSame($this->getClass(), $mapping->getClass());
     }
 
     public function testGetNormalizationType(): void
     {
-        /** @var RouterInterface|MockObject $router */
+        /** @var MockObject|RouterInterface $router */
         $router = $this->getMockByCalls(RouterInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
-        self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
+        static::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
+        /** @var MockObject|RouterInterface $router */
         $router = $this->getMockByCalls(RouterInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
-        self::assertEquals($this->getNormalizationFieldMappings('/'), $fieldMappings);
+        static::assertEquals($this->getNormalizationFieldMappings('/'), $fieldMappings);
     }
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
+        /** @var MockObject|RouterInterface $router */
         $router = $this->getMockByCalls(RouterInterface::class);
 
         $mapping = $this->getCollectionMapping($router);
 
         $fieldMappings = $mapping->getNormalizationEmbeddedFieldMappings('/');
 
-        self::assertEquals([
+        static::assertEquals([
             NormalizationFieldMappingBuilder::createEmbedMany('items')->getMapping(),
         ], $fieldMappings);
     }
 
     public function testGetNormalizationLinkMappings(): void
     {
-        /** @var RouterInterface|MockObject $router */
+        /** @var MockObject|RouterInterface $router */
         $router = $this->getMockByCalls(RouterInterface::class, [
             Call::create('generateUri')
                 ->with($this->getListRoute(), [], [])
-                ->willReturn(sprintf('%s', $this->getCollectionPath())),
+                ->willReturn($this->getCollectionPath()),
             Call::create('generateUri')
                 ->with($this->getCreateRoute(), [], [])
-                ->willReturn(sprintf('%s', $this->getCollectionPath())),
+                ->willReturn($this->getCollectionPath()),
         ]);
 
         $mapping = $this->getCollectionMapping($router);
 
         $linkMappings = $mapping->getNormalizationLinkMappings('/');
 
-        self::assertCount(2, $linkMappings);
+        static::assertCount(2, $linkMappings);
 
-        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
-        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
+        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
+        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
 
         $object = new class() extends AbstractCollection {
         };
@@ -100,12 +100,12 @@ class CollectionMappingTest extends TestCase
         $object->setLimit(20);
         $object->setCount(25);
 
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getQueryParams')->with()->willReturn(['key' => 'value']),
         ]);
 
-        /** @var NormalizerContextInterface|MockObject $context */
+        /** @var MockObject|NormalizerContextInterface $context */
         $context = $this->getMockByCalls(NormalizerContextInterface::class, [
             Call::create('getRequest')->with()->willReturn($request),
         ]);
@@ -113,7 +113,7 @@ class CollectionMappingTest extends TestCase
         $list = $linkMappings[0]->getLinkNormalizer()->normalizeLink('/', $object, $context);
         $create = $linkMappings[1]->getLinkNormalizer()->normalizeLink('/', $object, $context);
 
-        self::assertSame([
+        static::assertSame([
             'href' => sprintf('%s?key=value&offset=0&limit=20', $this->getCollectionPath()),
             'templated' => false,
             'rel' => [],
@@ -122,8 +122,8 @@ class CollectionMappingTest extends TestCase
             ],
         ], $list);
 
-        self::assertSame([
-            'href' => sprintf('%s', $this->getCollectionPath()),
+        static::assertSame([
+            'href' => $this->getCollectionPath(),
             'templated' => false,
             'rel' => [],
             'attributes' => [
@@ -174,27 +174,14 @@ class CollectionMappingTest extends TestCase
     protected function getCollectionMapping(RouterInterface $router): AbstractCollectionMapping
     {
         return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getListRoute(), $this->getCreateRoute()) extends AbstractCollectionMapping {
-            private string $class;
-
-            private string $normalizationType;
-
-            private string $listRouteName;
-
-            private string $createRouteName;
-
             public function __construct(
                 RouterInterface $router,
-                string $class,
-                string $normalizationType,
-                string $listRouteName,
-                string $createRouteName
+                private string $class,
+                private string $normalizationType,
+                private string $listRouteName,
+                private string $createRouteName
             ) {
                 parent::__construct($router);
-
-                $this->class = $class;
-                $this->normalizationType = $normalizationType;
-                $this->listRouteName = $listRouteName;
-                $this->createRouteName = $createRouteName;
             }
 
             public function getClass(): string

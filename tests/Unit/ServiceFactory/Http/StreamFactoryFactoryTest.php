@@ -26,6 +26,6 @@ final class StreamFactoryFactoryTest extends TestCase
 
         $factory = new StreamFactoryFactory();
 
-        self::assertInstanceOf(StreamFactory::class, $factory($container));
+        self::assertInstanceOf(StreamFactory::class, $factory());
     }
 }

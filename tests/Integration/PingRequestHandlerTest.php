@@ -24,7 +24,7 @@ final class PingRequestHandlerTest extends AbstractIntegrationTest
 
         self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
 
-        $apiProblem = \json_decode($response['body'], true);
+        $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
@@ -44,7 +44,7 @@ final class PingRequestHandlerTest extends AbstractIntegrationTest
 
     public function testPing(): void
     {
-        $now = \DateTime::createFromFormat(\DateTime::ATOM, \date('c'));
+        $now = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, date('c'));
 
         $response = $this->httpRequest(
             'GET',
@@ -61,11 +61,11 @@ final class PingRequestHandlerTest extends AbstractIntegrationTest
         self::assertSame('0', $response['headers']['expires'][0]);
         self::assertSame('no-cache', $response['headers']['pragma'][0]);
 
-        $ping = \json_decode($response['body'], true);
+        $ping = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertArrayHasKey('date', $ping);
 
-        $date = new \DateTime($ping['date']);
+        $date = new \DateTimeImmutable($ping['date']);
 
         self::assertGreaterThanOrEqual($now, $date);
     }

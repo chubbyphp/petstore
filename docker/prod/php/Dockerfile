@@ -23,17 +23,20 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" > /etc/apt/
     # keys.andreas-puls.de
 
 RUN apt-get update -y && apt-get install -y \
-    php8.0-apcu \
-    php8.0-ast \
-    php8.0-cli \
-    php8.0-curl \
-    php8.0-fpm \
-    php8.0-mbstring \
-    php8.0-opcache \
-    php8.0-pgsql \
-    php8.0-readline \
-    php8.0-xml \
-    php8.0-zip
+    php8.1-apcu \
+    php8.1-ast \
+    php8.1-cli \
+    php8.1-curl \
+    php8.1-fpm \
+    php8.1-intl \
+    php8.1-mbstring \
+    php8.1-opcache \
+    php8.1-pgsql \
+    php8.1-readline \
+    php8.1-xml \
+    php8.1-zip
+
+RUN ln -sf /usr/bin/php8.1 /etc/alternatives/php
 
 COPY docker/prod/php/files /
 
@@ -56,4 +59,4 @@ RUN cd /var/www/html && \
 
 WORKDIR /var/www/html
 
-CMD ["/usr/sbin/php-fpm8.0", "-c", "/etc/php/8.0/fpm/php-fpm.conf", "-F"]
+CMD ["/usr/sbin/php-fpm8.1", "-c", "/etc/php/8.1/fpm/php-fpm.conf", "-F"]

@@ -29,22 +29,22 @@ abstract class AbstractCollection implements CollectionInterface
 
     protected int $count = 0;
 
-    public function setOffset(int $offset): void
+    final public function setOffset(int $offset): void
     {
         $this->offset = $offset;
     }
 
-    public function getOffset(): int
+    final public function getOffset(): int
     {
         return $this->offset;
     }
 
-    public function setLimit(int $limit): void
+    final public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }
 
-    public function getLimit(): int
+    final public function getLimit(): int
     {
         return $this->limit;
     }
@@ -52,7 +52,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param array<string, string> $filters
      */
-    public function setFilters(array $filters): void
+    final public function setFilters(array $filters): void
     {
         $this->filters = $filters;
     }
@@ -60,7 +60,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @return array<string, string>
      */
-    public function getFilters(): array
+    final public function getFilters(): array
     {
         return $this->filters;
     }
@@ -68,7 +68,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param array<string, string> $sort
      */
-    public function setSort(array $sort): void
+    final public function setSort(array $sort): void
     {
         $this->sort = $sort;
     }
@@ -76,17 +76,17 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @return array<string, string>
      */
-    public function getSort(): array
+    final public function getSort(): array
     {
         return $this->sort;
     }
 
-    public function setCount(int $count): void
+    final public function setCount(int $count): void
     {
         $this->count = $count;
     }
 
-    public function getCount(): int
+    final public function getCount(): int
     {
         return $this->count;
     }
@@ -94,7 +94,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @param array<ModelInterface> $items
      */
-    public function setItems(array $items): void
+    final public function setItems(array $items): void
     {
         $this->items = $items;
     }
@@ -102,7 +102,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @return array<ModelInterface>
      */
-    public function getItems(): array
+    final public function getItems(): array
     {
         return $this->items;
     }

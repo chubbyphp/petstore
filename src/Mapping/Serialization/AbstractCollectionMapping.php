@@ -16,17 +16,14 @@ use Mezzio\Router\RouterInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
-    protected RouterInterface $router;
-
-    public function __construct(RouterInterface $router)
+    public function __construct(protected RouterInterface $router)
     {
-        $this->router = $router;
     }
 
     /**
      * @return array<NormalizationFieldMappingInterface>
      */
-    public function getNormalizationFieldMappings(string $path): array
+    final public function getNormalizationFieldMappings(string $path): array
     {
         return [
             NormalizationFieldMappingBuilder::create('offset')->getMapping(),
@@ -40,7 +37,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     /**
      * @return array<NormalizationFieldMappingInterface>
      */
-    public function getNormalizationEmbeddedFieldMappings(string $path): array
+    final public function getNormalizationEmbeddedFieldMappings(string $path): array
     {
         return [
             NormalizationFieldMappingBuilder::createEmbedMany('items')->getMapping(),
@@ -50,7 +47,7 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
     /**
      * @return array<NormalizationLinkMappingInterface>
      */
-    public function getNormalizationLinkMappings(string $path): array
+    final public function getNormalizationLinkMappings(string $path): array
     {
         return [
             NormalizationLinkMappingBuilder::createCallback('list', function (
@@ -65,17 +62,16 @@ abstract class AbstractCollectionMapping implements NormalizationObjectMappingIn
                 }
 
                 /** @var array<string, array|bool|float|int|string> $queryParams */
-                $queryParams = \array_merge($queryParams, [
+                $queryParams = array_merge($queryParams, [
                     'offset' => $collection->getOffset(),
                     'limit' => $collection->getLimit(),
                 ]);
 
-                return LinkBuilder
-                    ::create(
-                        $this->router->generateUri($this->getListRouteName()).'?'.http_build_query($queryParams)
-                    )
-                        ->setAttributes(['method' => 'GET'])
-                        ->getLink()
+                return LinkBuilder::create(
+                    $this->router->generateUri($this->getListRouteName()).'?'.http_build_query($queryParams)
+                )
+                    ->setAttributes(['method' => 'GET'])
+                    ->getLink()
                 ;
             })->getMapping(),
             NormalizationLinkMappingBuilder::createCallback('create', fn () => LinkBuilder::create($this->router->generateUri($this->getCreateRouteName()))

@@ -13,15 +13,12 @@ use Doctrine\ORM\EntityRepository;
 
 final class PetRepository implements RepositoryInterface
 {
-    private EntityManager $entityManager;
-
-    public function __construct(EntityManager $entityManager)
+    public function __construct(private EntityManager $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
-     * @param PetCollection|CollectionInterface $petCollection
+     * @param CollectionInterface|PetCollection $petCollection
      */
     public function resolveCollection(CollectionInterface $petCollection): void
     {
@@ -31,7 +28,7 @@ final class PetRepository implements RepositoryInterface
                     '%s() expects parameter 1 to be %s, %s given',
                     __METHOD__,
                     PetCollection::class,
-                    get_class($petCollection)
+                    $petCollection::class
                 )
             );
         }
@@ -65,17 +62,11 @@ final class PetRepository implements RepositoryInterface
         $petCollection->setItems($itemsQueryBuilder->getQuery()->getResult());
     }
 
-    /**
-     * @return Pet|ModelInterface|null
-     */
-    public function findById(string $id): ?ModelInterface
+    public function findById(string $id): ?Pet
     {
         return $this->entityManager->find(Pet::class, $id);
     }
 
-    /**
-     * @param Pet|ModelInterface $pet
-     */
     public function persist(ModelInterface $pet): void
     {
         if (!$pet instanceof Pet) {
@@ -84,7 +75,7 @@ final class PetRepository implements RepositoryInterface
                     '%s() expects parameter 1 to be %s, %s given',
                     __METHOD__,
                     Pet::class,
-                    get_class($pet)
+                    $pet::class
                 )
             );
         }
@@ -92,9 +83,6 @@ final class PetRepository implements RepositoryInterface
         $this->entityManager->persist($pet);
     }
 
-    /**
-     * @param Pet|ModelInterface $pet
-     */
     public function remove(ModelInterface $pet): void
     {
         if (!$pet instanceof Pet) {
@@ -103,7 +91,7 @@ final class PetRepository implements RepositoryInterface
                     '%s() expects parameter 1 to be %s, %s given',
                     __METHOD__,
                     Pet::class,
-                    get_class($pet)
+                    $pet::class
                 )
             );
         }

@@ -12,3 +12,9 @@ parameters:
         -
             message: '#Class Mezzio\\ApplicationPipeline not found\.#'
             path: %currentWorkingDirectory%/src/web.php
+        -
+            message: '#Property App\\Model\\Vaccination\:\:\$pet is never read, only written\.#'
+            path: %currentWorkingDirectory%/src/Model/Vaccination.php
+        -
+            message: '#PHPDoc tag @var for variable \$queryParams has no value type specified in iterable type array\.#'
+            path: %currentWorkingDirectory%/src/Mapping/Serialization/AbstractCollectionMapping.php

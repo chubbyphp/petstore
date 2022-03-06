@@ -9,3 +9,7 @@ parameters:
         -
             message: '#PHPDoc tag @var for variable \$entityRepository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php
+        -
+            message: '#Property App\\Model\\Vaccination\:\:\$pet is never read, only written\.#'
+            path: %currentWorkingDirectory%/src/Model/Vaccination.php
+

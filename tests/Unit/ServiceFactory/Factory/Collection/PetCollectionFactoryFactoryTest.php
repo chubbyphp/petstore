@@ -26,6 +26,6 @@ final class PetCollectionFactoryFactoryTest extends TestCase
 
         $factory = new PetCollectionFactoryFactory();
 
-        self::assertInstanceOf(PetCollectionFactory::class, $factory($container));
+        self::assertInstanceOf(PetCollectionFactory::class, $factory());
     }
 }

@@ -32,12 +32,12 @@ final class ListRequestHandlerTest extends TestCase
 
     public function testCreateWithValidationError(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
         /** @var ErrorInterface|MockObject $error */
@@ -55,17 +55,17 @@ final class ListRequestHandlerTest extends TestCase
             Call::create('create')->with()->willReturn($collection),
         ]);
 
-        /** @var RepositoryInterface|MockObject $repository */
+        /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class);
 
-        /** @var RequestManagerInterface|MockObject $requestManager */
+        /** @var MockObject|RequestManagerInterface $requestManager */
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
             Call::create('getDataFromRequestQuery')
                 ->with($request, $collection, null)
                 ->willReturn($collection),
         ]);
 
-        /** @var ResponseManagerInterface|MockObject $responseManager */
+        /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('createFromApiProblem')
                 ->with(
@@ -81,7 +81,7 @@ final class ListRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        /** @var ValidatorInterface|MockObject $validator */
+        /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
             Call::create('validate')->with($collection, null, '')->willReturn([$error]),
         ]);
@@ -99,12 +99,12 @@ final class ListRequestHandlerTest extends TestCase
 
     public function testSuccessful(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
         /** @var CollectionInterface|MockObject $collection */
@@ -115,19 +115,19 @@ final class ListRequestHandlerTest extends TestCase
             Call::create('create')->with()->willReturn($collection),
         ]);
 
-        /** @var RepositoryInterface|MockObject $repository */
+        /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
             Call::create('resolveCollection')->with($collection),
         ]);
 
-        /** @var RequestManagerInterface|MockObject $requestManager */
+        /** @var MockObject|RequestManagerInterface $requestManager */
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
             Call::create('getDataFromRequestQuery')
                 ->with($request, $collection, null)
                 ->willReturn($collection),
         ]);
 
-        /** @var ResponseManagerInterface|MockObject $responseManager */
+        /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
             Call::create('create')
                 ->with(
@@ -141,7 +141,7 @@ final class ListRequestHandlerTest extends TestCase
                 ->willReturn($response),
         ]);
 
-        /** @var ValidatorInterface|MockObject $validator */
+        /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
             Call::create('validate')->with($collection, null, '')->willReturn([]),
         ]);

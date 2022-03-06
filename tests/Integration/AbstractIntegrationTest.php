@@ -12,20 +12,17 @@ abstract class AbstractIntegrationTest extends TestCase
     /**
      * @var string
      */
-    const DEFAULT_INTEGRATION_ENDPOINT = 'http://localhost:%d';
+    public const DEFAULT_INTEGRATION_ENDPOINT = 'http://localhost:%d';
 
-    const DATE_PATTERN = '/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}$/';
-    const UUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/';
+    public const DATE_PATTERN = '/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}$/';
+    public const UUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/';
 
-    /**
-     * @var resource
-     */
-    private $curl;
+    private ?\CurlHandle $curl = null;
 
     /**
      * @throws \RuntimeException
      */
-    protected function httpRequest(string $method, string $resource, array $headers = [], string $body = null): array
+    protected function httpRequest(string $method, string $resource, array $headers = [], ?string $body = null): array
     {
         $curlHeaders = [];
         foreach ($headers as $key => $value) {
@@ -45,6 +42,7 @@ abstract class AbstractIntegrationTest extends TestCase
         if (false === $rawResponse) {
             $info = curl_getinfo($this->curl);
             $error = curl_error($this->curl);
+
             throw new \RuntimeException('Invalid response from server! '.print_r($info, true).PHP_EOL.$error);
         }
 
@@ -62,10 +60,7 @@ abstract class AbstractIntegrationTest extends TestCase
         return ['status' => $status, 'headers' => $headers, 'body' => $body];
     }
 
-    /**
-     * @return resource
-     */
-    private function initializeCurl()
+    private function initializeCurl(): \CurlHandle
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);

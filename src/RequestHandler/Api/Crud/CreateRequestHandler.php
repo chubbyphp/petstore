@@ -22,28 +22,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class CreateRequestHandler implements RequestHandlerInterface
 {
-    private ModelFactoryInterface $factory;
-
-    private RepositoryInterface $repository;
-
-    private RequestManagerInterface $requestManager;
-
-    private ResponseManagerInterface $responseManager;
-
-    private ValidatorInterface $validator;
-
     public function __construct(
-        ModelFactoryInterface $factory,
-        RepositoryInterface $repository,
-        RequestManagerInterface $requestManager,
-        ResponseManagerInterface $responseManager,
-        ValidatorInterface $validator
+        private ModelFactoryInterface $factory,
+        private RepositoryInterface $repository,
+        private RequestManagerInterface $requestManager,
+        private ResponseManagerInterface $responseManager,
+        private ValidatorInterface $validator
     ) {
-        $this->factory = $factory;
-        $this->repository = $repository;
-        $this->requestManager = $requestManager;
-        $this->responseManager = $responseManager;
-        $this->validator = $validator;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

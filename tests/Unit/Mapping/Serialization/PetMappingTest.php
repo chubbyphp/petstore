@@ -23,7 +23,7 @@ final class PetMappingTest extends ModelMappingTest
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouteParserInterface|MockObject $router */
+        /** @var MockObject|RouteParserInterface $router */
         $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);

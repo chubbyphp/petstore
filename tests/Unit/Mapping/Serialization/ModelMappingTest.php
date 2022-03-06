@@ -26,34 +26,34 @@ class ModelMappingTest extends TestCase
 
     public function testGetClass(): void
     {
-        /** @var RouteParserInterface|MockObject $router */
+        /** @var MockObject|RouteParserInterface $router */
         $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
-        self::assertSame($this->getClass(), $mapping->getClass());
+        static::assertSame($this->getClass(), $mapping->getClass());
     }
 
     public function testGetNormalizationType(): void
     {
-        /** @var RouteParserInterface|MockObject $router */
+        /** @var MockObject|RouteParserInterface $router */
         $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
-        self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
+        static::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
     public function testGetNormalizationFieldMappings(): void
     {
-        /** @var RouteParserInterface|MockObject $router */
+        /** @var MockObject|RouteParserInterface $router */
         $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
-        self::assertEquals([
+        static::assertEquals([
             NormalizationFieldMappingBuilder::create('id')->getMapping(),
             NormalizationFieldMappingBuilder::createDateTime('createdAt', \DateTime::ATOM)->getMapping(),
             NormalizationFieldMappingBuilder::createDateTime('updatedAt', \DateTime::ATOM)->getMapping(),
@@ -62,19 +62,19 @@ class ModelMappingTest extends TestCase
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
     {
-        /** @var RouteParserInterface|MockObject $router */
+        /** @var MockObject|RouteParserInterface $router */
         $router = $this->getMockByCalls(RouteParserInterface::class);
 
         $mapping = $this->getModelMapping($router);
 
         $fieldMappings = $mapping->getNormalizationEmbeddedFieldMappings('/');
 
-        self::assertEquals([], $fieldMappings);
+        static::assertEquals([], $fieldMappings);
     }
 
     public function testGetNormalizationLinkMappings(): void
     {
-        /** @var RouteParserInterface|MockObject $router */
+        /** @var MockObject|RouteParserInterface $router */
         $router = $this->getMockByCalls(RouteParserInterface::class, [
             Call::create('urlFor')
                 ->with($this->getReadRoute(), ['id' => 'f183c7ff-7683-451e-807c-b916d9b5cf86'], [])
@@ -91,27 +91,27 @@ class ModelMappingTest extends TestCase
 
         $linkMappings = $mapping->getNormalizationLinkMappings('/');
 
-        self::assertCount(3, $linkMappings);
+        static::assertCount(3, $linkMappings);
 
-        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
-        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
-        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[2]);
+        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
+        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
+        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[2]);
 
-        /** @var ModelInterface|MockObject $model */
+        /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class, [
             Call::create('getId')->with()->willReturn('f183c7ff-7683-451e-807c-b916d9b5cf86'),
             Call::create('getId')->with()->willReturn('f183c7ff-7683-451e-807c-b916d9b5cf86'),
             Call::create('getId')->with()->willReturn('f183c7ff-7683-451e-807c-b916d9b5cf86'),
         ]);
 
-        /** @var NormalizerContextInterface|MockObject $context */
+        /** @var MockObject|NormalizerContextInterface $context */
         $context = $this->getMockByCalls(NormalizerContextInterface::class);
 
         $read = $linkMappings[0]->getLinkNormalizer()->normalizeLink('/', $model, $context);
         $update = $linkMappings[1]->getLinkNormalizer()->normalizeLink('/', $model, $context);
         $delete = $linkMappings[2]->getLinkNormalizer()->normalizeLink('/', $model, $context);
 
-        self::assertSame([
+        static::assertSame([
             'href' => sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86'),
             'templated' => false,
             'rel' => [],
@@ -120,7 +120,7 @@ class ModelMappingTest extends TestCase
             ],
         ], $read);
 
-        self::assertSame([
+        static::assertSame([
             'href' => sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86'),
             'templated' => false,
             'rel' => [],
@@ -129,7 +129,7 @@ class ModelMappingTest extends TestCase
             ],
         ], $update);
 
-        self::assertSame([
+        static::assertSame([
             'href' => sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86'),
             'templated' => false,
             'rel' => [],
@@ -172,31 +172,15 @@ class ModelMappingTest extends TestCase
     protected function getModelMapping(RouteParserInterface $router): AbstractModelMapping
     {
         return new class($router, $this->getClass(), $this->getNormalizationType(), $this->getReadRoute(), $this->getUpdateRoute(), $this->getDeleteRoute()) extends AbstractModelMapping {
-            private string $class;
-
-            private string $normalizationType;
-
-            private string $readRouteName;
-
-            private string $updateRouteName;
-
-            private string $deleteRouteName;
-
             public function __construct(
                 RouteParserInterface $router,
-                string $class,
-                string $normalizationType,
-                string $readRouteName,
-                string $updateRouteName,
-                string $deleteRouteName
+                private string $class,
+                private string $normalizationType,
+                private string $readRouteName,
+                private string $updateRouteName,
+                private string $deleteRouteName
             ) {
                 parent::__construct($router);
-
-                $this->class = $class;
-                $this->normalizationType = $normalizationType;
-                $this->readRouteName = $readRouteName;
-                $this->updateRouteName = $updateRouteName;
-                $this->deleteRouteName = $deleteRouteName;
             }
 
             public function getClass(): string

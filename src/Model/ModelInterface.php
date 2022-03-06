@@ -8,9 +8,12 @@ interface ModelInterface
 {
     public function getId(): string;
 
-    public function getCreatedAt(): \DateTime;
+    public function getCreatedAt(): \DateTimeInterface;
 
-    public function setUpdatedAt(\DateTime $updatedAt): void;
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): void;
 
-    public function getUpdatedAt(): ?\DateTime;
+    /**
+     * @return null|\DateTime|\DateTimeImmutable
+     */
+    public function getUpdatedAt(): ?\DateTimeInterface;
 }

@@ -12,14 +12,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class YamlRequestHandler implements RequestHandlerInterface
 {
-    private ResponseFactoryInterface $responseFactory;
-
-    private StreamFactoryInterface $streamFactory;
-
-    public function __construct(ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory)
-    {
-        $this->responseFactory = $responseFactory;
-        $this->streamFactory = $streamFactory;
+    public function __construct(
+        private ResponseFactoryInterface $responseFactory,
+        private StreamFactoryInterface $streamFactory
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

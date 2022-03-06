@@ -24,24 +24,12 @@ use Ramsey\Uuid\Uuid;
 
 final class UpdateRequestHandler implements RequestHandlerInterface
 {
-    private RepositoryInterface $repository;
-
-    private RequestManagerInterface $requestManager;
-
-    private ResponseManagerInterface $responseManager;
-
-    private ValidatorInterface $validator;
-
     public function __construct(
-        RepositoryInterface $repository,
-        RequestManagerInterface $requestManager,
-        ResponseManagerInterface $responseManager,
-        ValidatorInterface $validator
+        private RepositoryInterface $repository,
+        private RequestManagerInterface $requestManager,
+        private ResponseManagerInterface $responseManager,
+        private ValidatorInterface $validator
     ) {
-        $this->repository = $repository;
-        $this->requestManager = $requestManager;
-        $this->responseManager = $responseManager;
-        $this->validator = $validator;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -51,7 +39,7 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $contentType = $request->getAttribute('contentType');
 
         if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
-            /** @var ModelInterface $model */
+            // @var ModelInterface $model
             return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
         }
 
@@ -67,7 +55,7 @@ final class UpdateRequestHandler implements RequestHandlerInterface
             return $this->createValidationErrorResponse($errors, $accept);
         }
 
-        $model->setUpdatedAt(new \DateTime());
+        $model->setUpdatedAt(new \DateTimeImmutable());
 
         $this->repository->persist($model);
         $this->repository->flush();

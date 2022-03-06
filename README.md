@@ -9,25 +9,25 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 
 ## Requirements
 
- * php: ^7.4
- * [chubbyphp/chubbyphp-api-http][2]: ^4.1.1
- * [chubbyphp/chubbyphp-clean-directories][3]: ^1.1.1
- * [chubbyphp/chubbyphp-cors][4]: ^1.3
- * [chubbyphp/chubbyphp-deserialization][5]: ^3.1.1
- * [chubbyphp/chubbyphp-framework][6]: ^3.5
- * [chubbyphp/chubbyphp-framework-router-fastroute][7]: ^1.2
- * [chubbyphp/chubbyphp-laminas-config][8]: ^1.2.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^1.2.3
- * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.1.1
- * [chubbyphp/chubbyphp-negotiation][11]: ^1.8.1
- * [chubbyphp/chubbyphp-serialization][12]: ^3.1.1
- * [chubbyphp/chubbyphp-validation][13]: ^3.12.1
- * [doctrine/orm][14]: ^2.9.1
- * [monolog/monolog][15]: ^2.2
- * [ramsey/uuid][16]: ^4.1.1
- * [slim/psr7][17]: ^1.4
- * [swagger-api/swagger-ui][18]: ^3.48
- * [symfony/console][19]: ^5.2.8
+ * php: ^8.0
+ * [chubbyphp/chubbyphp-api-http][2]: ^4.3
+ * [chubbyphp/chubbyphp-clean-directories][3]: ^1.2
+ * [chubbyphp/chubbyphp-cors][4]: ^1.4
+ * [chubbyphp/chubbyphp-deserialization][5]: ^3.4.1
+ * [chubbyphp/chubbyphp-framework][6]: ^4.1
+ * [chubbyphp/chubbyphp-framework-router-fastroute][7]: ^1.3.1
+ * [chubbyphp/chubbyphp-laminas-config][8]: ^1.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^1.3
+ * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.2
+ * [chubbyphp/chubbyphp-negotiation][11]: ^1.9
+ * [chubbyphp/chubbyphp-serialization][12]: ^3.2
+ * [chubbyphp/chubbyphp-validation][13]: ^3.12.3
+ * [doctrine/orm][14]: ^2.11.1
+ * [monolog/monolog][15]: ^2.3.5
+ * [ramsey/uuid][16]: ^4.2.3
+ * [slim/psr7][17]: ^1.5
+ * [swagger-api/swagger-ui][18]: ^4.6.1
+ * [symfony/console][19]: ^6.0.5
 
 ## Environment
 
@@ -116,7 +116,7 @@ Service factories are the glue code of the dependeny injection container.
 
 ## Copyright
 
-Dominik Zogg 2021
+Dominik Zogg 2022
 
 [1]: https://github.com/chubbyphp/chubbyphp-framework
 

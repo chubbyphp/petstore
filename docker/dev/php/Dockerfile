@@ -27,29 +27,32 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" > /etc/apt/
     # keys.andreas-puls.de
 
 RUN apt-get update -y && apt-get install -y \
-    php8.0-apcu \
-    php8.0-ast \
-    php8.0-cli \
-    php8.0-curl \
-    php8.0-dev \
-    php8.0-fpm \
-    php8.0-mbstring \
-    php8.0-opcache \
-    php8.0-pcov \
-    php8.0-pgsql \
-    php8.0-readline \
-    php8.0-xdebug \
-    php8.0-xml \
-    php8.0-zip
+    php8.1-apcu \
+    php8.1-ast \
+    php8.1-cli \
+    php8.1-curl \
+    php8.1-dev \
+    php8.1-fpm \
+    php8.1-intl \
+    php8.1-mbstring \
+    php8.1-opcache \
+    php8.1-pcov \
+    php8.1-pgsql \
+    php8.1-readline \
+    php8.1-xdebug \
+    php8.1-xml \
+    php8.1-zip
+
+RUN ln -sf /usr/bin/php8.1 /etc/alternatives/php
 
 RUN phpdismod pcov && phpdismod xdebug
 
 RUN mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/probe/php/linux/$(if [ $(uname -m) == "aarch64" ]; then echo 'arm64'; else echo 'amd64'; fi)/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/8.0/mods-available/blackfire.ini \
-    && ln -s /etc/php/8.0/mods-available/blackfire.ini /etc/php/8.0/cli/conf.d/30-blackfire.ini \
-    && ln -s /etc/php/8.0/mods-available/blackfire.ini /etc/php/8.0/fpm/conf.d/30-blackfire.ini \
+    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/8.1/mods-available/blackfire.ini \
+    && ln -s /etc/php/8.1/mods-available/blackfire.ini /etc/php/8.1/cli/conf.d/30-blackfire.ini \
+    && ln -s /etc/php/8.1/mods-available/blackfire.ini /etc/php/8.1/fpm/conf.d/30-blackfire.ini \
     && rm -rf /tmp/blackfire \
     && mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux/$(if [ $(uname -m) == "aarch64" ]; then echo 'arm64'; else echo 'amd64'; fi) | tar zxp -C /tmp/blackfire \

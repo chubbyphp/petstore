@@ -14,16 +14,10 @@ use Ramsey\Uuid\Uuid;
 
 final class DeleteRequestHandler implements RequestHandlerInterface
 {
-    private RepositoryInterface $repository;
-
-    private ResponseManagerInterface $responseManager;
-
     public function __construct(
-        RepositoryInterface $repository,
-        ResponseManagerInterface $responseManager
+        private RepositoryInterface $repository,
+        private ResponseManagerInterface $responseManager
     ) {
-        $this->repository = $repository;
-        $this->responseManager = $responseManager;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

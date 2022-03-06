@@ -26,6 +26,6 @@ final class ResponseFactoryFactoryTest extends TestCase
 
         $factory = new ResponseFactoryFactory();
 
-        self::assertInstanceOf(ResponseFactory::class, $factory($container));
+        self::assertInstanceOf(ResponseFactory::class, $factory());
     }
 }

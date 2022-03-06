@@ -27,17 +27,17 @@ final class PingRequestHandlerTest extends TestCase
 
     public function testHandle(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var StreamInterface|MockObject $body */
+        /** @var MockObject|StreamInterface $body */
         $body = $this->getMockByCalls(StreamInterface::class, [
             Call::create('write')->with('{"date": "now"}'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Content-Type', 'application/json')->willReturnSelf(),
             Call::create('withHeader')
@@ -48,12 +48,12 @@ final class PingRequestHandlerTest extends TestCase
             Call::create('getBody')->with()->willReturn($body),
         ]);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
             Call::create('createResponse')->with(200, '')->willReturn($response),
         ]);
 
-        /** @var SerializerInterface|MockObject $serializer */
+        /** @var MockObject|SerializerInterface $serializer */
         $serializer = $this->getMockByCalls(SerializerInterface::class, [
             Call::create('encode')
                 ->with(

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler\Api\Swagger;
 
 use App\RequestHandler\Api\Swagger\YamlRequestHandler;
-use App\Tests\Helper\AssertTrait;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -24,18 +23,17 @@ use Psr\Http\Message\StreamInterface;
  */
 final class YamlRequestHandlerTest extends TestCase
 {
-    use AssertTrait;
     use MockByCallsTrait;
 
     public function testHandle(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class);
 
-        /** @var StreamInterface|MockObject $responseStream */
+        /** @var MockObject|StreamInterface $responseStream */
         $responseStream = $this->getMockByCalls(StreamInterface::class);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Content-Type', 'application/x-yaml')->willReturnSelf(),
             Call::create('withHeader')
@@ -46,12 +44,12 @@ final class YamlRequestHandlerTest extends TestCase
             Call::create('withBody')->with($responseStream)->willReturnSelf(),
         ]);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
             Call::create('createResponse')->with(200, '')->willReturn($response),
         ]);
 
-        /** @var StreamFactoryInterface|MockObject $streamFactory */
+        /** @var MockObject|StreamFactoryInterface $streamFactory */
         $streamFactory = $this->getMockByCalls(StreamFactoryInterface::class, [
             Call::create('createStreamFromFile')
                 ->with(

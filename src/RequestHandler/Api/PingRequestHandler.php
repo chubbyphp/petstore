@@ -12,16 +12,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class PingRequestHandler implements RequestHandlerInterface
 {
-    private ResponseFactoryInterface $responseFactory;
-
-    private SerializerInterface $serializer;
-
     public function __construct(
-        ResponseFactoryInterface $responseFactory,
-        SerializerInterface $serializer
+        private ResponseFactoryInterface $responseFactory,
+        private SerializerInterface $serializer
     ) {
-        $this->responseFactory = $responseFactory;
-        $this->serializer = $serializer;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/chubbyphp/petstore/workflows/CI/badge.svg?branch=chubbyphp-mongo)](https://github.com/chubbyphp/petstore/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp-mongo)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp-mongo)
+[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/petstore/chubbyphp-mongo)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/chubbyphp-mongo)
 
 ## Description
 

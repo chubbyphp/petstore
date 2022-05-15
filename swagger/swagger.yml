@@ -454,7 +454,7 @@ components:
         tag:
           type: string
           example: 123.456.789
-        vaccination:
+        vaccinations:
           type: array
           items:
             $ref: '#/components/schemas/Vaccination'

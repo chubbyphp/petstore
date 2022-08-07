@@ -8,7 +8,7 @@ use Monolog\Logger;
 
 $config = require __DIR__.'/prod.php';
 
-$config['chubbyphp']['cors']['allowOrigins']['^https?://localhost'] = AllowOriginRegex::class;
+$config['chubbyphp']['cors']['allowOrigins']['^https?\:\/\/(localhost|127\.\d+.\d+.\d+)(\:\d+)?$'] = AllowOriginRegex::class;
 $config['debug'] = true;
 $config['dependencies']['factories'][Cache::class] = ArrayCacheFactory::class;
 $config['fastroute']['cache'] = null;

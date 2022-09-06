@@ -6,6 +6,7 @@ namespace App\Tests\Integration;
 
 /**
  * @internal
+ *
  * @coversNothing
  */
 final class PetCrudRequestHandlerTest extends AbstractIntegrationTest

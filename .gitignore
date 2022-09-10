@@ -1,7 +1,5 @@
-.DS_Store
-.idea/
-.vscode/
-build/
+build
 composer.lock
-var/
-vendor/
+database
+var
+vendor

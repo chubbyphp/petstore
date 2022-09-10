@@ -7,9 +7,9 @@ namespace App\ServiceFactory\Command;
 use Chubbyphp\CleanDirectories\ServiceFactory\CleanDirectoriesCommandFactory;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
-use Chubbyphp\Laminas\Config\Doctrine\ORM\Tools\Console\Command\EntityManagerCommand;
 use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
+use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\EntityRegionCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
@@ -26,6 +26,7 @@ use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand as SchemaCreateC
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand as SchemaDropCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as SchemaUpdateCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 
@@ -36,28 +37,34 @@ final class CommandsFactory
      */
     public function __invoke(ContainerInterface $container): array
     {
+        /** @var ConnectionProvider $connectionProvider */
+        $connectionProvider = $container->get(ConnectionProvider::class);
+
+        /** @var EntityManagerProvider $entityManagerProvider */
+        $entityManagerProvider = $container->get(EntityManagerProvider::class);
+
         return [
             (new CleanDirectoriesCommandFactory())($container),
-            new EntityManagerCommand(new DatabaseCreateCommand(), $container),
-            new EntityManagerCommand(new DatabaseDropCommand(), $container),
-            new EntityManagerCommand(new ReservedWordsCommand(), $container),
-            new EntityManagerCommand(new RunSqlCommand(), $container),
-            new EntityManagerCommand(new CollectionRegionCommand(), $container),
-            new EntityManagerCommand(new EntityRegionCommand(), $container),
-            new EntityManagerCommand(new MetadataCommand(), $container),
-            new EntityManagerCommand(new QueryCommand(), $container),
-            new EntityManagerCommand(new QueryRegionCommand(), $container),
-            new EntityManagerCommand(new ResultCommand(), $container),
-            new EntityManagerCommand(new SchemaCreateCommand(), $container),
-            new EntityManagerCommand(new SchemaDropCommand(), $container),
-            new EntityManagerCommand(new SchemaUpdateCommand(), $container),
-            new EntityManagerCommand(new ConvertMappingCommand(), $container),
-            new EntityManagerCommand(new EnsureProductionSettingsCommand(), $container),
-            new EntityManagerCommand(new GenerateProxiesCommand(), $container),
-            new EntityManagerCommand(new InfoCommand(), $container),
-            new EntityManagerCommand(new MappingDescribeCommand(), $container),
-            new EntityManagerCommand(new RunDqlCommand(), $container),
-            new EntityManagerCommand(new ValidateSchemaCommand(), $container),
+            new DatabaseCreateCommand($connectionProvider),
+            new DatabaseDropCommand($connectionProvider),
+            new ReservedWordsCommand($connectionProvider),
+            new RunSqlCommand($connectionProvider),
+            new CollectionRegionCommand($entityManagerProvider),
+            new EntityRegionCommand($entityManagerProvider),
+            new MetadataCommand($entityManagerProvider),
+            new QueryCommand($entityManagerProvider),
+            new QueryRegionCommand($entityManagerProvider),
+            new ResultCommand($entityManagerProvider),
+            new SchemaCreateCommand($entityManagerProvider),
+            new SchemaDropCommand($entityManagerProvider),
+            new SchemaUpdateCommand($entityManagerProvider),
+            new ConvertMappingCommand($entityManagerProvider),
+            new EnsureProductionSettingsCommand($entityManagerProvider),
+            new GenerateProxiesCommand($entityManagerProvider),
+            new InfoCommand($entityManagerProvider),
+            new MappingDescribeCommand($entityManagerProvider),
+            new RunDqlCommand($entityManagerProvider),
+            new ValidateSchemaCommand($entityManagerProvider),
         ];
     }
 }

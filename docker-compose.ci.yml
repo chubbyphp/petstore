@@ -4,32 +4,19 @@ services:
     container_name: petstore-php
     hostname: petstore-php
     build:
-      dockerfile: ./docker/prod/php/Dockerfile
+      dockerfile: ./docker/production/php/Dockerfile
       context: ./
     environment:
-      APP_ENV: phpunit
-      DATABASE_USER: root
-      DATABASE_PASS: root
-      DATABASE_HOST: postgres
-      DATABASE_NAME: petstore
-      DATABASE_PORT: 5432
-    depends_on:
-      - postgres
-  postgres:
-    container_name: petstore-postgres
-    hostname: petstore-postgres
-    image: postgres:14
-    command: -c log_statement=all -c log_error_verbosity=VERBOSE
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      APP_ENV: prod
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx
     build:
-      dockerfile: ./docker/prod/nginx/Dockerfile
+      dockerfile: ./docker/production/nginx/Dockerfile
       context: ./
     environment:
       APP_ENV: phpunit
+    ports:
+      - '443:443'
     depends_on:
       - php

@@ -2,25 +2,22 @@ name: CI
 
 on:
   push:
-  pull_request:
   schedule:
     - cron: '0 0 * * *'
 
 jobs:
   docker-compose:
-    name: docker-compose
+    name: docker-compose (production container)
     runs-on: ubuntu-20.04
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: docker build / start
         run: docker-compose -f docker-compose.ci.yml up -d
-      - name: wait for postgres
-        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'while ! nc -z postgres 5432; do sleep 0.1; done'
-      - name: composer setup:phpunit
-        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'composer setup:phpunit'
-      - name: composer test:integration
-        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'INTEGRATION_ENDPOINT=http://nginx composer test:integration'
+      - name: wait for nginx
+        run: while ! nc -z localhost 443; do sleep 0.1; done
+      - name: ping
+        run: curl --insecure https://localhost/ping -vvv
       - name: docker stop
         run: docker-compose -f docker-compose.ci.yml stop
   php80:
@@ -28,10 +25,10 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: root
-          POSTGRES_PASSWORD: root
+          POSTGRES_PASSWORD: KVKtkrTHhKuTJTor8pCP
         ports:
           - 5432:5432
     steps:
@@ -45,7 +42,7 @@ jobs:
         env:
           APP_ENV: phpunit
           DATABASE_USER: root
-          DATABASE_PASS: root
+          DATABASE_PASS: KVKtkrTHhKuTJTor8pCP
           DATABASE_HOST: 172.17.0.1
           DATABASE_NAME: petstore
           DATABASE_PORT: 5432
@@ -56,10 +53,10 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14
         env:
           POSTGRES_USER: root
-          POSTGRES_PASSWORD: root
+          POSTGRES_PASSWORD: KVKtkrTHhKuTJTor8pCP
         ports:
           - 5432:5432
     steps:
@@ -73,7 +70,7 @@ jobs:
         env:
           APP_ENV: phpunit
           DATABASE_USER: root
-          DATABASE_PASS: root
+          DATABASE_PASS: KVKtkrTHhKuTJTor8pCP
           DATABASE_HOST: 172.17.0.1
           DATABASE_NAME: petstore
           DATABASE_PORT: 5432

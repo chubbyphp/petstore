@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory\Command;
 
 use App\ServiceFactory\Command\CommandsFactory;
-use App\Tests\Helper\AssertHelper;
 use Chubbyphp\CleanDirectories\Command\CleanDirectoriesCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
-use Chubbyphp\Laminas\Config\Doctrine\ORM\Tools\Console\Command\EntityManagerCommand;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
+use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\EntityRegionCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
@@ -30,6 +29,7 @@ use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand as SchemaCreateC
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand as SchemaDropCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as SchemaUpdateCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -44,8 +44,16 @@ final class CommandsFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
+        /** @var ContainerInterface $connectionProvider */
+        $connectionProvider = $this->getMockByCalls(ConnectionProvider::class);
+
+        /** @var EntityManagerProvider $entityManagerProvider */
+        $entityManagerProvider = $this->getMockByCalls(EntityManagerProvider::class);
+
         /** @var ContainerInterface $container */
         $container = $this->getMockByCalls(ContainerInterface::class, [
+            Call::create('get')->with(ConnectionProvider::class)->willReturn($connectionProvider),
+            Call::create('get')->with(EntityManagerProvider::class)->willReturn($entityManagerProvider),
             Call::create('get')->with('config')->willReturn(['directories' => []]),
         ]);
 
@@ -80,32 +88,25 @@ final class CommandsFactoryTest extends TestCase
         $validateSchemaCommand = array_shift($commands);
 
         self::assertInstanceOf(CleanDirectoriesCommand::class, $cleanDirectoriesCommand);
-        self::assertEntityCommand(DatabaseCreateCommand::class, $databaseCreateCommand);
-        self::assertEntityCommand(DatabaseDropCommand::class, $databaseDropCommand);
-        self::assertEntityCommand(ReservedWordsCommand::class, $reservedWordsCommand);
-        self::assertEntityCommand(RunSqlCommand::class, $runSqlCommand);
-        self::assertEntityCommand(CollectionRegionCommand::class, $collectionRegionCommand);
-        self::assertEntityCommand(EntityRegionCommand::class, $entityRegionCommand);
-        self::assertEntityCommand(MetadataCommand::class, $metadataCommand);
-        self::assertEntityCommand(QueryCommand::class, $queryCommand);
-        self::assertEntityCommand(QueryRegionCommand::class, $queryRegionCommand);
-        self::assertEntityCommand(ResultCommand::class, $resultCommand);
-        self::assertEntityCommand(SchemaCreateCommand::class, $schemaCreateCommand);
-        self::assertEntityCommand(SchemaDropCommand::class, $schemaDropCommand);
-        self::assertEntityCommand(SchemaUpdateCommand::class, $schemaUpdateCommand);
-        self::assertEntityCommand(ConvertMappingCommand::class, $convertMappingCommand);
-        self::assertEntityCommand(EnsureProductionSettingsCommand::class, $ensureProductionSettingsCommand);
-        self::assertEntityCommand(GenerateProxiesCommand::class, $generateProxiesCommand);
-        self::assertEntityCommand(InfoCommand::class, $infoCommand);
-        self::assertEntityCommand(MappingDescribeCommand::class, $mappingDescribeCommand);
-        self::assertEntityCommand(RunDqlCommand::class, $runDqlCommand);
-        self::assertEntityCommand(ValidateSchemaCommand::class, $validateSchemaCommand);
-    }
-
-    private static function assertEntityCommand(
-        string $expectedCommand,
-        EntityManagerCommand $entityManagerCommand
-    ): void {
-        self::assertInstanceOf($expectedCommand, AssertHelper::readProperty('command', $entityManagerCommand));
+        self::assertInstanceOf(DatabaseCreateCommand::class, $databaseCreateCommand);
+        self::assertInstanceOf(DatabaseDropCommand::class, $databaseDropCommand);
+        self::assertInstanceOf(ReservedWordsCommand::class, $reservedWordsCommand);
+        self::assertInstanceOf(RunSqlCommand::class, $runSqlCommand);
+        self::assertInstanceOf(CollectionRegionCommand::class, $collectionRegionCommand);
+        self::assertInstanceOf(EntityRegionCommand::class, $entityRegionCommand);
+        self::assertInstanceOf(MetadataCommand::class, $metadataCommand);
+        self::assertInstanceOf(QueryCommand::class, $queryCommand);
+        self::assertInstanceOf(QueryRegionCommand::class, $queryRegionCommand);
+        self::assertInstanceOf(ResultCommand::class, $resultCommand);
+        self::assertInstanceOf(SchemaCreateCommand::class, $schemaCreateCommand);
+        self::assertInstanceOf(SchemaDropCommand::class, $schemaDropCommand);
+        self::assertInstanceOf(SchemaUpdateCommand::class, $schemaUpdateCommand);
+        self::assertInstanceOf(ConvertMappingCommand::class, $convertMappingCommand);
+        self::assertInstanceOf(EnsureProductionSettingsCommand::class, $ensureProductionSettingsCommand);
+        self::assertInstanceOf(GenerateProxiesCommand::class, $generateProxiesCommand);
+        self::assertInstanceOf(InfoCommand::class, $infoCommand);
+        self::assertInstanceOf(MappingDescribeCommand::class, $mappingDescribeCommand);
+        self::assertInstanceOf(RunDqlCommand::class, $runDqlCommand);
+        self::assertInstanceOf(ValidateSchemaCommand::class, $validateSchemaCommand);
     }
 }

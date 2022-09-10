@@ -1,0 +1,21 @@
+export HISTSIZE=5000
+export SAVEHIST=100000
+
+export EDITOR='vim'
+
+alias cls="printf '\033c'; printf '\033[3J'"
+
+alias ls='ls -ahl --color=auto'
+alias mkdir='mkdir -pv'
+
+alias cp='cp -i'
+alias ln='ln -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+alias php-fpm-restart='/usr/bin/supervisorctl -c /etc/supervisord.conf restart php-fpm'
+
+alias xdebug-on='echo "zend_extension=xdebug.so" | sudo tee /etc/opt/remi/php81/php.d/15-xdebug.ini && php-fpm-restart'
+alias xdebug-off='sudo rm /etc/opt/remi/php81/php.d/15-xdebug.ini && php-fpm-restart'
+alias pcov-on='echo "extension=pcov.so" | sudo tee /etc/opt/remi/php81/php.d/40-pcov.ini && php-fpm-restart'
+alias pcov-off='sudo rm /etc/opt/remi/php81/php.d/40-pcov.ini && php-fpm-restart'

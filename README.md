@@ -16,19 +16,19 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-cors][4]: ^1.4
  * [chubbyphp/chubbyphp-deserialization][5]: ^3.4.1
  * [chubbyphp/chubbyphp-laminas-config][6]: ^1.3
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^1.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^2.0
  * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.3
  * [chubbyphp/chubbyphp-negotiation][9]: ^1.9
  * [chubbyphp/chubbyphp-serialization][10]: ^3.2
  * [chubbyphp/chubbyphp-validation][11]: ^3.12.3
- * [doctrine/orm][12]: ^2.11.1
+ * [doctrine/orm][12]: ^2.13.1
  * [mezzio/mezzio][13]: ^3.10
  * [mezzio/mezzio-fastroute][14]: ^3.5
  * [monolog/monolog][15]: ^2.3.5
  * [ramsey/uuid][16]: ^4.2.3
  * [slim/psr7][17]: ^1.5
  * [swagger-api/swagger-ui][18]: ^4.6.1
- * [symfony/console][19]: ^6.0.5
+ * [symfony/console][19]: ^5.4.11|^6.1.3
 
 ## Environment
 
@@ -47,13 +47,12 @@ docker-compose exec php bash
 ```
 
 ### Urls
-
-* http://localhost:10080
-* https://localhost:10443
+^
+* https://localhost
 
 ### DBs
 
- * jdbc:postgresql://localhost:15432/petstore?user=root&password=root
+ * jdbc:postgresql://localhost:5432/petstore?user=root&password=root
 
 ## Installation
 

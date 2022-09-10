@@ -15,6 +15,7 @@ use App\RequestHandler\Api\Crud\ListRequestHandler;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\RequestHandler\Api\PingRequestHandler;
+use Doctrine\DBAL\Connection;
 use App\RequestHandler\Api\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler;
 use App\RequestHandler\Api\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
 use App\ServiceFactory\Command\CommandsFactory;
@@ -56,8 +57,11 @@ use Chubbyphp\Deserialization\Decoder\TypeDecoderInterface;
 use Chubbyphp\Deserialization\DeserializerInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 use Chubbyphp\Deserialization\ServiceFactory\DeserializerFactory;
-use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuCacheFactory;
+use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuAdapterFactory;
+use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\DBAL\ConnectionFactory;
+use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\DBAL\Tools\Console\ContainerConnectionProviderFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\EntityManagerFactory;
+use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\Tools\Console\ContainerEntityManagerProviderFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Persistence\Mapping\Driver\ClassMapDriverFactory;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
 use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;
@@ -72,9 +76,11 @@ use Chubbyphp\Validation\Mapping\ValidationMappingProviderRegistryInterface;
 use Chubbyphp\Validation\ServiceFactory\ValidationMappingProviderRegistryFactory;
 use Chubbyphp\Validation\ServiceFactory\ValidatorFactory;
 use Chubbyphp\Validation\ValidatorInterface;
-use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -83,10 +89,11 @@ use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Symfony\Component\Console\Command\Command;
+use Psr\Cache\CacheItemPoolInterface;
 
-$rootDir = \realpath(__DIR__.'/..');
-$cacheDir = $rootDir.'/var/cache/'.$env;
-$logDir = $rootDir.'/var/log';
+$rootDir = \realpath(__DIR__ . '/..');
+$cacheDir = $rootDir . '/var/cache/' . $env;
+$logDir = $rootDir . '/var/log';
 
 return [
     'chubbyphp' => [
@@ -101,30 +108,34 @@ return [
     ],
     'debug' => false,
     'dependencies' => [
+        'aliases' => [
+            EntityManager::class => EntityManagerInterface::class,
+        ],
         'factories' => [
-            CallableResolverInterface::class => CallableResolverFactory::class,
-            RouteCollectorInterface::class => RouteCollectorFactory::class,
-            RouteParserInterface::class => RouteParserFactory::class,
             AcceptAndContentTypeMiddleware::class => AcceptAndContentTypeMiddlewareFactory::class,
+            AcceptNegotiatorInterface::class . 'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
-            AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
-            Cache::class => ApcuCacheFactory::class,
-            Command::class.'[]' => CommandsFactory::class,
+            CacheItemPoolInterface::class => ApcuAdapterFactory::class,
+            CallableResolverInterface::class => CallableResolverFactory::class,
+            Command::class . '[]' => CommandsFactory::class,
+            Connection::class => ConnectionFactory::class,
+            ConnectionProvider::class => ContainerConnectionProviderFactory::class,
+            ContentTypeNegotiatorInterface::class . 'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
             ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
-            ContentTypeNegotiatorInterface::class.'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
             CorsMiddleware::class => CorsMiddlewareFactory::class,
-            DenormalizationObjectMappingInterface::class.'[]' => DenormalizationObjectMappingsFactory::class,
+            DenormalizationObjectMappingInterface::class . '[]' => DenormalizationObjectMappingsFactory::class,
             DeserializerInterface::class => DeserializerFactory::class,
-            EntityManager::class => EntityManagerFactory::class,
+            EntityManagerInterface::class => EntityManagerFactory::class,
+            EntityManagerProvider::class => ContainerEntityManagerProviderFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
-            NormalizationObjectMappingInterface::class.'[]' => NormalizationObjectMappingsFactory::class,
-            Pet::class.CreateRequestHandler::class => PetCreateRequestHandlerFactory::class,
-            Pet::class.DeleteRequestHandler::class => PetDeleteRequestHandlerFactory::class,
-            Pet::class.ListRequestHandler::class => PetListRequestHandlerFactory::class,
-            Pet::class.ReadRequestHandler::class => PetReadRequestHandlerFactory::class,
-            Pet::class.UpdateRequestHandler::class => PetUpdateRequestHandlerFactory::class,
+            NormalizationObjectMappingInterface::class . '[]' => NormalizationObjectMappingsFactory::class,
+            Pet::class . CreateRequestHandler::class => PetCreateRequestHandlerFactory::class,
+            Pet::class . DeleteRequestHandler::class => PetDeleteRequestHandlerFactory::class,
+            Pet::class . ListRequestHandler::class => PetListRequestHandlerFactory::class,
+            Pet::class . ReadRequestHandler::class => PetReadRequestHandlerFactory::class,
+            Pet::class . UpdateRequestHandler::class => PetUpdateRequestHandlerFactory::class,
             PetCollectionFactory::class => PetCollectionFactoryFactory::class,
             PetFactory::class => PetFactoryFactory::class,
             PetRepository::class => PetRepositoryFactory::class,
@@ -132,13 +143,16 @@ return [
             RequestManagerInterface::class => RequestManagerFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
             ResponseManagerInterface::class => ResponseManagerFactory::class,
+            RouteCollectorInterface::class => RouteCollectorFactory::class,
+            RouteParserInterface::class => RouteParserFactory::class,
             SerializerInterface::class => SerializerFactory::class,
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             SwaggerIndexRequestHandler::class => SwaggerIndexRequestHandlerFactory::class,
             SwaggerYamlRequestHandler::class => SwaggerYamlRequestHandlerFactory::class,
-            TypeDecoderInterface::class.'[]' => TypeDecodersFactory::class,
-            TypeEncoderInterface::class.'[]' => TypeEncodersFactory::class,
-            ValidationMappingProviderInterface::class.'[]' => ValidationMappingProviderFactory::class,
+            TypeDecoderInterface::class . '[]' => TypeDecodersFactory::class,
+            TypeEncoderInterface::class . '[]' => TypeEncodersFactory::class,
+            UrlGeneratorInterface::class => UrlGeneratorFactory::class,
+            ValidationMappingProviderInterface::class . '[]' => ValidationMappingProviderFactory::class,
             ValidationMappingProviderRegistryInterface::class => ValidationMappingProviderRegistryFactory::class,
             ValidatorInterface::class => ValidatorFactory::class,
         ],
@@ -175,18 +189,18 @@ return [
         'orm' => [
             'configuration' => [
                 'metadataDriverImpl' => MappingDriver::class,
-                'proxyDir' => $cacheDir.'/doctrine/orm/proxies',
+                'proxyDir' => $cacheDir . '/doctrine/orm/proxies',
                 'proxyNamespace' => 'DoctrineORMProxy',
-                'metadataCacheImpl' => Cache::class,
+                'metadataCache' => CacheItemPoolInterface::class,
             ],
         ],
     ],
     'fastroute' => [
-        'cache' => $cacheDir.'/router-cache.php',
+        'cache' => $cacheDir . '/router-cache.php',
     ],
     'monolog' => [
         'name' => 'petstore',
-        'path' => $logDir.'/'.$env.'.log',
+        'path' => $logDir . '/' . $env . '.log',
         'level' => Logger::NOTICE,
     ],
 ];

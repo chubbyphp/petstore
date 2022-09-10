@@ -4,7 +4,7 @@ services:
     container_name: petstore-php
     hostname: petstore-php
     build:
-      dockerfile: ./docker/dev/php/Dockerfile
+      dockerfile: ./docker/development/php/Dockerfile
       context: ./
       args:
         USER_ID: ${USER_ID:-1000}
@@ -12,21 +12,19 @@ services:
     environment:
       APP_ENV: dev
       DATABASE_USER: root
-      DATABASE_PASS: root
+      DATABASE_PASS: 4aAUfBjDACcdZxNwJgJ6
       DATABASE_HOST: postgres
       DATABASE_NAME: petstore
       DATABASE_PORT: 5432
       SSH_AUTH_SOCK: /ssh-agent
-      BLACKFIRE_CLIENT_ID: ${BLACKFIRE_CLIENT_ID}
-      BLACKFIRE_CLIENT_TOKEN: ${BLACKFIRE_CLIENT_TOKEN}
     volumes:
-      - ${PWD}:/var/www/html
-      - ~/.bash_aliases:/var/www/.bash_aliases
-      - ~/.bash_history:/var/www/.bash_history
-      - ~/.gitconfig:/var/www/.gitconfig
-      - ~/.gitignore:/var/www/.gitignore
-      - ~/.zsh_aliases:/var/www/.zsh_aliases
-      - ~/.zsh_history:/var/www/.zsh_history
+      - ${PWD}:/app
+      - ~/.bash_docker:/home/php/.bash_docker
+      - ~/.bash_history:/home/php/.bash_history
+      - ~/.gitconfig:/home/php/.gitconfig
+      - ~/.gitignore:/home/php/.gitignore
+      - ~/.zsh_docker:/home/php/.zsh_docker
+      - ~/.zsh_history:/home/php/.zsh_history
       - $SSH_AUTH_SOCK:/ssh-agent
     depends_on:
       - postgres
@@ -39,62 +37,20 @@ services:
     command: -c log_statement=all -c log_error_verbosity=VERBOSE
     environment:
       POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: 4aAUfBjDACcdZxNwJgJ6
     ports:
-      - '15432:5432'
+      - '5432:5432'
+    volumes:
+      - ./database/postgres:/var/lib/postgresql/data
   nginx:
     container_name: petstore-nginx
     hostname: petstore-nginx
     build:
-      dockerfile: ./docker/dev/nginx/Dockerfile
+      dockerfile: ./docker/development/nginx/Dockerfile
       context: ./
-    environment:
-      APP_ENV: dev
     ports:
-      - '10080:80'
-      - '10443:443'
+      - '443:443'
     volumes:
-      - ${PWD}:/var/www/html:ro
+      - ${PWD}:/app:ro
     depends_on:
       - php
-  blackfire:
-    container_name: petstore-blackfire
-    hostname: petstore-blackfire
-    image: blackfire/blackfire
-    environment:
-      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
-      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
-  elasticsearch:
-    container_name: petstore-elasticsearch
-    hostname: petstore-elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-    environment:
-      discovery.type: single-node
-      ES_JAVA_OPTS: '-Xms256m -Xmx256m'
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    ports:
-      - '19200:9200'
-  filebeat:
-    container_name: petstore-filebeat
-    hostname: petstore-filebeat
-    image: docker.elastic.co/beats/filebeat:7.10.1
-    command: --strict.perms=false
-    user: root
-    volumes:
-      - ./docker/prod/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - ./var/log:/var/log/application:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    depends_on:
-      - elasticsearch
-  kibana:
-    container_name: petstore-kibana
-    hostname: petstore-kibana
-    image: docker.elastic.co/kibana/kibana:7.10.1
-    ports:
-      - '15601:5601'
-    depends_on:
-      - elasticsearch

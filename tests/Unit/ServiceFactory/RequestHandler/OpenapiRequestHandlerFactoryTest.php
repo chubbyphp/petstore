@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\ServiceFactory\RequestHandler\Api;
+namespace App\Tests\Unit\ServiceFactory\RequestHandler;
 
-use App\RequestHandler\Api\Swagger\IndexRequestHandler;
-use App\ServiceFactory\RequestHandler\Api\Swagger\IndexRequestHandlerFactory;
+use App\RequestHandler\OpenapiRequestHandler;
+use App\ServiceFactory\RequestHandler\OpenapiRequestHandlerFactory;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
@@ -14,11 +14,11 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
 /**
- * @covers \App\ServiceFactory\RequestHandler\Api\Swagger\IndexRequestHandlerFactory
+ * @covers \App\ServiceFactory\RequestHandler\OpenapiRequestHandlerFactory
  *
  * @internal
  */
-final class IndexRequestHandlerFactoryTest extends TestCase
+final class OpenapiRequestHandlerFactoryTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -36,8 +36,8 @@ final class IndexRequestHandlerFactoryTest extends TestCase
             Call::create('get')->with(StreamFactoryInterface::class)->willReturn($stream),
         ]);
 
-        $factory = new IndexRequestHandlerFactory();
+        $factory = new OpenapiRequestHandlerFactory();
 
-        self::assertInstanceOf(IndexRequestHandler::class, $factory($container));
+        self::assertInstanceOf(OpenapiRequestHandler::class, $factory($container));
     }
 }

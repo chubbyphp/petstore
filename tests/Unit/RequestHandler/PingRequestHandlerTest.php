@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\RequestHandler\Api;
+namespace App\Tests\Unit\RequestHandler;
 
-use App\RequestHandler\Api\PingRequestHandler;
+use App\RequestHandler\PingRequestHandler;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
-use Chubbyphp\Serialization\SerializerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -17,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers \App\RequestHandler\Api\PingRequestHandler
+ * @covers \App\RequestHandler\PingRequestHandler
  *
  * @internal
  */
@@ -28,13 +27,14 @@ final class PingRequestHandlerTest extends TestCase
     public function testHandle(): void
     {
         /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
-        ]);
+        $request = $this->getMockByCalls(ServerRequestInterface::class);
 
         /** @var MockObject|StreamInterface $body */
         $body = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('{"date": "now"}'),
+            Call::create('write')->with(new ArgumentCallback(static function (string $json): void {
+                $data = json_decode($json, true);
+                self::assertArrayHasKey('date', $data);
+            })),
         ]);
 
         /** @var MockObject|ResponseInterface $response */
@@ -53,21 +53,7 @@ final class PingRequestHandlerTest extends TestCase
             Call::create('createResponse')->with(200, '')->willReturn($response),
         ]);
 
-        /** @var MockObject|SerializerInterface $serializer */
-        $serializer = $this->getMockByCalls(SerializerInterface::class, [
-            Call::create('encode')
-                ->with(
-                    new ArgumentCallback(static function ($data): void {
-                        self::assertIsArray($data);
-
-                        self::assertArrayHasKey('date', $data);
-                    }),
-                    'application/json'
-                )
-                ->willReturn('{"date": "now"}'),
-        ]);
-
-        $requestHandler = new PingRequestHandler($responseFactory, $serializer);
+        $requestHandler = new PingRequestHandler($responseFactory);
 
         self::assertSame($response, $requestHandler->handle($request));
     }

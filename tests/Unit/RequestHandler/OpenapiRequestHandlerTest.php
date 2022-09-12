@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\RequestHandler\Api\Swagger;
+namespace App\Tests\Unit\RequestHandler;
 
-use App\RequestHandler\Api\Swagger\YamlRequestHandler;
+use App\RequestHandler\OpenapiRequestHandler;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -17,11 +17,11 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers \App\RequestHandler\Api\Swagger\YamlRequestHandler
+ * @covers \App\RequestHandler\OpenapiRequestHandler
  *
  * @internal
  */
-final class YamlRequestHandlerTest extends TestCase
+final class OpenapiRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -54,14 +54,14 @@ final class YamlRequestHandlerTest extends TestCase
             Call::create('createStreamFromFile')
                 ->with(
                     new ArgumentCallback(static function (string $path): void {
-                        self::assertMatchesRegularExpression('#swagger/swagger\.yml$#', $path);
+                        self::assertMatchesRegularExpression('#openapi\.yml$#', $path);
                     }),
                     'r'
                 )
                 ->willReturn($responseStream),
         ]);
 
-        $requestHandler = new YamlRequestHandler($responseFactory, $streamFactory);
+        $requestHandler = new OpenapiRequestHandler($responseFactory, $streamFactory);
 
         self::assertSame($response, $requestHandler->handle($request));
     }

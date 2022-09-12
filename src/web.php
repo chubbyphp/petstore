@@ -10,9 +10,8 @@ use App\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
-use App\RequestHandler\Api\PingRequestHandler;
-use App\RequestHandler\Api\Swagger\IndexRequestHandler;
-use App\RequestHandler\Api\Swagger\YamlRequestHandler;
+use App\RequestHandler\OpenapiRequestHandler;
+use App\RequestHandler\PingRequestHandler;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Cors\CorsMiddleware;
@@ -48,13 +47,8 @@ return static function (string $env) {
     $web->pipe(DispatchMiddleware::class);
     $web->pipe(NotFoundHandler::class);
 
-    $web->get('/api/swagger/index', IndexRequestHandler::class, 'swagger_index');
-    $web->get('/api/swagger/yaml', YamlRequestHandler::class, 'swagger_yaml');
-    $web->get('/api/ping', [
-        AcceptAndContentTypeMiddleware::class,
-        ApiExceptionMiddleware::class,
-        PingRequestHandler::class,
-    ], 'ping');
+    $web->get('/openapi', OpenapiRequestHandler::class, 'openapi');
+    $web->get('/ping', PingRequestHandler::class, 'ping');
     $web->get('/api/pets', [
         AcceptAndContentTypeMiddleware::class,
         Pet::class.ListRequestHandler::class,

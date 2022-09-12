@@ -11,45 +11,13 @@ namespace App\Tests\Integration;
  */
 final class PingRequestHandlerTest extends AbstractIntegrationTest
 {
-    public function testPingWithUnsupportedAccept(): void
-    {
-        $response = $this->httpRequest(
-            'GET',
-            '/api/ping',
-            [
-                'Accept' => 'text/html',
-            ]
-        );
-
-        self::assertSame(406, $response['status']['code'], $response['body'] ?? '');
-
-        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
-
-        $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
-            'title' => 'Not Acceptable',
-            'detail' => null,
-            'instance' => null,
-            'accept' => 'text/html',
-            'acceptables' => [
-                'application/json',
-                'application/jsonx+xml',
-                'application/x-www-form-urlencoded',
-                'application/x-yaml',
-            ],
-            '_type' => 'apiProblem',
-        ], $apiProblem);
-    }
-
     public function testPing(): void
     {
         $now = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, date('c'));
 
         $response = $this->httpRequest(
             'GET',
-            '/api/ping',
+            '/ping',
             [
                 'Accept' => 'application/json',
             ]

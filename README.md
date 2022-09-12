@@ -27,8 +27,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [monolog/monolog][15]: ^2.3.5
  * [ramsey/uuid][16]: ^4.2.3
  * [slim/psr7][17]: ^1.5
- * [swagger-api/swagger-ui][18]: ^4.6.1
- * [symfony/console][19]: ^5.4.11|^6.1.3
+ * [symfony/console][18]: ^5.4.11|^6.1.3
 
 ## Environment
 
@@ -46,9 +45,18 @@ docker-compose up -d
 docker-compose exec php bash
 ```
 
-### Urls
+## Urls
 
-* https://localhost
+* GET https://localhost/ping
+* GET https://localhost/swagger (https://localhost/openapi)
+
+### Pet
+
+* GET https://localhost/api/pets?sort[name]=asc
+* POST https://localhost/api/pets
+* GET https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
+* PUT https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
+* DELETE https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
 
 ### DBs
 
@@ -136,8 +144,7 @@ Dominik Zogg 2022
 [15]: https://packagist.org/packages/monolog/monolog
 [16]: https://packagist.org/packages/ramsey/uuid
 [17]: https://packagist.org/packages/slim/psr7
-[18]: https://packagist.org/packages/swagger-api/swagger-ui
-[19]: https://packagist.org/packages/symfony/console
+[18]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

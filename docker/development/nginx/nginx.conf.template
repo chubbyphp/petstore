@@ -1,0 +1,47 @@
+access_log /var/log/nginx/access.log;
+error_log /var/log/nginx/error.log;
+
+server {
+    listen ${SERVER_PORT} default_server ssl http2;
+
+    ssl_certificate /etc/nginx/templates/certificate;
+    ssl_certificate_key /etc/nginx/templates/certificate_key;
+
+    rewrite ^/$ /swagger redirect;
+
+    root /app/public;
+
+    location /api {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location /openapi {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location /ping {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location /swagger {
+        proxy_pass http://${SWAGGER_SERVER_HOST}:${SWAGGER_SERVER_PORT};
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+    }
+
+    location ~ \.php {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        fastcgi_index index.php;
+        fastcgi_pass ${PHP_FPM_SERVER_HOST}:${PHP_FPM_SERVER_PORT};
+        fastcgi_read_timeout 600;
+    }
+}

@@ -51,8 +51,7 @@ COPY bin /app/bin
 COPY config /app/config
 COPY public /app/public
 COPY src /app/src
-COPY swagger /app/swagger
-COPY composer.json /app/
+COPY composer.json openapi.yml /app/
 
 RUN chown -Rf php: /app
 

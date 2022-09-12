@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\ServiceFactory\RequestHandler\Api\Swagger;
+namespace App\ServiceFactory\RequestHandler;
 
-use App\RequestHandler\Api\Swagger\IndexRequestHandler;
+use App\RequestHandler\OpenapiRequestHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
-final class IndexRequestHandlerFactory
+final class OpenapiRequestHandlerFactory
 {
-    public function __invoke(ContainerInterface $container): IndexRequestHandler
+    public function __invoke(ContainerInterface $container): OpenapiRequestHandler
     {
-        return new IndexRequestHandler(
+        return new OpenapiRequestHandler(
             $container->get(ResponseFactoryInterface::class),
             $container->get(StreamFactoryInterface::class)
         );

@@ -14,9 +14,8 @@ use App\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
-use App\RequestHandler\Api\PingRequestHandler;
-use App\RequestHandler\Api\Swagger\IndexRequestHandler as SwaggerIndexRequestHandler;
-use App\RequestHandler\Api\Swagger\YamlRequestHandler as SwaggerYamlRequestHandler;
+use App\RequestHandler\PingRequestHandler;
+use App\RequestHandler\OpenapiRequestHandler;
 use App\ServiceFactory\Command\CommandsFactory;
 use App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory;
 use App\ServiceFactory\Deserialization\TypeDecodersFactory;
@@ -39,9 +38,8 @@ use App\ServiceFactory\RequestHandler\Api\Crud\PetDeleteRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetListRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetReadRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetUpdateRequestHandlerFactory;
-use App\ServiceFactory\RequestHandler\Api\PingRequestHandlerFactory;
-use App\ServiceFactory\RequestHandler\Api\Swagger\IndexRequestHandlerFactory as SwaggerIndexRequestHandlerFactory;
-use App\ServiceFactory\RequestHandler\Api\Swagger\YamlRequestHandlerFactory as SwaggerYamlRequestHandlerFactory;
+use App\ServiceFactory\RequestHandler\PingRequestHandlerFactory;
+use App\ServiceFactory\RequestHandler\OpenapiRequestHandlerFactory;
 use App\ServiceFactory\Serialization\NormalizationObjectMappingsFactory;
 use App\ServiceFactory\Serialization\TypeEncodersFactory;
 use App\ServiceFactory\Validation\ValidationMappingProviderFactory;
@@ -143,8 +141,7 @@ return [
             UrlGeneratorInterface::class => UrlGeneratorFactory::class,
             SerializerInterface::class => SerializerFactory::class,
             StreamFactoryInterface::class => StreamFactoryFactory::class,
-            SwaggerIndexRequestHandler::class => SwaggerIndexRequestHandlerFactory::class,
-            SwaggerYamlRequestHandler::class => SwaggerYamlRequestHandlerFactory::class,
+            OpenapiRequestHandler::class => OpenapiRequestHandlerFactory::class,
             TypeDecoderInterface::class.'[]' => TypeDecodersFactory::class,
             TypeEncoderInterface::class.'[]' => TypeEncodersFactory::class,
             ValidationMappingProviderInterface::class.'[]' => ValidationMappingProviderFactory::class,

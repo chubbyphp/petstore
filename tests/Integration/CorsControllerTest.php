@@ -15,7 +15,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/ping',
+            '/ping',
             [
                 'Accept' => 'application/json',
                 'Origin' => 'http://localhost:3000',
@@ -33,7 +33,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/ping',
+            '/ping',
             [
                 'Accept' => 'application/json',
                 'Origin' => 'https://unknown.local',
@@ -51,7 +51,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'OPTIONS',
-            '/api/ping',
+            '/ping',
             [
                 'Accept' => 'application/json',
                 'Origin' => 'https://localhost:3000',
@@ -75,7 +75,7 @@ final class CorsControllerTest extends AbstractIntegrationTest
     {
         $response = $this->httpRequest(
             'OPTIONS',
-            '/api/ping',
+            '/ping',
             [
                 'Accept' => 'application/json',
                 'Origin' => 'https://unknown.local',

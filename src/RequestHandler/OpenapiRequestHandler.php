@@ -2,37 +2,31 @@
 
 declare(strict_types=1);
 
-namespace App\RequestHandler\Api;
+namespace App\RequestHandler;
 
-use Chubbyphp\Serialization\SerializerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class PingRequestHandler implements RequestHandlerInterface
+final class OpenapiRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
-        private SerializerInterface $serializer
+        private StreamFactoryInterface $streamFactory
     ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $accept = $request->getAttribute('accept');
-
-        $body = $this->serializer->encode(['date' => date('c')], $accept);
-
-        $response = $this->responseFactory->createResponse(200)
-            ->withHeader('Content-Type', $accept)
+        return $this->responseFactory
+            ->createResponse(200)
+            ->withHeader('Content-Type', 'application/x-yaml')
             ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->withHeader('Pragma', 'no-cache')
             ->withHeader('Expires', '0')
+            ->withBody($this->streamFactory->createStreamFromFile(__DIR__.'/../../openapi.yml'))
         ;
-
-        $response->getBody()->write($body);
-
-        return $response;
     }
 }

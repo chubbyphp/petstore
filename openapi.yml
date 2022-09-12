@@ -1,11 +1,11 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: Swagger Petstore
+  title: Petstore
   license:
     name: MIT
 paths:
-  /api/ping:
+  /ping:
     get:
       summary: Ping
       operationId: ping

@@ -47,7 +47,7 @@ docker-compose exec php bash
 ```
 
 ### Urls
-^
+
 * https://localhost
 
 ### DBs

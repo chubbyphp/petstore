@@ -45,9 +45,18 @@ docker-compose up -d
 docker-compose exec php bash
 ```
 
-### Urls
+## Urls
 
-* https://localhost
+* GET https://localhost/ping
+* GET https://localhost/swagger (https://localhost/openapi)
+
+### Pet
+
+* GET https://localhost/api/pets?sort[name]=asc
+* POST https://localhost/api/pets
+* GET https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
+* PUT https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
+* DELETE https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
 
 ### DBs
 

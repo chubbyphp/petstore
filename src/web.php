@@ -10,9 +10,8 @@ use App\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
-use App\RequestHandler\Api\PingRequestHandler;
-use App\RequestHandler\Api\Swagger\IndexRequestHandler;
-use App\RequestHandler\Api\Swagger\YamlRequestHandler;
+use App\RequestHandler\OpenapiRequestHandler;
+use App\RequestHandler\PingRequestHandler;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Cors\CorsMiddleware;
@@ -39,13 +38,9 @@ return static function (string $env) {
     $web->add(CorsMiddleware::class);
     $web->addErrorMiddleware($container->get('config')['debug'], true, true);
 
+    $web->get('/openapi', OpenapiRequestHandler::class)->setName('openapi');
+    $web->get('/ping', PingRequestHandler::class)->setName('ping');
     $web->group('/api', function (RouteCollectorProxy $group): void {
-        $group->get('/swagger/index', IndexRequestHandler::class)->setName('swagger_index');
-        $group->get('/swagger/yaml', YamlRequestHandler::class)->setName('swagger_yaml');
-        $group->get('/ping', PingRequestHandler::class)->setName('ping')
-            ->add(ApiExceptionMiddleware::class)
-            ->add(AcceptAndContentTypeMiddleware::class)
-        ;
         $group->group('/pets', function (RouteCollectorProxy $group): void {
             $group->get('', Pet::class.ListRequestHandler::class)->setName('pet_list');
             $group->post('', Pet::class.CreateRequestHandler::class)->setName('pet_create');

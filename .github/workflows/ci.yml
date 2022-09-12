@@ -18,6 +18,8 @@ jobs:
         run: while ! nc -z localhost 443; do sleep 0.1; done
       - name: ping
         run: curl --insecure https://localhost/ping -vvv
+      - name: openapi
+        run: curl --insecure https://localhost/openapi -vvv
       - name: docker stop
         run: docker-compose -f docker-compose.ci.yml stop
   php80:

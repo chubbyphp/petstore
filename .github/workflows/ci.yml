@@ -2,25 +2,22 @@ name: CI
 
 on:
   push:
-  pull_request:
   schedule:
     - cron: '0 0 * * *'
 
 jobs:
   docker-compose:
-    name: docker-compose
+    name: docker-compose (production container)
     runs-on: ubuntu-20.04
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: docker build / start
         run: docker-compose -f docker-compose.ci.yml up -d
-      - name: wait for mongo
-        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'while ! nc -z mongo 27017; do sleep 0.1; done'
-      - name: composer setup:phpunit
-        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'composer setup:phpunit'
-      - name: composer test:integration
-        run: docker-compose -f docker-compose.ci.yml exec -T php bash -c 'INTEGRATION_ENDPOINT=http://nginx composer test:integration'
+      - name: wait for nginx
+        run: while ! nc -z localhost 443; do sleep 0.1; done
+      - name: ping
+        run: curl --insecure https://localhost/ping -vvv
       - name: docker stop
         run: docker-compose -f docker-compose.ci.yml stop
   php80:
@@ -28,10 +25,10 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       mongo:
-        image: mongo:4.4-bionic
+        image: mongo:5.0
         env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: root
+          MONGO_INITDB_ROOT_USERNAME: petstore
+          MONGO_INITDB_ROOT_PASSWORD: KVKtkrTHhKuTJTor8pCP
         ports:
           - 27017:27017
     steps:
@@ -44,7 +41,7 @@ jobs:
         uses: docker://chubbyphp/ci-php80:latest
         env:
           APP_ENV: phpunit
-          DATABASE_URI: mongodb://root:root@172.17.0.1:27017
+          DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php81:
@@ -52,10 +49,10 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       mongo:
-        image: mongo:4.4-bionic
+        image: mongo:5.0
         env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: root
+          MONGO_INITDB_ROOT_USERNAME: petstore
+          MONGO_INITDB_ROOT_PASSWORD: KVKtkrTHhKuTJTor8pCP
         ports:
           - 27017:27017
     steps:
@@ -68,7 +65,7 @@ jobs:
         uses: docker://chubbyphp/ci-php81:latest
         env:
           APP_ENV: phpunit
-          DATABASE_URI: mongodb://root:root@172.17.0.1:27017
+          DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
       - name: sonarcloud.io

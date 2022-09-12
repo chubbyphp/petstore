@@ -18,17 +18,17 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-framework][6]: ^4.1
  * [chubbyphp/chubbyphp-framework-router-fastroute][7]: ^1.3.1
  * [chubbyphp/chubbyphp-laminas-config][8]: ^1.3
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^1.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^2.0
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.2
  * [chubbyphp/chubbyphp-negotiation][11]: ^1.9
  * [chubbyphp/chubbyphp-serialization][12]: ^3.2
  * [chubbyphp/chubbyphp-validation][13]: ^3.12.3
- * [doctrine/mongodb-odm][14]: ^2.3.1
+ * [doctrine/mongodb-odm][14]: ^2.4.2
  * [monolog/monolog][15]: ^2.3.5
  * [ramsey/uuid][16]: ^4.2.3
  * [slim/psr7][17]: ^1.5
  * [swagger-api/swagger-ui][18]: ^4.6.1
- * [symfony/console][19]: ^6.0.5
+ * [symfony/console][19]: ^5.4.11|^6.1.3
 
 ## Environment
 
@@ -47,13 +47,12 @@ docker-compose exec php bash
 ```
 
 ### Urls
-
-* http://localhost:10080
-* https://localhost:10443
+^
+* https://localhost
 
 ### DBs
 
- * jdbc:mongodb://root:root@localhost:12717/petstore
+ * jdbc:mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@localhost:27017/petstore
 
 ## Installation
 

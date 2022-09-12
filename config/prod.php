@@ -64,7 +64,7 @@ use Chubbyphp\Framework\Middleware\RouteMatcherMiddleware;
 use Chubbyphp\Framework\Router\RouteMatcherInterface;
 use Chubbyphp\Framework\Router\RoutesInterface;
 use Chubbyphp\Framework\Router\UrlGeneratorInterface;
-use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuCacheFactory;
+use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuAdapterFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ODM\MongoDB\DocumentManagerFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Persistence\Mapping\Driver\ClassMapDriverFactory;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
@@ -80,7 +80,6 @@ use Chubbyphp\Validation\Mapping\ValidationMappingProviderRegistryInterface;
 use Chubbyphp\Validation\ServiceFactory\ValidationMappingProviderRegistryFactory;
 use Chubbyphp\Validation\ServiceFactory\ValidatorFactory;
 use Chubbyphp\Validation\ValidatorInterface;
-use Doctrine\Common\Cache\Cache;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Monolog\Logger;
@@ -89,6 +88,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
+use Psr\Cache\CacheItemPoolInterface;
 
 $rootDir = \realpath(__DIR__.'/..');
 $cacheDir = $rootDir.'/var/cache/'.$env;
@@ -112,7 +112,7 @@ return [
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
             AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
-            Cache::class => ApcuCacheFactory::class,
+            CacheItemPoolInterface::class => ApcuAdapterFactory::class,
             Command::class.'[]' => CommandsFactory::class,
             ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
             ContentTypeNegotiatorInterface::class.'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
@@ -162,7 +162,6 @@ return [
                 'namespace' => 'doctrine',
             ],
         ],
-
         'driver' => [
             'classMap' => [
                 'map' => [
@@ -189,7 +188,7 @@ return [
                 'proxyNamespace' => 'DoctrineMongoDBODMProxy',
                 'hydratorDir' => $cacheDir.'/doctrine/mongodbOdm/hydrators',
                 'hydratorNamespace' => 'DoctrineMongoDBODMHydrators',
-                'metadataCacheImpl' => Cache::class,
+                'metadataCache' => CacheItemPoolInterface::class,
                 'defaultDB' => 'petstore',
             ],
         ],

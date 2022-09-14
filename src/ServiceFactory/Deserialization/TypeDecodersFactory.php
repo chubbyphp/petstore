@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory\Deserialization;
 
-use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
-use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
-use Chubbyphp\Deserialization\Decoder\TypeDecoderInterface;
-use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
-use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\JsonTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\JsonxTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\TypeDecoderInterface;
+use Chubbyphp\DecodeEncode\Decoder\UrlEncodedTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\YamlTypeDecoder;
 
 final class TypeDecodersFactory
 {

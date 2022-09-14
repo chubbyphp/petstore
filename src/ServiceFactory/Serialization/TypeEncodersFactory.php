@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory\Serialization;
 
-use Chubbyphp\Serialization\Encoder\JsonTypeEncoder;
-use Chubbyphp\Serialization\Encoder\JsonxTypeEncoder;
-use Chubbyphp\Serialization\Encoder\TypeEncoderInterface;
-use Chubbyphp\Serialization\Encoder\UrlEncodedTypeEncoder;
-use Chubbyphp\Serialization\Encoder\YamlTypeEncoder;
+use Chubbyphp\DecodeEncode\Encoder\JsonTypeEncoder;
+use Chubbyphp\DecodeEncode\Encoder\JsonxTypeEncoder;
+use Chubbyphp\DecodeEncode\Encoder\TypeEncoderInterface;
+use Chubbyphp\DecodeEncode\Encoder\UrlEncodedTypeEncoder;
+use Chubbyphp\DecodeEncode\Encoder\YamlTypeEncoder;
 use Psr\Container\ContainerInterface;
 
 final class TypeEncodersFactory

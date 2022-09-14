@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory\Serialization;
 
 use App\ServiceFactory\Serialization\TypeEncodersFactory;
+use Chubbyphp\DecodeEncode\Encoder\JsonTypeEncoder;
+use Chubbyphp\DecodeEncode\Encoder\JsonxTypeEncoder;
+use Chubbyphp\DecodeEncode\Encoder\UrlEncodedTypeEncoder;
+use Chubbyphp\DecodeEncode\Encoder\YamlTypeEncoder;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
-use Chubbyphp\Serialization\Encoder\JsonTypeEncoder;
-use Chubbyphp\Serialization\Encoder\JsonxTypeEncoder;
-use Chubbyphp\Serialization\Encoder\UrlEncodedTypeEncoder;
-use Chubbyphp\Serialization\Encoder\YamlTypeEncoder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 

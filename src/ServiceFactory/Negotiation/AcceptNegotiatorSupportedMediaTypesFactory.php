@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory\Negotiation;
 
+use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
+use Chubbyphp\DecodeEncode\ServiceFactory\EncoderFactory;
 use Chubbyphp\Laminas\Config\Factory\AbstractFactory;
-use Chubbyphp\Serialization\Encoder\EncoderInterface;
-use Chubbyphp\Serialization\ServiceFactory\EncoderFactory;
 use Psr\Container\ContainerInterface;
 
 final class AcceptNegotiatorSupportedMediaTypesFactory extends AbstractFactory

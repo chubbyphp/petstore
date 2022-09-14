@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory\Deserialization;
 
 use App\ServiceFactory\Deserialization\TypeDecodersFactory;
-use Chubbyphp\Deserialization\Decoder\JsonTypeDecoder;
-use Chubbyphp\Deserialization\Decoder\JsonxTypeDecoder;
-use Chubbyphp\Deserialization\Decoder\UrlEncodedTypeDecoder;
-use Chubbyphp\Deserialization\Decoder\YamlTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\JsonTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\JsonxTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\UrlEncodedTypeDecoder;
+use Chubbyphp\DecodeEncode\Decoder\YamlTypeDecoder;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 

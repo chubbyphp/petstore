@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory\Negotiation;
 
 use App\ServiceFactory\Negotiation\AcceptNegotiatorSupportedMediaTypesFactory;
+use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
-use Chubbyphp\Serialization\Encoder\EncoderInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 

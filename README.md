@@ -14,20 +14,21 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-api-http][2]: ^4.2
  * [chubbyphp/chubbyphp-clean-directories ][3]: ^1.2
  * [chubbyphp/chubbyphp-cors][4]: ^1.4
- * [chubbyphp/chubbyphp-deserialization][5]: ^3.4.1
- * [chubbyphp/chubbyphp-laminas-config][6]: ^1.3
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^2.0
- * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.3
- * [chubbyphp/chubbyphp-negotiation][9]: ^1.9
- * [chubbyphp/chubbyphp-serialization][10]: ^3.2
- * [chubbyphp/chubbyphp-validation][11]: ^3.12.3
- * [doctrine/orm][12]: ^2.13.1
- * [mezzio/mezzio][13]: ^3.10
- * [mezzio/mezzio-fastroute][14]: ^3.5
- * [monolog/monolog][15]: ^2.3.5
- * [ramsey/uuid][16]: ^4.2.3
- * [slim/psr7][17]: ^1.5
- * [symfony/console][18]: ^5.4.11|^6.1.3
+ * [chubbyphp/chubbyphp-decode-encode][5]: ^1.0.1
+ * [chubbyphp/chubbyphp-deserialization][6]: ^3.4.1
+ * [chubbyphp/chubbyphp-laminas-config][7]: ^1.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][8]: ^2.0
+ * [chubbyphp/chubbyphp-laminas-config-factory][9]: ^1.3
+ * [chubbyphp/chubbyphp-negotiation][10]: ^1.9
+ * [chubbyphp/chubbyphp-serialization][11]: ^3.2
+ * [chubbyphp/chubbyphp-validation][12]: ^3.12.3
+ * [doctrine/orm][13]: ^2.13.1
+ * [mezzio/mezzio][14]: ^3.10
+ * [mezzio/mezzio-fastroute][15]: ^3.5
+ * [monolog/monolog][16]: ^2.3.5
+ * [ramsey/uuid][17]: ^4.2.3
+ * [slim/psr7][18]: ^1.5
+ * [symfony/console][19]: ^5.4.11|^6.1.3
 
 ## Environment
 
@@ -131,20 +132,21 @@ Dominik Zogg 2022
 [2]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
 [3]: https://packagist.org/packages/chubbyphp/chubbyphp-clean-directories
 [4]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[11]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[12]: https://packagist.org/packages/doctrine/orm
-[13]: https://packagist.org/packages/mezzio/mezzio
-[14]: https://packagist.org/packages/mezzio/mezzio-fastroute
-[15]: https://packagist.org/packages/monolog/monolog
-[16]: https://packagist.org/packages/ramsey/uuid
-[17]: https://packagist.org/packages/slim/psr7
-[18]: https://packagist.org/packages/symfony/console
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-decode-encode
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
+[12]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
+[13]: https://packagist.org/packages/doctrine/orm
+[14]: https://packagist.org/packages/mezzio/mezzio
+[15]: https://packagist.org/packages/mezzio/mezzio-fastroute
+[16]: https://packagist.org/packages/monolog/monolog
+[17]: https://packagist.org/packages/ramsey/uuid
+[18]: https://packagist.org/packages/slim/psr7
+[19]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

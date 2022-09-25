@@ -26,7 +26,7 @@ use App\ServiceFactory\Framework\ExceptionMiddlewareFactory;
 use App\ServiceFactory\Framework\MiddlewaresFactory;
 use App\ServiceFactory\Framework\RouteMatcherFactory;
 use App\ServiceFactory\Framework\RouteMatcherMiddlewareFactory;
-use App\ServiceFactory\Framework\RoutesFactory;
+use App\ServiceFactory\Framework\RoutesByNameFactory;
 use App\ServiceFactory\Framework\UrlGeneratorFactory;
 use App\ServiceFactory\Http\ResponseFactoryFactory;
 use App\ServiceFactory\Http\StreamFactoryFactory;
@@ -62,7 +62,7 @@ use Chubbyphp\Deserialization\ServiceFactory\DeserializerFactory;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\RouteMatcherMiddleware;
 use Chubbyphp\Framework\Router\RouteMatcherInterface;
-use Chubbyphp\Framework\Router\RoutesInterface;
+use Chubbyphp\Framework\Router\RoutesByNameInterface;
 use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuAdapterFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\DBAL\ConnectionFactory;
@@ -151,7 +151,7 @@ return [
             ResponseManagerInterface::class => ResponseManagerFactory::class,
             RouteMatcherInterface::class => RouteMatcherFactory::class,
             RouteMatcherMiddleware::class => RouteMatcherMiddlewareFactory::class,
-            RoutesInterface::class => RoutesFactory::class,
+            RoutesByNameInterface::class => RoutesByNameFactory::class,
             SerializerInterface::class => SerializerFactory::class,
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             TypeDecoderInterface::class . '[]' => TypeDecodersFactory::class,

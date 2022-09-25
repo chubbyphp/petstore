@@ -18,12 +18,13 @@ use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\Group;
 use Chubbyphp\Framework\Router\Route;
-use Chubbyphp\Framework\Router\Routes;
+use Chubbyphp\Framework\Router\RoutesByName;
+use Chubbyphp\Framework\Router\RoutesByNameInterface;
 use Psr\Container\ContainerInterface;
 
-final class RoutesFactory
+final class RoutesByNameFactory
 {
-    public function __invoke(ContainerInterface $container): Routes
+    public function __invoke(ContainerInterface $container): RoutesByNameInterface
     {
         $ping = new LazyRequestHandler($container, PingRequestHandler::class);
         $openApi = new LazyRequestHandler($container, OpenapiRequestHandler::class);
@@ -37,7 +38,7 @@ final class RoutesFactory
         $petUpdate = new LazyRequestHandler($container, Pet::class.UpdateRequestHandler::class);
         $petDelete = new LazyRequestHandler($container, Pet::class.DeleteRequestHandler::class);
 
-        return new Routes(
+        return new RoutesByName(
             Group::create('', [
                 Route::get('/ping', 'ping', $ping),
                 Route::get('/openapi', 'openapi', $openApi),

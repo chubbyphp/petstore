@@ -12,7 +12,7 @@ use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\RequestHandler\OpenapiRequestHandler;
 use App\RequestHandler\PingRequestHandler;
-use App\ServiceFactory\Framework\RoutesFactory;
+use App\ServiceFactory\Framework\RoutesByNameFactory;
 use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
 use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
@@ -23,11 +23,11 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
 /**
- * @covers \App\ServiceFactory\Framework\RoutesFactory
+ * @covers \App\ServiceFactory\Framework\RoutesByNameFactory
  *
  * @internal
  */
-final class RoutesFactoryTest extends TestCase
+final class RoutesByNameFactoryTest extends TestCase
 {
     use MockByCallsTrait;
 
@@ -48,7 +48,7 @@ final class RoutesFactoryTest extends TestCase
         $petUpdate = new LazyRequestHandler($container, Pet::class.UpdateRequestHandler::class);
         $petDelete = new LazyRequestHandler($container, Pet::class.DeleteRequestHandler::class);
 
-        $factory = new RoutesFactory();
+        $factory = new RoutesByNameFactory();
 
         self::assertEquals([
             'ping' => Route::get('/ping', 'ping', $ping),

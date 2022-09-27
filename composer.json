@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "chubbyphp/chubbyphp-api-http": "^5.0",
+        "chubbyphp/chubbyphp-api-http": "^5.0.1",
         "chubbyphp/chubbyphp-clean-directories": "^1.2",
         "chubbyphp/chubbyphp-cors": "^1.4",
         "chubbyphp/chubbyphp-decode-encode": "^1.0.1",

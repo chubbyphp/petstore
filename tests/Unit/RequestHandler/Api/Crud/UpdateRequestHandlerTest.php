@@ -50,15 +50,7 @@ final class UpdateRequestHandlerTest extends TestCase
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class);
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromHttpException')
-                ->with(
-                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
-                    }),
-                    'application/json',
-                )
-                ->willReturn($response),
-        ]);
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
 
         /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class);
@@ -70,7 +62,13 @@ final class UpdateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $requestHandler->handle($request));
+        try {
+            $requestHandler->handle($request);
+            self::fail('Expected Exception');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+            self::assertSame(404, $e->getStatus());
+        }
     }
 
     public function testCreateResourceNotFoundMissingModel(): void
@@ -94,15 +92,7 @@ final class UpdateRequestHandlerTest extends TestCase
         $requestManager = $this->getMockByCalls(RequestManagerInterface::class);
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromHttpException')
-                ->with(
-                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
-                    }),
-                    'application/json',
-                )
-                ->willReturn($response),
-        ]);
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
 
         /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class);
@@ -114,7 +104,13 @@ final class UpdateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $requestHandler->handle($request));
+        try {
+            $requestHandler->handle($request);
+            self::fail('Expected Exception');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+            self::assertSame(404, $e->getStatus());
+        }
     }
 
     public function testCreateWithValidationError(): void
@@ -163,19 +159,7 @@ final class UpdateRequestHandlerTest extends TestCase
         ]);
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromHttpException')
-                ->with(
-                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
-                        self::assertSame(
-                            [['name' => 'name', 'reason' => 'notunique', 'details' => []]],
-                            $httpException->jsonSerialize()['invalidParameters']
-                        );
-                    }),
-                    'application/json',
-                )
-                ->willReturn($response),
-        ]);
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
 
         /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
@@ -189,7 +173,26 @@ final class UpdateRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $requestHandler->handle($request));
+        try {
+            $requestHandler->handle($request);
+            self::fail('Expected Exception');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+            self::assertSame([
+                'type' => 'https://datatracker.ietf.org/doc/html/rfc4918#section-11.2',
+                'status' => 422,
+                'title' => 'Unprocessable Entity',
+                'detail' => null,
+                'instance' => null,
+                'invalidParameters' => [
+                    0 => [
+                        'name' => 'name',
+                        'reason' => 'notunique',
+                        'details' => [],
+                    ],
+                ],
+            ], $e->jsonSerialize());
+        }
     }
 
     public function testSuccessful(): void

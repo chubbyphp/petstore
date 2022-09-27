@@ -50,7 +50,7 @@ final class RoutesByNameFactory
                         Route::put('/{id}', 'pet_update', $petUpdate),
                         Route::delete('/{id}', 'pet_delete', $petDelete),
                     ]),
-                ], [$apiExceptionMiddleware, $acceptAndContentType]),
+                ], [$acceptAndContentType, $apiExceptionMiddleware]),
             ])->getRoutes()
         );
     }

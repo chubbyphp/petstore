@@ -11,8 +11,8 @@ A simple skeleton to build api's based on the [slim][1] framework.
 ## Requirements
 
  * php: ^8.0
- * [chubbyphp/chubbyphp-api-http][2]: ^4.3
- * [chubbyphp/chubbyphp-clean-directories ][3]: ^1.3
+ * [chubbyphp/chubbyphp-api-http][2]: ^5.0.1
+ * [chubbyphp/chubbyphp-clean-directories][3]: ^1.2
  * [chubbyphp/chubbyphp-cors][4]: ^1.4
  * [chubbyphp/chubbyphp-decode-encode][5]: ^1.0.1
  * [chubbyphp/chubbyphp-deserialization][6]: ^3.4.1

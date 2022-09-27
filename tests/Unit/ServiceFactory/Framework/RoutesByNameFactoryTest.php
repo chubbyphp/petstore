@@ -53,11 +53,11 @@ final class RoutesByNameFactoryTest extends TestCase
         self::assertEquals([
             'ping' => Route::get('/ping', 'ping', $ping),
             'openapi' => Route::get('/openapi', 'openapi', $openApi),
-            'pet_list' => Route::get('/api/pets', 'pet_list', $petList, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_create' => Route::post('/api/pets', 'pet_create', $petCreate, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_read' => Route::get('/api/pets/{id}', 'pet_read', $petRead, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_update' => Route::put('/api/pets/{id}', 'pet_update', $petUpdate, [$apiExceptionMiddleware, $acceptAndContentType]),
-            'pet_delete' => Route::delete('/api/pets/{id}', 'pet_delete', $petDelete, [$apiExceptionMiddleware, $acceptAndContentType]),
+            'pet_list' => Route::get('/api/pets', 'pet_list', $petList, [$acceptAndContentType, $apiExceptionMiddleware]),
+            'pet_create' => Route::post('/api/pets', 'pet_create', $petCreate, [$acceptAndContentType, $apiExceptionMiddleware]),
+            'pet_read' => Route::get('/api/pets/{id}', 'pet_read', $petRead, [$acceptAndContentType, $apiExceptionMiddleware]),
+            'pet_update' => Route::put('/api/pets/{id}', 'pet_update', $petUpdate, [$acceptAndContentType, $apiExceptionMiddleware]),
+            'pet_delete' => Route::delete('/api/pets/{id}', 'pet_delete', $petDelete, [$acceptAndContentType, $apiExceptionMiddleware]),
         ], $factory($container)->getRoutesByName());
     }
 }

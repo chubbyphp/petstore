@@ -7,8 +7,8 @@ namespace App\Tests\Unit\RequestHandler\Api\Crud;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\HttpException\HttpExceptionInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -42,11 +42,11 @@ final class ReadRequestHandlerTest extends TestCase
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromApiProblem')
+            Call::create('createFromHttpException')
                 ->with(
-                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
+                    }),
                     'application/json',
-                    null
                 )
                 ->willReturn($response),
         ]);
@@ -74,11 +74,11 @@ final class ReadRequestHandlerTest extends TestCase
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromApiProblem')
+            Call::create('createFromHttpException')
                 ->with(
-                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
+                    }),
                     'application/json',
-                    null
                 )
                 ->willReturn($response),
         ]);

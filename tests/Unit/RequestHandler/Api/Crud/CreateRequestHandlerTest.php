@@ -8,10 +8,10 @@ use App\Factory\ModelFactoryInterface;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\CreateRequestHandler;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
+use Chubbyphp\HttpException\HttpExceptionInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -76,16 +76,15 @@ final class CreateRequestHandlerTest extends TestCase
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromApiProblem')
+            Call::create('createFromHttpException')
                 ->with(
-                    new ArgumentCallback(static function (UnprocessableEntity $apiProblem): void {
+                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
                         self::assertSame(
                             [['name' => 'name', 'reason' => 'notunique', 'details' => []]],
-                            $apiProblem->getInvalidParameters()
+                            $httpException->jsonSerialize()['invalidParameters']
                         );
                     }),
                     'application/json',
-                    null
                 )
                 ->willReturn($response),
         ]);

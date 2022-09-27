@@ -28,12 +28,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
+            'status' => 406,
             'title' => 'Not Acceptable',
-            'detail' => null,
+            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
             'instance' => null,
-            'accept' => 'text/html',
-            'acceptables' => [
+            'value' => 'text/html',
+            'supportedValues' => [
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
@@ -61,12 +62,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.16',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.16',
+            'status' => 415,
             'title' => 'Unsupported Media Type',
-            'detail' => null,
+            'detail' => 'Not supported content-type, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
             'instance' => null,
-            'mediaType' => 'text/html',
-            'supportedMediaTypes' => [
+            'value' => 'text/html',
+            'supportedValues' => [
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
@@ -95,7 +97,8 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc4918#section-11.2',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc4918#section-11.2',
+            'status' => 422,
             'title' => 'Unprocessable Entity',
             'detail' => null,
             'instance' => null,
@@ -138,12 +141,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
+            'status' => 406,
             'title' => 'Not Acceptable',
-            'detail' => null,
+            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
             'instance' => null,
-            'accept' => 'text/html',
-            'acceptables' => [
+            'value' => 'text/html',
+            'supportedValues' => [
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
@@ -170,7 +174,8 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.1',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.1',
+            'status' => 400,
             'title' => 'Bad Request',
             'detail' => null,
             'instance' => null,
@@ -285,12 +290,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
+            'status' => 406,
             'title' => 'Not Acceptable',
-            'detail' => null,
+            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
             'instance' => null,
-            'accept' => 'text/html',
-            'acceptables' => [
+            'value' => 'text/html',
+            'supportedValues' => [
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
@@ -317,7 +323,8 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5',
+            'status' => 404,
             'title' => 'Not Found',
             'detail' => null,
             'instance' => null,
@@ -367,12 +374,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
+            'status' => 406,
             'title' => 'Not Acceptable',
-            'detail' => null,
+            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
             'instance' => null,
-            'accept' => 'text/html',
-            'acceptables' => [
+            'value' => 'text/html',
+            'supportedValues' => [
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
@@ -400,12 +408,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.16',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.16',
+            'status' => 415,
             'title' => 'Unsupported Media Type',
-            'detail' => null,
+            'detail' => 'Not supported content-type, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
             'instance' => null,
-            'mediaType' => 'text/html',
-            'supportedMediaTypes' => [
+            'value' => 'text/html',
+            'supportedValues' => [
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
@@ -433,7 +442,8 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5',
+            'status' => 404,
             'title' => 'Not Found',
             'detail' => null,
             'instance' => null,
@@ -462,7 +472,8 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc4918#section-11.2',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc4918#section-11.2',
+            'status' => 422,
             'title' => 'Unprocessable Entity',
             'detail' => null,
             'instance' => null,
@@ -546,12 +557,13 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.7',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
+            'status' => 406,
             'title' => 'Not Acceptable',
-            'detail' => null,
+            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
             'instance' => null,
-            'accept' => 'text/html',
-            'acceptables' => [
+            'value' => 'text/html',
+            'supportedValues' => [
                 'application/json',
                 'application/jsonx+xml',
                 'application/x-www-form-urlencoded',
@@ -578,7 +590,8 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
         $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10.4.5',
+            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5',
+            'status' => 404,
             'title' => 'Not Found',
             'detail' => null,
             'instance' => null,

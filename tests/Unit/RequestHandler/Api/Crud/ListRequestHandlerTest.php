@@ -8,9 +8,9 @@ use App\Collection\CollectionInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\HttpException\HttpExceptionInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -67,16 +67,15 @@ final class ListRequestHandlerTest extends TestCase
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromApiProblem')
+            Call::create('createFromHttpException')
                 ->with(
-                    new ArgumentCallback(static function (BadRequest $apiProblem): void {
+                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
                         self::assertSame(
                             [['name' => 'offset', 'reason' => 'notinteger', 'details' => []]],
-                            $apiProblem->getInvalidParameters()
+                            $httpException->jsonSerialize()['invalidParameters']
                         );
                     }),
                     'application/json',
-                    null
                 )
                 ->willReturn($response),
         ]);

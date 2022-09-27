@@ -7,11 +7,10 @@ namespace App\Tests\Unit\RequestHandler\Api\Crud;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
+use Chubbyphp\HttpException\HttpExceptionInterface;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
 use Chubbyphp\Mock\Call;
@@ -52,11 +51,11 @@ final class UpdateRequestHandlerTest extends TestCase
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromApiProblem')
+            Call::create('createFromHttpException')
                 ->with(
-                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
+                    }),
                     'application/json',
-                    null
                 )
                 ->willReturn($response),
         ]);
@@ -96,11 +95,11 @@ final class UpdateRequestHandlerTest extends TestCase
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromApiProblem')
+            Call::create('createFromHttpException')
                 ->with(
-                    new ArgumentCallback(static function (NotFound $apiProblem): void {}),
+                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
+                    }),
                     'application/json',
-                    null
                 )
                 ->willReturn($response),
         ]);
@@ -165,16 +164,15 @@ final class UpdateRequestHandlerTest extends TestCase
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
         $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromApiProblem')
+            Call::create('createFromHttpException')
                 ->with(
-                    new ArgumentCallback(static function (UnprocessableEntity $apiProblem): void {
+                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
                         self::assertSame(
                             [['name' => 'name', 'reason' => 'notunique', 'details' => []]],
-                            $apiProblem->getInvalidParameters()
+                            $httpException->jsonSerialize()['invalidParameters']
                         );
                     }),
                     'application/json',
-                    null
                 )
                 ->willReturn($response),
         ]);

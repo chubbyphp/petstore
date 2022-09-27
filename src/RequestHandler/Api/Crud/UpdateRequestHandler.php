@@ -14,7 +14,6 @@ use Chubbyphp\HttpException\HttpException;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
-use Chubbyphp\Validation\Error\ErrorInterface;
 use Chubbyphp\Validation\ValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,10 +37,7 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $contentType = $request->getAttribute('contentType');
 
         if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createFromHttpException(
-                HttpException::createNotFound(),
-                $accept
-            );
+            throw HttpException::createNotFound();
         }
 
         /** @var ModelInterface $model */
@@ -53,7 +49,9 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         );
 
         if ([] !== $errors = $this->validator->validate($model)) {
-            return $this->createValidationErrorResponse($errors, $accept);
+            throw HttpException::createUnprocessableEntity([
+                'invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
+            ]);
         }
 
         $model->setUpdatedAt(new \DateTimeImmutable());
@@ -71,18 +69,6 @@ final class UpdateRequestHandler implements RequestHandlerInterface
             ->setClearMissing(true)
             ->getContext()
         ;
-    }
-
-    /**
-     * @param array<ErrorInterface> $errors
-     */
-    private function createValidationErrorResponse(array $errors, string $accept): ResponseInterface
-    {
-        return $this->responseManager->createFromHttpException(
-            HttpException::createUnprocessableEntity(['invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
-            ]),
-            $accept
-        );
     }
 
     private function getNormalizerContext(ServerRequestInterface $request): NormalizerContextInterface

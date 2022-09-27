@@ -41,19 +41,17 @@ final class ReadRequestHandlerTest extends TestCase
         $repository = $this->getMockByCalls(RepositoryInterface::class);
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromHttpException')
-                ->with(
-                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
-                    }),
-                    'application/json',
-                )
-                ->willReturn($response),
-        ]);
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
 
         $requestHandler = new ReadRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $requestHandler->handle($request));
+        try {
+            $requestHandler->handle($request);
+            self::fail('Expected Exception');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+            self::assertSame(404, $e->getStatus());
+        }
     }
 
     public function testCreateResourceNotFoundMissingModel(): void
@@ -73,19 +71,17 @@ final class ReadRequestHandlerTest extends TestCase
         ]);
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromHttpException')
-                ->with(
-                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
-                    }),
-                    'application/json',
-                )
-                ->willReturn($response),
-        ]);
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
 
         $requestHandler = new ReadRequestHandler($repository, $responseManager);
 
-        self::assertSame($response, $requestHandler->handle($request));
+        try {
+            $requestHandler->handle($request);
+            self::fail('Expected Exception');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+            self::assertSame(404, $e->getStatus());
+        }
     }
 
     public function testSuccessful(): void

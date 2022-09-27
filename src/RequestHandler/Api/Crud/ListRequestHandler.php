@@ -7,9 +7,9 @@ namespace App\RequestHandler\Api\Crud;
 use App\Collection\CollectionInterface;
 use App\Factory\CollectionFactoryInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\BadRequest;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\HttpException\HttpException;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
 use Chubbyphp\Validation\ValidatorInterface;
@@ -36,8 +36,9 @@ final class ListRequestHandler implements RequestHandlerInterface
         $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
 
         if ([] !== $errors = $this->validator->validate($collection)) {
-            return $this->responseManager->createFromApiProblem(
-                new BadRequest((new ApiProblemErrorMessages($errors))->getMessages()),
+            return $this->responseManager->createFromHttpException(
+                HttpException::createBadRequest(['invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
+                ]),
                 $accept
             );
         }

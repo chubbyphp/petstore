@@ -6,12 +6,11 @@ namespace App\RequestHandler\Api\Crud;
 
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\NotFound;
-use Chubbyphp\ApiHttp\ApiProblem\ClientError\UnprocessableEntity;
 use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
 use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
 use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
+use Chubbyphp\HttpException\HttpException;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
 use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
 use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
@@ -39,8 +38,10 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $contentType = $request->getAttribute('contentType');
 
         if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
-            // @var ModelInterface $model
-            return $this->responseManager->createFromApiProblem(new NotFound(), $accept);
+            return $this->responseManager->createFromHttpException(
+                HttpException::createNotFound(),
+                $accept
+            );
         }
 
         /** @var ModelInterface $model */
@@ -77,8 +78,9 @@ final class UpdateRequestHandler implements RequestHandlerInterface
      */
     private function createValidationErrorResponse(array $errors, string $accept): ResponseInterface
     {
-        return $this->responseManager->createFromApiProblem(
-            new UnprocessableEntity((new ApiProblemErrorMessages($errors))->getMessages()),
+        return $this->responseManager->createFromHttpException(
+            HttpException::createUnprocessableEntity(['invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
+            ]),
             $accept
         );
     }

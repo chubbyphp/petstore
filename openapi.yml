@@ -303,6 +303,9 @@ components:
         type:
           type: string
           example: https://tools.ietf.org/html/rfc2616#section-10.4.2
+        status:
+          type: integer
+          example: 400
         title:
           type: string
           example: Bad Request
@@ -341,6 +344,9 @@ components:
         type:
           type: string
           example: https://tools.ietf.org/html/rfc2616#section-10.4.5
+        status:
+          type: integer
+          example: 404
         title:
           type: string
           example: Not Found
@@ -359,6 +365,9 @@ components:
         type:
           type: string
           example: https://tools.ietf.org/html/rfc2616#section-10.4.7
+        status:
+          type: integer
+          example: 406
         title:
           type: string
           example: Not Acceptable
@@ -368,10 +377,10 @@ components:
         instance:
           type: string
           example: null
-        accept:
+        value:
           type: string
           example: text/html
-        acceptables:
+        supportedValues:
           type: array
           items:
             type: string
@@ -385,6 +394,9 @@ components:
         type:
           type: string
           example: https://tools.ietf.org/html/rfc2616#section-10.4.16
+        status:
+          type: integer
+          example: 415
         title:
           type: string
           example: Unsupported Media Type
@@ -394,10 +406,10 @@ components:
         instance:
           type: string
           example: null
-        mediaType:
+        value:
           type: string
           example: text/html
-        supportedMediaTypes:
+        supportedValues:
           type: array
           items:
             type: string
@@ -410,7 +422,10 @@ components:
       properties:
         type:
           type: string
-          example: https://tools.ietf.org/html/rfc4918#section-11.2
+          example: https://datatracker.ietf.org/doc/html/rfc4918#section-11.2
+        status:
+          type: integer
+          example: 422
         title:
           type: string
           example: Unprocessable Entity

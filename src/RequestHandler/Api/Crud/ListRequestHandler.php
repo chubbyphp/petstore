@@ -36,11 +36,9 @@ final class ListRequestHandler implements RequestHandlerInterface
         $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
 
         if ([] !== $errors = $this->validator->validate($collection)) {
-            return $this->responseManager->createFromHttpException(
-                HttpException::createBadRequest(['invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
-                ]),
-                $accept
-            );
+            throw HttpException::createBadRequest([
+                'invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
+            ]);
         }
 
         $this->repository->resolveCollection($collection);

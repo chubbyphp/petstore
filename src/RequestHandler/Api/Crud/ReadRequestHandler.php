@@ -28,10 +28,7 @@ final class ReadRequestHandler implements RequestHandlerInterface
         $accept = $request->getAttribute('accept');
 
         if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
-            return $this->responseManager->createFromHttpException(
-                HttpException::createNotFound(),
-                $accept
-            );
+            throw HttpException::createNotFound();
         }
 
         return $this->responseManager->create($model, $accept, 200, $this->getNormalizerContext($request));

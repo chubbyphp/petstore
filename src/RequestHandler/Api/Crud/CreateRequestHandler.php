@@ -45,11 +45,7 @@ final class CreateRequestHandler implements RequestHandlerInterface
         );
 
         if ([] !== $errors = $this->validator->validate($model)) {
-            return $this->responseManager->createFromHttpException(
-                HttpException::createUnprocessableEntity(['invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
-                ]),
-                $accept
-            );
+            throw HttpException::createUnprocessableEntity(['invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages()]);
         }
 
         $this->repository->persist($model);

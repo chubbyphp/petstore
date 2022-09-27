@@ -66,19 +66,7 @@ final class ListRequestHandlerTest extends TestCase
         ]);
 
         /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createFromHttpException')
-                ->with(
-                    new ArgumentCallback(static function (HttpExceptionInterface $httpException): void {
-                        self::assertSame(
-                            [['name' => 'offset', 'reason' => 'notinteger', 'details' => []]],
-                            $httpException->jsonSerialize()['invalidParameters']
-                        );
-                    }),
-                    'application/json',
-                )
-                ->willReturn($response),
-        ]);
+        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
 
         /** @var MockObject|ValidatorInterface $validator */
         $validator = $this->getMockByCalls(ValidatorInterface::class, [
@@ -93,7 +81,13 @@ final class ListRequestHandlerTest extends TestCase
             $validator
         );
 
-        self::assertSame($response, $requestHandler->handle($request));
+        try {
+            $requestHandler->handle($request);
+            self::fail('Expected Exception');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+            self::assertSame(400, $e->getStatus());
+        }
     }
 
     public function testSuccessful(): void

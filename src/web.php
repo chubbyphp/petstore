@@ -47,30 +47,31 @@ return static function (string $env) {
     $web->pipe(DispatchMiddleware::class);
     $web->pipe(NotFoundHandler::class);
 
+    $apiMiddlewares = [
+        AcceptAndContentTypeMiddleware::class,
+        ApiExceptionMiddleware::class,
+    ];
+
     $web->get('/openapi', OpenapiRequestHandler::class, 'openapi');
     $web->get('/ping', PingRequestHandler::class, 'ping');
     $web->get('/api/pets', [
-        AcceptAndContentTypeMiddleware::class,
+        ...$apiMiddlewares,
         Pet::class.ListRequestHandler::class,
     ], 'pet_list');
     $web->post('/api/pets', [
-        AcceptAndContentTypeMiddleware::class,
-        ApiExceptionMiddleware::class,
+        ...$apiMiddlewares,
         Pet::class.CreateRequestHandler::class,
     ], 'pet_create');
     $web->get('/api/pets/{id}', [
-        AcceptAndContentTypeMiddleware::class,
-        ApiExceptionMiddleware::class,
+        ...$apiMiddlewares,
         Pet::class.ReadRequestHandler::class,
     ], 'pet_read');
     $web->put('/api/pets/{id}', [
-        AcceptAndContentTypeMiddleware::class,
-        ApiExceptionMiddleware::class,
+        ...$apiMiddlewares,
         Pet::class.UpdateRequestHandler::class,
     ], 'pet_update');
     $web->delete('/api/pets/{id}', [
-        AcceptAndContentTypeMiddleware::class,
-        ApiExceptionMiddleware::class,
+        ...$apiMiddlewares,
         Pet::class.DeleteRequestHandler::class,
     ], 'pet_delete');
 

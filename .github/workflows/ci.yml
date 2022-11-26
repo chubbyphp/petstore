@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: docker build / start
         run: docker-compose -f docker-compose.ci.yml up -d
       - name: wait for nginx
@@ -35,7 +35,7 @@ jobs:
           - 5432:5432
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
@@ -63,7 +63,7 @@ jobs:
           - 5432:5432
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done

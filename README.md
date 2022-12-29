@@ -16,9 +16,9 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-cors][4]: ^1.4
  * [chubbyphp/chubbyphp-decode-encode][5]: ^1.0.1
  * [chubbyphp/chubbyphp-deserialization][6]: ^3.5.2
- * [chubbyphp/chubbyphp-http-exception][7]: ^1.0.1
- * [chubbyphp/chubbyphp-framework][8]: ^5.0.1
- * [chubbyphp/chubbyphp-framework-router-fastroute][9]: ^2.0
+ * [chubbyphp/chubbyphp-framework][7]: ^5.0.3
+ * [chubbyphp/chubbyphp-framework-router-fastroute][8]: ^2.0.1
+ * [chubbyphp/chubbyphp-http-exception][9]: ^1.0.1
  * [chubbyphp/chubbyphp-laminas-config][10]: ^1.3
  * [chubbyphp/chubbyphp-laminas-config-doctrine][11]: ^2.0.3
  * [chubbyphp/chubbyphp-laminas-config-factory][12]: ^1.2
@@ -135,9 +135,9 @@ Dominik Zogg 2022
 [4]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
 [5]: https://packagist.org/packages/chubbyphp/chubbyphp-decode-encode
 [6]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-http-exception
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-http-exception
 [10]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
 [11]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
 [12]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory

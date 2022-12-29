@@ -31,7 +31,7 @@
         "doctrine/orm": "^2.14",
         "monolog/monolog": "^2.8",
         "ramsey/uuid": "^4.7",
-        "slim/slim": "^4.9",
+        "slim/slim": "^4.11",
         "slim/psr7": "^1.6",
         "symfony/console": "^6.0.17"
     },

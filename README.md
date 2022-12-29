@@ -27,7 +27,7 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [monolog/monolog][15]: ^2.8
  * [ramsey/uuid][16]: ^4.7
  * [slim/psr7][17]: ^1.6
- * [slim/slim][18]: ^4.9
+ * [slim/slim][18]: ^4.11
  * [symfony/console][19]: ^6.0.17
 
 ## Environment

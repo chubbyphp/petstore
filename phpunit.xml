@@ -21,14 +21,8 @@
   </exclude>
 </coverage>
 <testsuites>
-  <testsuite name="Integration">
-    <directory>./tests/Integration</directory>
-  </testsuite>
   <testsuite name="Unit">
     <directory>./tests/Unit</directory>
   </testsuite>
 </testsuites>
-<extensions>
-<extension class="App\Tests\PhpServerTestHook"/>
-</extensions>
 </phpunit>

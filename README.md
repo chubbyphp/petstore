@@ -15,21 +15,21 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-clean-directories][3]: ^1.2
  * [chubbyphp/chubbyphp-cors][4]: ^1.4
  * [chubbyphp/chubbyphp-decode-encode][5]: ^1.0.1
- * [chubbyphp/chubbyphp-deserialization][6]: ^3.4.1
+ * [chubbyphp/chubbyphp-deserialization][6]: ^3.5.2
  * [chubbyphp/chubbyphp-http-exception][7]: ^1.0.1
  * [chubbyphp/chubbyphp-framework][8]: ^5.0.1
  * [chubbyphp/chubbyphp-framework-router-fastroute][9]: ^2.0
  * [chubbyphp/chubbyphp-laminas-config][10]: ^1.3
- * [chubbyphp/chubbyphp-laminas-config-doctrine][11]: ^2.0
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][11]: ^2.0.3
  * [chubbyphp/chubbyphp-laminas-config-factory][12]: ^1.2
  * [chubbyphp/chubbyphp-negotiation][13]: ^1.9
- * [chubbyphp/chubbyphp-serialization][14]: ^3.2
- * [chubbyphp/chubbyphp-validation][15]: ^3.12.3
+ * [chubbyphp/chubbyphp-serialization][14]: ^3.3.1
+ * [chubbyphp/chubbyphp-validation][15]: ^3.12.4
  * [doctrine/mongodb-odm][16]: ^2.4.2
- * [monolog/monolog][17]: ^2.3.5
- * [ramsey/uuid][18]: ^4.2.3
- * [slim/psr7][19]: ^1.5
- * [symfony/console][20]: ^5.4.11|^6.1.3
+ * [monolog/monolog][17]: ^2.8
+ * [ramsey/uuid][18]: ^4.7
+ * [slim/psr7][19]: ^1.6
+ * [symfony/console][20]: ^6.0.17
 
 ## Environment
 

@@ -20,31 +20,31 @@
         "chubbyphp/chubbyphp-clean-directories": "^1.2",
         "chubbyphp/chubbyphp-cors": "^1.4",
         "chubbyphp/chubbyphp-decode-encode": "^1.0.1",
-        "chubbyphp/chubbyphp-deserialization": "^3.5.1",
+        "chubbyphp/chubbyphp-deserialization": "^3.5.2",
         "chubbyphp/chubbyphp-http-exception": "^1.0.1",
         "chubbyphp/chubbyphp-laminas-config": "^1.3",
-        "chubbyphp/chubbyphp-laminas-config-doctrine": "^2.0",
+        "chubbyphp/chubbyphp-laminas-config-doctrine": "^2.0.3",
         "chubbyphp/chubbyphp-laminas-config-factory": "^1.2",
         "chubbyphp/chubbyphp-negotiation": "^1.9",
         "chubbyphp/chubbyphp-serialization": "^3.3.1",
-        "chubbyphp/chubbyphp-validation": "^3.12.3",
-        "doctrine/orm": "^2.13.1",
+        "chubbyphp/chubbyphp-validation": "^3.12.4",
+        "doctrine/orm": "^2.14",
         "mezzio/mezzio-fastroute": "^3.5",
         "mezzio/mezzio": "^3.10",
-        "monolog/monolog": "^2.3.5",
-        "ramsey/uuid": "^4.2.3",
-        "slim/psr7": "^1.5",
-        "symfony/console": "^5.4.11|^6.1.3"
+        "monolog/monolog": "^2.8",
+        "ramsey/uuid": "^4.7",
+        "slim/psr7": "^1.6",
+        "symfony/console": "^6.0.17"
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
         "chubbyphp/chubbyphp-mock": "^1.6.2",
-        "infection/infection": "^0.26.5",
-        "php-coveralls/php-coveralls": "^2.5.2",
+        "infection/infection": "^0.26.16",
+        "php-coveralls/php-coveralls": "^2.5.3",
         "phploc/phploc": "^7.0.2",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.4.8",
-        "phpunit/phpunit": "^9.5.17"
+        "phpstan/extension-installer": "^1.2",
+        "phpstan/phpstan": "^1.9.4",
+        "phpunit/phpunit": "^9.5.27"
     },
     "autoload": {
         "psr-4": {
@@ -87,18 +87,18 @@
         "test": [
             "@test:lint",
             "@test:unit",
-            "@test:integration",
             "@test:infection",
+            "@test:integration",
             "@test:static-analysis",
             "@test:loc",
             "@test:cs"
         ],
         "test:cs": "mkdir -p build && PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
         "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=95 --verbose --coverage=build/phpunit",
-        "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/result.cache",
+        "test:integration": "vendor/bin/phpunit --configuration phpunit.integration.xml --cache-result-file=build/phpunit/result.integration.cache",
         "test:lint": "mkdir -p build && find src tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",
         "test:static-analysis": "mkdir -p build && bash -c 'vendor/bin/phpstan analyse src --no-progress --level=8 --error-format=junit | tee build/phpstan.junit.xml; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
         "test:loc": "mkdir -p build && vendor/bin/phploc src | tee build/phploc.log",
-        "test:unit": "vendor/bin/phpunit --testsuite=Unit --coverage-text --coverage-clover=build/phpunit/clover.xml --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/junit.xml --cache-result-file=build/phpunit/result.cache"
+        "test:unit": "vendor/bin/phpunit --coverage-text --coverage-clover=build/phpunit/clover.xml --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/junit.xml --cache-result-file=build/phpunit/result.cache"
     }
 }

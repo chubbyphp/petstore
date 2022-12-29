@@ -24,8 +24,8 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-serialization][12]: ^3.3.1
  * [chubbyphp/chubbyphp-validation][13]: ^3.12.4
  * [doctrine/orm][14]: ^2.14
- * [mezzio/mezzio][15]: ^3.10
- * [mezzio/mezzio-fastroute][16]: ^3.5
+ * [mezzio/mezzio-fastroute][15]: ^3.7
+ * [mezzio/mezzio][16]: ^3.14
  * [monolog/monolog][17]: ^2.8
  * [ramsey/uuid][18]: ^4.7
  * [slim/psr7][19]: ^1.6
@@ -143,8 +143,8 @@ Dominik Zogg 2022
 [12]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
 [13]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
 [14]: https://packagist.org/packages/doctrine/orm
-[15]: https://packagist.org/packages/mezzio/mezzio
-[16]: https://packagist.org/packages/mezzio/mezzio-fastroute
+[15]: https://packagist.org/packages/mezzio/mezzio-fastroute
+[16]: https://packagist.org/packages/mezzio/mezzio
 [17]: https://packagist.org/packages/monolog/monolog
 [18]: https://packagist.org/packages/ramsey/uuid
 [19]: https://packagist.org/packages/slim/psr7

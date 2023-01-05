@@ -36,8 +36,10 @@ RUN ln -sf /usr/bin/php82 /usr/bin/php \
     && rm /etc/opt/remi/php82/php.d/15-xdebug.ini \
     && rm /etc/opt/remi/php82/php.d/40-pcov.ini
 
+ENV TZ=Europe/Zurich
+
 RUN echo "LANG=de_CH.UTF-8" > /etc/locale.conf \
-    && cp -f /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+    && cp -f /usr/share/zoneinfo/${TZ} /etc/localtime
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 

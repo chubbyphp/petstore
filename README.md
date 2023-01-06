@@ -125,7 +125,7 @@ Service factories are the glue code of the dependeny injection container.
 
 ## Copyright
 
-Dominik Zogg 2022
+2023 Dominik Zogg
 
 [1]: https://github.com/slimphp/slim
 

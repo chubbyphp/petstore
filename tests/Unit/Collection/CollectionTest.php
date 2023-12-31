@@ -19,12 +19,12 @@ class CollectionTest extends TestCase
     {
         $collection = $this->getCollection();
 
-        static::assertSame(0, $collection->getOffset());
-        static::assertSame(20, $collection->getLimit());
-        static::assertSame([], $collection->getFilters());
-        static::assertSame([], $collection->getSort());
-        static::assertSame(0, $collection->getCount());
-        static::assertSame([], $collection->getItems());
+        self::assertSame(0, $collection->getOffset());
+        self::assertSame(20, $collection->getLimit());
+        self::assertSame([], $collection->getFilters());
+        self::assertSame([], $collection->getSort());
+        self::assertSame(0, $collection->getCount());
+        self::assertSame([], $collection->getItems());
 
         $object = new \stdClass();
 
@@ -35,17 +35,16 @@ class CollectionTest extends TestCase
         $collection->setCount(6);
         $collection->setItems([$object]);
 
-        static::assertSame(5, $collection->getOffset());
-        static::assertSame(15, $collection->getLimit());
-        static::assertSame(['name' => 'sample'], $collection->getFilters());
-        static::assertSame(['name' => 'asc'], $collection->getSort());
-        static::assertSame(6, $collection->getCount());
-        static::assertSame([$object], $collection->getItems());
+        self::assertSame(5, $collection->getOffset());
+        self::assertSame(15, $collection->getLimit());
+        self::assertSame(['name' => 'sample'], $collection->getFilters());
+        self::assertSame(['name' => 'asc'], $collection->getSort());
+        self::assertSame(6, $collection->getCount());
+        self::assertSame([$object], $collection->getItems());
     }
 
     protected function getCollection(): CollectionInterface
     {
-        return new class() extends AbstractCollection {
-        };
+        return new class() extends AbstractCollection {};
     }
 }

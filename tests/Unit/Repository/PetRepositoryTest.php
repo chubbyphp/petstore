@@ -7,9 +7,9 @@ namespace Doctrine\ODM\MongoDB\Query {
     {
         public const TYPE_FIND = 1;
 
-        /** @return array|int */
-        public function execute()
+        public function execute(): mixed
         {
+            return null;
         }
     }
 }

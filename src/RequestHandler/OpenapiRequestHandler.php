@@ -15,8 +15,7 @@ final class OpenapiRequestHandler implements RequestHandlerInterface
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory
-    ) {
-    }
+    ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

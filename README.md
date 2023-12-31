@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/chubbyphp/petstore/workflows/CI/badge.svg?branch=chubbyphp-mongo)](https://github.com/chubbyphp/petstore/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp-mongo)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp-mongo)
-[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/petstore/chubbyphp-mongo)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/chubbyphp-mongo)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%2Fchubbyphp-mongo)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/chubbyphp-mongo)
 
 ## Description
 
@@ -10,26 +10,26 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 
 ## Requirements
 
- * php: ^8.0
- * [chubbyphp/chubbyphp-api-http][2]: ^5.0.1
- * [chubbyphp/chubbyphp-clean-directories][3]: ^1.2
- * [chubbyphp/chubbyphp-cors][4]: ^1.4
- * [chubbyphp/chubbyphp-decode-encode][5]: ^1.0.1
- * [chubbyphp/chubbyphp-deserialization][6]: ^3.5.2
- * [chubbyphp/chubbyphp-framework][7]: ^5.0.3
- * [chubbyphp/chubbyphp-framework-router-fastroute][8]: ^2.0.1
- * [chubbyphp/chubbyphp-http-exception][9]: ^1.0.1
- * [chubbyphp/chubbyphp-laminas-config][10]: ^1.3
- * [chubbyphp/chubbyphp-laminas-config-doctrine][11]: ^2.0.3
- * [chubbyphp/chubbyphp-laminas-config-factory][12]: ^1.2
- * [chubbyphp/chubbyphp-negotiation][13]: ^1.9
- * [chubbyphp/chubbyphp-serialization][14]: ^3.3.1
- * [chubbyphp/chubbyphp-validation][15]: ^3.12.4
+ * php: ^8.1
+ * [chubbyphp/chubbyphp-api-http][2]: ^6.0
+ * [chubbyphp/chubbyphp-clean-directories][3]: ^1.3.1
+ * [chubbyphp/chubbyphp-cors][4]: ^1.5
+ * [chubbyphp/chubbyphp-decode-encode][5]: ^1.1
+ * [chubbyphp/chubbyphp-deserialization][6]: ^4.1
+ * [chubbyphp/chubbyphp-framework][7]: ^5.1.1
+ * [chubbyphp/chubbyphp-framework-router-fastroute][8]: ^2.1
+ * [chubbyphp/chubbyphp-http-exception][9]: ^1.1
+ * [chubbyphp/chubbyphp-laminas-config][10]: ^1.4
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][11]: ^2.2
+ * [chubbyphp/chubbyphp-laminas-config-factory][12]: ^1.3
+ * [chubbyphp/chubbyphp-negotiation][13]: ^2.0
+ * [chubbyphp/chubbyphp-serialization][14]: ^4.0
+ * [chubbyphp/chubbyphp-validation][15]: ^4.0
  * [doctrine/mongodb-odm][16]: ^2.4.2
- * [monolog/monolog][17]: ^2.8
- * [ramsey/uuid][18]: ^4.7
- * [slim/psr7][19]: ^1.6
- * [symfony/console][20]: ^6.0.17
+ * [monolog/monolog][17]: ^3.5
+ * [ramsey/uuid][18]: ^4.7.5
+ * [slim/psr7][19]: ^1.6.1
+ * [symfony/console][20]: ^6.4.2
 
 ## Environment
 

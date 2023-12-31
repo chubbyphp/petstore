@@ -7,7 +7,10 @@ namespace App\Tests\Unit\Mapping\Deserialization;
 use App\Collection\PetCollection;
 use App\Mapping\Deserialization\PetCollectionMapping;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
-use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingFactoryInterface;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
+use Chubbyphp\Mock\Call;
+use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,16 +20,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetCollectionMappingTest extends TestCase
 {
+    use MockByCallsTrait;
+
     public function testGetClass(): void
     {
-        $mapping = new PetCollectionMapping();
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class);
+
+        $mapping = new PetCollectionMapping($denormalizationFieldMappingFactory);
 
         self::assertSame(PetCollection::class, $mapping->getClass());
     }
 
     public function testGetDenormalizationFactory(): void
     {
-        $mapping = new PetCollectionMapping();
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class);
+
+        $mapping = new PetCollectionMapping($denormalizationFieldMappingFactory);
 
         $factory = $mapping->getDenormalizationFactory('/', 'petCollection');
 
@@ -37,17 +48,33 @@ final class PetCollectionMappingTest extends TestCase
 
     public function testGetDenormalizationFieldMappings(): void
     {
-        $mapping = new PetCollectionMapping();
+        /** @var DenormalizationFieldMappingInterface|MockObject $offsetDenormalizationFieldMapping */
+        $offsetDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
+
+        /** @var DenormalizationFieldMappingInterface|MockObject $limitDenormalizationFieldMapping */
+        $limitDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
+
+        /** @var DenormalizationFieldMappingInterface|MockObject $filtersDenormalizationFieldMapping */
+        $filtersDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
+
+        /** @var DenormalizationFieldMappingInterface|MockObject $sortDenormalizationFieldMapping */
+        $sortDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
+
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class, [
+            Call::create('createConvertType')->with('offset', ConvertTypeFieldDenormalizer::TYPE_INT, false, null)->willReturn($offsetDenormalizationFieldMapping),
+            Call::create('createConvertType')->with('limit', ConvertTypeFieldDenormalizer::TYPE_INT, false, null)->willReturn($limitDenormalizationFieldMapping),
+            Call::create('create')->with('filters', false, null, null)->willReturn($filtersDenormalizationFieldMapping),
+            Call::create('create')->with('sort', false, null, null)->willReturn($sortDenormalizationFieldMapping),
+        ]);
+
+        $mapping = new PetCollectionMapping($denormalizationFieldMappingFactory);
 
         $fieldMappings = $mapping->getDenormalizationFieldMappings('/', 'petCollection');
 
-        self::assertEquals([
-            DenormalizationFieldMappingBuilder::createConvertType('offset', ConvertTypeFieldDenormalizer::TYPE_INT)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::createConvertType('limit', ConvertTypeFieldDenormalizer::TYPE_INT)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::create('filters')->getMapping(),
-            DenormalizationFieldMappingBuilder::create('sort')->getMapping(),
-        ], $fieldMappings);
+        self::assertSame($offsetDenormalizationFieldMapping, array_shift($fieldMappings));
+        self::assertSame($limitDenormalizationFieldMapping, array_shift($fieldMappings));
+        self::assertSame($filtersDenormalizationFieldMapping, array_shift($fieldMappings));
+        self::assertSame($sortDenormalizationFieldMapping, array_shift($fieldMappings));
     }
 }

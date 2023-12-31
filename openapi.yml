@@ -54,7 +54,6 @@ paths:
           required: false
           schema:
             type: string
-            example: Cherry
         - name: sort[name]
           in: query
           description: Sort by name

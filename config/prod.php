@@ -80,7 +80,7 @@ use Chubbyphp\Validation\ServiceFactory\ValidatorFactory;
 use Chubbyphp\Validation\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
-use Monolog\Logger;
+use Monolog\Level;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -196,6 +196,6 @@ return [
     'monolog' => [
         'name' => 'petstore',
         'path' => $logDir . '/' . $env . '.log',
-        'level' => Logger::NOTICE,
+        'level' => Level::Notice,
     ],
 ];

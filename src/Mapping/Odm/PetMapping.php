@@ -24,6 +24,6 @@ final class PetMapping implements ClassMapMappingInterface
         $metadata->mapField(['name' => 'updatedAt', 'type' => Type::DATE, 'nullable' => true]);
         $metadata->mapField(['name' => 'name', 'type' => Type::STRING]);
         $metadata->mapField(['name' => 'tag', 'type' => Type::STRING, 'nullable' => true]);
-        $metadata->mapManyEmbedded(['name' => 'vaccinations', 'targetDocument' => Vaccination::class]);
+        $metadata->mapManyEmbedded(['name' => 'vaccinations', 'targetDocument' => Vaccination::class, 'storeEmptyArray' => false]);
     }
 }

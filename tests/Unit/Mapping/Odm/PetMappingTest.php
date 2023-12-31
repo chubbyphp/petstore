@@ -32,7 +32,7 @@ final class PetMappingTest extends TestCase
             Call::create('mapField')->with(['name' => 'updatedAt', 'type' => Type::DATE, 'nullable' => true])->willReturn([]),
             Call::create('mapField')->with(['name' => 'name', 'type' => Type::STRING])->willReturn([]),
             Call::create('mapField')->with(['name' => 'tag', 'type' => Type::STRING, 'nullable' => true])->willReturn([]),
-            Call::create('mapManyEmbedded')->with(['name' => 'vaccinations', 'targetDocument' => Vaccination::class]),
+            Call::create('mapManyEmbedded')->with(['name' => 'vaccinations', 'targetDocument' => Vaccination::class, 'storeEmptyArray' => false]),
         ]);
 
         $mapping = new PetMapping();

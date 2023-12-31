@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="false" backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" executionOrder="random" processIsolation="false" resolveDependencies="true" stopOnFailure="false">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" backupGlobals="false" colors="true" executionOrder="random" processIsolation="false" resolveDependencies="true" stopOnFailure="false" cacheDirectory=".phpunit.cache" backupStaticProperties="false">
   <testsuites>
     <testsuite name="Integration">
       <directory>./tests/Integration</directory>
     </testsuite>
   </testsuites>
   <extensions>
-    <extension class="App\Tests\PhpServerTestHook"/>
+    <bootstrap class="App\Tests\PhpServerExtension">
+    </bootstrap>
   </extensions>
 </phpunit>

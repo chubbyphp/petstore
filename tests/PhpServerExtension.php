@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use PHPUnit\Runner\BeforeTestHook;
+use PHPUnit\Event\TestRunner\ExecutionStarted;
+use PHPUnit\Event\TestRunner\ExecutionStartedSubscriber;
+use PHPUnit\Runner\Extension\Extension;
+use PHPUnit\Runner\Extension\Facade;
+use PHPUnit\Runner\Extension\ParameterCollection;
+use PHPUnit\TextUI\Configuration\Configuration;
 
-final class PhpServerTestHook implements BeforeTestHook
+final class PhpServerExtension implements ExecutionStartedSubscriber, Extension
 {
     public const PHP_SERVER_PORT = 49199;
     public const ENV_INTEGRATION_ENDPOINT = 'INTEGRATION_ENDPOINT';
@@ -20,7 +25,15 @@ final class PhpServerTestHook implements BeforeTestHook
         }
     }
 
-    public function executeBeforeTest(string $test): void
+    public function bootstrap(
+        Configuration $configuration,
+        Facade $facade,
+        ParameterCollection $parameters
+    ): void {
+        $facade->registerSubscriber($this);
+    }
+
+    public function notify(ExecutionStarted $event): void
     {
         if (null !== $this->serverPid) {
             return;
@@ -30,17 +43,8 @@ final class PhpServerTestHook implements BeforeTestHook
             return;
         }
 
-        if (!$this->isIntegrationTest($test)) {
-            return;
-        }
-
         $this->initialize();
         $this->startServer();
-    }
-
-    private function isIntegrationTest(string $test): bool
-    {
-        return str_starts_with($test, 'App\\Tests\\Integration');
     }
 
     private function initialize(): void

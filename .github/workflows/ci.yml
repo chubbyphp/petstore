@@ -8,7 +8,7 @@ on:
 jobs:
   docker-compose:
     name: docker-compose (production container)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -22,33 +22,9 @@ jobs:
         run: curl --insecure https://localhost/openapi -vvv
       - name: docker stop
         run: docker-compose -f docker-compose.ci.yml stop
-  php80:
-    name: PHP 8.0
-    runs-on: ubuntu-20.04
-    services:
-      mongo:
-        image: mongo:5.0
-        env:
-          MONGO_INITDB_ROOT_USERNAME: petstore
-          MONGO_INITDB_ROOT_PASSWORD: KVKtkrTHhKuTJTor8pCP
-        ports:
-          - 27017:27017
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: wait for databases
-        run: |
-          while ! nc -z localhost 27017; do sleep 0.1; done
-      - name: composer test
-        uses: docker://chubbyphp/ci-php80:latest
-        env:
-          APP_ENV: phpunit
-          DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php81:
     name: PHP 8.1
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     services:
       mongo:
         image: mongo:5.0
@@ -72,7 +48,7 @@ jobs:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php82:
     name: PHP 8.2
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     services:
       mongo:
         image: mongo:5.0
@@ -89,6 +65,30 @@ jobs:
           while ! nc -z localhost 27017; do sleep 0.1; done
       - name: composer test
         uses: docker://chubbyphp/ci-php82:latest
+        env:
+          APP_ENV: phpunit
+          DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+  php83:
+    name: PHP 8.3
+    runs-on: ubuntu-22.04
+    services:
+      mongo:
+        image: mongo:5.0
+        env:
+          MONGO_INITDB_ROOT_USERNAME: petstore
+          MONGO_INITDB_ROOT_PASSWORD: KVKtkrTHhKuTJTor8pCP
+        ports:
+          - 27017:27017
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: wait for databases
+        run: |
+          while ! nc -z localhost 27017; do sleep 0.1; done
+      - name: composer test
+        uses: docker://chubbyphp/ci-php83:latest
         env:
           APP_ENV: phpunit
           DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017

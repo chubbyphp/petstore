@@ -9,7 +9,7 @@ namespace App\Tests\Integration;
  *
  * @coversNothing
  */
-final class OpenapiRequestHandlerTest extends AbstractIntegrationTest
+final class OpenapiRequestHandlerTest extends AbstractIntegrationTestCase
 {
     public function testOpenapi(): void
     {

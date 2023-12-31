@@ -15,9 +15,7 @@ use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
 
 abstract class AbstractModelMapping implements NormalizationObjectMappingInterface
 {
-    public function __construct(protected UrlGeneratorInterface $urlGenerator)
-    {
-    }
+    public function __construct(protected UrlGeneratorInterface $urlGenerator) {}
 
     /**
      * @return array<NormalizationFieldMappingInterface>

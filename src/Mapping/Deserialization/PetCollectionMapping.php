@@ -6,12 +6,14 @@ namespace App\Mapping\Deserialization;
 
 use App\Collection\PetCollection;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
-use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingFactoryInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 
 final class PetCollectionMapping implements DenormalizationObjectMappingInterface
 {
+    public function __construct(private DenormalizationFieldMappingFactoryInterface $denormalizationFieldMappingFactory) {}
+
     public function getClass(): string
     {
         return PetCollection::class;
@@ -32,12 +34,10 @@ final class PetCollectionMapping implements DenormalizationObjectMappingInterfac
     public function getDenormalizationFieldMappings(string $path, ?string $type = null): array
     {
         return [
-            DenormalizationFieldMappingBuilder::createConvertType('offset', ConvertTypeFieldDenormalizer::TYPE_INT)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::createConvertType('limit', ConvertTypeFieldDenormalizer::TYPE_INT)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::create('filters')->getMapping(),
-            DenormalizationFieldMappingBuilder::create('sort')->getMapping(),
+            $this->denormalizationFieldMappingFactory->createConvertType('offset', ConvertTypeFieldDenormalizer::TYPE_INT),
+            $this->denormalizationFieldMappingFactory->createConvertType('limit', ConvertTypeFieldDenormalizer::TYPE_INT),
+            $this->denormalizationFieldMappingFactory->create('filters'),
+            $this->denormalizationFieldMappingFactory->create('sort'),
         ];
     }
 }

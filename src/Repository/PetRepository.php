@@ -13,9 +13,7 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 final class PetRepository implements RepositoryInterface
 {
-    public function __construct(private DocumentManager $documentManager)
-    {
-    }
+    public function __construct(private DocumentManager $documentManager) {}
 
     /**
      * @param CollectionInterface|PetCollection $petCollection

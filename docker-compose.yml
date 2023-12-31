@@ -26,10 +26,12 @@ services:
       - mongo
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    ports:
+      - '9003:9003'
   mongo:
     container_name: petstore-mongo
     hostname: petstore-mongo
-    image: mongo:5.0
+    image: mongo:6.0.11
     environment:
       MONGO_INITDB_ROOT_USERNAME: petstore
       MONGO_INITDB_ROOT_PASSWORD: 4aAUfBjDACcdZxNwJgJ6

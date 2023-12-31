@@ -1,10 +1,10 @@
-FROM rockylinux:9.1
+FROM rockylinux:9.3
 
 SHELL ["/bin/bash", "-c"]
 
 RUN dnf upgrade -y --refresh
 
-RUN dnf install -y epel-release https://rpms.remirepo.net/enterprise/remi-release-9.1.rpm
+RUN dnf install -y epel-release https://rpms.remirepo.net/enterprise/remi-release-9.rpm
 
 RUN dnf install -y --nobest \
     compat-openssl11 \
@@ -12,19 +12,19 @@ RUN dnf install -y --nobest \
     glibc-langpack-de \
     langpacks-de \
     nmap-ncat \
-    php82-php-ast \
-    php82-php-cli \
-    php82-php-devel \
-    php82-php-fpm \
-    php82-php-intl \
-    php82-php-mbstring \
-    php82-php-opcache \
-    php82-php-pecl-apcu \
-    php82-php-pecl-pcov \
-    php82-php-pecl-xdebug3 \
-    php82-php-pecl-zip \
-    php82-php-pgsql \
-    php82-php-xml \
+    php83-php-ast \
+    php83-php-cli \
+    php83-php-devel \
+    php83-php-fpm \
+    php83-php-intl \
+    php83-php-mbstring \
+    php83-php-opcache \
+    php83-php-pecl-apcu \
+    php83-php-pecl-pcov \
+    php83-php-pecl-xdebug3 \
+    php83-php-pecl-zip \
+    php83-php-pgsql \
+    php83-php-xml \
     procps-ng \
     sudo \
     supervisor \
@@ -32,8 +32,8 @@ RUN dnf install -y --nobest \
     vim \
     zsh
 
-RUN ln -sf /usr/bin/php82 /usr/bin/php \
-    && echo "extension=pcov.so" > /etc/opt/remi/php82/php.d/40-pcov.ini
+RUN ln -sf /usr/bin/php83 /usr/bin/php \
+    && echo "extension=pcov.so" > /etc/opt/remi/php83/php.d/40-pcov.ini
 
 ENV TZ=Europe/Zurich
 
@@ -63,4 +63,4 @@ WORKDIR /app
 
 RUN composer install --no-dev --optimize-autoloader
 
-CMD /opt/remi/php82/root/usr/sbin/php-fpm -c /etc/opt/remi/php82/php-fpm.conf -F
+CMD /opt/remi/php83/root/usr/sbin/php-fpm -c /etc/opt/remi/php83/php-fpm.conf -F

@@ -82,12 +82,12 @@ use Chubbyphp\Validation\Mapping\ValidationMappingProviderRegistryInterface;
 use Chubbyphp\Validation\ServiceFactory\ValidationMappingProviderRegistryFactory;
 use Chubbyphp\Validation\ServiceFactory\ValidatorFactory;
 use Chubbyphp\Validation\ValidatorInterface;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider;
-use Monolog\Logger;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
+use Monolog\Level;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -206,6 +206,6 @@ return [
     'monolog' => [
         'name' => 'petstore',
         'path' => $logDir . '/' . $env . '.log',
-        'level' => Logger::NOTICE,
+        'level' => Level::Notice,
     ],
 ];

@@ -9,7 +9,7 @@ namespace App\Tests\Integration;
  *
  * @coversNothing
  */
-final class PetCrudRequestHandlerTest extends AbstractIntegrationTest
+final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 {
     public function testCreateWithUnsupportedAccept(): void
     {

@@ -7,7 +7,10 @@ namespace App\Tests\Unit\Mapping\Deserialization;
 use App\Mapping\Deserialization\VaccinationMapping;
 use App\Model\Vaccination;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
-use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingFactoryInterface;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
+use Chubbyphp\Mock\Call;
+use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,16 +20,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class VaccinationMappingTest extends TestCase
 {
+    use MockByCallsTrait;
+
     public function testGetClass(): void
     {
-        $mapping = new VaccinationMapping();
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class);
+
+        $mapping = new VaccinationMapping($denormalizationFieldMappingFactory);
 
         self::assertSame(Vaccination::class, $mapping->getClass());
     }
 
     public function testGetDenormalizationFactory(): void
     {
-        $mapping = new VaccinationMapping();
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class);
+
+        $mapping = new VaccinationMapping($denormalizationFieldMappingFactory);
 
         $factory = $mapping->getDenormalizationFactory('/', 'vaccination');
 
@@ -37,13 +48,15 @@ final class VaccinationMappingTest extends TestCase
 
     public function testGetDenormalizationFieldMappings(): void
     {
-        $mapping = new VaccinationMapping();
+        /** @var DenormalizationFieldMappingInterface|MockObject $nameDenormalizationFieldMapping */
+        $nameDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
 
-        $fieldMappings = $mapping->getDenormalizationFieldMappings('/', 'vaccination');
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class, [
+            Call::create('createConvertType')->with('name', ConvertTypeFieldDenormalizer::TYPE_STRING, false, null)->willReturn($nameDenormalizationFieldMapping),
+        ]);
 
-        self::assertEquals([
-            DenormalizationFieldMappingBuilder::createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING)
-                ->getMapping(),
-        ], $fieldMappings);
+        $mapping = new VaccinationMapping($denormalizationFieldMappingFactory);
+        $mapping->getDenormalizationFieldMappings('/', 'vaccination');
     }
 }

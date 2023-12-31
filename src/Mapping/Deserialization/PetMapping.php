@@ -9,12 +9,14 @@ use App\Model\Vaccination;
 use Chubbyphp\Deserialization\Accessor\MethodAccessor;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
 use Chubbyphp\Deserialization\Denormalizer\Relation\EmbedManyFieldDenormalizer;
-use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingFactoryInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 
 final class PetMapping implements DenormalizationObjectMappingInterface
 {
+    public function __construct(private DenormalizationFieldMappingFactoryInterface $denormalizationFieldMappingFactory) {}
+
     public function getClass(): string
     {
         return Pet::class;
@@ -35,15 +37,13 @@ final class PetMapping implements DenormalizationObjectMappingInterface
     public function getDenormalizationFieldMappings(string $path, ?string $type = null): array
     {
         return [
-            DenormalizationFieldMappingBuilder::createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::createConvertType('tag', ConvertTypeFieldDenormalizer::TYPE_STRING)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::create(
+            $this->denormalizationFieldMappingFactory->createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING),
+            $this->denormalizationFieldMappingFactory->createConvertType('tag', ConvertTypeFieldDenormalizer::TYPE_STRING),
+            $this->denormalizationFieldMappingFactory->create(
                 'vaccinations',
                 false,
                 new EmbedManyFieldDenormalizer(Vaccination::class, new MethodAccessor('vaccinations'))
-            )->getMapping(),
+            ),
         ];
     }
 }

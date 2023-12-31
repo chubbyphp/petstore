@@ -31,7 +31,7 @@ class ModelMappingTest extends TestCase
 
         $mapping = $this->getModelMapping($router);
 
-        static::assertSame($this->getClass(), $mapping->getClass());
+        self::assertSame($this->getClass(), $mapping->getClass());
     }
 
     public function testGetNormalizationType(): void
@@ -41,7 +41,7 @@ class ModelMappingTest extends TestCase
 
         $mapping = $this->getModelMapping($router);
 
-        static::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
+        self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
     public function testGetNormalizationFieldMappings(): void
@@ -53,7 +53,7 @@ class ModelMappingTest extends TestCase
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
-        static::assertEquals([
+        self::assertEquals([
             NormalizationFieldMappingBuilder::create('id')->getMapping(),
             NormalizationFieldMappingBuilder::createDateTime('createdAt', \DateTime::ATOM)->getMapping(),
             NormalizationFieldMappingBuilder::createDateTime('updatedAt', \DateTime::ATOM)->getMapping(),
@@ -69,7 +69,7 @@ class ModelMappingTest extends TestCase
 
         $fieldMappings = $mapping->getNormalizationEmbeddedFieldMappings('/');
 
-        static::assertEquals([], $fieldMappings);
+        self::assertEquals([], $fieldMappings);
     }
 
     public function testGetNormalizationLinkMappings(): void
@@ -91,11 +91,11 @@ class ModelMappingTest extends TestCase
 
         $linkMappings = $mapping->getNormalizationLinkMappings('/');
 
-        static::assertCount(3, $linkMappings);
+        self::assertCount(3, $linkMappings);
 
-        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
-        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
-        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[2]);
+        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
+        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
+        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[2]);
 
         /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class, [
@@ -111,7 +111,7 @@ class ModelMappingTest extends TestCase
         $update = $linkMappings[1]->getLinkNormalizer()->normalizeLink('/', $model, $context);
         $delete = $linkMappings[2]->getLinkNormalizer()->normalizeLink('/', $model, $context);
 
-        static::assertSame([
+        self::assertSame([
             'href' => sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86'),
             'templated' => false,
             'rel' => [],
@@ -120,7 +120,7 @@ class ModelMappingTest extends TestCase
             ],
         ], $read);
 
-        static::assertSame([
+        self::assertSame([
             'href' => sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86'),
             'templated' => false,
             'rel' => [],
@@ -129,7 +129,7 @@ class ModelMappingTest extends TestCase
             ],
         ], $update);
 
-        static::assertSame([
+        self::assertSame([
             'href' => sprintf($this->getModelPath(), 'f183c7ff-7683-451e-807c-b916d9b5cf86'),
             'templated' => false,
             'rel' => [],

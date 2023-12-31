@@ -27,8 +27,7 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         private RequestManagerInterface $requestManager,
         private ResponseManagerInterface $responseManager,
         private ValidatorInterface $validator
-    ) {
-    }
+    ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

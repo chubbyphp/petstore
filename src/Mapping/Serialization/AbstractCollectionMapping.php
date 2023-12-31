@@ -16,9 +16,7 @@ use Slim\Interfaces\RouteParserInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
-    public function __construct(protected RouteParserInterface $router)
-    {
-    }
+    public function __construct(protected RouteParserInterface $router) {}
 
     /**
      * @return array<NormalizationFieldMappingInterface>

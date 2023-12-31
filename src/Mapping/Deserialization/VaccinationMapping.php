@@ -6,12 +6,14 @@ namespace App\Mapping\Deserialization;
 
 use App\Model\Vaccination;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
-use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingFactoryInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
 use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
 
 final class VaccinationMapping implements DenormalizationObjectMappingInterface
 {
+    public function __construct(private DenormalizationFieldMappingFactoryInterface $denormalizationFieldMappingFactory) {}
+
     public function getClass(): string
     {
         return Vaccination::class;
@@ -32,8 +34,7 @@ final class VaccinationMapping implements DenormalizationObjectMappingInterface
     public function getDenormalizationFieldMappings(string $path, ?string $type = null): array
     {
         return [
-            DenormalizationFieldMappingBuilder::createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING)
-                ->getMapping(),
+            $this->denormalizationFieldMappingFactory->createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING),
         ];
     }
 }

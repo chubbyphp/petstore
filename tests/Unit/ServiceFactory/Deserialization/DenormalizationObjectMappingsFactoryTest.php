@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\ServiceFactory\Deserialization;
 
-use App\Mapping\Deserialization\PetCollectionMapping;
-use App\Mapping\Deserialization\PetMapping;
-use App\Mapping\Deserialization\VaccinationMapping;
 use App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingFactoryInterface;
+use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 /**
  * @covers \App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory
@@ -22,14 +22,16 @@ final class DenormalizationObjectMappingsFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class);
+
+        /** @var ContainerInterface $container */
+        $container = $this->getMockByCalls(ContainerInterface::class, [
+            Call::create('has')->with(DenormalizationFieldMappingFactoryInterface::class)->willReturn(true),
+            Call::create('get')->with(DenormalizationFieldMappingFactoryInterface::class)->willReturn($denormalizationFieldMappingFactory),
+        ]);
+
         $factory = new DenormalizationObjectMappingsFactory();
-
-        $service = $factory();
-
-        self::assertEquals([
-            new PetCollectionMapping(),
-            new PetMapping(),
-            new VaccinationMapping(),
-        ], $service);
+        $factory($container);
     }
 }

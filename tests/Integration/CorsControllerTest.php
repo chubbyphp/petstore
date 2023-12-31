@@ -9,7 +9,7 @@ namespace App\Tests\Integration;
  *
  * @coversNothing
  */
-final class CorsControllerTest extends AbstractIntegrationTest
+final class CorsControllerTest extends AbstractIntegrationTestCase
 {
     public function testCorsHeaderWithMatchingOrigin(): void
     {

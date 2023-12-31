@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/chubbyphp/petstore/workflows/CI/badge.svg?branch=mezzio)](https://github.com/chubbyphp/petstore/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=mezzio)](https://coveralls.io/github/chubbyphp/petstore?branch=mezzio)
-[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/petstore/mezzio)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/mezzio)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%mezzio)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/mezzio)
 
 ## Description
 
@@ -10,26 +10,26 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
 
 ## Requirements
 
- * php: ^8.0
- * [chubbyphp/chubbyphp-api-http][2]: ^5.0.1
- * [chubbyphp/chubbyphp-clean-directories][3]: ^1.2
- * [chubbyphp/chubbyphp-cors][4]: ^1.4
- * [chubbyphp/chubbyphp-decode-encode][5]: ^1.0.1
- * [chubbyphp/chubbyphp-deserialization][6]: ^3.5.2
- * [chubbyphp/chubbyphp-http-exception][7]: ^1.0.1
- * [chubbyphp/chubbyphp-laminas-config][8]: ^1.3
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^2.0.3
- * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.2
- * [chubbyphp/chubbyphp-negotiation][11]: ^1.9
- * [chubbyphp/chubbyphp-serialization][12]: ^3.3.1
- * [chubbyphp/chubbyphp-validation][13]: ^3.12.4
- * [doctrine/orm][14]: ^2.14
+ * php: ^8.1
+ * [chubbyphp/chubbyphp-api-http][2]: ^6.0
+ * [chubbyphp/chubbyphp-clean-directories][3]: ^1.3.1
+ * [chubbyphp/chubbyphp-cors][4]: ^1.5
+ * [chubbyphp/chubbyphp-decode-encode][5]: ^1.1
+ * [chubbyphp/chubbyphp-deserialization][6]: ^4.1
+ * [chubbyphp/chubbyphp-http-exception][7]: ^1.1
+ * [chubbyphp/chubbyphp-laminas-config][8]: ^1.4
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^2.2
+ * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.3
+ * [chubbyphp/chubbyphp-negotiation][11]: ^2.0
+ * [chubbyphp/chubbyphp-serialization][12]: ^4.0
+ * [chubbyphp/chubbyphp-validation][13]: ^4.0
+ * [doctrine/orm][14]: ^2.17.2
  * [mezzio/mezzio-fastroute][15]: ^3.7
  * [mezzio/mezzio][16]: ^3.14
- * [monolog/monolog][17]: ^2.8
- * [ramsey/uuid][18]: ^4.7
- * [slim/psr7][19]: ^1.6
- * [symfony/console][20]: ^6.0.17
+ * [monolog/monolog][17]: ^3.5
+ * [ramsey/uuid][18]: ^4.7.5
+ * [slim/psr7][19]: ^1.6.1
+ * [symfony/console][20]: ^6.4.2
 
 ## Environment
 

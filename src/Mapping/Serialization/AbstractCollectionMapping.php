@@ -16,9 +16,7 @@ use Mezzio\Router\RouterInterface;
 
 abstract class AbstractCollectionMapping implements NormalizationObjectMappingInterface
 {
-    public function __construct(protected RouterInterface $router)
-    {
-    }
+    public function __construct(protected RouterInterface $router) {}
 
     /**
      * @return array<NormalizationFieldMappingInterface>

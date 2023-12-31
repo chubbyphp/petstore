@@ -19,8 +19,7 @@ final class ReadRequestHandler implements RequestHandlerInterface
     public function __construct(
         private RepositoryInterface $repository,
         private ResponseManagerInterface $responseManager
-    ) {
-    }
+    ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

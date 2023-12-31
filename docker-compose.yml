@@ -30,6 +30,8 @@ services:
       - postgres
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    ports:
+      - '9003:9003'
   postgres:
     container_name: petstore-postgres
     hostname: petstore-postgres

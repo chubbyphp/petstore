@@ -1,5 +1,9 @@
-build
+.DS_Store
+.idea/
+.phpunit.cache
+.vscode/
+build/
 composer.lock
 database
-var
-vendor
+var/
+vendor/

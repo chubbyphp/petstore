@@ -33,7 +33,7 @@ class CollectionMappingTest extends TestCase
 
         $mapping = $this->getCollectionMapping($router);
 
-        static::assertSame($this->getClass(), $mapping->getClass());
+        self::assertSame($this->getClass(), $mapping->getClass());
     }
 
     public function testGetNormalizationType(): void
@@ -43,7 +43,7 @@ class CollectionMappingTest extends TestCase
 
         $mapping = $this->getCollectionMapping($router);
 
-        static::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
+        self::assertSame($this->getNormalizationType(), $mapping->getNormalizationType());
     }
 
     public function testGetNormalizationFieldMappings(): void
@@ -55,7 +55,7 @@ class CollectionMappingTest extends TestCase
 
         $fieldMappings = $mapping->getNormalizationFieldMappings('/');
 
-        static::assertEquals($this->getNormalizationFieldMappings('/'), $fieldMappings);
+        self::assertEquals($this->getNormalizationFieldMappings('/'), $fieldMappings);
     }
 
     public function testGetNormalizationEmbeddedFieldMappings(): void
@@ -67,7 +67,7 @@ class CollectionMappingTest extends TestCase
 
         $fieldMappings = $mapping->getNormalizationEmbeddedFieldMappings('/');
 
-        static::assertEquals([
+        self::assertEquals([
             NormalizationFieldMappingBuilder::createEmbedMany('items')->getMapping(),
         ], $fieldMappings);
     }
@@ -88,13 +88,12 @@ class CollectionMappingTest extends TestCase
 
         $linkMappings = $mapping->getNormalizationLinkMappings('/');
 
-        static::assertCount(2, $linkMappings);
+        self::assertCount(2, $linkMappings);
 
-        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
-        static::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
+        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[0]);
+        self::assertInstanceOf(NormalizationLinkMappingInterface::class, $linkMappings[1]);
 
-        $object = new class() extends AbstractCollection {
-        };
+        $object = new class() extends AbstractCollection {};
 
         $object->setOffset(0);
         $object->setLimit(20);
@@ -113,7 +112,7 @@ class CollectionMappingTest extends TestCase
         $list = $linkMappings[0]->getLinkNormalizer()->normalizeLink('/', $object, $context);
         $create = $linkMappings[1]->getLinkNormalizer()->normalizeLink('/', $object, $context);
 
-        static::assertSame([
+        self::assertSame([
             'href' => sprintf('%s?key=value&offset=0&limit=20', $this->getCollectionPath()),
             'templated' => false,
             'rel' => [],
@@ -122,7 +121,7 @@ class CollectionMappingTest extends TestCase
             ],
         ], $list);
 
-        static::assertSame([
+        self::assertSame([
             'href' => $this->getCollectionPath(),
             'templated' => false,
             'rel' => [],

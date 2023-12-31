@@ -13,9 +13,7 @@ use Doctrine\ORM\EntityRepository;
 
 final class PetRepository implements RepositoryInterface
 {
-    public function __construct(private EntityManager $entityManager)
-    {
-    }
+    public function __construct(private EntityManager $entityManager) {}
 
     /**
      * @param CollectionInterface|PetCollection $petCollection

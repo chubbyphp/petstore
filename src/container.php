@@ -12,7 +12,7 @@ return static function (string $env) {
 
     foreach ($config['directories'] ?? [] as $directory) {
         if (!is_dir($directory)) {
-            mkdir($directory, 0775, true);
+            mkdir($directory, 0o775, true);
         }
     }
 

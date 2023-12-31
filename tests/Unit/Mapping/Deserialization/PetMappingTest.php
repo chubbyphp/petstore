@@ -6,11 +6,13 @@ namespace App\Tests\Unit\Mapping\Deserialization;
 
 use App\Mapping\Deserialization\PetMapping;
 use App\Model\Pet;
-use App\Model\Vaccination;
-use Chubbyphp\Deserialization\Accessor\MethodAccessor;
 use Chubbyphp\Deserialization\Denormalizer\ConvertTypeFieldDenormalizer;
 use Chubbyphp\Deserialization\Denormalizer\Relation\EmbedManyFieldDenormalizer;
-use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingBuilder;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingFactoryInterface;
+use Chubbyphp\Deserialization\Mapping\DenormalizationFieldMappingInterface;
+use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
+use Chubbyphp\Mock\Call;
+use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,16 +22,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetMappingTest extends TestCase
 {
+    use MockByCallsTrait;
+
     public function testGetClass(): void
     {
-        $mapping = new PetMapping();
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class);
+
+        $mapping = new PetMapping($denormalizationFieldMappingFactory);
 
         self::assertSame(Pet::class, $mapping->getClass());
     }
 
     public function testGetDenormalizationFactory(): void
     {
-        $mapping = new PetMapping();
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class);
+
+        $mapping = new PetMapping($denormalizationFieldMappingFactory);
 
         $factory = $mapping->getDenormalizationFactory('/', 'pet');
 
@@ -40,20 +50,23 @@ final class PetMappingTest extends TestCase
 
     public function testGetDenormalizationFieldMappings(): void
     {
-        $mapping = new PetMapping();
+        /** @var DenormalizationFieldMappingInterface|MockObject $nameDenormalizationFieldMapping */
+        $nameDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
 
-        $fieldMappings = $mapping->getDenormalizationFieldMappings('/', 'pet');
+        /** @var DenormalizationFieldMappingInterface|MockObject $tagDenormalizationFieldMapping */
+        $tagDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
 
-        self::assertEquals([
-            DenormalizationFieldMappingBuilder::createConvertType('name', ConvertTypeFieldDenormalizer::TYPE_STRING)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::createConvertType('tag', ConvertTypeFieldDenormalizer::TYPE_STRING)
-                ->getMapping(),
-            DenormalizationFieldMappingBuilder::create(
-                'vaccinations',
-                false,
-                new EmbedManyFieldDenormalizer(Vaccination::class, new MethodAccessor('vaccinations'))
-            )->getMapping(),
-        ], $fieldMappings);
+        /** @var DenormalizationFieldMappingInterface|MockObject $vaccinationsDenormalizationFieldMapping */
+        $vaccinationsDenormalizationFieldMapping = $this->getMockByCalls(DenormalizationFieldMappingInterface::class);
+
+        /** @var DenormalizationFieldMappingFactoryInterface|MockObject $denormalizationFieldMappingFactory */
+        $denormalizationFieldMappingFactory = $this->getMockByCalls(DenormalizationFieldMappingFactoryInterface::class, [
+            Call::create('createConvertType')->with('name', ConvertTypeFieldDenormalizer::TYPE_STRING, false, null)->willReturn($nameDenormalizationFieldMapping),
+            Call::create('createConvertType')->with('tag', ConvertTypeFieldDenormalizer::TYPE_STRING, false, null)->willReturn($tagDenormalizationFieldMapping),
+            Call::create('create')->with('vaccinations', false, new ArgumentInstanceOf(EmbedManyFieldDenormalizer::class), null)->willReturn($vaccinationsDenormalizationFieldMapping),
+        ]);
+
+        $mapping = new PetMapping($denormalizationFieldMappingFactory);
+        $mapping->getDenormalizationFieldMappings('/', 'pet');
     }
 }

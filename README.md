@@ -126,7 +126,7 @@ Service factories are the glue code of the dependeny injection container.
 
 ## Copyright
 
-2023 Dominik Zogg
+2024 Dominik Zogg
 
 [1]: https://github.com/chubbyphp/chubbyphp-framework
 

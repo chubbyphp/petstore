@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\ServiceFactory\Serialization;
+namespace App\Tests\Unit\ServiceFactory\DecodeEncode;
 
-use App\ServiceFactory\Serialization\TypeEncodersFactory;
+use App\ServiceFactory\DecodeEncode\TypeEncodersFactory;
 use Chubbyphp\DecodeEncode\Encoder\JsonTypeEncoder;
 use Chubbyphp\DecodeEncode\Encoder\JsonxTypeEncoder;
 use Chubbyphp\DecodeEncode\Encoder\UrlEncodedTypeEncoder;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
 /**
- * @covers \App\ServiceFactory\Serialization\TypeEncodersFactory
+ * @covers \App\ServiceFactory\DecodeEncode\TypeEncodersFactory
  *
  * @internal
  */

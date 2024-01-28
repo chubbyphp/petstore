@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ServiceFactory\Serialization;
+namespace App\ServiceFactory\DecodeEncode;
 
 use Chubbyphp\DecodeEncode\Encoder\JsonTypeEncoder;
 use Chubbyphp\DecodeEncode\Encoder\JsonxTypeEncoder;

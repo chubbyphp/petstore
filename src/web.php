@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Middleware\ApiExceptionMiddleware;
 use App\Model\Pet;
 use App\RequestHandler\Api\Crud\CreateRequestHandler;
 use App\RequestHandler\Api\Crud\DeleteRequestHandler;
@@ -12,9 +13,9 @@ use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\RequestHandler\OpenapiRequestHandler;
 use App\RequestHandler\PingRequestHandler;
-use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
-use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Cors\CorsMiddleware;
+use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
+use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
 use Laminas\HttpHandlerRunner\RequestHandlerRunner;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Mezzio\Application;
@@ -48,7 +49,7 @@ return static function (string $env) {
     $web->pipe(NotFoundHandler::class);
 
     $apiMiddlewares = [
-        AcceptAndContentTypeMiddleware::class,
+        AcceptMiddleware::class,
         ApiExceptionMiddleware::class,
     ];
 
@@ -60,6 +61,7 @@ return static function (string $env) {
     ], 'pet_list');
     $web->post('/api/pets', [
         ...$apiMiddlewares,
+        ContentTypeMiddleware::class,
         Pet::class.CreateRequestHandler::class,
     ], 'pet_create');
     $web->get('/api/pets/{id}', [
@@ -68,6 +70,7 @@ return static function (string $env) {
     ], 'pet_read');
     $web->put('/api/pets/{id}', [
         ...$apiMiddlewares,
+        ContentTypeMiddleware::class,
         Pet::class.UpdateRequestHandler::class,
     ], 'pet_update');
     $web->delete('/api/pets/{id}', [

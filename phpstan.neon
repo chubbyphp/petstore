@@ -1,11 +1,11 @@
 parameters:
     ignoreErrors:
         -
-            message: '#Method App\\Mapping\\Orm\\PetMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T#'
-            path: %currentWorkingDirectory%/src/Mapping/Orm/PetMapping.php
+            message: '#Method App\\Orm\\PetMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T#'
+            path: %currentWorkingDirectory%/src/Orm/PetMapping.php
         -
-            message: '#Method App\\Mapping\\Orm\\VaccinationMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T#'
-            path: %currentWorkingDirectory%/src/Mapping/Orm/VaccinationMapping.php
+            message: '#Method App\\Orm\\VaccinationMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T#'
+            path: %currentWorkingDirectory%/src/Orm/VaccinationMapping.php
         -
             message: '#PHPDoc tag @var for variable \$entityRepository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T#'
             path: %currentWorkingDirectory%/src/Repository/PetRepository.php
@@ -15,6 +15,3 @@ parameters:
         -
             message: '#Property App\\Model\\Vaccination\:\:\$pet is never read, only written\.#'
             path: %currentWorkingDirectory%/src/Model/Vaccination.php
-        -
-            message: '#PHPDoc tag @var for variable \$queryParams has no value type specified in iterable type array\.#'
-            path: %currentWorkingDirectory%/src/Mapping/Serialization/AbstractCollectionMapping.php

@@ -62,5 +62,21 @@ final class PetTest extends TestCase
             AssertHelper::readProperty('name', $vaccination2)
         );
         self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination2));
+
+        self::assertSame([
+            'id' => $pet->getId(),
+            'createdAt' => $pet->getCreatedAt(),
+            'updatedAt' => $pet->getUpdatedAt(),
+            'name' => $pet->getName(),
+            'tag' => $pet->getTag(),
+            'vaccinations' => [
+                [
+                    'name' => $pet->getVaccinations()[0]->getName(),
+                ],
+                [
+                    'name' => $pet->getVaccinations()[1]->getName(),
+                ],
+            ],
+        ], $pet->jsonSerialize());
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-interface ModelInterface
+interface ModelInterface extends \JsonSerializable
 {
     public function getId(): string;
 

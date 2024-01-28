@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\ServiceFactory\Deserialization;
+namespace App\Tests\Unit\ServiceFactory\DecodeEncode;
 
-use App\ServiceFactory\Deserialization\TypeDecodersFactory;
+use App\ServiceFactory\DecodeEncode\TypeDecodersFactory;
 use Chubbyphp\DecodeEncode\Decoder\JsonTypeDecoder;
 use Chubbyphp\DecodeEncode\Decoder\JsonxTypeDecoder;
 use Chubbyphp\DecodeEncode\Decoder\UrlEncodedTypeDecoder;
@@ -13,7 +13,7 @@ use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \App\ServiceFactory\Deserialization\TypeDecodersFactory
+ * @covers \App\ServiceFactory\DecodeEncode\TypeDecodersFactory
  *
  * @internal
  */

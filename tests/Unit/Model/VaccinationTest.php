@@ -31,5 +31,7 @@ final class VaccinationTest extends TestCase
 
         self::assertSame('Rabies', $vaccination->getName());
         self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination));
+
+        self::assertSame(['name' => $vaccination->getName()], $vaccination->jsonSerialize());
     }
 }

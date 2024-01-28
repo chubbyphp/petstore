@@ -11,25 +11,22 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 ## Requirements
 
  * php: ^8.1
- * [chubbyphp/chubbyphp-api-http][2]: ^6.0
- * [chubbyphp/chubbyphp-clean-directories][3]: ^1.3.1
- * [chubbyphp/chubbyphp-cors][4]: ^1.5
- * [chubbyphp/chubbyphp-decode-encode][5]: ^1.1
- * [chubbyphp/chubbyphp-deserialization][6]: ^4.1
- * [chubbyphp/chubbyphp-framework][7]: ^5.1.1
- * [chubbyphp/chubbyphp-framework-router-fastroute][8]: ^2.1
- * [chubbyphp/chubbyphp-http-exception][9]: ^1.1
- * [chubbyphp/chubbyphp-laminas-config][10]: ^1.4
- * [chubbyphp/chubbyphp-laminas-config-doctrine][11]: ^2.2
- * [chubbyphp/chubbyphp-laminas-config-factory][12]: ^1.3
- * [chubbyphp/chubbyphp-negotiation][13]: ^2.0
- * [chubbyphp/chubbyphp-serialization][14]: ^4.0
- * [chubbyphp/chubbyphp-validation][15]: ^4.0
- * [doctrine/orm][16]: ^2.17.2
- * [monolog/monolog][17]: ^3.5
- * [ramsey/uuid][18]: ^4.7.5
- * [slim/psr7][19]: ^1.6.1
- * [symfony/console][20]: ^6.4.2
+ * [chubbyphp/chubbyphp-clean-directories][2]: ^1.3.1
+ * [chubbyphp/chubbyphp-cors][3]: ^1.5
+ * [chubbyphp/chubbyphp-decode-encode][4]: ^1.1
+ * [chubbyphp/chubbyphp-framework][5]: ^5.1.1
+ * [chubbyphp/chubbyphp-framework-router-fastroute][6]: ^2.1
+ * [chubbyphp/chubbyphp-http-exception][7]: ^1.1
+ * [chubbyphp/chubbyphp-laminas-config][8]: ^1.4
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^2.2
+ * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.3
+ * [chubbyphp/chubbyphp-negotiation][11]: ^2.0
+ * [chubbyphp/chubbyphp-parsing][12]: ^1.0
+ * [doctrine/orm][13]: ^2.17.2
+ * [monolog/monolog][14]: ^3.5
+ * [ramsey/uuid][15]: ^4.7.5
+ * [slim/psr7][16]: ^1.6.1
+ * [symfony/console][17]: ^6.4.2
 
 ## Environment
 
@@ -86,17 +83,18 @@ Collections are sortable, filterable paginated lists of models.
 
  * [App\Collection][60]
 
-### Factory
+### Dto
 
-Factories to create collections, model or whatever you need to be created.
+A DTO, or Data Transfer Object, is a simple object used to transport data between software application components.
 
- * [App\Factory][70]
+ * [App\Dto][70]
 
-### Mapping
+### Middleware
 
-Mappings are used for deserialization, orm, serialization and validation defintions. They are all done in PHP.
+Middleware functions can execute code, make changes to the request and response objects.
+Middleware can generally be added globally or on a per-route basis.
 
- * [App\Mapping][80]
+ * [App\Middleware][80]
 
 ### Model
 
@@ -104,11 +102,23 @@ Models, entities, documents what ever fits your purpose the best.
 
  * [App\Model][90]
 
+### ORM
+
+ORM Mapping definitions.
+
+ * [App\ORM][100]
+
+### Parsing
+
+Parses and validates data against predefined schemas, ensuring that incoming data conforms to expected structures and criteria.
+
+ * [App\Parsing][110]
+
 ### Repository
 
 Repositories get data from storages like databases, elasticsearch, redis or whereever your models are stored or cached.
 
- * [App\Repository][100]
+ * [App\Repository][120]
 
 ### RequestHandler
 
@@ -116,52 +126,52 @@ RequestHandler alias Controller, or Controller actions to be more precise.
 There is a directory with generic crud controllers. If you like the idea adapt them for your generic use case, if not drop them.
 I highly recommend to not extend them.
 
- * [App\RequestHandler][110]
+ * [App\RequestHandler][130]
 
 ### ServiceFactory
 
 Service factories are the glue code of the dependeny injection container.
 
- * [App\ServiceFactory][120]
+ * [App\ServiceFactory][140]
 
 ## Copyright
 
 2024 Dominik Zogg
 
 [1]: https://github.com/chubbyphp/chubbyphp-framework
-
-[2]: https://packagist.org/packages/chubbyphp/chubbyphp-api-http
-[3]: https://packagist.org/packages/chubbyphp/chubbyphp-clean-directories
-[4]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-decode-encode
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-deserialization
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-http-exception
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
-[11]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
-[12]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
-[13]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[14]: https://packagist.org/packages/chubbyphp/chubbyphp-serialization
-[15]: https://packagist.org/packages/chubbyphp/chubbyphp-validation
-[16]: https://packagist.org/packages/doctrine/orm
-[17]: https://packagist.org/packages/monolog/monolog
-[18]: https://packagist.org/packages/ramsey/uuid
-[19]: https://packagist.org/packages/slim/psr7
-[20]: https://packagist.org/packages/symfony/console
+[2]: https://packagist.org/packages/chubbyphp/chubbyphp-clean-directories
+[3]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
+[4]: https://packagist.org/packages/chubbyphp/chubbyphp-decode-encode
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-http-exception
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[12]: https://packagist.org/packages/chubbyphp/chubbyphp-parsing
+[13]: https://packagist.org/packages/doctrine/orm
+[14]: https://packagist.org/packages/monolog/monolog
+[15]: https://packagist.org/packages/ramsey/uuid
+[16]: https://packagist.org/packages/slim/psr7
+[17]: https://packagist.org/packages/symfony/console
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 
 [60]: src/Collection
 
-[70]: src/Factory
+[70]: src/Dto
 
-[80]: src/Mapping
+[80]: src/Middleware
 
 [90]: src/Model
 
-[100]: src/Repository
+[100]: src/Orm
 
-[110]: src/RequestHandler
+[110]: src/Parsing
 
-[120]: src/ServiceFactory
+[120]: src/Repository
+
+[130]: src/RequestHandler
+
+[140]: src/ServiceFactory

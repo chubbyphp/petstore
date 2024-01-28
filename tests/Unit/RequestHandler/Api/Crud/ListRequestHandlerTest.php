@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler\Api\Crud;
 
 use App\Collection\CollectionInterface;
-use App\Factory\CollectionFactoryInterface;
+use App\Dto\Collection\CollectionRequestInterface;
+use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
-use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
-use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpExceptionInterface;
-use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
-use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
-use Chubbyphp\Validation\Error\ErrorInterface;
-use Chubbyphp\Validation\ValidatorInterface;
+use Chubbyphp\Parsing\ParserErrorException;
+use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \App\RequestHandler\Api\Crud\ListRequestHandler
@@ -30,55 +30,44 @@ final class ListRequestHandlerTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testCreateWithValidationError(): void
+    public function testWithParsingError(): void
     {
+        $parserErrorException = new ParserErrorException();
+
+        $queryAsStdClass = new \stdClass();
+        $queryAsStdClass->name = 'test';
+        $queryAsArray = (array) $queryAsStdClass;
+
         /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
+            Call::create('getQueryParams')->with()->willReturn($queryAsArray),
         ]);
 
-        /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class);
-
-        /** @var ErrorInterface|MockObject $error */
-        $error = $this->getMockByCalls(ErrorInterface::class, [
-            Call::create('getPath')->with()->willReturn('offset'),
-            Call::create('getKey')->with()->willReturn('notinteger'),
-            Call::create('getArguments')->with()->willReturn([]),
+        /** @var MockObject|ObjectSchemaInterface $collectionRequestSchema */
+        $collectionRequestSchema = $this->getMockByCalls(ObjectSchemaInterface::class, [
+            Call::create('parse')->with($queryAsArray)->willThrowException($parserErrorException),
         ]);
 
-        /** @var CollectionInterface|MockObject $collection */
-        $collection = $this->getMockByCalls(CollectionInterface::class);
-
-        /** @var CollectionFactoryInterface|MockObject $factory */
-        $factory = $this->getMockByCalls(CollectionFactoryInterface::class, [
-            Call::create('create')->with()->willReturn($collection),
+        /** @var MockObject|ParsingInterface $parsing */
+        $parsing = $this->getMockByCalls(ParsingInterface::class, [
+            Call::create('getCollectionRequestSchema')->with($request)->willReturn($collectionRequestSchema),
         ]);
 
         /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class);
 
-        /** @var MockObject|RequestManagerInterface $requestManager */
-        $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
-            Call::create('getDataFromRequestQuery')
-                ->with($request, $collection, null)
-                ->willReturn($collection),
-        ]);
+        /** @var EncoderInterface|MockObject $encoder */
+        $encoder = $this->getMockByCalls(EncoderInterface::class);
 
-        /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
-
-        /** @var MockObject|ValidatorInterface $validator */
-        $validator = $this->getMockByCalls(ValidatorInterface::class, [
-            Call::create('validate')->with($collection, null, '')->willReturn([$error]),
-        ]);
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
+        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
 
         $requestHandler = new ListRequestHandler(
-            $factory,
+            $parsing,
             $repository,
-            $requestManager,
-            $responseManager,
-            $validator
+            $encoder,
+            $responseFactory
         );
 
         try {
@@ -86,26 +75,63 @@ final class ListRequestHandlerTest extends TestCase
             self::fail('Expected Exception');
         } catch (\Throwable $e) {
             self::assertInstanceOf(HttpExceptionInterface::class, $e);
-            self::assertSame(400, $e->getStatus());
+            self::assertSame([
+                'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.1',
+                'status' => 400,
+                'title' => 'Bad Request',
+                'detail' => null,
+                'instance' => null,
+                'invalidParameters' => [],
+            ], $e->jsonSerialize());
         }
     }
 
     public function testSuccessful(): void
     {
+        $queryAsStdClass = new \stdClass();
+        $queryAsStdClass->name = 'test';
+        $queryAsArray = (array) $queryAsStdClass;
+        $queryAsJson = json_encode($queryAsArray);
+
+        /** @var MockObject|StreamInterface $responseBody */
+        $responseBody = $this->getMockByCalls(StreamInterface::class, [
+            Call::create('write')->with($queryAsJson),
+        ]);
+
         /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
+            Call::create('getQueryParams')->with()->willReturn($queryAsArray),
         ]);
 
         /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class);
+        $response = $this->getMockByCalls(ResponseInterface::class, [
+            Call::create('withHeader')->with('Content-Type', 'application/json')->willReturnSelf(),
+            Call::create('getBody')->with()->willReturn($responseBody),
+        ]);
 
         /** @var CollectionInterface|MockObject $collection */
         $collection = $this->getMockByCalls(CollectionInterface::class);
 
-        /** @var CollectionFactoryInterface|MockObject $factory */
-        $factory = $this->getMockByCalls(CollectionFactoryInterface::class, [
-            Call::create('create')->with()->willReturn($collection),
+        /** @var CollectionRequestInterface|MockObject $collectionRequest */
+        $collectionRequest = $this->getMockByCalls(CollectionRequestInterface::class, [
+            Call::create('createCollection')->with()->willReturn($collection),
+        ]);
+
+        /** @var MockObject|ObjectSchemaInterface $collectionRequestSchema */
+        $collectionRequestSchema = $this->getMockByCalls(ObjectSchemaInterface::class, [
+            Call::create('parse')->with($queryAsArray)->willReturn($collectionRequest),
+        ]);
+
+        /** @var MockObject|ObjectSchemaInterface $collectionResponseSchema */
+        $collectionResponseSchema = $this->getMockByCalls(ObjectSchemaInterface::class, [
+            Call::create('parse')->with($collection)->willReturn($queryAsArray),
+        ]);
+
+        /** @var MockObject|ParsingInterface $parsing */
+        $parsing = $this->getMockByCalls(ParsingInterface::class, [
+            Call::create('getCollectionRequestSchema')->with($request)->willReturn($collectionRequestSchema),
+            Call::create('getCollectionResponseSchema')->with($request)->willReturn($collectionResponseSchema),
         ]);
 
         /** @var MockObject|RepositoryInterface $repository */
@@ -113,38 +139,21 @@ final class ListRequestHandlerTest extends TestCase
             Call::create('resolveCollection')->with($collection),
         ]);
 
-        /** @var MockObject|RequestManagerInterface $requestManager */
-        $requestManager = $this->getMockByCalls(RequestManagerInterface::class, [
-            Call::create('getDataFromRequestQuery')
-                ->with($request, $collection, null)
-                ->willReturn($collection),
+        /** @var EncoderInterface|MockObject $encoder */
+        $encoder = $this->getMockByCalls(EncoderInterface::class, [
+            Call::create('encode')->with($queryAsArray, 'application/json')->willReturn($queryAsJson),
         ]);
 
-        /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('create')
-                ->with(
-                    $collection,
-                    'application/json',
-                    200,
-                    new ArgumentCallback(static function (NormalizerContextInterface $context) use ($request): void {
-                        self::assertSame($request, $context->getRequest());
-                    })
-                )
-                ->willReturn($response),
-        ]);
-
-        /** @var MockObject|ValidatorInterface $validator */
-        $validator = $this->getMockByCalls(ValidatorInterface::class, [
-            Call::create('validate')->with($collection, null, '')->willReturn([]),
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
+        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
+            Call::create('createResponse')->with(200, '')->willReturn($response),
         ]);
 
         $requestHandler = new ListRequestHandler(
-            $factory,
+            $parsing,
             $repository,
-            $requestManager,
-            $responseManager,
-            $validator
+            $encoder,
+            $responseFactory
         );
 
         self::assertSame($response, $requestHandler->handle($request));

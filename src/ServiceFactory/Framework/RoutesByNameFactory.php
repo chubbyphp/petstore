@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceFactory\Framework;
 
+use App\Middleware\ApiExceptionMiddleware;
 use App\Model\Pet;
 use App\RequestHandler\Api\Crud\CreateRequestHandler;
 use App\RequestHandler\Api\Crud\DeleteRequestHandler;
@@ -12,14 +13,14 @@ use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\RequestHandler\OpenapiRequestHandler;
 use App\RequestHandler\PingRequestHandler;
-use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
-use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\Group;
 use Chubbyphp\Framework\Router\Route;
 use Chubbyphp\Framework\Router\RoutesByName;
 use Chubbyphp\Framework\Router\RoutesByNameInterface;
+use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
+use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
 use Psr\Container\ContainerInterface;
 
 final class RoutesByNameFactory
@@ -29,7 +30,8 @@ final class RoutesByNameFactory
         $ping = new LazyRequestHandler($container, PingRequestHandler::class);
         $openApi = new LazyRequestHandler($container, OpenapiRequestHandler::class);
 
-        $acceptAndContentType = new LazyMiddleware($container, AcceptAndContentTypeMiddleware::class);
+        $accept = new LazyMiddleware($container, AcceptMiddleware::class);
+        $contentType = new LazyMiddleware($container, ContentTypeMiddleware::class);
         $apiExceptionMiddleware = new LazyMiddleware($container, ApiExceptionMiddleware::class);
 
         $petList = new LazyRequestHandler($container, Pet::class.ListRequestHandler::class);
@@ -45,12 +47,12 @@ final class RoutesByNameFactory
                 Group::create('/api', [
                     Group::create('/pets', [
                         Route::get('', 'pet_list', $petList),
-                        Route::post('', 'pet_create', $petCreate),
+                        Route::post('', 'pet_create', $petCreate, [$contentType]),
                         Route::get('/{id}', 'pet_read', $petRead),
-                        Route::put('/{id}', 'pet_update', $petUpdate),
+                        Route::put('/{id}', 'pet_update', $petUpdate, [$contentType]),
                         Route::delete('/{id}', 'pet_delete', $petDelete),
                     ]),
-                ], [$acceptAndContentType, $apiExceptionMiddleware]),
+                ], [$accept, $apiExceptionMiddleware]),
             ])->getRoutes()
         );
     }

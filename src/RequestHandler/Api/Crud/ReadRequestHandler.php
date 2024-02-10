@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\RequestHandler\Api\Crud;
 
+use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpException;
-use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
-use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -17,8 +17,10 @@ use Ramsey\Uuid\Uuid;
 final class ReadRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
+        private ParsingInterface $parsing,
         private RepositoryInterface $repository,
-        private ResponseManagerInterface $responseManager
+        private EncoderInterface $encoder,
+        private ResponseFactoryInterface $responseFactory,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -30,11 +32,11 @@ final class ReadRequestHandler implements RequestHandlerInterface
             throw HttpException::createNotFound();
         }
 
-        return $this->responseManager->create($model, $accept, 200, $this->getNormalizerContext($request));
-    }
+        $output = $this->encoder->encode($this->parsing->getModelResponseSchema($request)->parse($model), $accept);
 
-    private function getNormalizerContext(ServerRequestInterface $request): NormalizerContextInterface
-    {
-        return NormalizerContextBuilder::create()->setRequest($request)->getContext();
+        $response = $this->responseFactory->createResponse(200)->withHeader('Content-Type', $accept);
+        $response->getBody()->write($output);
+
+        return $response;
     }
 }

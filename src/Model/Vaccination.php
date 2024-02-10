@@ -6,7 +6,7 @@ namespace App\Model;
 
 use Ramsey\Uuid\Uuid;
 
-final class Vaccination
+final class Vaccination implements \JsonSerializable
 {
     private string $id;
 
@@ -37,5 +37,15 @@ final class Vaccination
     public function setPet(?Pet $pet): void
     {
         $this->pet = $pet;
+    }
+
+    /**
+     * @return array{name: null|string}
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'name' => $this->name,
+        ];
     }
 }

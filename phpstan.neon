@@ -12,3 +12,6 @@ parameters:
         -
             message: '#Property App\\Model\\Vaccination\:\:\$pet is never read, only written\.#'
             path: %currentWorkingDirectory%/src/Model/Vaccination.php
+        -
+            message: '#Slim\\Interfaces\\RouteParserInterface\:\:urlFor\(\)#'
+            path: %currentWorkingDirectory%/src/Parsing/PetParsing.php

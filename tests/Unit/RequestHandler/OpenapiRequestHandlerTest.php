@@ -54,7 +54,7 @@ final class OpenapiRequestHandlerTest extends TestCase
             Call::create('createStreamFromFile')
                 ->with(
                     new ArgumentCallback(static function (string $path): void {
-                        self::assertMatchesRegularExpression('#openapi\.yml$#', $path);
+                        self::assertMatchesRegularExpression('#src/RequestHandler/../../openapi\.yml$#', $path);
                     }),
                     'r'
                 )

@@ -226,8 +226,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 
         self::assertTrue($found);
 
-        self::assertSame([
-            'href' => '/api/pets?sort%5Bname%5D=desc&offset=0&limit=20',
+        self::assertSame(['href' => '/api/pets?offset=0&limit=20&sort%5Bname%5D=desc',
             'templated' => false,
             'rel' => [],
             'attributes' => [

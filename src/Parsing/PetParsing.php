@@ -22,6 +22,8 @@ final class PetParsing implements ParsingInterface
 {
     private null|ObjectSchemaInterface $collectionRequestSchema = null;
 
+    private null|ObjectSchemaInterface $collectionResponseSchema = null;
+
     private null|ObjectSchemaInterface $modelRequestSchema = null;
 
     private null|ObjectSchemaInterface $modelResponseSchema = null;
@@ -37,16 +39,16 @@ final class PetParsing implements ParsingInterface
             $p = $this->parser;
 
             $this->collectionRequestSchema = $p->object([
-                'offset' => $p->union([$p->string()->default('0')->toInt(), $p->int()->default(0)]),
+                'offset' => $p->union([$p->string()->toInt(), $p->int()->default(0)]),
                 'limit' => $p->union([
-                    $p->string()->default((string) CollectionInterface::LIMIT)->toInt(),
+                    $p->string()->toInt(),
                     $p->int()->default(CollectionInterface::LIMIT),
                 ]),
                 'filters' => $p->object([
-                    'name' => $p->string()->nullable(),
+                    'name' => $p->string()->nullable()->default(null),
                 ], PetCollectionFilters::class)->strict()->default([]),
                 'sort' => $p->object([
-                    'name' => $p->union([$p->literal('asc'), $p->literal('desc')]),
+                    'name' => $p->union([$p->literal('asc'), $p->literal('desc')])->nullable()->default(null),
                 ], PetCollectionSort::class)->strict()->default([]),
             ], PetCollectionRequest::class)->strict();
         }
@@ -56,55 +58,58 @@ final class PetParsing implements ParsingInterface
 
     public function getCollectionResponseSchema(ServerRequestInterface $request): ObjectSchemaInterface
     {
-        $p = $this->parser;
+        if (null === $this->collectionResponseSchema) {
+            $p = $this->parser;
 
-        return $p->object([
-            'offset' => $p->int(),
-            'limit' => $p->int(),
-            'filters' => $p->object([
-                'name' => $p->string()->nullable(),
-            ], PetCollectionFilters::class)->strict(),
-            'sort' => $p->object([
-                'name' => $p->union([$p->literal('asc'), $p->literal('desc')]),
-            ], PetCollectionSort::class)->strict(),
-            'items' => $p->array($this->getModelResponseSchema($request)),
-            'count' => $p->int(),
-            '_type' => $p->literal('petCollection')->default('petCollection'),
-        ], PetCollectionResponse::class)
-            ->strict()
-            ->postParse(function (PetCollectionResponse $petCollectionResponse) use ($request) {
-                $queryParams = $request->getQueryParams();
+            return $p->object([
+                'offset' => $p->int(),
+                'limit' => $p->int(),
+                'filters' => $p->object([
+                    'name' => $p->string()->nullable(),
+                ], PetCollectionFilters::class)->strict(),
+                'sort' => $p->object([
+                    'name' => $p->union([$p->literal('asc'), $p->literal('desc')]),
+                ], PetCollectionSort::class)->strict(),
+                'items' => $p->array($this->getModelResponseSchema($request)),
+                'count' => $p->int(),
+                '_type' => $p->literal('petCollection')->default('petCollection'),
+            ], PetCollectionResponse::class)
+                ->strict()
+                ->postParse(function (PetCollectionResponse $petCollectionResponse) {
+                    $queryParams = [
+                        'offset' => $petCollectionResponse->offset,
+                        'limit' => $petCollectionResponse->limit,
+                        'filters' => $petCollectionResponse->filters->jsonSerialize(),
+                        'sort' => $petCollectionResponse->sort->jsonSerialize(),
+                    ];
 
-                /** @var array{offset: int, limit: int} $queryParams */
-                $queryParams = array_merge($queryParams, [
-                    'offset' => $petCollectionResponse->offset,
-                    'limit' => $petCollectionResponse->limit,
-                ]);
+                    $petCollectionResponse->_links = [
+                        'list' => [
+                            'href' => $this->urlGenerator->generatePath('pet_list', [], $queryParams),
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => ['method' => 'GET'],
+                        ],
+                        'create' => [
+                            'href' => $this->urlGenerator->generatePath('pet_create'),
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => ['method' => 'POST'],
+                        ],
+                    ];
 
-                $petCollectionResponse->_links = [
-                    'list' => [
-                        'href' => $this->urlGenerator->generatePath('pet_list', [], $queryParams),
-                        'templated' => false,
-                        'rel' => [],
-                        'attributes' => ['method' => 'GET'],
-                    ],
-                    'create' => [
-                        'href' => $this->urlGenerator->generatePath('pet_create'),
-                        'templated' => false,
-                        'rel' => [],
-                        'attributes' => ['method' => 'POST'],
-                    ],
-                ];
+                    return $petCollectionResponse;
+                })
+                ->postParse(static function (object $object): array {
+                    /** @var string $json */
+                    $json = json_encode($object);
 
-                return $petCollectionResponse;
-            })
-            ->postParse(static function (object $object): array {
-                /** @var string $json */
-                $json = json_encode($object);
+                    return json_decode($json, true);
+                })
+            ;
+        }
 
-                return json_decode($json, true);
-            })
-        ;
+        return $this->collectionResponseSchema;
     }
 
     public function getModelRequestSchema(ServerRequestInterface $request): ObjectSchemaInterface
@@ -115,8 +120,7 @@ final class PetParsing implements ParsingInterface
             $this->modelRequestSchema = $p->object([
                 'name' => $p->string()->minLength(1),
                 'tag' => $p->string()->minLength(1)->nullable(),
-                'vaccinations' => $p->array($p->object([
-                    'name' => $p->string(),
+                'vaccinations' => $p->array($p->object(['name' => $p->string()->minLength(1),
                 ], VaccinationRequest::class)->strict(['_type']))->default([]),
             ], PetRequest::class)->strict(['id', 'createdAt', 'updatedAt', '_type', '_links']);
         }

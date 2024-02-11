@@ -11,6 +11,7 @@ use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Parsing\Parser;
+use Chubbyphp\Parsing\ParserErrorException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,14 +37,25 @@ final class PetParsingTest extends TestCase
 
         $petParsing = new PetParsing($parser, $urlGenerator);
 
-        $petCollectionRequest = $petParsing->getCollectionRequestSchema($request)->parse([
+        $petCollectionMinimalRequest = $petParsing->getCollectionRequestSchema($request)->parse([]);
+
+        self::assertInstanceOf(PetCollectionRequest::class, $petCollectionMinimalRequest);
+
+        self::assertSame([
+            'offset' => 0,
+            'limit' => 20,
+            'filters' => ['name' => null],
+            'sort' => ['name' => null],
+        ], json_decode(json_encode($petCollectionMinimalRequest), true));
+
+        $petCollectionMaximalRequest = $petParsing->getCollectionRequestSchema($request)->parse([
             'offset' => '10',
-            'limit' => 10,
+            'limit' => '10',
             'filters' => ['name' => 'jerry'],
             'sort' => ['name' => 'asc'],
         ]);
 
-        self::assertInstanceOf(PetCollectionRequest::class, $petCollectionRequest);
+        self::assertInstanceOf(PetCollectionRequest::class, $petCollectionMaximalRequest);
 
         self::assertSame([
             'offset' => 10,
@@ -54,15 +66,13 @@ final class PetParsingTest extends TestCase
             'sort' => [
                 'name' => 'asc',
             ],
-        ], json_decode(json_encode($petCollectionRequest), true));
+        ], json_decode(json_encode($petCollectionMaximalRequest), true));
     }
 
     public function testGetCollectionResponseSchema(): void
     {
         /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getQueryParams')->with()->willReturn(['offset' => '10']),
-        ]);
+        $request = $this->getMockByCalls(ServerRequestInterface::class);
 
         $parser = new Parser();
 
@@ -77,7 +87,7 @@ final class PetParsingTest extends TestCase
             Call::create('generatePath')
                 ->with('pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
                 ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('generatePath')->with('pet_list', [], ['offset' => 10, 'limit' => 10])
+            Call::create('generatePath')->with('pet_list', [], ['offset' => 10, 'limit' => 10, 'filters' => ['name' => 'jerry'], 'sort' => ['name' => 'asc']])
                 ->willReturn('/api/pets?offset=10&limit=10'),
             Call::create('generatePath')->with('pet_create', [], [])->willReturn('/api/pets'),
         ]);
@@ -183,27 +193,86 @@ final class PetParsingTest extends TestCase
 
         $petParsing = new PetParsing($parser, $urlGenerator);
 
-        $petRequest = $petParsing->getModelRequestSchema($request)->parse(['name' => 'jerry',
+        $petRequestMinimal = $petParsing->getModelRequestSchema($request)->parse(['name' => 'jerry']);
+
+        self::assertInstanceOf(PetRequest::class, $petRequestMinimal);
+
+        self::assertSame([
+            'name' => 'jerry',
+            'tag' => null,
+            'vaccinations' => [],
+        ], json_decode(json_encode($petRequestMinimal), true));
+
+        $petRequestMaximal = $petParsing->getModelRequestSchema($request)->parse([
+            'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+            'createdAt' => '2024-01-20T09:15:00+00:00',
+            'updatedAt' => '2024-01-20T09:15:00+00:00',
+            'name' => 'jerry',
             'tag' => null,
             'vaccinations' => [
-                ['name' => 'rabid'],
-                ['name' => 'cat cold'],
+                ['name' => 'rabid', '_type' => ''],
+                ['name' => 'cat cold', '_type' => ''],
             ],
+            '_type' => '',
+            '_links' => [],
         ]);
 
-        self::assertInstanceOf(PetRequest::class, $petRequest);
+        self::assertInstanceOf(PetRequest::class, $petRequestMaximal);
 
-        self::assertSame(['name' => 'jerry',
+        self::assertSame([
+            'name' => 'jerry',
             'tag' => null,
             'vaccinations' => [
-                0 => [
+                [
                     'name' => 'rabid',
                 ],
-                1 => [
+                [
                     'name' => 'cat cold',
                 ],
             ],
-        ], json_decode(json_encode($petRequest), true));
+        ], json_decode(json_encode($petRequestMaximal), true));
+
+        try {
+            $petParsing->getModelRequestSchema($request)->parse([
+                'name' => '',
+                'tag' => '',
+                'vaccinations' => [
+                    ['name' => ''],
+                ],
+            ]);
+
+            throw new \Exception('Expect fail');
+        } catch (ParserErrorException $e) {
+            self::assertSame([
+                [
+                    'name' => 'name',
+                    'reason' => 'Min length {{min}}, 0 given',
+                    'details' => [
+                        '_template' => 'Min length {{min}}, {{given}} given',
+                        'minLength' => 1,
+                        'given' => 0,
+                    ],
+                ],
+                [
+                    'name' => 'tag',
+                    'reason' => 'Min length {{min}}, 0 given',
+                    'details' => [
+                        '_template' => 'Min length {{min}}, {{given}} given',
+                        'minLength' => 1,
+                        'given' => 0,
+                    ],
+                ],
+                [
+                    'name' => 'vaccinations[0][name]',
+                    'reason' => 'Min length {{min}}, 0 given',
+                    'details' => [
+                        '_template' => 'Min length {{min}}, {{given}} given',
+                        'minLength' => 1,
+                        'given' => 0,
+                    ],
+                ],
+            ], $e->getApiProblemErrorMessages());
+        }
     }
 
     public function testGetModelResponseSchema(): void

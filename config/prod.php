@@ -7,7 +7,6 @@ use App\Model\Pet;
 use App\Model\Vaccination;
 use App\Orm\PetMapping;
 use App\Orm\VaccinationMapping;
-use App\Parsing\PetCollectionParsing;
 use App\Parsing\PetParsing;
 use App\Repository\PetRepository;
 use App\RequestHandler\Api\Crud\CreateRequestHandler;
@@ -33,7 +32,6 @@ use App\ServiceFactory\Middleware\ApiExceptionMiddlewareFactory;
 use App\ServiceFactory\Negotiation\AcceptNegotiatorSupportedMediaTypesFactory;
 use App\ServiceFactory\Negotiation\ContentTypeNegotiatorSupportedMediaTypesFactory;
 use App\ServiceFactory\Parsing\ParserFactory;
-use App\ServiceFactory\Parsing\PetCollectionParsingFactory;
 use App\ServiceFactory\Parsing\PetParsingFactory;
 use App\ServiceFactory\Repository\PetRepositoryFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetCreateRequestHandlerFactory;
@@ -133,7 +131,6 @@ return [
             Pet::class . ListRequestHandler::class => PetListRequestHandlerFactory::class,
             Pet::class . ReadRequestHandler::class => PetReadRequestHandlerFactory::class,
             Pet::class . UpdateRequestHandler::class => PetUpdateRequestHandlerFactory::class,
-            PetCollectionParsing::class => PetCollectionParsingFactory::class,
             PetParsing::class => PetParsingFactory::class,
             PetRepository::class => PetRepositoryFactory::class,
             PingRequestHandler::class => PingRequestHandlerFactory::class,

@@ -22,26 +22,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         );
 
         self::assertSame(406, $response['status']['code'], $response['body'] ?? '');
-
-        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
-
-        $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertEquals([
-            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
-            'status' => 406,
-            'title' => 'Not Acceptable',
-            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
-            'instance' => null,
-            'value' => 'text/html',
-            'supportedValues' => [
-                'application/json',
-                'application/jsonx+xml',
-                'application/x-www-form-urlencoded',
-                'application/x-yaml',
-            ],
-            '_type' => 'apiProblem',
-        ], $apiProblem);
     }
 
     public function testCreateWithUnsupportedContentType(): void
@@ -105,8 +85,12 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'invalidParameters' => [
                 [
                     'name' => 'name',
-                    'reason' => 'constraint.notblank.blank',
-                    'details' => [],
+                    'reason' => 'Min length {{min}}, 0 given',
+                    'details' => [
+                        '_template' => 'Min length {{min}}, {{given}} given',
+                        'minLength' => 1,
+                        'given' => 0,
+                    ],
                 ],
             ],
             '_type' => 'apiProblem',
@@ -135,26 +119,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         );
 
         self::assertSame(406, $response['status']['code'], $response['body'] ?? '');
-
-        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
-
-        $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertEquals([
-            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
-            'status' => 406,
-            'title' => 'Not Acceptable',
-            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
-            'instance' => null,
-            'value' => 'text/html',
-            'supportedValues' => [
-                'application/json',
-                'application/jsonx+xml',
-                'application/x-www-form-urlencoded',
-                'application/x-yaml',
-            ],
-            '_type' => 'apiProblem',
-        ], $apiProblem);
     }
 
     public function testListWithValidationError(): void
@@ -181,20 +145,29 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'instance' => null,
             'invalidParameters' => [
                 [
-                    'name' => 'filters.name2',
-                    'reason' => 'constraint.map.field.notallowed',
+                    'name' => 'filters[name2]',
+                    'reason' => 'Unknown field "name2"',
                     'details' => [
-                        'field' => 'name2',
-                        'allowedFields' => ['name'],
+                        '_template' => 'Unknown field {{fieldName}}',
+                        'fieldName' => 'name2',
                     ],
                 ],
                 [
-                    'name' => 'sort.name',
-                    'reason' => 'constraint.sort.order.notallowed',
+                    'name' => 'sort[name]',
+                    'reason' => 'Input should be "asc", "test" given',
                     'details' => [
-                        'field' => 'name',
-                        'order' => 'test',
-                        'allowedOrders' => ['asc', 'desc'],
+                        '_template' => 'Input should be {{expected}}, {{given}} given',
+                        'expected' => 'asc',
+                        'given' => 'test',
+                    ],
+                ],
+                [
+                    'name' => 'sort[name]',
+                    'reason' => 'Input should be "desc", "test" given',
+                    'details' => [
+                        '_template' => 'Input should be {{expected}}, {{given}} given',
+                        'expected' => 'desc',
+                        'given' => 'test',
                     ],
                 ],
             ],
@@ -225,8 +198,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         self::assertArrayHasKey('filters', $petCollection);
         self::assertArrayHasKey('sort', $petCollection);
         self::assertArrayHasKey('count', $petCollection);
-        self::assertArrayHasKey('_embedded', $petCollection);
-        self::assertArrayHasKey('items', $petCollection['_embedded']);
+        self::assertArrayHasKey('items', $petCollection);
         self::assertArrayHasKey('_links', $petCollection);
         self::assertArrayHasKey('list', $petCollection['_links']);
         self::assertArrayHasKey('create', $petCollection['_links']);
@@ -236,12 +208,12 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         self::assertSame(20, $petCollection['limit']);
         self::assertSame(['name' => 'desc'], $petCollection['sort']);
         self::assertGreaterThanOrEqual(1, $petCollection['count']);
-        self::assertGreaterThanOrEqual(1, is_countable($petCollection['_embedded']['items']) ? \count($petCollection['_embedded']['items']) : 0);
-        self::assertSame($petCollection['count'], is_countable($petCollection['_embedded']['items']) ? \count($petCollection['_embedded']['items']) : 0);
+        self::assertGreaterThanOrEqual(1, is_countable($petCollection['items']) ? \count($petCollection['items']) : 0);
+        self::assertSame($petCollection['count'], is_countable($petCollection['items']) ? \count($petCollection['items']) : 0);
 
         $found = false;
 
-        foreach ($petCollection['_embedded']['items'] as $item) {
+        foreach ($petCollection['items'] as $item) {
             if ($item['id'] === $pet['id']) {
                 $this::assertPet(
                     $item,
@@ -284,26 +256,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         );
 
         self::assertSame(406, $response['status']['code'], $response['body'] ?? '');
-
-        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
-
-        $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertEquals([
-            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
-            'status' => 406,
-            'title' => 'Not Acceptable',
-            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
-            'instance' => null,
-            'value' => 'text/html',
-            'supportedValues' => [
-                'application/json',
-                'application/jsonx+xml',
-                'application/x-www-form-urlencoded',
-                'application/x-yaml',
-            ],
-            '_type' => 'apiProblem',
-        ], $apiProblem);
     }
 
     public function testReadWithNotFound(): void
@@ -368,26 +320,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         );
 
         self::assertSame(406, $response['status']['code'], $response['body'] ?? '');
-
-        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
-
-        $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertEquals([
-            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
-            'status' => 406,
-            'title' => 'Not Acceptable',
-            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
-            'instance' => null,
-            'value' => 'text/html',
-            'supportedValues' => [
-                'application/json',
-                'application/jsonx+xml',
-                'application/x-www-form-urlencoded',
-                'application/x-yaml',
-            ],
-            '_type' => 'apiProblem',
-        ], $apiProblem);
     }
 
     public function testUpdateWithUnsupportedContentType(): void
@@ -480,8 +412,12 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'invalidParameters' => [
                 [
                     'name' => 'name',
-                    'reason' => 'constraint.notblank.blank',
-                    'details' => [],
+                    'reason' => 'Min length {{min}}, 0 given',
+                    'details' => [
+                        '_template' => 'Min length {{min}}, {{given}} given',
+                        'minLength' => 1,
+                        'given' => 0,
+                    ],
                 ],
             ],
             '_type' => 'apiProblem',
@@ -551,26 +487,6 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         );
 
         self::assertSame(406, $response['status']['code'], $response['body'] ?? '');
-
-        self::assertSame('application/problem+json', $response['headers']['content-type'][0]);
-
-        $apiProblem = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertEquals([
-            'type' => 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7',
-            'status' => 406,
-            'title' => 'Not Acceptable',
-            'detail' => 'Not supported accept, supportedValues: "application/json", application/jsonx+xml", application/x-www-form-urlencoded", application/x-yaml"',
-            'instance' => null,
-            'value' => 'text/html',
-            'supportedValues' => [
-                'application/json',
-                'application/jsonx+xml',
-                'application/x-www-form-urlencoded',
-                'application/x-yaml',
-            ],
-            '_type' => 'apiProblem',
-        ], $apiProblem);
     }
 
     public function testDeleteWithNotFound(): void

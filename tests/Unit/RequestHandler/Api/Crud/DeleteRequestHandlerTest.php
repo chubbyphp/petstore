@@ -7,11 +7,11 @@ namespace App\Tests\Unit\RequestHandler\Api\Crud;
 use App\Model\ModelInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\DeleteRequestHandler;
-use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Chubbyphp\HttpException\HttpExceptionInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -32,16 +32,13 @@ final class DeleteRequestHandlerTest extends TestCase
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class);
-
         /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class);
 
-        /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
+        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
 
-        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
+        $requestHandler = new DeleteRequestHandler($repository, $responseFactory);
 
         try {
             $requestHandler->handle($request);
@@ -60,18 +57,15 @@ final class DeleteRequestHandlerTest extends TestCase
             Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
         ]);
 
-        /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class);
-
         /** @var MockObject|RepositoryInterface $repository */
         $repository = $this->getMockByCalls(RepositoryInterface::class, [
             Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn(null),
         ]);
 
-        /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class);
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
+        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
 
-        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
+        $requestHandler = new DeleteRequestHandler($repository, $responseFactory);
 
         try {
             $requestHandler->handle($request);
@@ -91,7 +85,11 @@ final class DeleteRequestHandlerTest extends TestCase
         ]);
 
         /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class);
+        $response = $this->getMockByCalls(ResponseInterface::class, [
+            Call::create('withHeader')
+                ->with('Content-Type', 'application/json')
+                ->willReturnSelf(),
+        ]);
 
         /** @var MockObject|ModelInterface $model */
         $model = $this->getMockByCalls(ModelInterface::class);
@@ -103,14 +101,14 @@ final class DeleteRequestHandlerTest extends TestCase
             Call::create('flush')->with(),
         ]);
 
-        /** @var MockObject|ResponseManagerInterface $responseManager */
-        $responseManager = $this->getMockByCalls(ResponseManagerInterface::class, [
-            Call::create('createEmpty')
-                ->with('application/json', 204)
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
+        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
+            Call::create('createResponse')
+                ->with(204, '')
                 ->willReturn($response),
         ]);
 
-        $requestHandler = new DeleteRequestHandler($repository, $responseManager);
+        $requestHandler = new DeleteRequestHandler($repository, $responseFactory);
 
         self::assertSame($response, $requestHandler->handle($request));
     }

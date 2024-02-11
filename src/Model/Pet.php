@@ -12,14 +12,8 @@ final class Pet implements ModelInterface
 {
     private string $id;
 
-    /**
-     * @var \DateTime|\DateTimeImmutable
-     */
     private \DateTimeInterface $createdAt;
 
-    /**
-     * @var null|\DateTime|\DateTimeImmutable
-     */
     private ?\DateTimeInterface $updatedAt = null;
 
     private ?string $name = null;
@@ -43,25 +37,16 @@ final class Pet implements ModelInterface
         return $this->id;
     }
 
-    /**
-     * @return \DateTime|\DateTimeImmutable
-     */
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTime|\DateTimeImmutable $updatedAt
-     */
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    /**
-     * @return null|\DateTime|\DateTimeImmutable
-     */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -105,5 +90,32 @@ final class Pet implements ModelInterface
     public function getVaccinations(): array
     {
         return $this->vaccinations->getValues();
+    }
+
+    /**
+     * @return array{
+     *  id: string,
+     *  createdAt: \DateTimeInterface,
+     *  updatedAt: null|\DateTimeInterface,
+     *  name: null|string,
+     *  tag: null|string,
+     *  vaccinations: array<int<0, max>, array{name: string|null}>
+     * }
+     */
+    public function jsonSerialize(): array
+    {
+        $vaccinations = [];
+        foreach ($this->vaccinations as $vaccination) {
+            $vaccinations[] = $vaccination->jsonSerialize();
+        }
+
+        return [
+            'id' => $this->id,
+            'createdAt' => $this->createdAt,
+            'updatedAt' => $this->updatedAt,
+            'name' => $this->name,
+            'tag' => $this->tag,
+            'vaccinations' => $vaccinations,
+        ];
     }
 }

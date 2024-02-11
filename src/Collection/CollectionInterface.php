@@ -6,7 +6,7 @@ namespace App\Collection;
 
 use App\Model\ModelInterface;
 
-interface CollectionInterface
+interface CollectionInterface extends \JsonSerializable
 {
     public const LIMIT = 20;
 

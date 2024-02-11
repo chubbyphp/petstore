@@ -2,60 +2,52 @@
 
 declare(strict_types=1);
 
-use App\Factory\Collection\PetCollectionFactory;
-use App\Factory\Model\PetFactory;
-use App\Mapping\Orm\PetMapping;
-use App\Mapping\Orm\VaccinationMapping;
+use App\Middleware\ApiExceptionMiddleware;
+use App\Middleware\ConvertHttpExceptionMiddleware;
 use App\Model\Pet;
 use App\Model\Vaccination;
+use App\Orm\PetMapping;
+use App\Orm\VaccinationMapping;
+use App\Parsing\PetParsing;
 use App\Repository\PetRepository;
 use App\RequestHandler\Api\Crud\CreateRequestHandler;
 use App\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
 use App\RequestHandler\Api\Crud\ReadRequestHandler;
 use App\RequestHandler\Api\Crud\UpdateRequestHandler;
-use App\RequestHandler\PingRequestHandler;
-use Doctrine\DBAL\Connection;
 use App\RequestHandler\OpenapiRequestHandler;
+use App\RequestHandler\PingRequestHandler;
 use App\ServiceFactory\Command\CommandsFactory;
 use App\ServiceFactory\DecodeEncode\TypeDecodersFactory;
 use App\ServiceFactory\DecodeEncode\TypeEncodersFactory;
-use App\ServiceFactory\Deserialization\DenormalizationObjectMappingsFactory;
-use App\ServiceFactory\Factory\Collection\PetCollectionFactoryFactory;
-use App\ServiceFactory\Factory\Model\PetFactoryFactory;
 use App\ServiceFactory\Framework\CallableResolverFactory;
 use App\ServiceFactory\Framework\RouteCollectorFactory;
 use App\ServiceFactory\Framework\RouteParserFactory;
 use App\ServiceFactory\Http\ResponseFactoryFactory;
 use App\ServiceFactory\Http\StreamFactoryFactory;
 use App\ServiceFactory\Logger\LoggerFactory;
+use App\ServiceFactory\Middleware\ApiExceptionMiddlewareFactory;
+use App\ServiceFactory\Middleware\ConvertHttpExceptionMiddlewareFactory;
 use App\ServiceFactory\Negotiation\AcceptNegotiatorSupportedMediaTypesFactory;
 use App\ServiceFactory\Negotiation\ContentTypeNegotiatorSupportedMediaTypesFactory;
+use App\ServiceFactory\Parsing\ParserFactory;
+use App\ServiceFactory\Parsing\PetParsingFactory;
 use App\ServiceFactory\Repository\PetRepositoryFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetCreateRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetDeleteRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetListRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetReadRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetUpdateRequestHandlerFactory;
-use App\ServiceFactory\RequestHandler\PingRequestHandlerFactory;
 use App\ServiceFactory\RequestHandler\OpenapiRequestHandlerFactory;
-use App\ServiceFactory\Serialization\NormalizationObjectMappingsFactory;
-use App\ServiceFactory\Validation\ValidationMappingProviderFactory;
-use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
-use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
-use Chubbyphp\ApiHttp\Middleware\AcceptAndContentTypeMiddleware;
-use Chubbyphp\ApiHttp\Middleware\ApiExceptionMiddleware;
-use Chubbyphp\ApiHttp\ServiceFactory\AcceptAndContentTypeMiddlewareFactory;
-use Chubbyphp\ApiHttp\ServiceFactory\ApiExceptionMiddlewareFactory;
-use Chubbyphp\ApiHttp\ServiceFactory\RequestManagerFactory;
-use Chubbyphp\ApiHttp\ServiceFactory\ResponseManagerFactory;
+use App\ServiceFactory\RequestHandler\PingRequestHandlerFactory;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Cors\ServiceFactory\CorsMiddlewareFactory;
+use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
 use Chubbyphp\DecodeEncode\Decoder\TypeDecoderInterface;
+use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\DecodeEncode\Encoder\TypeEncoderInterface;
-use Chubbyphp\Deserialization\DeserializerInterface;
-use Chubbyphp\Deserialization\Mapping\DenormalizationObjectMappingInterface;
-use Chubbyphp\Deserialization\ServiceFactory\DeserializerFactory;
+use Chubbyphp\DecodeEncode\ServiceFactory\DecoderFactory;
+use Chubbyphp\DecodeEncode\ServiceFactory\EncoderFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuAdapterFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\DBAL\ConnectionFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\DBAL\Tools\Console\ContainerConnectionProviderFactory;
@@ -64,22 +56,21 @@ use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\Tools\Console\Container
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Persistence\Mapping\Driver\ClassMapDriverFactory;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
 use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;
+use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
+use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
+use Chubbyphp\Negotiation\ServiceFactory\AcceptMiddlewareFactory;
 use Chubbyphp\Negotiation\ServiceFactory\AcceptNegotiatorFactory;
+use Chubbyphp\Negotiation\ServiceFactory\ContentTypeMiddlewareFactory;
 use Chubbyphp\Negotiation\ServiceFactory\ContentTypeNegotiatorFactory;
-use Chubbyphp\Serialization\Mapping\NormalizationObjectMappingInterface;
-use Chubbyphp\Serialization\SerializerInterface;
-use Chubbyphp\Serialization\ServiceFactory\SerializerFactory;
-use Chubbyphp\Validation\Mapping\ValidationMappingProviderInterface;
-use Chubbyphp\Validation\Mapping\ValidationMappingProviderRegistryInterface;
-use Chubbyphp\Validation\ServiceFactory\ValidationMappingProviderRegistryFactory;
-use Chubbyphp\Validation\ServiceFactory\ValidatorFactory;
-use Chubbyphp\Validation\ValidatorInterface;
+use Chubbyphp\Parsing\ParserInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Monolog\Level;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -87,7 +78,6 @@ use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Symfony\Component\Console\Command\Command;
-use Psr\Cache\CacheItemPoolInterface;
 
 $rootDir = \realpath(__DIR__ . '/..');
 $cacheDir = $rootDir . '/var/cache/' . $env;
@@ -110,7 +100,7 @@ return [
             EntityManager::class => EntityManagerInterface::class,
         ],
         'factories' => [
-            AcceptAndContentTypeMiddleware::class => AcceptAndContentTypeMiddlewareFactory::class,
+            AcceptMiddleware::class => AcceptMiddlewareFactory::class,
             AcceptNegotiatorInterface::class . 'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
@@ -119,38 +109,36 @@ return [
             Command::class . '[]' => CommandsFactory::class,
             Connection::class => ConnectionFactory::class,
             ConnectionProvider::class => ContainerConnectionProviderFactory::class,
+            ContentTypeMiddleware::class => ContentTypeMiddlewareFactory::class,
             ContentTypeNegotiatorInterface::class . 'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
             ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
+            ConvertHttpExceptionMiddleware::class => ConvertHttpExceptionMiddlewareFactory::class,
             CorsMiddleware::class => CorsMiddlewareFactory::class,
-            DenormalizationObjectMappingInterface::class . '[]' => DenormalizationObjectMappingsFactory::class,
-            DeserializerInterface::class => DeserializerFactory::class,
+            DecoderInterface::class => DecoderFactory::class,
+            EncoderInterface::class => EncoderFactory::class,
             EntityManagerInterface::class => EntityManagerFactory::class,
             EntityManagerProvider::class => ContainerEntityManagerProviderFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
-            NormalizationObjectMappingInterface::class . '[]' => NormalizationObjectMappingsFactory::class,
             OpenapiRequestHandler::class => OpenapiRequestHandlerFactory::class,
+            ParserInterface::class => ParserFactory::class,
             Pet::class . CreateRequestHandler::class => PetCreateRequestHandlerFactory::class,
             Pet::class . DeleteRequestHandler::class => PetDeleteRequestHandlerFactory::class,
             Pet::class . ListRequestHandler::class => PetListRequestHandlerFactory::class,
             Pet::class . ReadRequestHandler::class => PetReadRequestHandlerFactory::class,
             Pet::class . UpdateRequestHandler::class => PetUpdateRequestHandlerFactory::class,
-            PetCollectionFactory::class => PetCollectionFactoryFactory::class,
-            PetFactory::class => PetFactoryFactory::class,
+            PetParsing::class => PetParsingFactory::class,
             PetRepository::class => PetRepositoryFactory::class,
             PingRequestHandler::class => PingRequestHandlerFactory::class,
-            RequestManagerInterface::class => RequestManagerFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
-            ResponseManagerInterface::class => ResponseManagerFactory::class,
             RouteCollectorInterface::class => RouteCollectorFactory::class,
             RouteParserInterface::class => RouteParserFactory::class,
-            SerializerInterface::class => SerializerFactory::class,
+            StreamFactoryInterface::class => StreamFactoryFactory::class,
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             TypeDecoderInterface::class . '[]' => TypeDecodersFactory::class,
+            TypeDecoderInterface::class . '[]' => TypeDecodersFactory::class,
             TypeEncoderInterface::class . '[]' => TypeEncodersFactory::class,
-            ValidationMappingProviderInterface::class . '[]' => ValidationMappingProviderFactory::class,
-            ValidationMappingProviderRegistryInterface::class => ValidationMappingProviderRegistryFactory::class,
-            ValidatorInterface::class => ValidatorFactory::class,
+            TypeEncoderInterface::class . '[]' => TypeEncodersFactory::class,
         ],
     ],
     'directories' => [

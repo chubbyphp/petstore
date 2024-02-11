@@ -6,8 +6,8 @@ namespace App\ServiceFactory\RequestHandler\Api\Crud;
 
 use App\Repository\PetRepository;
 use App\RequestHandler\Api\Crud\DeleteRequestHandler;
-use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 final class PetDeleteRequestHandlerFactory
 {
@@ -15,7 +15,7 @@ final class PetDeleteRequestHandlerFactory
     {
         return new DeleteRequestHandler(
             $container->get(PetRepository::class),
-            $container->get(ResponseManagerInterface::class)
+            $container->get(ResponseFactoryInterface::class)
         );
     }
 }

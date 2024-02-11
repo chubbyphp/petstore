@@ -5,20 +5,15 @@ declare(strict_types=1);
 namespace App\ServiceFactory\Negotiation;
 
 use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
-use Chubbyphp\DecodeEncode\ServiceFactory\DecoderFactory;
-use Chubbyphp\Laminas\Config\Factory\AbstractFactory;
 use Psr\Container\ContainerInterface;
 
-final class ContentTypeNegotiatorSupportedMediaTypesFactory extends AbstractFactory
+final class ContentTypeNegotiatorSupportedMediaTypesFactory
 {
     /**
      * @return array<int, string>
      */
     public function __invoke(ContainerInterface $container): array
     {
-        /** @var DecoderInterface $decoder */
-        $decoder = $this->resolveDependency($container, DecoderInterface::class, DecoderFactory::class);
-
-        return $decoder->getContentTypes();
+        return $container->get(DecoderInterface::class)->getContentTypes();
     }
 }

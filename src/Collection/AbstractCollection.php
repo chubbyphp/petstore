@@ -13,12 +13,12 @@ abstract class AbstractCollection implements CollectionInterface
     protected int $limit = self::LIMIT;
 
     /**
-     * @var array<string, string>
+     * @var array<string, null|string>
      */
     protected array $filters = [];
 
     /**
-     * @var array<string, string>
+     * @var array<string, null|string>
      */
     protected array $sort = [];
 
@@ -50,7 +50,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @param array<string, string> $filters
+     * @param array<string, null|string> $filters
      */
     final public function setFilters(array $filters): void
     {
@@ -58,7 +58,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, null|string>
      */
     final public function getFilters(): array
     {
@@ -66,7 +66,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @param array<string, string> $sort
+     * @param array<string, null|string> $sort
      */
     final public function setSort(array $sort): void
     {
@@ -74,7 +74,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, null|string>
      */
     final public function getSort(): array
     {
@@ -105,5 +105,25 @@ abstract class AbstractCollection implements CollectionInterface
     final public function getItems(): array
     {
         return $this->items;
+    }
+
+    /**
+     * @return array{offset: int, limit: int, filters: array<string, null|string>, sort: array<string, null|string>, items: array<ModelInterface>, count: int}
+     */
+    public function jsonSerialize(): array
+    {
+        $items = [];
+        foreach ($this->items as $item) {
+            $items[] = $item->jsonSerialize();
+        }
+
+        return [
+            'offset' => $this->offset,
+            'limit' => $this->limit,
+            'filters' => $this->filters,
+            'sort' => $this->sort,
+            'items' => $items,
+            'count' => $this->count,
+        ];
     }
 }

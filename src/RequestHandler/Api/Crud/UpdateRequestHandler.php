@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace App\RequestHandler\Api\Crud;
 
-use App\Model\ModelInterface;
+use App\Dto\Model\ModelRequestInterface as ModelModelRequestInterface;
+use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
-use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
-use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextBuilder;
-use Chubbyphp\Deserialization\Denormalizer\DenormalizerContextInterface;
+use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
+use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpException;
-use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
-use Chubbyphp\Serialization\Normalizer\NormalizerContextInterface;
-use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
-use Chubbyphp\Validation\ValidatorInterface;
+use Chubbyphp\Parsing\ParserErrorException;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -23,10 +20,11 @@ use Ramsey\Uuid\Uuid;
 final class UpdateRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
+        private DecoderInterface $decoder,
+        private ParsingInterface $parsing,
         private RepositoryInterface $repository,
-        private RequestManagerInterface $requestManager,
-        private ResponseManagerInterface $responseManager,
-        private ValidatorInterface $validator
+        private EncoderInterface $encoder,
+        private ResponseFactoryInterface $responseFactory,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -39,39 +37,25 @@ final class UpdateRequestHandler implements RequestHandlerInterface
             throw HttpException::createNotFound();
         }
 
-        /** @var ModelInterface $model */
-        $model = $this->requestManager->getDataFromRequestBody(
-            $request,
-            $model,
-            $contentType,
-            $this->getDenormalizerContext()
-        );
+        $input = $this->decoder->decode((string) $request->getBody(), $contentType);
 
-        if ([] !== $errors = $this->validator->validate($model)) {
-            throw HttpException::createUnprocessableEntity([
-                'invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
-            ]);
+        try {
+            /** @var ModelModelRequestInterface $modelRequest */
+            $modelRequest = $this->parsing->getModelRequestSchema($request)->parse($input);
+        } catch (ParserErrorException $e) {
+            throw HttpException::createUnprocessableEntity(['invalidParameters' => $e->getApiProblemErrorMessages()]);
         }
 
-        $model->setUpdatedAt(new \DateTimeImmutable());
+        $model = $modelRequest->updateModel($model);
 
         $this->repository->persist($model);
         $this->repository->flush();
 
-        return $this->responseManager->create($model, $accept, 200, $this->getNormalizerContext($request));
-    }
+        $output = $this->encoder->encode($this->parsing->getModelResponseSchema($request)->parse($model), $accept);
 
-    private function getDenormalizerContext(): DenormalizerContextInterface
-    {
-        return DenormalizerContextBuilder::create()
-            ->setAllowedAdditionalFields(['id', 'createdAt', 'updatedAt', '_links'])
-            ->setClearMissing(true)
-            ->getContext()
-        ;
-    }
+        $response = $this->responseFactory->createResponse(200)->withHeader('Content-Type', $accept);
+        $response->getBody()->write($output);
 
-    private function getNormalizerContext(ServerRequestInterface $request): NormalizerContextInterface
-    {
-        return NormalizerContextBuilder::create()->setRequest($request)->getContext();
+        return $response;
     }
 }

@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\RequestHandler\Api\Crud;
 
-use App\Collection\CollectionInterface;
-use App\Factory\CollectionFactoryInterface;
+use App\Dto\Collection\CollectionRequestInterface;
+use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
-use Chubbyphp\ApiHttp\Manager\RequestManagerInterface;
-use Chubbyphp\ApiHttp\Manager\ResponseManagerInterface;
+use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpException;
-use Chubbyphp\Serialization\Normalizer\NormalizerContextBuilder;
-use Chubbyphp\Validation\Error\ApiProblemErrorMessages;
-use Chubbyphp\Validation\ValidatorInterface;
+use Chubbyphp\Parsing\ParserErrorException;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -20,30 +18,37 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class ListRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private CollectionFactoryInterface $factory,
+        private ParsingInterface $parsing,
         private RepositoryInterface $repository,
-        private RequestManagerInterface $requestManager,
-        private ResponseManagerInterface $responseManager,
-        private ValidatorInterface $validator
+        private EncoderInterface $encoder,
+        private ResponseFactoryInterface $responseFactory,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $accept = $request->getAttribute('accept');
 
-        /** @var CollectionInterface $collection */
-        $collection = $this->requestManager->getDataFromRequestQuery($request, $this->factory->create());
+        $input = $request->getQueryParams();
 
-        if ([] !== $errors = $this->validator->validate($collection)) {
-            throw HttpException::createBadRequest([
-                'invalidParameters' => (new ApiProblemErrorMessages($errors))->getMessages(),
-            ]);
+        try {
+            /** @var CollectionRequestInterface $collectionRequest */
+            $collectionRequest = $this->parsing->getCollectionRequestSchema($request)->parse($input);
+        } catch (ParserErrorException $e) {
+            throw HttpException::createBadRequest(['invalidParameters' => $e->getApiProblemErrorMessages()]);
         }
+
+        $collection = $collectionRequest->createCollection();
 
         $this->repository->resolveCollection($collection);
 
-        $context = NormalizerContextBuilder::create()->setRequest($request)->getContext();
+        $output = $this->encoder->encode(
+            $this->parsing->getCollectionResponseSchema($request)->parse($collection),
+            $accept
+        );
 
-        return $this->responseManager->create($collection, $accept, 200, $context);
+        $response = $this->responseFactory->createResponse(200)->withHeader('Content-Type', $accept);
+        $response->getBody()->write($output);
+
+        return $response;
     }
 }

@@ -50,6 +50,10 @@ final class PetRepository implements RepositoryInterface
         $itemsQueryBuilder = clone $queryBuilder;
 
         foreach ($petCollection->getSort() as $field => $order) {
+            if (!$order) {
+                continue;
+            }
+
             $itemsQueryBuilder->sort($field, $order);
         }
 

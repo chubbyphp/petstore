@@ -89,6 +89,8 @@ final class ApiExceptionMiddlewareTest extends TestCase
                 self::assertSame('current', $trace1['message']);
                 self::assertSame(5, $trace1['code']);
                 self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace1['file']);
+                self::assertIsInt($trace1['line']);
+                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest/', $trace1['trace']);
 
                 $trace2 = array_shift($context['backtrace']);
 
@@ -96,6 +98,8 @@ final class ApiExceptionMiddlewareTest extends TestCase
                 self::assertSame('previous', $trace2['message']);
                 self::assertSame(3, $trace2['code']);
                 self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace2['file']);
+                self::assertIsInt($trace2['line']);
+                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest/', $trace2['trace']);
             })),
         ]);
 

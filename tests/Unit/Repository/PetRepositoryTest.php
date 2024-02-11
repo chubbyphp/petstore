@@ -71,7 +71,7 @@ namespace App\Tests\Unit\Repository {
             $collection->setOffset(0);
             $collection->setLimit(20);
             $collection->setFilters(['name' => 'sample']);
-            $collection->setSort(['name' => 'asc']);
+            $collection->setSort(['name' => 'asc', 'unknown' => null]);
 
             /** @var MockObject|Query $countQuery */
             $countQuery = $this->getMockByCalls(Query::class, [

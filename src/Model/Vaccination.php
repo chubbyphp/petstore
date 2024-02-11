@@ -17,4 +17,14 @@ final class Vaccination
     {
         return $this->name;
     }
+
+    /**
+     * @return array{name: null|string}
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'name' => $this->name,
+        ];
+    }
 }

@@ -61,7 +61,7 @@ final class PetParsing implements ParsingInterface
         if (null === $this->collectionResponseSchema) {
             $p = $this->parser;
 
-            return $p->object([
+            $this->collectionResponseSchema = $p->object([
                 'offset' => $p->int(),
                 'limit' => $p->int(),
                 'filters' => $p->object([

@@ -12,7 +12,7 @@ final class PetRequest implements ModelRequestInterface
 {
     public string $name;
 
-    public null|string $tag;
+    public ?string $tag;
 
     /**
      * @var array<VaccinationRequest>

@@ -6,7 +6,7 @@ namespace App\Dto\Collection;
 
 final class PetCollectionFilters implements \JsonSerializable
 {
-    public null|string $name;
+    public ?string $name;
 
     /**
      * @return array{name: null|string}

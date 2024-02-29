@@ -20,13 +20,13 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class PetParsing implements ParsingInterface
 {
-    private null|ObjectSchemaInterface $collectionRequestSchema = null;
+    private ?ObjectSchemaInterface $collectionRequestSchema = null;
 
-    private null|ObjectSchemaInterface $collectionResponseSchema = null;
+    private ?ObjectSchemaInterface $collectionResponseSchema = null;
 
-    private null|ObjectSchemaInterface $modelRequestSchema = null;
+    private ?ObjectSchemaInterface $modelRequestSchema = null;
 
-    private null|ObjectSchemaInterface $modelResponseSchema = null;
+    private ?ObjectSchemaInterface $modelResponseSchema = null;
 
     public function __construct(
         private ParserInterface $parser,

@@ -10,11 +10,11 @@ final class PetResponse implements \JsonSerializable
 
     public string $createdAt;
 
-    public null|string $updatedAt;
+    public ?string $updatedAt;
 
     public string $name;
 
-    public null|string $tag;
+    public ?string $tag;
 
     /**
      * @var array<VaccinationResponse>

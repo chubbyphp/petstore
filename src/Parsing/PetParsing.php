@@ -48,7 +48,10 @@ final class PetParsing implements ParsingInterface
                     'name' => $p->string()->nullable()->default(null),
                 ], PetCollectionFilters::class)->strict()->default([]),
                 'sort' => $p->object([
-                    'name' => $p->union([$p->literal('asc'), $p->literal('desc')])->nullable()->default(null),
+                    'name' => $p->union([
+                        $p->literal('asc'),
+                        $p->literal('desc'),
+                    ])->nullable()->default(null),
                 ], PetCollectionSort::class)->strict()->default([]),
             ], PetCollectionRequest::class)->strict();
         }
@@ -68,7 +71,10 @@ final class PetParsing implements ParsingInterface
                     'name' => $p->string()->nullable(),
                 ], PetCollectionFilters::class)->strict(),
                 'sort' => $p->object([
-                    'name' => $p->union([$p->literal('asc'), $p->literal('desc')]),
+                    'name' => $p->union([
+                        $p->literal('asc'),
+                        $p->literal('desc'),
+                    ])->nullable()->default(null),
                 ], PetCollectionSort::class)->strict(),
                 'items' => $p->array($this->getModelResponseSchema($request)),
                 'count' => $p->int(),

@@ -89,11 +89,108 @@ final class PetParsingTest extends TestCase
                 ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
             Call::create('generateUri')->with('pet_list', [], [])->willReturn('/api/pets'),
             Call::create('generateUri')->with('pet_create', [], [])->willReturn('/api/pets'),
+            Call::create('generateUri')
+                ->with('pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
+                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
+            Call::create('generateUri')
+                ->with('pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
+                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
+            Call::create('generateUri')
+                ->with('pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
+                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
+            Call::create('generateUri')->with('pet_list', [], [])->willReturn('/api/pets'),
+            Call::create('generateUri')->with('pet_create', [], [])->willReturn('/api/pets'),
         ]);
 
         $petParsing = new PetParsing($parser, $router);
 
-        $data = $petParsing->getCollectionResponseSchema($request)->parse([
+        $petCollectionMinimalResponse = $petParsing->getCollectionResponseSchema($request)->parse([
+            'offset' => 10,
+            'limit' => 10,
+            'filters' => [],
+            'sort' => [],
+            'items' => [
+                [
+                    'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+                    'createdAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
+                    'updatedAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
+                    'name' => 'jerry',
+                    'tag' => null,
+                    'vaccinations' => [],
+                ],
+            ],
+            'count' => 1,
+        ]);
+
+        self::assertSame([
+            'offset' => 10,
+            'limit' => 10,
+            'filters' => [
+                'name' => null,
+            ],
+            'sort' => [
+                'name' => null,
+            ],
+            'items' => [
+                0 => [
+                    'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+                    'createdAt' => '2024-01-20T09:15:00+00:00',
+                    'updatedAt' => '2024-01-20T09:15:00+00:00',
+                    'name' => 'jerry',
+                    'tag' => null,
+                    'vaccinations' => [],
+                    '_type' => 'pet',
+                    '_links' => [
+                        'read' => [
+                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => [
+                                'method' => 'GET',
+                            ],
+                        ],
+                        'update' => [
+                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => [
+                                'method' => 'PUT',
+                            ],
+                        ],
+                        'delete' => [
+                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => [
+                                'method' => 'DELETE',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'count' => 1,
+            '_type' => 'petCollection',
+            '_links' => [
+                'list' => [
+                    'href' => '/api/pets?offset=10&limit=10',
+                    'templated' => false,
+                    'rel' => [],
+                    'attributes' => [
+                        'method' => 'GET',
+                    ],
+                ],
+                'create' => [
+                    'href' => '/api/pets',
+                    'templated' => false,
+                    'rel' => [],
+                    'attributes' => [
+                        'method' => 'POST',
+                    ],
+                ],
+            ],
+        ], $petCollectionMinimalResponse);
+
+        $petCollectionMaximalResponse = $petParsing->getCollectionResponseSchema($request)->parse([
             'offset' => 10,
             'limit' => 10,
             'filters' => ['name' => 'jerry'],
@@ -177,7 +274,7 @@ final class PetParsingTest extends TestCase
                     ],
                 ],
             ],
-        ], $data);
+        ], $petCollectionMaximalResponse);
     }
 
     public function testGetModelRequestSchema(): void

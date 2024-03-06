@@ -21,7 +21,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^2.2
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.3
  * [chubbyphp/chubbyphp-negotiation][11]: ^2.0
- * [chubbyphp/chubbyphp-parsing][12]: ^1.0
+ * [chubbyphp/chubbyphp-parsing][12]: ^1.1.1
  * [doctrine/mongodb-odm][13]: ^2.4.2
  * [monolog/monolog][14]: ^3.5
  * [ramsey/uuid][15]: ^4.7.5

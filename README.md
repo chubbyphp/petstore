@@ -19,7 +19,7 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^2.2
  * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.3
  * [chubbyphp/chubbyphp-negotiation][9]: ^2.0
- * [chubbyphp/chubbyphp-parsing][10]: ^1.0
+ * [chubbyphp/chubbyphp-parsing][10]: ^1.1.1
  * [doctrine/orm][11]: ^2.17.2
  * [monolog/monolog][12]: ^3.5
  * [ramsey/uuid][13]: ^4.7.5

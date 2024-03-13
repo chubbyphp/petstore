@@ -40,7 +40,7 @@ jobs:
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
       - name: composer test
-        uses: docker://chubbyphp/ci-php81:latest
+        uses: docker://ghcr.io/chubbyphp/ci-php81:latest
         env:
           APP_ENV: phpunit
           DATABASE_USER: root
@@ -68,7 +68,7 @@ jobs:
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
       - name: composer test
-        uses: docker://chubbyphp/ci-php82:latest
+        uses: docker://ghcr.io/chubbyphp/ci-php82:latest
         env:
           APP_ENV: phpunit
           DATABASE_USER: root
@@ -96,7 +96,7 @@ jobs:
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
       - name: composer test
-        uses: docker://chubbyphp/ci-php83:latest
+        uses: docker://ghcr.io/chubbyphp/ci-php83:latest
         env:
           APP_ENV: phpunit
           DATABASE_USER: root

@@ -126,7 +126,7 @@ final class ApiExceptionMiddlewareTest extends TestCase
 
         /** @var MockObject|StreamInterface $responseBody */
         $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('encoded'),
+            Call::create('write')->with('encoded')->willReturn(\strlen('encoded')),
         ]);
 
         /** @var MockObject|ResponseInterface $response */
@@ -197,7 +197,7 @@ final class ApiExceptionMiddlewareTest extends TestCase
 
         /** @var MockObject|StreamInterface $responseBody */
         $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('encoded'),
+            Call::create('write')->with('encoded')->willReturn(\strlen('encoded')),
         ]);
 
         /** @var MockObject|ResponseInterface $response */
@@ -245,7 +245,7 @@ final class ApiExceptionMiddlewareTest extends TestCase
 
         /** @var MockObject|StreamInterface $responseBody */
         $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('encoded'),
+            Call::create('write')->with('encoded')->willReturn(\strlen('encoded')),
         ]);
 
         /** @var MockObject|ResponseInterface $response */

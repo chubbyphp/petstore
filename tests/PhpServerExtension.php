@@ -21,7 +21,7 @@ final class PhpServerExtension implements ExecutionStartedSubscriber, Extension
     public function __destruct()
     {
         if (null !== $this->serverPid) {
-            exec(sprintf('kill %d', $this->serverPid));
+            exec(\sprintf('kill %d', $this->serverPid));
         }
     }
 
@@ -64,7 +64,7 @@ final class PhpServerExtension implements ExecutionStartedSubscriber, Extension
 
     private function startServer(): void
     {
-        $command = sprintf(
+        $command = \sprintf(
             'APP_ENV=phpunit php -S localhost:%d -t %s %s',
             self::PHP_SERVER_PORT,
             realpath(__DIR__.'/../public'),
@@ -73,7 +73,7 @@ final class PhpServerExtension implements ExecutionStartedSubscriber, Extension
 
         echo $command.PHP_EOL.PHP_EOL;
 
-        $this->serverPid = (int) exec(sprintf('%s > /dev/null 2>&1 & echo $!', $command));
+        $this->serverPid = (int) exec(\sprintf('%s > /dev/null 2>&1 & echo $!', $command));
 
         while (true) {
             if (\is_resource(@fsockopen('localhost', self::PHP_SERVER_PORT))) {

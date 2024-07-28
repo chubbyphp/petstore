@@ -26,14 +26,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $curlHeaders = [];
         foreach ($headers as $key => $value) {
-            $curlHeaders[] = sprintf('%s: %s', $key, implode(', ', (array) $value));
+            $curlHeaders[] = \sprintf('%s: %s', $key, implode(', ', (array) $value));
         }
 
         if (null === $this->curl) {
             $this->curl = $this->initializeCurl();
         }
 
-        curl_setopt($this->curl, CURLOPT_URL, sprintf($this->getEndpoint().'%s', $resource));
+        curl_setopt($this->curl, CURLOPT_URL, \sprintf($this->getEndpoint().'%s', $resource));
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $curlHeaders);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, $body);
@@ -126,6 +126,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
             return $integrationEndpoint;
         }
 
-        return sprintf(self::DEFAULT_INTEGRATION_ENDPOINT, PhpServerExtension::PHP_SERVER_PORT);
+        return \sprintf(self::DEFAULT_INTEGRATION_ENDPOINT, PhpServerExtension::PHP_SERVER_PORT);
     }
 }

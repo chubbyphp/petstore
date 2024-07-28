@@ -95,7 +95,7 @@ final class ListRequestHandlerTest extends TestCase
 
         /** @var MockObject|StreamInterface $responseBody */
         $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with($queryAsJson),
+            Call::create('write')->with($queryAsJson)->willReturn(\strlen($queryAsJson)),
         ]);
 
         /** @var MockObject|ServerRequestInterface $request */

@@ -204,7 +204,7 @@ final class UpdateRequestHandlerTest extends TestCase
 
         /** @var MockObject|StreamInterface $responseBody */
         $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with($inputAsJson),
+            Call::create('write')->with($inputAsJson)->willReturn(\strlen($inputAsJson)),
         ]);
 
         /** @var MockObject|ServerRequestInterface $request */

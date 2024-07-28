@@ -22,7 +22,7 @@ final class PetRepository implements RepositoryInterface
     {
         if (!$petCollection instanceof PetCollection) {
             throw new \TypeError(
-                sprintf(
+                \sprintf(
                     '%s() expects parameter 1 to be %s, %s given',
                     __METHOD__,
                     PetCollection::class,
@@ -72,7 +72,7 @@ final class PetRepository implements RepositoryInterface
     {
         if (!$pet instanceof Pet) {
             throw new \TypeError(
-                sprintf(
+                \sprintf(
                     '%s() expects parameter 1 to be %s, %s given',
                     __METHOD__,
                     Pet::class,
@@ -88,7 +88,7 @@ final class PetRepository implements RepositoryInterface
     {
         if (!$pet instanceof Pet) {
             throw new \TypeError(
-                sprintf(
+                \sprintf(
                     '%s() expects parameter 1 to be %s, %s given',
                     __METHOD__,
                     Pet::class,

@@ -47,7 +47,7 @@ namespace App\Tests\Unit\Repository {
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(
-                sprintf(
+                \sprintf(
                     'App\Repository\PetRepository::resolveCollection() expects parameter 1 to be'
                         .' App\Collection\PetCollection, %s given',
                     $collectionClass
@@ -146,7 +146,7 @@ namespace App\Tests\Unit\Repository {
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(
-                sprintf(
+                \sprintf(
                     'App\Repository\PetRepository::persist() expects parameter 1 to be'
                         .' App\Model\Pet, %s given',
                     $modelClass
@@ -182,7 +182,7 @@ namespace App\Tests\Unit\Repository {
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(
-                sprintf(
+                \sprintf(
                     'App\Repository\PetRepository::remove() expects parameter 1 to be'
                         .' App\Model\Pet, %s given',
                     $modelClass

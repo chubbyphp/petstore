@@ -289,7 +289,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 
         $response = $this->httpRequest(
             'GET',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
             ]
@@ -388,7 +388,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -429,7 +429,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -456,7 +456,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 
         $response = $this->httpRequest(
             'PUT',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -520,7 +520,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 
         $response = $this->httpRequest(
             'DELETE',
-            sprintf('/api/pets/%s', $existingPet['id']),
+            \sprintf('/api/pets/%s', $existingPet['id']),
             [
                 'Accept' => 'application/json',
             ]
@@ -583,7 +583,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         }
         self::assertSame(is_countable($expectedPet['vaccinations']) ? \count($expectedPet['vaccinations']) : 0, is_countable($pet['vaccinations']) ? \count($pet['vaccinations']) : 0);
         self::assertSame([
-            'href' => sprintf('/api/pets/%s', $pet['id']),
+            'href' => \sprintf('/api/pets/%s', $pet['id']),
             'templated' => false,
             'rel' => [],
             'attributes' => [
@@ -591,7 +591,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             ],
         ], $pet['_links']['read']);
         self::assertSame([
-            'href' => sprintf('/api/pets/%s', $pet['id']),
+            'href' => \sprintf('/api/pets/%s', $pet['id']),
             'templated' => false,
             'rel' => [],
             'attributes' => [
@@ -599,7 +599,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             ],
         ], $pet['_links']['update']);
         self::assertSame([
-            'href' => sprintf('/api/pets/%s', $pet['id']),
+            'href' => \sprintf('/api/pets/%s', $pet['id']),
             'templated' => false,
             'rel' => [],
             'attributes' => [

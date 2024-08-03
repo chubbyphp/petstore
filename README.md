@@ -44,6 +44,13 @@ docker-compose up -d
 docker-compose exec php bash
 ```
 
+## Setup
+
+```sh
+composer install
+composer setup:dev
+```
+
 ## Urls
 
 * GET https://localhost/ping
@@ -60,20 +67,6 @@ docker-compose exec php bash
 ### DBs
 
  * jdbc:postgresql://localhost:5432/petstore?user=root&password=root
-
-## Installation
-
-Through [Composer](http://getcomposer.org) as [chubbyphp/petstore][40].
-
-```bash
-composer create-project chubbyphp/petstore myproject "dev-chubbyphp"
-```
-
-## Setup
-
-```sh
-composer setup:dev
-```
 
 ## Structure
 

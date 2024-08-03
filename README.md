@@ -44,6 +44,13 @@ docker-compose up -d
 docker-compose exec php bash
 ```
 
+## Setup
+
+```sh
+composer install
+composer setup:dev
+```
+
 ## Urls
 
 * GET https://localhost/ping
@@ -60,20 +67,6 @@ docker-compose exec php bash
 ### DBs
 
  * jdbc:mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@localhost:27017/petstore
-
-## Installation
-
-Through [Composer](http://getcomposer.org) as [chubbyphp/petstore][40].
-
-```bash
-composer create-project chubbyphp/petstore myproject "dev-chubbyphp-mongo"
-```
-
-## Setup
-
-```sh
-composer setup:dev
-```
 
 ## Structure
 

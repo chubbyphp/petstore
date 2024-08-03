@@ -13,7 +13,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: docker build / start
-        run: docker-compose -f docker-compose.ci.yml up -d
+        run: docker compose -f docker-compose.ci.yml up -d
       - name: wait for nginx
         run: while ! nc -z localhost 443; do sleep 0.1; done
       - name: ping
@@ -21,7 +21,7 @@ jobs:
       - name: openapi
         run: curl --insecure https://localhost/openapi -vvv
       - name: docker stop
-        run: docker-compose -f docker-compose.ci.yml stop
+        run: docker compose -f docker-compose.ci.yml stop
   php81:
     name: PHP 8.1
     runs-on: ubuntu-22.04

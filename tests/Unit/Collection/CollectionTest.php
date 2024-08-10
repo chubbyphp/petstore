@@ -70,6 +70,6 @@ class CollectionTest extends TestCase
 
     protected function getCollection(): CollectionInterface
     {
-        return new class() extends AbstractCollection {};
+        return new class extends AbstractCollection {};
     }
 }

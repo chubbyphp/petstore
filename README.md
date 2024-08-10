@@ -1,6 +1,6 @@
 # petstore
 
-[![CI](https://github.com/chubbyphp/petstore/workflows/CI/badge.svg?branch=slim)](https://github.com/chubbyphp/petstore/actions?query=workflow%3ACI)
+[![CI](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml/badge.svg?branch=slim)](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=slim)](https://coveralls.io/github/chubbyphp/petstore?branch=slim)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%slim)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/slim)
 

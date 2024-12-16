@@ -1,6 +1,6 @@
 {
-    "name": "chubbyphp/chubbyphp-framework-skeleton",
-    "description": "A minimal skeleton for chubbyphp-framework",
+    "name": "chubbyphp/petstore",
+    "description": "A simple skeleton to build api's based on the chubbyphp-framework.",
     "keywords": [
         "chubbyphp",
         "framework",
@@ -14,32 +14,32 @@
         }
     ],
     "require": {
-        "php": "^8.1",
-        "chubbyphp/chubbyphp-clean-directories": "^1.3.1",
-        "chubbyphp/chubbyphp-cors": "^1.5",
-        "chubbyphp/chubbyphp-decode-encode": "^1.1",
-        "chubbyphp/chubbyphp-framework": "^5.1.1",
-        "chubbyphp/chubbyphp-framework-router-fastroute": "^2.1",
-        "chubbyphp/chubbyphp-http-exception": "^1.1",
+        "php": "^8.2",
+        "chubbyphp/chubbyphp-clean-directories": "^1.4",
+        "chubbyphp/chubbyphp-cors": "^1.6",
+        "chubbyphp/chubbyphp-decode-encode": "^1.2",
+        "chubbyphp/chubbyphp-framework": "^5.2",
+        "chubbyphp/chubbyphp-framework-router-fastroute": "^2.2",
+        "chubbyphp/chubbyphp-http-exception": "^1.2",
         "chubbyphp/chubbyphp-laminas-config": "^1.4",
-        "chubbyphp/chubbyphp-laminas-config-doctrine": "^2.1",
-        "chubbyphp/chubbyphp-laminas-config-factory": "^1.3",
-        "chubbyphp/chubbyphp-negotiation": "^2.1",
-        "chubbyphp/chubbyphp-parsing": "^1.1.1",
-        "doctrine/orm": "^2.17.2",
-        "monolog/monolog": "^3.5",
-        "ramsey/uuid": "^4.7.5",
-        "slim/psr7": "^1.6.1",
-        "symfony/console": "^6.4.2"
+        "chubbyphp/chubbyphp-laminas-config-doctrine": "^2.3",
+        "chubbyphp/chubbyphp-laminas-config-factory": "^1.4",
+        "chubbyphp/chubbyphp-negotiation": "^2.2",
+        "chubbyphp/chubbyphp-parsing": "^1.3",
+        "doctrine/orm": "^2.20",
+        "monolog/monolog": "^3.8.1",
+        "ramsey/uuid": "^4.7.6",
+        "slim/psr7": "^1.7",
+        "symfony/console": "^7.2.1"
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
-        "chubbyphp/chubbyphp-mock": "^1.7",
-        "infection/infection": "^0.27.9",
+        "chubbyphp/chubbyphp-mock": "^1.8",
+        "infection/infection": "^0.29.8",
         "php-coveralls/php-coveralls": "^2.7",
-        "phpstan/extension-installer": "^1.3.1",
-        "phpstan/phpstan": "^1.10.50",
-        "phpunit/phpunit": "^10.5.5"
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan": "^2.0.3",
+        "phpunit/phpunit": "^11.5.1"
     },
     "autoload": {
         "psr-4": {
@@ -89,9 +89,9 @@
         ],
         "test:cs": "mkdir -p build && PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
         "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=99 --verbose --coverage=build/phpunit",
-        "test:integration": "vendor/bin/phpunit --configuration phpunit.integration.xml --cache-result-file=build/phpunit/result.integration.cache",
+        "test:integration": "vendor/bin/phpunit --configuration phpunit.integration.xml --cache-directory=build/phpunit/integration.cache",
         "test:lint": "mkdir -p build && find src tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",
         "test:static-analysis": "mkdir -p build && bash -c 'vendor/bin/phpstan analyse src --no-progress --level=8 --error-format=junit | tee build/phpstan.junit.xml; if [ ${PIPESTATUS[0]} -ne \"0\" ]; then exit 1; fi'",
-        "test:unit": "vendor/bin/phpunit --coverage-text --coverage-clover=build/phpunit/clover.xml --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/junit.xml --cache-result-file=build/phpunit/result.cache"
+        "test:unit": "vendor/bin/phpunit --coverage-text --coverage-clover=build/phpunit/clover.xml --coverage-html=build/phpunit/coverage-html --coverage-xml=build/phpunit/coverage-xml --log-junit=build/phpunit/junit.xml --cache-directory=build/phpunit/unit.cache"
     }
 }

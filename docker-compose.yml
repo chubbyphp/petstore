@@ -34,7 +34,7 @@ services:
   postgres:
     container_name: petstore-postgres
     hostname: petstore-postgres
-    image: postgres:14
+    image: postgres:17
     command: -c log_statement=all -c log_error_verbosity=VERBOSE
     environment:
       POSTGRES_USER: root

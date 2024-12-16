@@ -10,22 +10,22 @@ A simple skeleton to build api's based on the [slim][1] framework.
 
 ## Requirements
 
- * php: ^8.1
- * [chubbyphp/chubbyphp-clean-directories][2]: ^1.3.1
- * [chubbyphp/chubbyphp-cors][3]: ^1.5
- * [chubbyphp/chubbyphp-decode-encode][4]: ^1.1
- * [chubbyphp/chubbyphp-http-exception][5]: ^1.1
+ * php: ^8.2
+ * [chubbyphp/chubbyphp-clean-directories][2]: ^1.4
+ * [chubbyphp/chubbyphp-cors][3]: ^1.6
+ * [chubbyphp/chubbyphp-decode-encode][4]: ^1.2
+ * [chubbyphp/chubbyphp-http-exception][5]: ^1.2
  * [chubbyphp/chubbyphp-laminas-config][6]: ^1.4
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^2.2
- * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.3
- * [chubbyphp/chubbyphp-negotiation][9]: ^2.0
- * [chubbyphp/chubbyphp-parsing][10]: ^1.1.1
- * [doctrine/orm][11]: ^2.17.2
- * [monolog/monolog][12]: ^3.5
- * [ramsey/uuid][13]: ^4.7.5
- * [slim/psr7][14]: ^1.6.1
- * [slim/slim][15]: ^4.12
- * [symfony/console][16]: ^6.4.2
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^2.3
+ * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.4
+ * [chubbyphp/chubbyphp-negotiation][9]: ^2.2
+ * [chubbyphp/chubbyphp-parsing][10]: ^1.3
+ * [doctrine/orm][11]: ^2.20
+ * [monolog/monolog][12]: ^3.8.1
+ * [ramsey/uuid][13]: ^4.7.6
+ * [slim/psr7][14]: ^1.7
+ * [slim/slim][15]: ^4.14
+ * [symfony/console][16]: ^7.2.1
 
 ## Environment
 

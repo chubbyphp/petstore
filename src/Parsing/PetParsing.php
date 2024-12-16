@@ -107,7 +107,7 @@ final class PetParsing implements ParsingInterface
                     return $petCollectionResponse;
                 })
                 ->postParse(static function (object $object): array {
-                    /** @var string $json */
+                    /** @var non-empty-string $json */
                     $json = json_encode($object);
 
                     return json_decode($json, true);
@@ -177,7 +177,7 @@ final class PetParsing implements ParsingInterface
                     return $petResponse;
                 })
                 ->postParse(static function (object $object): array {
-                    /** @var string $json */
+                    /** @var non-empty-string $json */
                     $json = json_encode($object);
 
                     return json_decode($json, true);

@@ -12,19 +12,19 @@ RUN dnf install -y --nobest \
     glibc-langpack-de \
     langpacks-de \
     nmap-ncat \
-    php83-php-ast \
-    php83-php-cli \
-    php83-php-devel \
-    php83-php-fpm \
-    php83-php-intl \
-    php83-php-mbstring \
-    php83-php-opcache \
-    php83-php-pecl-apcu \
-    php83-php-pecl-pcov \
-    php83-php-pecl-xdebug3 \
-    php83-php-pecl-zip \
-    php83-php-pgsql \
-    php83-php-xml \
+    php84-php-ast \
+    php84-php-cli \
+    php84-php-devel \
+    php84-php-fpm \
+    php84-php-intl \
+    php84-php-mbstring \
+    php84-php-opcache \
+    php84-php-pecl-apcu \
+    php84-php-pecl-pcov \
+    php84-php-pecl-xdebug3 \
+    php84-php-pecl-zip \
+    php84-php-pgsql \
+    php84-php-xml \
     procps-ng \
     sudo \
     supervisor \
@@ -32,8 +32,8 @@ RUN dnf install -y --nobest \
     vim \
     zsh
 
-RUN ln -sf /usr/bin/php83 /usr/bin/php \
-    && echo "extension=pcov.so" > /etc/opt/remi/php83/php.d/40-pcov.ini
+RUN ln -sf /usr/bin/php84 /usr/bin/php \
+    && echo "extension=pcov.so" > /etc/opt/remi/php84/php.d/40-pcov.ini
 
 ENV TZ=Europe/Zurich
 
@@ -63,4 +63,4 @@ WORKDIR /app
 
 RUN composer install --no-dev --optimize-autoloader
 
-CMD /opt/remi/php83/root/usr/sbin/php-fpm -c /etc/opt/remi/php83/php-fpm.conf -F
+CMD /opt/remi/php84/root/usr/sbin/php-fpm -c /etc/opt/remi/php84/php-fpm.conf -F

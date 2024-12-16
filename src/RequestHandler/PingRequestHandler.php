@@ -24,7 +24,7 @@ final class PingRequestHandler implements RequestHandlerInterface
             ->withHeader('Expires', '0')
         ;
 
-        /** @var string $json */
+        /** @var non-empty-string $json */
         $json = json_encode(['date' => date('c')]);
 
         $response->getBody()->write($json);

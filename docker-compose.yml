@@ -42,7 +42,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./database/postgres:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
   swagger-ui:
     container_name: petstore-swagger-ui
     hostname: petstore-swagger-ui
@@ -68,3 +68,5 @@ services:
     depends_on:
       - php
       - swagger-ui
+volumes:
+  postgres:

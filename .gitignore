@@ -4,6 +4,5 @@
 .vscode/
 build/
 composer.lock
-database
 var/
 vendor/

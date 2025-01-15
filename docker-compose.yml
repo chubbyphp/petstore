@@ -37,7 +37,7 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - ./database/mongo:/data/db
+      - mongo:/data/db
   swagger-ui:
     container_name: petstore-swagger-ui
     hostname: petstore-swagger-ui
@@ -63,3 +63,5 @@ services:
     depends_on:
       - php
       - swagger-ui
+volumes:
+  mongo:

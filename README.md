@@ -18,11 +18,11 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-framework-router-fastroute][6]: ^2.2
  * [chubbyphp/chubbyphp-http-exception][7]: ^1.2
  * [chubbyphp/chubbyphp-laminas-config][8]: ^1.4
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^2.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^3.0.1
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.4
  * [chubbyphp/chubbyphp-negotiation][11]: ^2.2
  * [chubbyphp/chubbyphp-parsing][12]: ^1.3
- * [doctrine/orm][13]: ^2.20
+ * [doctrine/orm][13]: ^3.3.2
  * [monolog/monolog][14]: ^3.8.1
  * [ramsey/uuid][15]: ^4.7.6
  * [slim/psr7][16]: ^1.7

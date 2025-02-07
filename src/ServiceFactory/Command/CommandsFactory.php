@@ -7,7 +7,6 @@ namespace App\ServiceFactory\Command;
 use Chubbyphp\CleanDirectories\ServiceFactory\CleanDirectoriesCommandFactory;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
-use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
@@ -16,8 +15,6 @@ use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryRegionCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\ResultCommand;
-use Doctrine\ORM\Tools\Console\Command\ConvertMappingCommand;
-use Doctrine\ORM\Tools\Console\Command\EnsureProductionSettingsCommand;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Command\InfoCommand;
 use Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand;
@@ -47,7 +44,6 @@ final class CommandsFactory
             (new CleanDirectoriesCommandFactory())($container),
             new DatabaseCreateCommand($connectionProvider),
             new DatabaseDropCommand($connectionProvider),
-            new ReservedWordsCommand($connectionProvider),
             new RunSqlCommand($connectionProvider),
             new CollectionRegionCommand($entityManagerProvider),
             new EntityRegionCommand($entityManagerProvider),
@@ -58,8 +54,6 @@ final class CommandsFactory
             new SchemaCreateCommand($entityManagerProvider),
             new SchemaDropCommand($entityManagerProvider),
             new SchemaUpdateCommand($entityManagerProvider),
-            new ConvertMappingCommand($entityManagerProvider),
-            new EnsureProductionSettingsCommand($entityManagerProvider),
             new GenerateProxiesCommand($entityManagerProvider),
             new InfoCommand($entityManagerProvider),
             new MappingDescribeCommand($entityManagerProvider),

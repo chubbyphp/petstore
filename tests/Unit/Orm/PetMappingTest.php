@@ -32,12 +32,12 @@ final class PetMappingTest extends TestCase
             ]),
             Call::create('mapField')->with([
                 'fieldName' => 'createdAt',
-                'type' => 'datetime',
+                'type' => 'datetime_immutable',
             ]),
             Call::create('mapField')->with([
                 'nullable' => true,
                 'fieldName' => 'updatedAt',
-                'type' => 'datetime',
+                'type' => 'datetime_immutable',
             ]),
             Call::create('mapField')->with([
                 'fieldName' => 'name',

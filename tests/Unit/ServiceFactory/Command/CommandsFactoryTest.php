@@ -10,7 +10,6 @@ use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\Create
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
-use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
@@ -19,8 +18,6 @@ use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryRegionCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\ResultCommand;
-use Doctrine\ORM\Tools\Console\Command\ConvertMappingCommand;
-use Doctrine\ORM\Tools\Console\Command\EnsureProductionSettingsCommand;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Command\InfoCommand;
 use Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand;
@@ -63,12 +60,9 @@ final class CommandsFactoryTest extends TestCase
 
         self::assertIsArray($commands);
 
-        self::assertCount(21, $commands);
-
         $cleanDirectoriesCommand = array_shift($commands);
         $databaseCreateCommand = array_shift($commands);
         $databaseDropCommand = array_shift($commands);
-        $reservedWordsCommand = array_shift($commands);
         $runSqlCommand = array_shift($commands);
         $collectionRegionCommand = array_shift($commands);
         $entityRegionCommand = array_shift($commands);
@@ -79,18 +73,17 @@ final class CommandsFactoryTest extends TestCase
         $schemaCreateCommand = array_shift($commands);
         $schemaDropCommand = array_shift($commands);
         $schemaUpdateCommand = array_shift($commands);
-        $convertMappingCommand = array_shift($commands);
-        $ensureProductionSettingsCommand = array_shift($commands);
         $generateProxiesCommand = array_shift($commands);
         $infoCommand = array_shift($commands);
         $mappingDescribeCommand = array_shift($commands);
         $runDqlCommand = array_shift($commands);
         $validateSchemaCommand = array_shift($commands);
 
+        self::assertCount(0, $commands);
+
         self::assertInstanceOf(CleanDirectoriesCommand::class, $cleanDirectoriesCommand);
         self::assertInstanceOf(DatabaseCreateCommand::class, $databaseCreateCommand);
         self::assertInstanceOf(DatabaseDropCommand::class, $databaseDropCommand);
-        self::assertInstanceOf(ReservedWordsCommand::class, $reservedWordsCommand);
         self::assertInstanceOf(RunSqlCommand::class, $runSqlCommand);
         self::assertInstanceOf(CollectionRegionCommand::class, $collectionRegionCommand);
         self::assertInstanceOf(EntityRegionCommand::class, $entityRegionCommand);
@@ -101,8 +94,6 @@ final class CommandsFactoryTest extends TestCase
         self::assertInstanceOf(SchemaCreateCommand::class, $schemaCreateCommand);
         self::assertInstanceOf(SchemaDropCommand::class, $schemaDropCommand);
         self::assertInstanceOf(SchemaUpdateCommand::class, $schemaUpdateCommand);
-        self::assertInstanceOf(ConvertMappingCommand::class, $convertMappingCommand);
-        self::assertInstanceOf(EnsureProductionSettingsCommand::class, $ensureProductionSettingsCommand);
         self::assertInstanceOf(GenerateProxiesCommand::class, $generateProxiesCommand);
         self::assertInstanceOf(InfoCommand::class, $infoCommand);
         self::assertInstanceOf(MappingDescribeCommand::class, $mappingDescribeCommand);

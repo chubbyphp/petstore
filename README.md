@@ -16,11 +16,11 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-decode-encode][4]: ^1.2
  * [chubbyphp/chubbyphp-http-exception][5]: ^1.2
  * [chubbyphp/chubbyphp-laminas-config][6]: ^1.4
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^2.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^3.0.1
  * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.4
  * [chubbyphp/chubbyphp-negotiation][9]: ^2.2
  * [chubbyphp/chubbyphp-parsing][10]: ^1.3
- * [doctrine/orm][11]: ^2.20
+ * [doctrine/orm][11]: ^3.3.2
  * [mezzio/mezzio-fastroute][12]: ^3.12
  * [mezzio/mezzio][13]: ^3.20.1
  * [monolog/monolog][14]: ^3.8.1

@@ -14,7 +14,9 @@ use Chubbyphp\Mock\MockByCallsTrait;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -64,8 +66,8 @@ final class PetRepositoryTest extends TestCase
         $collection->setFilters(['name' => 'sample']);
         $collection->setSort(['name' => 'asc']);
 
-        /** @var Func|MockObject $likeNameFunc */
-        $likeNameFunc = $this->getMockByCalls(Func::class);
+        /** @var Comparison|MockObject $likeNameFunc */
+        $likeNameFunc = $this->getMockByCalls(Comparison::class);
 
         /** @var Func|MockObject $countIdFunc */
         $countIdFunc = $this->getMockByCalls(Func::class);
@@ -76,27 +78,27 @@ final class PetRepositoryTest extends TestCase
             Call::create('count')->with('p.id')->willReturn($countIdFunc),
         ]);
 
-        /** @var AbstractQuery|MockObject $countQuery */
-        $countQuery = $this->getMockByCalls(AbstractQuery::class, [
+        /** @var MockObject|Query $countQuery */
+        $countQuery = $this->getMockByCalls(Query::class, [
             Call::create('getSingleScalarResult')->with()->willReturn((string) \count($items)),
         ]);
 
-        /** @var AbstractQuery|MockObject $itemsQuery */
-        $itemsQuery = $this->getMockByCalls(AbstractQuery::class, [
+        /** @var MockObject|Query $itemsQuery */
+        $itemsQuery = $this->getMockByCalls(Query::class, [
             Call::create('getResult')->with(AbstractQuery::HYDRATE_OBJECT)->willReturn($items),
         ]);
 
         /** @var MockObject|QueryBuilder $queryBuilder */
         $queryBuilder = $this->getMockByCalls(QueryBuilder::class, [
             Call::create('expr')->with()->willReturn($expr),
-            Call::create('andWhere')->with($likeNameFunc),
-            Call::create('setParameter')->with('name', '%sample%', null),
+            Call::create('andWhere')->with($likeNameFunc)->willReturnSelf(),
+            Call::create('setParameter')->with('name', '%sample%', null)->willReturnSelf(),
             Call::create('expr')->with()->willReturn($expr),
-            Call::create('select')->with($countIdFunc),
+            Call::create('select')->with($countIdFunc)->willReturnSelf(),
             Call::create('getQuery')->with()->willReturn($countQuery),
-            Call::create('addOrderBy')->with('p.name', 'asc'),
-            Call::create('setFirstResult')->with(0),
-            Call::create('setMaxResults')->with(20),
+            Call::create('addOrderBy')->with('p.name', 'asc')->willReturnSelf(),
+            Call::create('setFirstResult')->with(0)->willReturnSelf(),
+            Call::create('setMaxResults')->with(20)->willReturnSelf(),
             Call::create('getQuery')->with()->willReturn($itemsQuery),
         ]);
 
@@ -204,7 +206,7 @@ final class PetRepositoryTest extends TestCase
     {
         /** @var EntityManager|MockObject $entityManager */
         $entityManager = $this->getMockByCalls(EntityManager::class, [
-            Call::create('flush')->with(null),
+            Call::create('flush')->with(),
         ]);
 
         $repository = new PetRepository($entityManager);

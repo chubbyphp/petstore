@@ -9,7 +9,6 @@ use Chubbyphp\DecodeEncode\Decoder\JsonTypeDecoder;
 use Chubbyphp\DecodeEncode\Decoder\JsonxTypeDecoder;
 use Chubbyphp\DecodeEncode\Decoder\UrlEncodedTypeDecoder;
 use Chubbyphp\DecodeEncode\Decoder\YamlTypeDecoder;
-use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class TypeDecodersFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
         $factory = new TypeDecodersFactory();

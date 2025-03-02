@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler;
 
 use App\RequestHandler\OpenapiRequestHandler;
-use Chubbyphp\Mock\Argument\ArgumentCallback;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
-use PHPUnit\Framework\MockObject\MockObject;
+use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -23,42 +23,41 @@ use Psr\Http\Message\StreamInterface;
  */
 final class OpenapiRequestHandlerTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testHandle(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class);
+        $builder = new MockObjectBuilder();
 
-        /** @var MockObject|StreamInterface $responseStream */
-        $responseStream = $this->getMockByCalls(StreamInterface::class);
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
 
-        /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Content-Type', 'application/x-yaml')->willReturnSelf(),
-            Call::create('withHeader')
-                ->with('Cache-Control', 'no-cache, no-store, must-revalidate')
-                ->willReturnSelf(),
-            Call::create('withHeader')->with('Pragma', 'no-cache')->willReturnSelf(),
-            Call::create('withHeader')->with('Expires', '0')->willReturnSelf(),
-            Call::create('withBody')->with($responseStream)->willReturnSelf(),
+        /** @var StreamInterface $responseStream */
+        $responseStream = $builder->create(StreamInterface::class, []);
+
+        /** @var ResponseInterface $response */
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Content-Type', 'application/x-yaml']),
+            new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
+            new WithReturnSelf('withHeader', ['Pragma', 'no-cache']),
+            new WithReturnSelf('withHeader', ['Expires', '0']),
+            new WithReturnSelf('withBody', [$responseStream]),
         ]);
 
-        /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(200, '')->willReturn($response),
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [200, ''], $response),
         ]);
 
-        /** @var MockObject|StreamFactoryInterface $streamFactory */
-        $streamFactory = $this->getMockByCalls(StreamFactoryInterface::class, [
-            Call::create('createStreamFromFile')
-                ->with(
-                    new ArgumentCallback(static function (string $path): void {
-                        self::assertMatchesRegularExpression('#src/RequestHandler/../../openapi\.yml$#', $path);
-                    }),
-                    'r'
-                )
-                ->willReturn($responseStream),
+        /** @var StreamFactoryInterface $streamFactory */
+        $streamFactory = $builder->create(StreamFactoryInterface::class, [
+            new WithCallback(
+                'createStreamFromFile',
+                static function (string $filename, string $mode) use ($responseStream): StreamInterface {
+                    self::assertMatchesRegularExpression('#src/RequestHandler/../../openapi\.yml$#', $filename);
+                    self::assertSame('r', $mode);
+
+                    return $responseStream;
+                }
+            ),
         ]);
 
         $requestHandler = new OpenapiRequestHandler($responseFactory, $streamFactory);

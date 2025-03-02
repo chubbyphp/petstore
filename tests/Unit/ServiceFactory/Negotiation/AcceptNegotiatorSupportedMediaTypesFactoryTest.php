@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceFactory\Negotiation;
 
 use App\ServiceFactory\Negotiation\AcceptNegotiatorSupportedMediaTypesFactory;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -18,18 +18,18 @@ use Psr\Container\ContainerInterface;
  */
 final class AcceptNegotiatorSupportedMediaTypesFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var EncoderInterface $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class, [
-            Call::create('getContentTypes')->with()->willReturn(['application/json']),
+        $encoder = $builder->create(EncoderInterface::class, [
+            new WithReturn('getContentTypes', [], ['application/json']),
         ]);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(EncoderInterface::class)->willReturn($encoder),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [EncoderInterface::class], $encoder),
         ]);
 
         $factory = new AcceptNegotiatorSupportedMediaTypesFactory();

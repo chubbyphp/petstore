@@ -8,8 +8,8 @@ use App\ServiceFactory\Command\CommandsFactory;
 use Chubbyphp\CleanDirectories\Command\CleanDirectoriesCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
@@ -37,21 +37,25 @@ use Psr\Container\ContainerInterface;
  */
 final class CommandsFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
-        /** @var ContainerInterface $connectionProvider */
-        $connectionProvider = $this->getMockByCalls(ConnectionProvider::class);
+        $config = [
+            'directories' => [],
+        ];
+
+        $builder = new MockObjectBuilder();
+
+        /** @var ConnectionProvider $connectionProvider */
+        $connectionProvider = $builder->create(ConnectionProvider::class, []);
 
         /** @var EntityManagerProvider $entityManagerProvider */
-        $entityManagerProvider = $this->getMockByCalls(EntityManagerProvider::class);
+        $entityManagerProvider = $builder->create(EntityManagerProvider::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ConnectionProvider::class)->willReturn($connectionProvider),
-            Call::create('get')->with(EntityManagerProvider::class)->willReturn($entityManagerProvider),
-            Call::create('get')->with('config')->willReturn(['directories' => []]),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [ConnectionProvider::class], $connectionProvider),
+            new WithReturn('get', [EntityManagerProvider::class], $entityManagerProvider),
+            new WithReturn('get', ['config'], $config),
         ]);
 
         $factory = new CommandsFactory();

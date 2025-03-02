@@ -9,8 +9,8 @@ use Chubbyphp\DecodeEncode\Encoder\JsonTypeEncoder;
 use Chubbyphp\DecodeEncode\Encoder\JsonxTypeEncoder;
 use Chubbyphp\DecodeEncode\Encoder\UrlEncodedTypeEncoder;
 use Chubbyphp\DecodeEncode\Encoder\YamlTypeEncoder;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -21,13 +21,13 @@ use Psr\Container\ContainerInterface;
  */
 final class TypeEncodersFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn(['debug' => true]),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], ['debug' => true]),
         ]);
 
         $factory = new TypeEncodersFactory();

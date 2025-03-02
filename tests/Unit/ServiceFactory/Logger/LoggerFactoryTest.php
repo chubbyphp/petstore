@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceFactory\RequestHandler;
 
 use App\ServiceFactory\Logger\LoggerFactory;
 use App\Tests\Helper\AssertHelper;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\BufferHandler;
 use Monolog\Handler\StreamHandler;
@@ -25,8 +25,6 @@ use Psr\Log\LoggerInterface;
  */
 final class LoggerFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
         $path = sys_get_temp_dir().'/'.uniqid('logger-factory-').'.log';
@@ -39,9 +37,11 @@ final class LoggerFactoryTest extends TestCase
             ],
         ];
 
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn($config),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], $config),
         ]);
 
         $factory = new LoggerFactory();

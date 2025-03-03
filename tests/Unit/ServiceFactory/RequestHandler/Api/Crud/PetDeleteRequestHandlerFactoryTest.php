@@ -8,8 +8,8 @@ use App\Repository\PetRepository;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetDeleteRequestHandlerFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -21,20 +21,20 @@ use Psr\Http\Message\ResponseFactoryInterface;
  */
 final class PetDeleteRequestHandlerFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var RepositoryInterface $petRepository */
-        $petRepository = $this->getMockByCalls(RepositoryInterface::class);
+        $petRepository = $builder->create(RepositoryInterface::class, []);
 
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [PetRepository::class], $petRepository),
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
         ]);
 
         $factory = new PetDeleteRequestHandlerFactory();

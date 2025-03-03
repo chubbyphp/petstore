@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceFactory\Framework;
 
 use App\ServiceFactory\Framework\ExceptionMiddlewareFactory;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -20,21 +20,21 @@ use Psr\Log\LoggerInterface;
  */
 final class ExceptionMiddlewareFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var LoggerInterface $logger */
-        $logger = $this->getMockByCalls(LoggerInterface::class);
+        $logger = $builder->create(LoggerInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
-            Call::create('get')->with('config')->willReturn(['debug' => true]),
-            Call::create('get')->with(LoggerInterface::class)->willReturn($logger),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
+            new WithReturn('get', ['config'], ['debug' => true]),
+            new WithReturn('get', [LoggerInterface::class], $logger),
         ]);
 
         $factory = new ExceptionMiddlewareFactory();

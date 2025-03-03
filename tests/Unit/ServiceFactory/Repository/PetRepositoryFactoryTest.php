@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceFactory\Repository;
 
 use App\Repository\PetRepository;
 use App\ServiceFactory\Repository\PetRepositoryFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -19,16 +19,16 @@ use Psr\Container\ContainerInterface;
  */
 final class PetRepositoryFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var DocumentManager $documentManager */
-        $documentManager = $this->getMockByCalls(DocumentManager::class);
+        $documentManager = $builder->create(DocumentManager::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(DocumentManager::class)->willReturn($documentManager),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [DocumentManager::class], $documentManager),
         ]);
 
         $factory = new PetRepositoryFactory();

@@ -7,9 +7,11 @@ namespace App\Tests\Unit\Middleware;
 use App\Middleware\ApiExceptionMiddleware;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpException;
-use Chubbyphp\Mock\Argument\ArgumentCallback;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithException;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -26,29 +28,29 @@ use Psr\Log\LoggerInterface;
  */
 final class ApiExceptionMiddlewareTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testWithDebugAndLoggerWithoutException(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class);
+        $request = $builder->create(ServerRequestInterface::class, []);
 
         /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class);
+        $response = $builder->create(ResponseInterface::class, []);
 
         /** @var MockObject|RequestHandlerInterface $handler */
-        $handler = $this->getMockByCalls(RequestHandlerInterface::class, [
-            Call::create('handle')->with($request)->willReturn($response),
+        $handler = $builder->create(RequestHandlerInterface::class, [
+            new WithReturn('handle', [$request], $response),
         ]);
 
         /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class);
+        $encoder = $builder->create(EncoderInterface::class, []);
 
         /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var LoggerInterface|MockObject $logger */
-        $logger = $this->getMockByCalls(LoggerInterface::class);
+        $logger = $builder->create(LoggerInterface::class, []);
 
         $apiExceptionMiddleware = new ApiExceptionMiddleware($encoder, $responseFactory, true, $logger);
 
@@ -57,50 +59,55 @@ final class ApiExceptionMiddlewareTest extends TestCase
 
     public function testWithDebugAndLoggerWithExceptionAndWithoutAccept(): void
     {
+        $builder = new MockObjectBuilder();
         $previousException = new \RuntimeException('previous', 3);
         $exception = new \LogicException('current', 5, $previousException);
 
         /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('accept', null)->willReturn(null),
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['accept', null], null),
         ]);
 
         /** @var MockObject|RequestHandlerInterface $handler */
-        $handler = $this->getMockByCalls(RequestHandlerInterface::class, [
-            Call::create('handle')->with($request)->willThrowException($exception),
+        $handler = $builder->create(RequestHandlerInterface::class, [
+            new WithException('handle', [$request], $exception),
         ]);
 
         /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class);
+        $encoder = $builder->create(EncoderInterface::class, []);
 
         /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var LoggerInterface|MockObject $logger */
-        $logger = $this->getMockByCalls(LoggerInterface::class, [
-            Call::create('error')->with('Http Exception', new ArgumentCallback(static function (array $context): void {
-                self::assertArrayHasKey('backtrace', $context);
+        $logger = $builder->create(LoggerInterface::class, [
+            new WithCallback(
+                'error',
+                static function (string $message, array $context): void {
+                    self::assertSame('Http Exception', $message);
+                    self::assertArrayHasKey('backtrace', $context);
 
-                self::assertCount(2, $context['backtrace']);
+                    self::assertCount(2, $context['backtrace']);
 
-                $trace1 = array_shift($context['backtrace']);
+                    $trace1 = array_shift($context['backtrace']);
 
-                self::assertSame(\LogicException::class, $trace1['class']);
-                self::assertSame('current', $trace1['message']);
-                self::assertSame(5, $trace1['code']);
-                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace1['file']);
-                self::assertIsInt($trace1['line']);
-                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest/', $trace1['trace']);
+                    self::assertSame(\LogicException::class, $trace1['class']);
+                    self::assertSame('current', $trace1['message']);
+                    self::assertSame(5, $trace1['code']);
+                    self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace1['file']);
+                    self::assertIsInt($trace1['line']);
+                    self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest/', $trace1['trace']);
 
-                $trace2 = array_shift($context['backtrace']);
+                    $trace2 = array_shift($context['backtrace']);
 
-                self::assertSame(\RuntimeException::class, $trace2['class']);
-                self::assertSame('previous', $trace2['message']);
-                self::assertSame(3, $trace2['code']);
-                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace2['file']);
-                self::assertIsInt($trace2['line']);
-                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest/', $trace2['trace']);
-            })),
+                    self::assertSame(\RuntimeException::class, $trace2['class']);
+                    self::assertSame('previous', $trace2['message']);
+                    self::assertSame(3, $trace2['code']);
+                    self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace2['file']);
+                    self::assertIsInt($trace2['line']);
+                    self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest/', $trace2['trace']);
+                }
+            ),
         ]);
 
         $apiExceptionMiddleware = new ApiExceptionMiddleware($encoder, $responseFactory, true, $logger);
@@ -116,68 +123,82 @@ final class ApiExceptionMiddlewareTest extends TestCase
 
     public function testWithDebugAndLoggerWithExceptionAndWithAccept(): void
     {
+        $builder = new MockObjectBuilder();
         $previousException = new \RuntimeException('previous', 3);
         $exception = new \LogicException('current', 5, $previousException);
 
         /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['accept', null], 'application/json'),
         ]);
 
         /** @var MockObject|StreamInterface $responseBody */
-        $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('encoded')->willReturn(\strlen('encoded')),
+        $responseBody = $builder->create(StreamInterface::class, [
+            new WithReturn('write', ['encoded'], \strlen('encoded')),
         ]);
 
         /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Content-Type', 'application/problem+json')->willReturnSelf(),
-            Call::create('getBody')->with()->willReturn($responseBody),
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf(
+                'withHeader',
+                ['Content-Type', 'application/problem+json']
+            ),
+            new WithReturn('getBody', [], $responseBody),
         ]);
 
         /** @var MockObject|RequestHandlerInterface $handler */
-        $handler = $this->getMockByCalls(RequestHandlerInterface::class, [
-            Call::create('handle')->with($request)->willThrowException($exception),
+        $handler = $builder->create(RequestHandlerInterface::class, [
+            new WithException('handle', [$request], $exception),
         ]);
 
         /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class, [
-            Call::create('encode')->with(new ArgumentCallback(static function (array $data): void {
-                self::assertSame('https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.1', $data['type']);
-                self::assertSame(500, $data['status']);
-                self::assertSame('Internal Server Error', $data['title']);
-                self::assertSame('current', $data['detail']);
-                self::assertNull($data['instance']);
-                self::assertCount(2, $data['backtrace']);
-            }), 'application/json')->willReturn('encoded'),
+        $encoder = $builder->create(EncoderInterface::class, [
+            new WithCallback(
+                'encode',
+                static function (array $data, string $contentType): string {
+                    self::assertSame('https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.1', $data['type']);
+                    self::assertSame(500, $data['status']);
+                    self::assertSame('Internal Server Error', $data['title']);
+                    self::assertSame('current', $data['detail']);
+                    self::assertNull($data['instance']);
+                    self::assertCount(2, $data['backtrace']);
+                    self::assertSame('application/json', $contentType);
+
+                    return 'encoded';
+                }
+            ),
         ]);
 
         /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(500, '')->willReturn($response),
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [500, ''], $response),
         ]);
 
         /** @var LoggerInterface|MockObject $logger */
-        $logger = $this->getMockByCalls(LoggerInterface::class, [
-            Call::create('error')->with('Http Exception', new ArgumentCallback(static function (array $context): void {
-                self::assertArrayHasKey('backtrace', $context);
+        $logger = $builder->create(LoggerInterface::class, [
+            new WithCallback(
+                'error',
+                static function (string $message, array $context): void {
+                    self::assertSame('Http Exception', $message);
+                    self::assertArrayHasKey('backtrace', $context);
 
-                self::assertCount(2, $context['backtrace']);
+                    self::assertCount(2, $context['backtrace']);
 
-                $trace1 = array_shift($context['backtrace']);
+                    $trace1 = array_shift($context['backtrace']);
 
-                self::assertSame(\LogicException::class, $trace1['class']);
-                self::assertSame('current', $trace1['message']);
-                self::assertSame(5, $trace1['code']);
-                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace1['file']);
+                    self::assertSame(\LogicException::class, $trace1['class']);
+                    self::assertSame('current', $trace1['message']);
+                    self::assertSame(5, $trace1['code']);
+                    self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace1['file']);
 
-                $trace2 = array_shift($context['backtrace']);
+                    $trace2 = array_shift($context['backtrace']);
 
-                self::assertSame(\RuntimeException::class, $trace2['class']);
-                self::assertSame('previous', $trace2['message']);
-                self::assertSame(3, $trace2['code']);
-                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace2['file']);
-            })),
+                    self::assertSame(\RuntimeException::class, $trace2['class']);
+                    self::assertSame('previous', $trace2['message']);
+                    self::assertSame(3, $trace2['code']);
+                    self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace2['file']);
+                }
+            ),
         ]);
 
         $apiExceptionMiddleware = new ApiExceptionMiddleware($encoder, $responseFactory, true, $logger);
@@ -187,45 +208,55 @@ final class ApiExceptionMiddlewareTest extends TestCase
 
     public function testWithoutDebugAndLoggerWithExceptionAndWithAccept(): void
     {
+        $builder = new MockObjectBuilder();
         $previousException = new \RuntimeException('previous', 3);
         $exception = new \LogicException('current', 5, $previousException);
 
         /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['accept', null], 'application/json'),
         ]);
 
         /** @var MockObject|StreamInterface $responseBody */
-        $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('encoded')->willReturn(\strlen('encoded')),
+        $responseBody = $builder->create(StreamInterface::class, [
+            new WithReturn('write', ['encoded'], \strlen('encoded')),
         ]);
 
         /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Content-Type', 'application/problem+json')->willReturnSelf(),
-            Call::create('getBody')->with()->willReturn($responseBody),
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf(
+                'withHeader',
+                ['Content-Type', 'application/problem+json']
+            ),
+            new WithReturn('getBody', [], $responseBody),
         ]);
 
         /** @var MockObject|RequestHandlerInterface $handler */
-        $handler = $this->getMockByCalls(RequestHandlerInterface::class, [
-            Call::create('handle')->with($request)->willThrowException($exception),
+        $handler = $builder->create(RequestHandlerInterface::class, [
+            new WithException('handle', [$request], $exception),
         ]);
 
         /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class, [
-            Call::create('encode')->with(new ArgumentCallback(static function (array $data): void {
-                self::assertSame('https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.1', $data['type']);
-                self::assertSame(500, $data['status']);
-                self::assertSame('Internal Server Error', $data['title']);
-                self::assertNull($data['detail']);
-                self::assertNull($data['instance']);
-                self::assertArrayNotHasKey('backtrace', $data);
-            }), 'application/json')->willReturn('encoded'),
+        $encoder = $builder->create(EncoderInterface::class, [
+            new WithCallback(
+                'encode',
+                static function (array $data, string $contentType): string {
+                    self::assertSame('https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.1', $data['type']);
+                    self::assertSame(500, $data['status']);
+                    self::assertSame('Internal Server Error', $data['title']);
+                    self::assertNull($data['detail']);
+                    self::assertNull($data['instance']);
+                    self::assertArrayNotHasKey('backtrace', $data);
+                    self::assertSame('application/json', $contentType);
+
+                    return 'encoded';
+                }
+            ),
         ]);
 
         /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(500, '')->willReturn($response),
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [500, ''], $response),
         ]);
 
         $apiExceptionMiddleware = new ApiExceptionMiddleware($encoder, $responseFactory);
@@ -235,67 +266,81 @@ final class ApiExceptionMiddlewareTest extends TestCase
 
     public function testWithDebugAndLoggerWithHttpExceptionAndWithAccept(): void
     {
+        $builder = new MockObjectBuilder();
         $previousException = new \RuntimeException('previous', 3);
         $httpException = HttpException::createBadRequest(['key' => 'value'], $previousException);
 
         /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['accept', null], 'application/json'),
         ]);
 
         /** @var MockObject|StreamInterface $responseBody */
-        $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with('encoded')->willReturn(\strlen('encoded')),
+        $responseBody = $builder->create(StreamInterface::class, [
+            new WithReturn('write', ['encoded'], \strlen('encoded')),
         ]);
 
         /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Content-Type', 'application/problem+json')->willReturnSelf(),
-            Call::create('getBody')->with()->willReturn($responseBody),
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf(
+                'withHeader',
+                ['Content-Type', 'application/problem+json']
+            ),
+            new WithReturn('getBody', [], $responseBody),
         ]);
 
         /** @var MockObject|RequestHandlerInterface $handler */
-        $handler = $this->getMockByCalls(RequestHandlerInterface::class, [
-            Call::create('handle')->with($request)->willThrowException($httpException),
+        $handler = $builder->create(RequestHandlerInterface::class, [
+            new WithException('handle', [$request], $httpException),
         ]);
 
         /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class, [
-            Call::create('encode')->with(new ArgumentCallback(static function (array $data): void {
-                self::assertSame('https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.1', $data['type']);
-                self::assertSame(400, $data['status']);
-                self::assertSame('Bad Request', $data['title']);
-                self::assertNull($data['detail']);
-                self::assertNull($data['instance']);
-            }), 'application/json')->willReturn('encoded'),
+        $encoder = $builder->create(EncoderInterface::class, [
+            new WithCallback(
+                'encode',
+                static function (array $data, string $contentType): string {
+                    self::assertSame('https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.1', $data['type']);
+                    self::assertSame(400, $data['status']);
+                    self::assertSame('Bad Request', $data['title']);
+                    self::assertNull($data['detail']);
+                    self::assertNull($data['instance']);
+                    self::assertSame('application/json', $contentType);
+
+                    return 'encoded';
+                }
+            ),
         ]);
 
         /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(400, '')->willReturn($response),
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [400, ''], $response),
         ]);
 
         /** @var LoggerInterface|MockObject $logger */
-        $logger = $this->getMockByCalls(LoggerInterface::class, [
-            Call::create('info')->with('Http Exception', new ArgumentCallback(static function (array $context): void {
-                self::assertArrayHasKey('backtrace', $context);
+        $logger = $builder->create(LoggerInterface::class, [
+            new WithCallback(
+                'info',
+                static function (string $message, array $context): void {
+                    self::assertSame('Http Exception', $message);
+                    self::assertArrayHasKey('backtrace', $context);
 
-                self::assertCount(2, $context['backtrace']);
+                    self::assertCount(2, $context['backtrace']);
 
-                $trace1 = array_shift($context['backtrace']);
+                    $trace1 = array_shift($context['backtrace']);
 
-                self::assertSame(HttpException::class, $trace1['class']);
-                self::assertSame('Bad Request', $trace1['message']);
-                self::assertSame(400, $trace1['code']);
-                self::assertMatchesRegularExpression('/HttpException\.php/', $trace1['file']);
+                    self::assertSame(HttpException::class, $trace1['class']);
+                    self::assertSame('Bad Request', $trace1['message']);
+                    self::assertSame(400, $trace1['code']);
+                    self::assertMatchesRegularExpression('/HttpException\.php/', $trace1['file']);
 
-                $trace2 = array_shift($context['backtrace']);
+                    $trace2 = array_shift($context['backtrace']);
 
-                self::assertSame(\RuntimeException::class, $trace2['class']);
-                self::assertSame('previous', $trace2['message']);
-                self::assertSame(3, $trace2['code']);
-                self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace2['file']);
-            })),
+                    self::assertSame(\RuntimeException::class, $trace2['class']);
+                    self::assertSame('previous', $trace2['message']);
+                    self::assertSame(3, $trace2['code']);
+                    self::assertMatchesRegularExpression('/ApiExceptionMiddlewareTest\.php/', $trace2['file']);
+                }
+            ),
         ]);
 
         $apiExceptionMiddleware = new ApiExceptionMiddleware($encoder, $responseFactory, true, $logger);

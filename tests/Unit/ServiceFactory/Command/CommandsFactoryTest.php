@@ -8,8 +8,8 @@ use App\ServiceFactory\Command\CommandsFactory;
 use App\Tests\Helper\AssertHelper;
 use Chubbyphp\CleanDirectories\Command\CleanDirectoriesCommand;
 use Chubbyphp\Laminas\Config\Doctrine\ODM\MongoDB\Tools\Console\Command\DocumentManagerCommand;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Doctrine\ODM\MongoDB\Tools\Console\Command\ClearCache\MetadataCommand;
 use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateHydratorsCommand;
 use Doctrine\ODM\MongoDB\Tools\Console\Command\GeneratePersistentCollectionsCommand;
@@ -30,21 +30,19 @@ use Psr\Container\ContainerInterface;
  */
 final class CommandsFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn(['directories' => []]),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], ['directories' => []]),
         ]);
 
         $factory = new CommandsFactory();
-
         $commands = $factory($container);
 
         self::assertIsArray($commands);
-
         self::assertCount(11, $commands);
 
         $cleanDirectoriesCommand = array_shift($commands);
@@ -73,10 +71,16 @@ final class CommandsFactoryTest extends TestCase
         self::assertDocumentCommand(ValidateCommand::class, $validateCommand);
     }
 
+    /**
+     * @param class-string $expectedCommand
+     */
     private static function assertDocumentCommand(
         string $expectedCommand,
         DocumentManagerCommand $entityManagerCommand
     ): void {
-        self::assertInstanceOf($expectedCommand, AssertHelper::readProperty('command', $entityManagerCommand));
+        self::assertInstanceOf(
+            $expectedCommand,
+            AssertHelper::readProperty('command', $entityManagerCommand)
+        );
     }
 }

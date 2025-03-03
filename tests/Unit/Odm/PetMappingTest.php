@@ -6,10 +6,12 @@ namespace App\Tests\Unit\Odm;
 
 use App\Model\Vaccination;
 use App\Odm\PetMapping;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithoutReturn;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as MongodbODMClassMetadata;
 use Doctrine\ODM\MongoDB\Types\Type;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,20 +21,45 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetMappingTest extends TestCase
 {
-    use MockByCallsTrait;
-
+    #[DoesNotPerformAssertions]
     public function testGetClass(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var MongodbODMClassMetadata $classMetadata */
-        $classMetadata = $this->getMockByCalls(MongodbODMClassMetadata::class, [
-            Call::create('setCollection')->with('pet'),
-            Call::create('addIndex')->with(['name' => 'text'], [])->willReturn([]),
-            Call::create('mapField')->with(['name' => 'id', 'id' => true, 'strategy' => 'none'])->willReturn([]),
-            Call::create('mapField')->with(['name' => 'createdAt', 'type' => Type::DATE])->willReturn([]),
-            Call::create('mapField')->with(['name' => 'updatedAt', 'type' => Type::DATE, 'nullable' => true])->willReturn([]),
-            Call::create('mapField')->with(['name' => 'name', 'type' => Type::STRING])->willReturn([]),
-            Call::create('mapField')->with(['name' => 'tag', 'type' => Type::STRING, 'nullable' => true])->willReturn([]),
-            Call::create('mapManyEmbedded')->with(['name' => 'vaccinations', 'targetDocument' => Vaccination::class, 'storeEmptyArray' => false]),
+        $classMetadata = $builder->create(MongodbODMClassMetadata::class, [
+            new WithoutReturn('setCollection', ['pet']),
+            new WithoutReturn('addIndex', [['name' => 'text'], []]),
+            new WithReturn(
+                'mapField',
+                [['name' => 'id', 'id' => true, 'strategy' => 'none']],
+                [],
+            ),
+            new WithReturn(
+                'mapField',
+                [['name' => 'createdAt', 'type' => Type::DATE]],
+                [],
+            ),
+            new WithReturn(
+                'mapField',
+                [['name' => 'updatedAt', 'type' => Type::DATE, 'nullable' => true]],
+                [],
+            ),
+            new WithReturn(
+                'mapField',
+                [['name' => 'name', 'type' => Type::STRING]],
+                [],
+            ),
+            new WithReturn(
+                'mapField',
+                [['name' => 'tag', 'type' => Type::STRING, 'nullable' => true]],
+                [],
+            ),
+            new WithReturn(
+                'mapManyEmbedded',
+                [['name' => 'vaccinations', 'targetDocument' => Vaccination::class, 'storeEmptyArray' => false]],
+                [],
+            ),
         ]);
 
         $mapping = new PetMapping();

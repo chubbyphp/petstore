@@ -17,7 +17,7 @@ use App\ServiceFactory\Framework\RoutesByNameFactory;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\Route;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
 use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
 use PHPUnit\Framework\TestCase;
@@ -30,12 +30,12 @@ use Psr\Container\ContainerInterface;
  */
 final class RoutesByNameFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class);
+        $container = $builder->create(ContainerInterface::class, []);
 
         $ping = new LazyRequestHandler($container, PingRequestHandler::class);
         $openApi = new LazyRequestHandler($container, OpenapiRequestHandler::class);

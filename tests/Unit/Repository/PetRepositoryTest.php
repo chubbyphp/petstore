@@ -20,13 +20,15 @@ namespace App\Tests\Unit\Repository {
     use App\Model\ModelInterface;
     use App\Model\Pet;
     use App\Repository\PetRepository;
-    use Chubbyphp\Mock\Call;
-    use Chubbyphp\Mock\MockByCallsTrait;
+    use Chubbyphp\Mock\MockMethod\WithoutReturn;
+    use Chubbyphp\Mock\MockMethod\WithReturn;
+    use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+    use Chubbyphp\Mock\MockObjectBuilder;
     use Doctrine\ODM\MongoDB\DocumentManager;
+    use Doctrine\ODM\MongoDB\Iterator\IterableResult;
     use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-    use Doctrine\ODM\MongoDB\Query\Query;
     use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
-    use PHPUnit\Framework\MockObject\MockObject;
+    use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
     use PHPUnit\Framework\TestCase;
 
     /**
@@ -36,13 +38,12 @@ namespace App\Tests\Unit\Repository {
      */
     final class PetRepositoryTest extends TestCase
     {
-        use MockByCallsTrait;
-
         public function testResolveCollectionWithWrongCollection(): void
         {
-            /** @var CollectionInterface|MockObject $collection */
-            $collection = $this->getMockByCalls(CollectionInterface::class);
+            $builder = new MockObjectBuilder();
 
+            /** @var CollectionInterface $collection */
+            $collection = $builder->create(CollectionInterface::class, []);
             $collectionClass = \get_class($collection);
 
             $this->expectException(\TypeError::class);
@@ -54,17 +55,17 @@ namespace App\Tests\Unit\Repository {
                 )
             );
 
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class);
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, []);
 
             $repository = new PetRepository($documentManager);
             $repository->resolveCollection($collection);
         }
 
+        #[DoesNotPerformAssertions]
         public function testResolveCollection(): void
         {
             $pet = new Pet();
-
             $items = [$pet];
 
             $collection = new PetCollection();
@@ -73,14 +74,16 @@ namespace App\Tests\Unit\Repository {
             $collection->setFilters(['name' => 'sample']);
             $collection->setSort(['name' => 'asc', 'unknown' => null]);
 
-            /** @var MockObject|Query $countQuery */
-            $countQuery = $this->getMockByCalls(Query::class, [
-                Call::create('execute')->with()->willReturn(\count($items)),
+            $builder = new MockObjectBuilder();
+
+            /** @var IterableResult $countQuery */
+            $countQuery = $builder->create(IterableResult::class, [
+                new WithReturn('execute', [], \count($items)),
             ]);
 
-            /** @var MockObject|Query $itemsQuery */
-            $itemsQuery = $this->getMockByCalls(Query::class, [
-                Call::create('execute')->with()->willReturn(new class($items) {
+            /** @var IterableResult $itemsQuery */
+            $itemsQuery = $builder->create(IterableResult::class, [
+                new WithReturn('execute', [], new class($items) {
                     private array $items;
 
                     public function __construct(array $items)
@@ -95,26 +98,28 @@ namespace App\Tests\Unit\Repository {
                 }),
             ]);
 
-            /** @var MockObject|QueryBuilder $queryBuilder */
-            $queryBuilder = $this->getMockByCalls(QueryBuilder::class, [
-                Call::create('field')->with('name')->willReturnSelf(),
-                Call::create('text')->with('sample')->willReturnSelf(),
-                Call::create('count')->with()->willReturnSelf(),
-                Call::create('getQuery')->with([])->willReturn($countQuery),
-                Call::create('sort')->with('name', 'asc')->willReturnSelf(),
-                Call::create('skip')->with(0)->willReturnSelf(),
-                Call::create('limit')->with(20)->willReturnSelf(),
-                Call::create('getQuery')->with([])->willReturn($itemsQuery),
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = $builder->create(QueryBuilder::class, [
+                new WithReturnSelf('field', ['name']),
+                new WithReturnSelf('text', ['sample']),
+                new WithReturnSelf('__clone', []),
+                new WithReturnSelf('count', []),
+                new WithReturn('getQuery', [[]], $countQuery),
+                new WithReturnSelf('__clone', []),
+                new WithReturnSelf('sort', ['name', 'asc']),
+                new WithReturnSelf('skip', [0]),
+                new WithReturnSelf('limit', [20]),
+                new WithReturn('getQuery', [[]], $itemsQuery),
             ]);
 
-            /** @var DocumentRepository|MockObject $repository */
-            $repository = $this->getMockByCalls(DocumentRepository::class, [
-                Call::create('createQueryBuilder')->with()->willReturn($queryBuilder),
+            /** @var DocumentRepository $documentRepository */
+            $documentRepository = $builder->create(DocumentRepository::class, [
+                new WithReturn('createQueryBuilder', [], $queryBuilder),
             ]);
 
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class, [
-                Call::create('getRepository')->with(Pet::class)->willReturn($repository),
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithReturn('getRepository', [Pet::class], $documentRepository),
             ]);
 
             $repository = new PetRepository($documentManager);
@@ -125,24 +130,29 @@ namespace App\Tests\Unit\Repository {
         {
             $pet = new Pet();
 
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class, [
-                Call::create('find')
-                    ->with(Pet::class, '86c78085-edaf-4df9-95d0-563e45acf618', 0, null)
-                    ->willReturn($pet),
+            $builder = new MockObjectBuilder();
+
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithReturn(
+                    'find',
+                    [Pet::class, '86c78085-edaf-4df9-95d0-563e45acf618', 0, null],
+                    $pet
+                ),
             ]);
 
             $repository = new PetRepository($documentManager);
-
             self::assertSame($pet, $repository->findById('86c78085-edaf-4df9-95d0-563e45acf618'));
         }
 
         public function testPersistWithWrongModel(): void
         {
-            /** @var MockObject|ModelInterface $model */
-            $model = $this->getMockByCalls(ModelInterface::class);
+            $builder = new MockObjectBuilder();
 
-            $modelClass = \get_class($model);
+            /** @var ModelInterface $model */
+            $model = $builder->create(ModelInterface::class, []);
+
+            $modelClass = $model::class;
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(
@@ -153,20 +163,23 @@ namespace App\Tests\Unit\Repository {
                 )
             );
 
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class);
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, []);
 
             $repository = new PetRepository($documentManager);
             $repository->persist($model);
         }
 
+        #[DoesNotPerformAssertions]
         public function testPersist(): void
         {
             $pet = new Pet();
 
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class, [
-                Call::create('persist')->with($pet),
+            $builder = new MockObjectBuilder();
+
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithoutReturn('persist', [$pet]),
             ]);
 
             $repository = new PetRepository($documentManager);
@@ -175,10 +188,11 @@ namespace App\Tests\Unit\Repository {
 
         public function testRemoveWithWrongModel(): void
         {
-            /** @var MockObject|ModelInterface $model */
-            $model = $this->getMockByCalls(ModelInterface::class);
+            $builder = new MockObjectBuilder();
 
-            $modelClass = \get_class($model);
+            /** @var ModelInterface $model */
+            $model = $builder->create(ModelInterface::class, []);
+            $modelClass = $model::class;
 
             $this->expectException(\TypeError::class);
             $this->expectExceptionMessage(
@@ -189,31 +203,37 @@ namespace App\Tests\Unit\Repository {
                 )
             );
 
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class);
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, []);
 
             $repository = new PetRepository($documentManager);
             $repository->remove($model);
         }
 
+        #[DoesNotPerformAssertions]
         public function testRemove(): void
         {
             $pet = new Pet();
 
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class, [
-                Call::create('remove')->with($pet),
+            $builder = new MockObjectBuilder();
+
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithoutReturn('remove', [$pet]),
             ]);
 
             $repository = new PetRepository($documentManager);
             $repository->remove($pet);
         }
 
+        #[DoesNotPerformAssertions]
         public function testFlush(): void
         {
-            /** @var DocumentManager|MockObject $documentManager */
-            $documentManager = $this->getMockByCalls(DocumentManager::class, [
-                Call::create('flush')->with([]),
+            $builder = new MockObjectBuilder();
+
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithoutReturn('flush', [[]]),
             ]);
 
             $repository = new PetRepository($documentManager);

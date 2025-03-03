@@ -7,8 +7,8 @@ namespace App\Tests\Unit\ServiceFactory\Parsing;
 use App\Parsing\PetParsing;
 use App\ServiceFactory\Parsing\PetParsingFactory;
 use Chubbyphp\Framework\Router\UrlGeneratorInterface;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Parsing\ParserInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -20,20 +20,20 @@ use Psr\Container\ContainerInterface;
  */
 final class PetParsingFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
-        /** @var ParserInterface $parser */
-        $parser = $this->getMockByCalls(ParserInterface::class);
+        $builder = new MockObjectBuilder();
 
-        /** @var ParserInterface $urlGenerator */
-        $urlGenerator = $this->getMockByCalls(UrlGeneratorInterface::class);
+        /** @var ParserInterface $parser */
+        $parser = $builder->create(ParserInterface::class, []);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $builder->create(UrlGeneratorInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ParserInterface::class)->willReturn($parser),
-            Call::create('get')->with(UrlGeneratorInterface::class)->willReturn($urlGenerator),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [ParserInterface::class], $parser),
+            new WithReturn('get', [UrlGeneratorInterface::class], $urlGenerator),
         ]);
 
         $factory = new PetParsingFactory();

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory\Http;
 
 use App\ServiceFactory\Http\StreamFactoryFactory;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Slim\Psr7\Factory\StreamFactory;
@@ -17,12 +17,12 @@ use Slim\Psr7\Factory\StreamFactory;
  */
 final class StreamFactoryFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class);
+        $container = $builder->create(ContainerInterface::class, []);
 
         $factory = new StreamFactoryFactory();
 

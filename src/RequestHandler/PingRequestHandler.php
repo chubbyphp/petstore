@@ -25,7 +25,7 @@ final class PingRequestHandler implements RequestHandlerInterface
         ;
 
         /** @var non-empty-string $json */
-        $json = json_encode(['date' => date('c')]);
+        $json = json_encode(['datetime' => date('c')]);
 
         $response->getBody()->write($json);
 

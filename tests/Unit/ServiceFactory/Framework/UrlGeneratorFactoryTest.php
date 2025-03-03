@@ -7,8 +7,8 @@ namespace App\Tests\Unit\ServiceFactory\Framework;
 use App\ServiceFactory\Framework\UrlGeneratorFactory;
 use Chubbyphp\Framework\Router\RoutesByNameInterface;
 use Chubbyphp\Framework\Router\UrlGeneratorInterface;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -19,18 +19,18 @@ use Psr\Container\ContainerInterface;
  */
 final class UrlGeneratorFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
-        /** @var ContainerInterface|MockObject $routes */
-        $routes = $this->getMockByCalls(RoutesByNameInterface::class, [
-            Call::create('getRoutesByName')->with()->willReturn([]),
+        $builder = new MockObjectBuilder();
+
+        /** @var RoutesByNameInterface $routes */
+        $routes = $builder->create(RoutesByNameInterface::class, [
+            new WithReturn('getRoutesByName', [], []),
         ]);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(RoutesByNameInterface::class)->willReturn($routes),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [RoutesByNameInterface::class], $routes),
         ]);
 
         $factory = new UrlGeneratorFactory();

@@ -9,7 +9,7 @@ use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\Middleware\RouteMatcherMiddleware;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -20,19 +20,22 @@ use Psr\Container\ContainerInterface;
  */
 final class MiddlewaresFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class);
+        $container = $builder->create(ContainerInterface::class, []);
 
         $factory = new MiddlewaresFactory();
 
-        self::assertEquals([
-            new LazyMiddleware($container, ExceptionMiddleware::class),
-            new LazyMiddleware($container, CorsMiddleware::class),
-            new LazyMiddleware($container, RouteMatcherMiddleware::class),
-        ], $factory($container));
+        self::assertEquals(
+            [
+                new LazyMiddleware($container, ExceptionMiddleware::class),
+                new LazyMiddleware($container, CorsMiddleware::class),
+                new LazyMiddleware($container, RouteMatcherMiddleware::class),
+            ],
+            $factory($container)
+        );
     }
 }

@@ -7,8 +7,8 @@ namespace App\Tests\Unit\ServiceFactory\Framework;
 use App\ServiceFactory\Framework\RouteMatcherMiddlewareFactory;
 use Chubbyphp\Framework\Middleware\RouteMatcherMiddleware;
 use Chubbyphp\Framework\Router\RouteMatcherInterface;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -19,16 +19,16 @@ use Psr\Container\ContainerInterface;
  */
 final class RouteMatcherMiddlewareFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
-        /** @var MockObject|RouteMatcherInterface $routeMatcher */
-        $routeMatcher = $this->getMockByCalls(RouteMatcherInterface::class);
+        $builder = new MockObjectBuilder();
+
+        /** @var RouteMatcherInterface $routeMatcher */
+        $routeMatcher = $builder->create(RouteMatcherInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(RouteMatcherInterface::class)->willReturn($routeMatcher),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [RouteMatcherInterface::class], $routeMatcher),
         ]);
 
         $factory = new RouteMatcherMiddlewareFactory();

@@ -15,4 +15,9 @@
       <file>./src/web.php</file>
     </exclude>
   </source>
+  <extensions>
+    <bootstrap class="DG\BypassFinals\PHPUnitExtension">
+      <parameter name="bypassFinal" value="true"/>
+    </bootstrap>
+  </extensions>
 </phpunit>

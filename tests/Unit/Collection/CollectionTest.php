@@ -7,8 +7,8 @@ namespace App\Tests\Unit\Collection;
 use App\Collection\AbstractCollection;
 use App\Collection\CollectionInterface;
 use App\Model\ModelInterface;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -19,8 +19,6 @@ use PHPUnit\Framework\TestCase;
  */
 class CollectionTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testGetSet(): void
     {
         $collection = $this->getCollection();
@@ -32,9 +30,15 @@ class CollectionTest extends TestCase
         self::assertSame(0, $collection->getCount());
         self::assertSame([], $collection->getItems());
 
+        $builder = new MockObjectBuilder();
+
         /** @var MockObject|ModelInterface $model */
-        $model = $this->getMockByCalls(ModelInterface::class, [
-            Call::create('jsonSerialize')->with()->willReturn(['id' => '111d1691-8486-4447-997c-d10ce35d1fea']),
+        $model = $builder->create(ModelInterface::class, [
+            new WithReturn(
+                'jsonSerialize',
+                [],
+                ['id' => '111d1691-8486-4447-997c-d10ce35d1fea']
+            ),
         ]);
 
         $collection->setOffset(5);

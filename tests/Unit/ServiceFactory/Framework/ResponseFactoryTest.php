@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory\Framework;
 
 use App\ServiceFactory\Framework\ResponseFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -19,21 +19,21 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class ResponseFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class);
+        $response = $builder->create(ResponseInterface::class, []);
 
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(200, '')->willReturn($response),
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [200, ''], $response),
         ]);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
         ]);
 
         $factory = new ResponseFactory();

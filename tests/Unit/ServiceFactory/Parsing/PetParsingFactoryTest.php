@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceFactory\Parsing;
 
 use App\Parsing\PetParsing;
 use App\ServiceFactory\Parsing\PetParsingFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Parsing\ParserInterface;
 use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\TestCase;
@@ -20,20 +20,20 @@ use Psr\Container\ContainerInterface;
  */
 final class PetParsingFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ParserInterface $parser */
-        $parser = $this->getMockByCalls(ParserInterface::class);
+        $parser = $builder->create(ParserInterface::class, []);
 
         /** @var RouterInterface $router */
-        $router = $this->getMockByCalls(RouterInterface::class);
+        $router = $builder->create(RouterInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ParserInterface::class)->willReturn($parser),
-            Call::create('get')->with(RouterInterface::class)->willReturn($router),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [ParserInterface::class], $parser),
+            new WithReturn('get', [RouterInterface::class], $router),
         ]);
 
         $factory = new PetParsingFactory();

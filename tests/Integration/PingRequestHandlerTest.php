@@ -32,9 +32,9 @@ final class PingRequestHandlerTest extends AbstractIntegrationTestCase
 
         $ping = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
 
-        self::assertArrayHasKey('date', $ping);
+        self::assertArrayHasKey('datetime', $ping);
 
-        $date = new \DateTimeImmutable($ping['date']);
+        $date = new \DateTimeImmutable($ping['datetime']);
 
         self::assertGreaterThanOrEqual($now, $date);
     }

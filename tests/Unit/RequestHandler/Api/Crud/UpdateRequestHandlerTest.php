@@ -12,8 +12,10 @@ use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpExceptionInterface;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithException;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Parsing\ParserErrorException;
 use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;
 use PHPUnit\Framework\TestCase;
@@ -29,31 +31,31 @@ use Psr\Http\Message\StreamInterface;
  */
 final class UpdateRequestHandlerTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testResourceNotFoundInvalidUuid(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('id', null)->willReturn('1234'),
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
-            Call::create('getAttribute')->with('contentType', null)->willReturn('application/json'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['id', null], '1234'),
+            new WithReturn('getAttribute', ['accept', null], 'application/json'),
+            new WithReturn('getAttribute', ['contentType', null], 'application/json'),
         ]);
 
-        /** @var DecoderInterface|MockObject $decoder */
-        $decoder = $this->getMockByCalls(DecoderInterface::class);
+        /** @var DecoderInterface $decoder */
+        $decoder = $builder->create(DecoderInterface::class, []);
 
-        /** @var MockObject|ParsingInterface $parsing */
-        $parsing = $this->getMockByCalls(ParsingInterface::class);
+        /** @var ParsingInterface $parsing */
+        $parsing = $builder->create(ParsingInterface::class, []);
 
-        /** @var MockObject|RepositoryInterface $repository */
-        $repository = $this->getMockByCalls(RepositoryInterface::class);
+        /** @var RepositoryInterface $repository */
+        $repository = $builder->create(RepositoryInterface::class, []);
 
-        /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class);
+        /** @var EncoderInterface $encoder */
+        $encoder = $builder->create(EncoderInterface::class, []);
 
-        /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         $requestHandler = new UpdateRequestHandler(
             $decoder,
@@ -65,38 +67,40 @@ final class UpdateRequestHandlerTest extends TestCase
 
         try {
             $requestHandler->handle($request);
-            self::fail('Expected Exception');
-        } catch (\Throwable $e) {
-            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+
+            throw new \Exception('Expected Exception');
+        } catch (HttpExceptionInterface $e) {
             self::assertSame(404, $e->getStatus());
         }
     }
 
     public function testResourceNotFoundMissingModel(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('id', null)->willReturn('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
-            Call::create('getAttribute')->with('contentType', null)->willReturn('application/json'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['id', null], 'cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
+            new WithReturn('getAttribute', ['accept', null], 'application/json'),
+            new WithReturn('getAttribute', ['contentType', null], 'application/json'),
         ]);
 
-        /** @var DecoderInterface|MockObject $decoder */
-        $decoder = $this->getMockByCalls(DecoderInterface::class);
+        /** @var DecoderInterface $decoder */
+        $decoder = $builder->create(DecoderInterface::class, []);
 
-        /** @var MockObject|ParsingInterface $parsing */
-        $parsing = $this->getMockByCalls(ParsingInterface::class);
+        /** @var ParsingInterface $parsing */
+        $parsing = $builder->create(ParsingInterface::class, []);
 
-        /** @var MockObject|RepositoryInterface $repository */
-        $repository = $this->getMockByCalls(RepositoryInterface::class, [
-            Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn(null),
+        /** @var RepositoryInterface $repository */
+        $repository = $builder->create(RepositoryInterface::class, [
+            new WithReturn('findById', ['cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'], null),
         ]);
 
-        /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class);
+        /** @var EncoderInterface $encoder */
+        $encoder = $builder->create(EncoderInterface::class, []);
 
-        /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         $requestHandler = new UpdateRequestHandler(
             $decoder,
@@ -108,8 +112,9 @@ final class UpdateRequestHandlerTest extends TestCase
 
         try {
             $requestHandler->handle($request);
-            self::fail('Expected Exception');
-        } catch (\Throwable $e) {
+
+            throw new \Exception('Expected Exception');
+        } catch (HttpExceptionInterface $e) {
             self::assertInstanceOf(HttpExceptionInterface::class, $e);
             self::assertSame(404, $e->getStatus());
         }
@@ -124,47 +129,49 @@ final class UpdateRequestHandlerTest extends TestCase
         $inputAsArray = (array) $inputAsStdClass;
         $inputAsJson = json_encode($inputAsArray);
 
-        /** @var MockObject|StreamInterface $requestBody */
-        $requestBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('__toString')->with()->willReturn($inputAsJson),
+        $builder = new MockObjectBuilder();
+
+        /** @var StreamInterface $requestBody */
+        $requestBody = $builder->create(StreamInterface::class, [
+            new WithReturn('__toString', [], $inputAsJson),
         ]);
 
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('id', null)->willReturn('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
-            Call::create('getAttribute')->with('contentType', null)->willReturn('application/json'),
-            Call::create('getBody')->with()->willReturn($requestBody),
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['id', null], 'cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
+            new WithReturn('getAttribute', ['accept', null], 'application/json'),
+            new WithReturn('getAttribute', ['contentType', null], 'application/json'),
+            new WithReturn('getBody', [], $requestBody),
         ]);
 
-        /** @var MockObject|ModelInterface $model */
-        $model = $this->getMockByCalls(ModelInterface::class, []);
+        /** @var ModelInterface $model */
+        $model = $builder->create(ModelInterface::class, []);
 
-        /** @var DecoderInterface|MockObject $decoder */
-        $decoder = $this->getMockByCalls(DecoderInterface::class, [
-            Call::create('decode')->with($inputAsJson, 'application/json')->willReturn($inputAsArray),
+        /** @var DecoderInterface $decoder */
+        $decoder = $builder->create(DecoderInterface::class, [
+            new WithReturn('decode', [$inputAsJson, 'application/json'], $inputAsArray),
         ]);
 
-        /** @var MockObject|ObjectSchemaInterface $modelRequestSchema */
-        $modelRequestSchema = $this->getMockByCalls(ObjectSchemaInterface::class, [
-            Call::create('parse')->with($inputAsArray)->willThrowException($parserErrorException),
+        /** @var ObjectSchemaInterface $modelRequestSchema */
+        $modelRequestSchema = $builder->create(ObjectSchemaInterface::class, [
+            new WithException('parse', [$inputAsArray], $parserErrorException),
         ]);
 
-        /** @var MockObject|ParsingInterface $parsing */
-        $parsing = $this->getMockByCalls(ParsingInterface::class, [
-            Call::create('getModelRequestSchema')->with($request)->willReturn($modelRequestSchema),
+        /** @var ParsingInterface $parsing */
+        $parsing = $builder->create(ParsingInterface::class, [
+            new WithReturn('getModelRequestSchema', [$request], $modelRequestSchema),
         ]);
 
-        /** @var MockObject|RepositoryInterface $repository */
-        $repository = $this->getMockByCalls(RepositoryInterface::class, [
-            Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn($model),
+        /** @var RepositoryInterface $repository */
+        $repository = $builder->create(RepositoryInterface::class, [
+            new WithReturn('findById', ['cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'], $model),
         ]);
 
-        /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class);
+        /** @var EncoderInterface $encoder */
+        $encoder = $builder->create(EncoderInterface::class, []);
 
-        /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         $requestHandler = new UpdateRequestHandler(
             $decoder,
@@ -176,9 +183,9 @@ final class UpdateRequestHandlerTest extends TestCase
 
         try {
             $requestHandler->handle($request);
-            self::fail('Expected Exception');
-        } catch (\Throwable $e) {
-            self::assertInstanceOf(HttpExceptionInterface::class, $e);
+
+            throw new \Exception('Expected Exception');
+        } catch (HttpExceptionInterface $e) {
             self::assertSame([
                 'type' => 'https://datatracker.ietf.org/doc/html/rfc4918#section-11.2',
                 'status' => 422,
@@ -197,74 +204,76 @@ final class UpdateRequestHandlerTest extends TestCase
         $inputAsArray = (array) $inputAsStdClass;
         $inputAsJson = json_encode($inputAsArray);
 
-        /** @var MockObject|StreamInterface $requestBody */
-        $requestBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('__toString')->with()->willReturn($inputAsJson),
+        $builder = new MockObjectBuilder();
+
+        /** @var StreamInterface $requestBody */
+        $requestBody = $builder->create(StreamInterface::class, [
+            new WithReturn('__toString', [], $inputAsJson),
         ]);
 
-        /** @var MockObject|StreamInterface $responseBody */
-        $responseBody = $this->getMockByCalls(StreamInterface::class, [
-            Call::create('write')->with($inputAsJson)->willReturn(\strlen($inputAsJson)),
+        /** @var StreamInterface $responseBody */
+        $responseBody = $builder->create(StreamInterface::class, [
+            new WithReturn('write', [$inputAsJson], \strlen($inputAsJson)),
         ]);
 
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getAttribute')->with('id', null)->willReturn('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
-            Call::create('getAttribute')->with('accept', null)->willReturn('application/json'),
-            Call::create('getAttribute')->with('contentType', null)->willReturn('application/json'),
-            Call::create('getBody')->with()->willReturn($requestBody),
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getAttribute', ['id', null], 'cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'),
+            new WithReturn('getAttribute', ['accept', null], 'application/json'),
+            new WithReturn('getAttribute', ['contentType', null], 'application/json'),
+            new WithReturn('getBody', [], $requestBody),
         ]);
 
-        /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Content-Type', 'application/json')->willReturnSelf(),
-            Call::create('getBody')->with()->willReturn($responseBody),
+        /** @var ResponseInterface $response */
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
+            new WithReturn('getBody', [], $responseBody),
         ]);
 
-        /** @var MockObject|ModelInterface $model */
-        $model = $this->getMockByCalls(ModelInterface::class);
+        /** @var ModelInterface $model */
+        $model = $builder->create(ModelInterface::class, []);
 
-        /** @var DecoderInterface|MockObject $decoder */
-        $decoder = $this->getMockByCalls(DecoderInterface::class, [
-            Call::create('decode')->with($inputAsJson, 'application/json')->willReturn($inputAsArray),
+        /** @var DecoderInterface $decoder */
+        $decoder = $builder->create(DecoderInterface::class, [
+            new WithReturn('decode', [$inputAsJson, 'application/json'], $inputAsArray),
         ]);
 
-        /** @var MockObject|ModelRequestInterface $modelRequest */
-        $modelRequest = $this->getMockByCalls(ModelRequestInterface::class, [
-            Call::create('updateModel')->with($model)->willReturn($model),
+        /** @var ModelRequestInterface $modelRequest */
+        $modelRequest = $builder->create(ModelRequestInterface::class, [
+            new WithReturn('updateModel', [$model], $model),
         ]);
 
-        /** @var MockObject|ObjectSchemaInterface $modelRequestSchema */
-        $modelRequestSchema = $this->getMockByCalls(ObjectSchemaInterface::class, [
-            Call::create('parse')->with($inputAsArray)->willReturn($modelRequest),
+        /** @var ObjectSchemaInterface $modelRequestSchema */
+        $modelRequestSchema = $builder->create(ObjectSchemaInterface::class, [
+            new WithReturn('parse', [$inputAsArray], $modelRequest),
         ]);
 
-        /** @var MockObject|ObjectSchemaInterface $modelResponseSchema */
-        $modelResponseSchema = $this->getMockByCalls(ObjectSchemaInterface::class, [
-            Call::create('parse')->with($model)->willReturn($inputAsArray),
+        /** @var ObjectSchemaInterface $modelResponseSchema */
+        $modelResponseSchema = $builder->create(ObjectSchemaInterface::class, [
+            new WithReturn('parse', [$model], $inputAsArray),
         ]);
 
-        /** @var MockObject|ParsingInterface $parsing */
-        $parsing = $this->getMockByCalls(ParsingInterface::class, [
-            Call::create('getModelRequestSchema')->with($request)->willReturn($modelRequestSchema),
-            Call::create('getModelResponseSchema')->with($request)->willReturn($modelResponseSchema),
+        /** @var ParsingInterface $parsing */
+        $parsing = $builder->create(ParsingInterface::class, [
+            new WithReturn('getModelRequestSchema', [$request], $modelRequestSchema),
+            new WithReturn('getModelResponseSchema', [$request], $modelResponseSchema),
         ]);
 
-        /** @var MockObject|RepositoryInterface $repository */
-        $repository = $this->getMockByCalls(RepositoryInterface::class, [
-            Call::create('findById')->with('cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0')->willReturn($model),
-            Call::create('persist')->with($model),
-            Call::create('flush')->with(),
+        /** @var RepositoryInterface $repository */
+        $repository = $builder->create(RepositoryInterface::class, [
+            new WithReturn('findById', ['cbb6bd79-b6a9-4b07-9d8b-f6be0f19aaa0'], $model),
+            new WithReturnSelf('persist', [$model]),
+            new WithReturnSelf('flush', []),
         ]);
 
-        /** @var EncoderInterface|MockObject $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class, [
-            Call::create('encode')->with($inputAsArray, 'application/json')->willReturn($inputAsJson),
+        /** @var EncoderInterface $encoder */
+        $encoder = $builder->create(EncoderInterface::class, [
+            new WithReturn('encode', [$inputAsArray, 'application/json'], $inputAsJson),
         ]);
 
-        /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(200, '')->willReturn($response),
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [200, ''], $response),
         ]);
 
         $requestHandler = new UpdateRequestHandler(

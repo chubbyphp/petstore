@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Unit\ServiceFactory\Framework;
 
 use App\ServiceFactory\Framework\FastRouteRouterFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Mezzio\Router\FastRouteRouter;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -18,13 +18,13 @@ use Psr\Container\ContainerInterface;
  */
 final class FastRouteRouterFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvokeWithoutCache(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn([
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], [
                 'fastroute' => ['cache' => null],
             ]),
         ]);
@@ -49,10 +49,11 @@ final class FastRouteRouterFactoryTest extends TestCase
     public function testInvokeWithCache(): void
     {
         $cachePath = sys_get_temp_dir().'/'.uniqid('fastroute-');
+        $builder = new MockObjectBuilder();
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn([
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], [
                 'fastroute' => ['cache' => $cachePath],
             ]),
         ]);

@@ -12,8 +12,8 @@ use App\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\ServiceFactory\RequestHandler\Api\Crud\PetUpdateRequestHandlerFactory;
 use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -25,32 +25,32 @@ use Psr\Http\Message\ResponseFactoryInterface;
  */
 final class PetUpdateRequestHandlerFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var DecoderInterface $decoder */
-        $decoder = $this->getMockByCalls(DecoderInterface::class);
+        $decoder = $builder->create(DecoderInterface::class, []);
 
         /** @var ParsingInterface $petParsing */
-        $petParsing = $this->getMockByCalls(ParsingInterface::class);
+        $petParsing = $builder->create(ParsingInterface::class, []);
 
         /** @var RepositoryInterface $petRepository */
-        $petRepository = $this->getMockByCalls(RepositoryInterface::class);
+        $petRepository = $builder->create(RepositoryInterface::class, []);
 
         /** @var EncoderInterface $encoder */
-        $encoder = $this->getMockByCalls(EncoderInterface::class);
+        $encoder = $builder->create(EncoderInterface::class, []);
 
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(DecoderInterface::class)->willReturn($decoder),
-            Call::create('get')->with(PetParsing::class)->willReturn($petParsing),
-            Call::create('get')->with(PetRepository::class)->willReturn($petRepository),
-            Call::create('get')->with(EncoderInterface::class)->willReturn($encoder),
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [DecoderInterface::class], $decoder),
+            new WithReturn('get', [PetParsing::class], $petParsing),
+            new WithReturn('get', [PetRepository::class], $petRepository),
+            new WithReturn('get', [EncoderInterface::class], $encoder),
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
         ]);
 
         $factory = new PetUpdateRequestHandlerFactory();

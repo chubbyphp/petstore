@@ -6,9 +6,10 @@ namespace App\Tests\Unit\Orm;
 
 use App\Model\Vaccination;
 use App\Orm\PetMapping;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithoutReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,43 +19,44 @@ use PHPUnit\Framework\TestCase;
  */
 final class PetMappingTest extends TestCase
 {
-    use MockByCallsTrait;
-
+    #[DoesNotPerformAssertions]
     public function testGetClass(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ClassMetadata $classMetadata */
-        $classMetadata = $this->getMockByCalls(ClassMetadata::class, [
-            Call::create('setPrimaryTable')->with(['name' => 'pet']),
-            Call::create('mapField')->with([
+        $classMetadata = $builder->create(ClassMetadata::class, [
+            new WithoutReturn('setPrimaryTable', [['name' => 'pet']]),
+            new WithoutReturn('mapField', [[
                 'fieldName' => 'id',
                 'type' => 'guid',
                 'id' => true,
-            ]),
-            Call::create('mapField')->with([
+            ]]),
+            new WithoutReturn('mapField', [[
                 'fieldName' => 'createdAt',
                 'type' => 'datetime_immutable',
-            ]),
-            Call::create('mapField')->with([
+            ]]),
+            new WithoutReturn('mapField', [[
                 'nullable' => true,
                 'fieldName' => 'updatedAt',
                 'type' => 'datetime_immutable',
-            ]),
-            Call::create('mapField')->with([
+            ]]),
+            new WithoutReturn('mapField', [[
                 'fieldName' => 'name',
                 'type' => 'string',
-            ]),
-            Call::create('mapField')->with([
+            ]]),
+            new WithoutReturn('mapField', [[
                 'nullable' => true,
                 'fieldName' => 'tag',
                 'type' => 'string',
-            ]),
-            Call::create('mapOneToMany')->with([
+            ]]),
+            new WithoutReturn('mapOneToMany', [[
                 'fieldName' => 'vaccinations',
                 'targetEntity' => Vaccination::class,
                 'mappedBy' => 'pet',
                 'cascade' => ['ALL'],
                 'orphanRemoval' => true,
-            ]),
+            ]]),
         ]);
 
         $mapping = new PetMapping();

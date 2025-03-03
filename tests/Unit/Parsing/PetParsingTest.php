@@ -7,11 +7,10 @@ namespace App\Tests\Unit\Parsing;
 use App\Dto\Collection\PetCollectionRequest;
 use App\Dto\Model\PetRequest;
 use App\Parsing\PetParsing;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Parsing\Parser;
 use Chubbyphp\Parsing\ParserErrorException;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\RouteParserInterface;
@@ -23,17 +22,17 @@ use Slim\Interfaces\RouteParserInterface;
  */
 final class PetParsingTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testGetCollectionRequestSchema(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class);
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
 
         $parser = new Parser();
 
-        /** @var MockObject|RouteParserInterface $routeParser */
-        $routeParser = $this->getMockByCalls(RouteParserInterface::class);
+        /** @var RouteParserInterface $routeParser */
+        $routeParser = $builder->create(RouteParserInterface::class, []);
 
         $petParsing = new PetParsing($parser, $routeParser);
 
@@ -71,37 +70,73 @@ final class PetParsingTest extends TestCase
 
     public function testGetCollectionResponseSchema(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class);
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
 
         $parser = new Parser();
 
-        /** @var MockObject|RouteParserInterface $routeParser */
-        $routeParser = $this->getMockByCalls(RouteParserInterface::class, [
-            Call::create('urlFor')
-                ->with('pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')
-                ->with('pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')
-                ->with('pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')->with('pet_list', [], ['offset' => 10, 'limit' => 10, 'filters' => ['name' => null], 'sort' => ['name' => null]])
-                ->willReturn('/api/pets?offset=10&limit=10'),
-            Call::create('urlFor')->with('pet_create', [], [])->willReturn('/api/pets'),
-            Call::create('urlFor')
-                ->with('pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')
-                ->with('pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')
-                ->with('pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')->with('pet_list', [], ['offset' => 10, 'limit' => 10, 'filters' => ['name' => 'jerry'], 'sort' => ['name' => 'asc']])
-                ->willReturn('/api/pets?offset=10&limit=10&filters[name]=jerry&sort[name]=asc'),
-            Call::create('urlFor')->with('pet_create', [], [])->willReturn('/api/pets'),
+        /** @var RouteParserInterface $routeParser */
+        $routeParser = $builder->create(RouteParserInterface::class, [
+            new WithReturn(
+                'urlFor',
+                ['pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                [
+                    'pet_list',
+                    [],
+                    ['offset' => 10, 'limit' => 10, 'filters' => ['name' => null], 'sort' => ['name' => null]],
+                ],
+                '/api/pets?offset=10&limit=10'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_create', [], []],
+                '/api/pets'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                [
+                    'pet_list',
+                    [],
+                    ['offset' => 10, 'limit' => 10, 'filters' => ['name' => 'jerry'], 'sort' => ['name' => 'asc']],
+                ],
+                '/api/pets?offset=10&limit=10&filters[name]=jerry&sort[name]=asc'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_create', [], []],
+                '/api/pets'
+            ),
         ]);
 
         $petParsing = new PetParsing($parser, $routeParser);
@@ -281,13 +316,15 @@ final class PetParsingTest extends TestCase
 
     public function testGetModelRequestSchema(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class);
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
 
         $parser = new Parser();
 
-        /** @var MockObject|RouteParserInterface $routeParser */
-        $routeParser = $this->getMockByCalls(RouteParserInterface::class);
+        /** @var RouteParserInterface $routeParser */
+        $routeParser = $builder->create(RouteParserInterface::class, []);
 
         $petParsing = new PetParsing($parser, $routeParser);
 
@@ -375,22 +412,30 @@ final class PetParsingTest extends TestCase
 
     public function testGetModelResponseSchema(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class);
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
 
         $parser = new Parser();
 
-        /** @var MockObject|RouteParserInterface $routeParser */
-        $routeParser = $this->getMockByCalls(RouteParserInterface::class, [
-            Call::create('urlFor')
-                ->with('pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')
-                ->with('pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
-            Call::create('urlFor')
-                ->with('pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], [])
-                ->willReturn('/api/pets/f8b51629-d105-401e-8872-bebd9911709a'),
+        /** @var RouteParserInterface $routeParser */
+        $routeParser = $builder->create(RouteParserInterface::class, [
+            new WithReturn(
+                'urlFor',
+                ['pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
+            new WithReturn(
+                'urlFor',
+                ['pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
+                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+            ),
         ]);
 
         $petParsing = new PetParsing($parser, $routeParser);

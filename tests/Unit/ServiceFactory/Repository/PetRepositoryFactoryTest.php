@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceFactory\Repository;
 
 use App\Repository\PetRepository;
 use App\ServiceFactory\Repository\PetRepositoryFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -19,16 +19,16 @@ use Psr\Container\ContainerInterface;
  */
 final class PetRepositoryFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var EntityManager $entityManager */
-        $entityManager = $this->getMockByCalls(EntityManager::class);
+        $entityManager = $builder->create(EntityManager::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(EntityManager::class)->willReturn($entityManager),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [EntityManager::class], $entityManager),
         ]);
 
         $factory = new PetRepositoryFactory();

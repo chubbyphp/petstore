@@ -6,8 +6,8 @@ namespace App\Tests\Unit\ServiceFactory\RequestHandler;
 
 use App\RequestHandler\OpenapiRequestHandler;
 use App\ServiceFactory\RequestHandler\OpenapiRequestHandlerFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -20,20 +20,20 @@ use Psr\Http\Message\StreamFactoryInterface;
  */
 final class OpenapiRequestHandlerFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var StreamFactoryInterface $stream */
-        $stream = $this->getMockByCalls(StreamFactoryInterface::class);
+        $stream = $builder->create(StreamFactoryInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
-            Call::create('get')->with(StreamFactoryInterface::class)->willReturn($stream),
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
+            new WithReturn('get', [StreamFactoryInterface::class], $stream),
         ]);
 
         $factory = new OpenapiRequestHandlerFactory();

@@ -6,9 +6,8 @@ namespace App\Tests\Unit\Middleware;
 
 use App\Middleware\ConvertHttpExceptionMiddleware;
 use Chubbyphp\HttpException\HttpException as ChubbyphpHttpException;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
-use PHPUnit\Framework\MockObject\MockObject;
+use Chubbyphp\Mock\MockMethod\WithException;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -21,18 +20,18 @@ use Slim\Exception\HttpException as SlimHttpException;
  */
 final class ConvertHttpExceptionMiddlewareTest extends TestCase
 {
-    use MockByCallsTrait;
-
-    public function testMiddlware(): void
+    public function testMiddleware(): void
     {
+        $builder = new MockObjectBuilder();
+
         $chubbyphpHttpException = ChubbyphpHttpException::createBadRequest(['key' => 'value']);
 
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class);
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
 
-        /** @var MockObject|RequestHandlerInterface $handler */
-        $handler = $this->getMockByCalls(RequestHandlerInterface::class, [
-            Call::create('handle')->with($request)->willThrowException($chubbyphpHttpException),
+        /** @var RequestHandlerInterface $handler */
+        $handler = $builder->create(RequestHandlerInterface::class, [
+            new WithException('handle', [$request], $chubbyphpHttpException),
         ]);
 
         $convertHttpExceptionMiddleware = new ConvertHttpExceptionMiddleware();

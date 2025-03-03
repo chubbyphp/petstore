@@ -6,7 +6,6 @@ namespace App\Tests\Unit\ServiceFactory\Middleware;
 
 use App\Middleware\ConvertHttpExceptionMiddleware;
 use App\ServiceFactory\Middleware\ConvertHttpExceptionMiddlewareFactory;
-use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,8 +15,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class ConvertHttpExceptionMiddlewareFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
         $factory = new ConvertHttpExceptionMiddlewareFactory();

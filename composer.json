@@ -34,7 +34,7 @@
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
-        "chubbyphp/chubbyphp-mock": "^2.0@dev",
+        "chubbyphp/chubbyphp-mock": "^2.0",
         "dg/bypass-finals": "^1.9",
         "infection/infection": "^0.29.13",
         "php-coveralls/php-coveralls": "^2.7",

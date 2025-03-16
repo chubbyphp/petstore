@@ -22,7 +22,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.4
  * [chubbyphp/chubbyphp-negotiation][11]: ^2.2
  * [chubbyphp/chubbyphp-parsing][12]: ^1.3
- * [doctrine/mongodb-odm][13]: ^2.9
+ * [doctrine/mongodb-odm][13]: ^2.10.1
  * [monolog/monolog][14]: ^3.8.1
  * [ramsey/uuid][15]: ^4.7.6
  * [slim/psr7][16]: ^1.7

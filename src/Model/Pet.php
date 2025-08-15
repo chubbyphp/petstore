@@ -99,7 +99,7 @@ final class Pet implements ModelInterface
      *  updatedAt: null|\DateTimeInterface,
      *  name: null|string,
      *  tag: null|string,
-     *  vaccinations: array<int<0, max>, array{name: string|null}>
+     *  vaccinations: array<int<0, max>, array{name: null|string}>
      * }
      */
     public function jsonSerialize(): array

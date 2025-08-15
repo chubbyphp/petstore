@@ -22,7 +22,7 @@
         "chubbyphp/chubbyphp-framework-router-fastroute": "^2.2",
         "chubbyphp/chubbyphp-http-exception": "^1.2",
         "chubbyphp/chubbyphp-laminas-config": "^1.4",
-        "chubbyphp/chubbyphp-laminas-config-doctrine": "^2.3",
+        "chubbyphp/chubbyphp-laminas-config-doctrine": "^3.0.2",
         "chubbyphp/chubbyphp-laminas-config-factory": "^1.4",
         "chubbyphp/chubbyphp-negotiation": "^2.2",
         "chubbyphp/chubbyphp-parsing": "^1.4.1",

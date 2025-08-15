@@ -1,13 +1,12 @@
-FROM rockylinux/rockylinux:9.5
+FROM rockylinux/rockylinux:10.0
 
 SHELL ["/bin/bash", "-c"]
 
 RUN dnf upgrade -y --refresh
 
-RUN dnf install -y epel-release https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+RUN dnf install -y epel-release https://rpms.remirepo.net/enterprise/remi-release-10.rpm
 
 RUN dnf install -y --nobest \
-    compat-openssl11 \
     git \
     glibc-langpack-de \
     langpacks-de \

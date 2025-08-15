@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       mongo:
-        image: mongo:7.0.12
+        image: mongo:8
         env:
           MONGO_INITDB_ROOT_USERNAME: petstore
           MONGO_INITDB_ROOT_PASSWORD: KVKtkrTHhKuTJTor8pCP
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       mongo:
-        image: mongo:7.0.12
+        image: mongo:8
         env:
           MONGO_INITDB_ROOT_USERNAME: petstore
           MONGO_INITDB_ROOT_PASSWORD: KVKtkrTHhKuTJTor8pCP
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       mongo:
-        image: mongo:7.0.12
+        image: mongo:8
         env:
           MONGO_INITDB_ROOT_USERNAME: petstore
           MONGO_INITDB_ROOT_PASSWORD: KVKtkrTHhKuTJTor8pCP

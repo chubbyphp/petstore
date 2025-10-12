@@ -16,7 +16,8 @@ use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
-use Chubbyphp\Parsing\ParserErrorException;
+use Chubbyphp\Parsing\Error;
+use Chubbyphp\Parsing\ErrorsException;
 use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -33,7 +34,7 @@ final class ListRequestHandlerTest extends TestCase
 {
     public function testWithParsingError(): void
     {
-        $parserErrorException = new ParserErrorException();
+        $errorsException = new ErrorsException(new Error('code', 'template', []));
 
         $queryAsStdClass = new \stdClass();
         $queryAsStdClass->name = 'test';
@@ -48,7 +49,7 @@ final class ListRequestHandlerTest extends TestCase
         ]);
 
         $collectionRequestSchema = $builder->create(ObjectSchemaInterface::class, [
-            new WithException('parse', [$queryAsArray], $parserErrorException),
+            new WithException('parse', [$queryAsArray], $errorsException),
         ]);
 
         /** @var ParsingInterface $parsing */
@@ -82,7 +83,15 @@ final class ListRequestHandlerTest extends TestCase
                 'title' => 'Bad Request',
                 'detail' => null,
                 'instance' => null,
-                'invalidParameters' => [],
+                'invalidParameters' => [
+                    [
+                        'name' => '',
+                        'reason' => 'template',
+                        'details' => [
+                            '_template' => 'template',
+                        ],
+                    ],
+                ],
             ], $e->jsonSerialize());
         }
     }

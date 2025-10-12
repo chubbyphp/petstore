@@ -9,7 +9,7 @@ use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpException;
-use Chubbyphp\Parsing\ParserErrorException;
+use Chubbyphp\Parsing\ErrorsException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,8 +33,10 @@ final class ListRequestHandler implements RequestHandlerInterface
         try {
             /** @var CollectionRequestInterface $collectionRequest */
             $collectionRequest = $this->parsing->getCollectionRequestSchema($request)->parse($input);
-        } catch (ParserErrorException $e) {
-            throw HttpException::createBadRequest(['invalidParameters' => $e->getApiProblemErrorMessages()]);
+        } catch (ErrorsException $e) {
+            throw HttpException::createBadRequest([
+                'invalidParameters' => $e->errors->toApiProblemInvalidParameters(),
+            ]);
         }
 
         $collection = $collectionRequest->createCollection();

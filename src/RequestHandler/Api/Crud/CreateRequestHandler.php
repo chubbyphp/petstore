@@ -10,7 +10,7 @@ use App\Repository\RepositoryInterface;
 use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\HttpException\HttpException;
-use Chubbyphp\Parsing\ParserErrorException;
+use Chubbyphp\Parsing\ErrorsException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,8 +36,10 @@ final class CreateRequestHandler implements RequestHandlerInterface
         try {
             /** @var ModelRequestInterface $modelRequest */
             $modelRequest = $this->parsing->getModelRequestSchema($request)->parse($input);
-        } catch (ParserErrorException $e) {
-            throw HttpException::createUnprocessableEntity(['invalidParameters' => $e->getApiProblemErrorMessages()]);
+        } catch (ErrorsException $e) {
+            throw HttpException::createUnprocessableEntity([
+                'invalidParameters' => $e->errors->toApiProblemInvalidParameters(),
+            ]);
         }
 
         $model = $modelRequest->createModel();

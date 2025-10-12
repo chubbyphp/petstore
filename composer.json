@@ -24,7 +24,7 @@
         "chubbyphp/chubbyphp-laminas-config-doctrine": "^3.0.2",
         "chubbyphp/chubbyphp-laminas-config-factory": "^1.4",
         "chubbyphp/chubbyphp-negotiation": "^2.2",
-        "chubbyphp/chubbyphp-parsing": "^1.4.1",
+        "chubbyphp/chubbyphp-parsing": "^2.0",
         "doctrine/orm": "^3.3.2",
         "mezzio/mezzio-fastroute": "^3.13",
         "mezzio/mezzio": "^3.21",

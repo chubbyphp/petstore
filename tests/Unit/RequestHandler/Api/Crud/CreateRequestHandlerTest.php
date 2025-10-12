@@ -16,7 +16,8 @@ use Chubbyphp\Mock\MockMethod\WithException;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
-use Chubbyphp\Parsing\ParserErrorException;
+use Chubbyphp\Parsing\Error;
+use Chubbyphp\Parsing\ErrorsException;
 use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -33,7 +34,7 @@ final class CreateRequestHandlerTest extends TestCase
 {
     public function testWithParsingError(): void
     {
-        $parserErrorException = new ParserErrorException();
+        $errorsException = new ErrorsException(new Error('code', 'template', []));
 
         $inputAsStdClass = new \stdClass();
         $inputAsStdClass->name = 'test';
@@ -61,7 +62,7 @@ final class CreateRequestHandlerTest extends TestCase
 
         /** @var ObjectSchemaInterface $modelRequestSchema */
         $modelRequestSchema = $builder->create(ObjectSchemaInterface::class, [
-            new WithException('parse', [$inputAsArray], $parserErrorException),
+            new WithException('parse', [$inputAsArray], $errorsException),
         ]);
 
         /** @var ParsingInterface $parsing */
@@ -96,7 +97,15 @@ final class CreateRequestHandlerTest extends TestCase
                 'title' => 'Unprocessable Entity',
                 'detail' => null,
                 'instance' => null,
-                'invalidParameters' => [],
+                'invalidParameters' => [
+                    [
+                        'name' => '',
+                        'reason' => 'template',
+                        'details' => [
+                            '_template' => 'template',
+                        ],
+                    ],
+                ],
             ], $e->jsonSerialize());
         }
     }

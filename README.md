@@ -19,7 +19,7 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^3.0.2
  * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.4
  * [chubbyphp/chubbyphp-negotiation][9]: ^2.2
- * [chubbyphp/chubbyphp-parsing][10]: ^1.4.1
+ * [chubbyphp/chubbyphp-parsing][10]: ^2.0
  * [doctrine/orm][11]: ^3.5.2
  * [mezzio/mezzio-fastroute][12]: ^3.13
  * [mezzio/mezzio][13]: ^3.21

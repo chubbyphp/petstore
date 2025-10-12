@@ -9,8 +9,8 @@ use App\Dto\Model\PetRequest;
 use App\Parsing\PetParsing;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
+use Chubbyphp\Parsing\ErrorsException;
 use Chubbyphp\Parsing\Parser;
-use Chubbyphp\Parsing\ParserErrorException;
 use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -370,7 +370,7 @@ final class PetParsingTest extends TestCase
             ]);
 
             throw new \Exception('Expect fail');
-        } catch (ParserErrorException $e) {
+        } catch (ErrorsException $e) {
             self::assertSame([
                 [
                     'name' => 'name',
@@ -399,7 +399,7 @@ final class PetParsingTest extends TestCase
                         'given' => 0,
                     ],
                 ],
-            ], $e->getApiProblemErrorMessages());
+            ], $e->errors->toApiProblemInvalidParameters());
         }
     }
 

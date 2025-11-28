@@ -49,12 +49,10 @@ final class PetRepository implements RepositoryInterface
 
         $itemsQueryBuilder = clone $queryBuilder;
 
-        foreach ($petCollection->getSort() as $field => $order) {
-            if (!$order) {
-                continue;
-            }
+        $sort = $petCollection->getSort();
 
-            $itemsQueryBuilder->sort($field, $order);
+        if (isset($sort['name'])) {
+            $itemsQueryBuilder->sort('name', $sort['name']);
         }
 
         $itemsQueryBuilder->skip($petCollection->getOffset());

@@ -10,7 +10,7 @@ use Chubbyphp\Mock\MockObjectBuilder;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 /**
  * @covers \App\ServiceFactory\Framework\ErrorHandlerFactory
@@ -23,15 +23,15 @@ final class ErrorHandlerFactoryTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
-        /** @var ResponseInterface $response */
-        $response = $builder->create(ResponseInterface::class, []);
+        /** @var ResponseFactoryInterface $response */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var ContainerInterface $container */
         $container = $builder->create(ContainerInterface::class, [
             new WithReturn(
                 'get',
-                [ResponseInterface::class],
-                static fn () => $response
+                [ResponseFactoryInterface::class],
+                $responseFactory
             ),
             new WithReturn('get', ['config'], ['debug' => true]),
         ]);

@@ -7,14 +7,14 @@ namespace App\ServiceFactory\Framework;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Mezzio\Middleware\ErrorResponseGenerator;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 final class ErrorHandlerFactory
 {
     public function __invoke(ContainerInterface $container): ErrorHandler
     {
         return new ErrorHandler(
-            $container->get(ResponseInterface::class),
+            $container->get(ResponseFactoryInterface::class),
             new ErrorResponseGenerator($container->get('config')['debug'])
         );
     }

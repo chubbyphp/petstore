@@ -25,23 +25,24 @@
         "chubbyphp/chubbyphp-laminas-config-factory": "^1.4",
         "chubbyphp/chubbyphp-negotiation": "^2.2",
         "chubbyphp/chubbyphp-parsing": "^2.0",
-        "doctrine/orm": "^3.3.2",
-        "mezzio/mezzio-fastroute": "^3.13",
-        "mezzio/mezzio": "^3.21",
+        "doctrine/orm": "^3.5.7",
+        "mezzio/mezzio-fastroute": "^3.14",
+        "mezzio/mezzio": "^3.26",
         "monolog/monolog": "^3.9",
-        "ramsey/uuid": "^4.9",
-        "slim/psr7": "^1.7.1",
-        "symfony/console": "^7.3.2"
+        "ramsey/uuid": "^4.9.1",
+        "slim/psr7": "^1.8",
+        "symfony/console": "^7.4.0",
+        "symfony/var-exporter": "^7.4.0"
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
-        "chubbyphp/chubbyphp-mock": "^2.0",
+        "chubbyphp/chubbyphp-mock": "^2.0.1",
         "dg/bypass-finals": "^1.9",
-        "infection/infection": "^0.31.1",
-        "php-coveralls/php-coveralls": "^2.8",
+        "infection/infection": "^0.31.9",
+        "php-coveralls/php-coveralls": "^2.9",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.22",
-        "phpunit/phpunit": "^11.5.32"
+        "phpstan/phpstan": "^2.1.32",
+        "phpunit/phpunit": "^11.5.44"
     },
     "autoload": {
         "psr-4": {

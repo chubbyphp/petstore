@@ -22,11 +22,12 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.4
  * [chubbyphp/chubbyphp-negotiation][11]: ^2.2
  * [chubbyphp/chubbyphp-parsing][12]: ^2.0
- * [doctrine/orm][13]: ^3.5.2
+ * [doctrine/orm][13]: ^3.5.7
  * [monolog/monolog][14]: ^3.9
- * [ramsey/uuid][15]: ^4.9
- * [slim/psr7][16]: ^1.7.1
- * [symfony/console][17]: ^7.3.2
+ * [ramsey/uuid][15]: ^4.9.1
+ * [slim/psr7][16]: ^1.8
+ * [symfony/console][17]: ^7.4.0
+ * [symfony/var-exporter][18]: ^7.4.0
 
 ## Environment
 
@@ -148,6 +149,7 @@ Service factories are the glue code of the dependeny injection container.
 [15]: https://packagist.org/packages/ramsey/uuid
 [16]: https://packagist.org/packages/slim/psr7
 [17]: https://packagist.org/packages/symfony/console
+[18]: https://packagist.org/packages/symfony/var-exporter
 
 [40]: https://packagist.org/packages/chubbyphp/petstore
 

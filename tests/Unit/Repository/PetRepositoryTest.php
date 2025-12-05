@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace Doctrine\ODM\MongoDB\Query {
-    class Query
+    final class Query
     {
         public const TYPE_FIND = 1;
 

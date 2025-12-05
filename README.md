@@ -10,18 +10,18 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 
 ## Requirements
 
- * php: ^8.2
- * [chubbyphp/chubbyphp-clean-directories][2]: ^1.4
- * [chubbyphp/chubbyphp-cors][3]: ^1.6
- * [chubbyphp/chubbyphp-decode-encode][4]: ^1.2
- * [chubbyphp/chubbyphp-framework][5]: ^5.2
- * [chubbyphp/chubbyphp-framework-router-fastroute][6]: ^2.2
- * [chubbyphp/chubbyphp-http-exception][7]: ^1.2
- * [chubbyphp/chubbyphp-laminas-config][8]: ^1.4
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^3.0.2
- * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.4
- * [chubbyphp/chubbyphp-negotiation][11]: ^2.2
- * [chubbyphp/chubbyphp-parsing][12]: ^2.0
+ * php: ^8.3
+ * [chubbyphp/chubbyphp-clean-directories][2]: ^1.5
+ * [chubbyphp/chubbyphp-cors][3]: ^1.7
+ * [chubbyphp/chubbyphp-decode-encode][4]: ^1.3
+ * [chubbyphp/chubbyphp-framework][5]: ^5.3
+ * [chubbyphp/chubbyphp-framework-router-fastroute][6]: ^2.3
+ * [chubbyphp/chubbyphp-http-exception][7]: ^1.3
+ * [chubbyphp/chubbyphp-laminas-config][8]: ^1.5
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^3.1
+ * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.5
+ * [chubbyphp/chubbyphp-negotiation][11]: ^2.3
+ * [chubbyphp/chubbyphp-parsing][12]: ^2.1
  * [doctrine/mongodb-odm][13]: ^2.15.1
  * [monolog/monolog][14]: ^3.9
  * [ramsey/uuid][15]: ^4.9.1

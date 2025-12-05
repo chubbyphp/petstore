@@ -13,8 +13,8 @@ use PHPUnit\TextUI\Configuration\Configuration;
 
 final class PhpServerExtension implements ExecutionStartedSubscriber, Extension
 {
-    public const PHP_SERVER_PORT = 49199;
-    public const ENV_INTEGRATION_ENDPOINT = 'INTEGRATION_ENDPOINT';
+    public const int PHP_SERVER_PORT = 49199;
+    public const string ENV_INTEGRATION_ENDPOINT = 'INTEGRATION_ENDPOINT';
 
     private ?int $serverPid = null;
 

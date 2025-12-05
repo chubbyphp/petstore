@@ -12,12 +12,10 @@ $finder = PhpCsFixer\Finder::create()
 /** @var array $config */
 $config = require __DIR__ . '/vendor/chubbyphp/chubbyphp-dev-helper/phpcs.php';
 
-$config['rules']['final_class'] = false;
-$config['rules']['final_internal_class'] = false;
-$config['rules']['final_public_method_for_abstract_class'] = false;
 $config['rules']['static_lambda'] = false;
 
 return (new PhpCsFixer\Config)
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setIndent($config['indent'])
     ->setLineEnding($config['lineEnding'])
     ->setRules($config['rules'])

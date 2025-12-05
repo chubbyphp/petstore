@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Interfaces\CallableResolverInterface;
+use Slim\Interfaces\InvocationStrategyInterface;
 use Slim\Routing\RouteCollector;
 
 /**
@@ -30,6 +31,9 @@ final class RouteCollectorFactoryTest extends TestCase
         /** @var CallableResolverInterface $callableResolver */
         $callableResolver = $builder->create(CallableResolverInterface::class, []);
 
+        /** @var InvocationStrategyInterface $invocationStrategy */
+        $invocationStrategy = $builder->create(InvocationStrategyInterface::class, []);
+
         /** @var ContainerInterface $container */
         $container = $builder->create(ContainerInterface::class, [
             new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
@@ -37,6 +41,11 @@ final class RouteCollectorFactoryTest extends TestCase
                 'get',
                 [CallableResolverInterface::class],
                 $callableResolver
+            ),
+            new WithReturn(
+                'get',
+                [InvocationStrategyInterface::class],
+                $invocationStrategy
             ),
             new WithReturn('get', ['config'], ['fastroute' => ['cache' => sys_get_temp_dir().'/'.uniqid('fastroute-')]]),
         ]);

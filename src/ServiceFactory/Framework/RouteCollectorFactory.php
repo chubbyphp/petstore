@@ -6,8 +6,8 @@ namespace App\ServiceFactory\Framework;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Slim\Handlers\Strategies\RequestHandler;
 use Slim\Interfaces\CallableResolverInterface;
+use Slim\Interfaces\InvocationStrategyInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Routing\RouteCollector;
 
@@ -19,7 +19,7 @@ final class RouteCollectorFactory
             $container->get(ResponseFactoryInterface::class),
             $container->get(CallableResolverInterface::class),
             $container,
-            new RequestHandler(true),
+            $container->get(InvocationStrategyInterface::class),
             null,
             $container->get('config')['fastroute']['cache']
         );

@@ -21,6 +21,7 @@ use App\ServiceFactory\Command\CommandsFactory;
 use App\ServiceFactory\DecodeEncode\TypeDecodersFactory;
 use App\ServiceFactory\DecodeEncode\TypeEncodersFactory;
 use App\ServiceFactory\Framework\CallableResolverFactory;
+use App\ServiceFactory\Framework\InvocationStrategyFactory;
 use App\ServiceFactory\Framework\RouteCollectorFactory;
 use App\ServiceFactory\Framework\RouteParserFactory;
 use App\ServiceFactory\Http\ResponseFactoryFactory;
@@ -75,6 +76,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Interfaces\CallableResolverInterface;
+use Slim\Interfaces\InvocationStrategyInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Symfony\Component\Console\Command\Command;
@@ -118,6 +120,7 @@ return [
             EncoderInterface::class => EncoderFactory::class,
             EntityManagerInterface::class => EntityManagerFactory::class,
             EntityManagerProvider::class => ContainerEntityManagerProviderFactory::class,
+            InvocationStrategyInterface::class => InvocationStrategyFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
             OpenapiRequestHandler::class => OpenapiRequestHandlerFactory::class,

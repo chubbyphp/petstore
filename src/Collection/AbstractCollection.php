@@ -110,7 +110,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * @return array{offset: int, limit: int, filters: array<string, null|string>, sort: array<string, null|string>, items: array<ModelInterface>, count: int}
      */
-    public function jsonSerialize(): array
+    final public function jsonSerialize(): array
     {
         $items = [];
         foreach ($this->items as $item) {

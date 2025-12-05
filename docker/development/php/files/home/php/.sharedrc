@@ -15,7 +15,7 @@ alias rm='rm -i'
 
 alias php-fpm-restart='/usr/bin/supervisorctl -c /etc/supervisord.conf restart php-fpm'
 
-alias xdebug-on='echo "zend_extension=xdebug.so" | sudo tee /etc/opt/remi/php84/php.d/15-xdebug.ini && php-fpm-restart'
-alias xdebug-off='sudo rm /etc/opt/remi/php84/php.d/15-xdebug.ini && php-fpm-restart'
-alias pcov-on='echo "extension=pcov.so" | sudo tee /etc/opt/remi/php84/php.d/40-pcov.ini && php-fpm-restart'
-alias pcov-off='sudo rm /etc/opt/remi/php84/php.d/40-pcov.ini && php-fpm-restart'
+alias xdebug-on='echo "zend_extension=xdebug.so" | sudo tee /etc/opt/remi/php85/php.d/15-xdebug.ini && php-fpm-restart'
+alias xdebug-off='sudo rm /etc/opt/remi/php85/php.d/15-xdebug.ini && php-fpm-restart'
+alias pcov-on='echo "extension=pcov.so" | sudo tee /etc/opt/remi/php85/php.d/40-pcov.ini && php-fpm-restart'
+alias pcov-off='sudo rm /etc/opt/remi/php85/php.d/40-pcov.ini && php-fpm-restart'

@@ -22,34 +22,6 @@ jobs:
         run: curl --insecure https://localhost/openapi -vvv
       - name: docker stop
         run: docker compose -f docker-compose.ci.yml stop
-  php82:
-    name: PHP 8.2
-    runs-on: ubuntu-24.04
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: KVKtkrTHhKuTJTor8pCP
-        ports:
-          - 5432:5432
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: wait for databases
-        run: |
-          while ! nc -z localhost 5432; do sleep 0.1; done
-      - name: composer test
-        uses: docker://ghcr.io/chubbyphp/ci-php82:latest
-        env:
-          APP_ENV: phpunit
-          DATABASE_USER: root
-          DATABASE_PASS: KVKtkrTHhKuTJTor8pCP
-          DATABASE_HOST: 172.17.0.1
-          DATABASE_NAME: petstore
-          DATABASE_PORT: 5432
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php83:
     name: PHP 8.3
     runs-on: ubuntu-24.04
@@ -78,7 +50,6 @@ jobs:
           DATABASE_PORT: 5432
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
-
   php84:
     name: PHP 8.4
     runs-on: ubuntu-24.04
@@ -98,6 +69,34 @@ jobs:
           while ! nc -z localhost 5432; do sleep 0.1; done
       - name: composer test
         uses: docker://ghcr.io/chubbyphp/ci-php84:latest
+        env:
+          APP_ENV: phpunit
+          DATABASE_USER: root
+          DATABASE_PASS: KVKtkrTHhKuTJTor8pCP
+          DATABASE_HOST: 172.17.0.1
+          DATABASE_NAME: petstore
+          DATABASE_PORT: 5432
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+  php85:
+    name: PHP 8.5
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: KVKtkrTHhKuTJTor8pCP
+        ports:
+          - 5432:5432
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: wait for databases
+        run: |
+          while ! nc -z localhost 5432; do sleep 0.1; done
+      - name: composer test
+        uses: docker://ghcr.io/chubbyphp/ci-php85:latest
         env:
           APP_ENV: phpunit
           DATABASE_USER: root

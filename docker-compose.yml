@@ -1,7 +1,7 @@
 services:
   php:
-    container_name: petstore-php
-    hostname: petstore-php
+    container_name: chubbyphp-petstore-php
+    hostname: chubbyphp-petstore-php
     build:
       dockerfile: ./docker/development/php/Dockerfile
       context: ./
@@ -28,8 +28,8 @@ services:
     ports:
       - '9003:9003'
   mongo:
-    container_name: petstore-mongo
-    hostname: petstore-mongo
+    container_name: chubbyphp-petstore-mongo
+    hostname: chubbyphp-petstore-mongo
     image: mongo:8
     environment:
       MONGO_INITDB_ROOT_USERNAME: petstore
@@ -39,15 +39,15 @@ services:
     volumes:
       - mongo:/data/db
   swagger-ui:
-    container_name: petstore-swagger-ui
-    hostname: petstore-swagger-ui
+    container_name: chubbyphp-petstore-swagger-ui
+    hostname: chubbyphp-petstore-swagger-ui
     image: swaggerapi/swagger-ui
     environment:
       BASE_URL: /swagger
       URLS: '[ { url: "/openapi" } ]'
   nginx:
-    container_name: petstore-nginx
-    hostname: petstore-nginx
+    container_name: chubbyphp-petstore-nginx
+    hostname: chubbyphp-petstore-nginx
     image: nginx
     environment:
       SERVER_PORT: '443'

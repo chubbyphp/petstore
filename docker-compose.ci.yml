@@ -1,22 +1,22 @@
 services:
   php:
-    container_name: petstore-php
-    hostname: petstore-php
+    container_name: chubbyphp-petstore-php
+    hostname: chubbyphp-petstore-php
     build:
       dockerfile: ./docker/production/php/Dockerfile
       context: ./
     environment:
       APP_ENV: prod
   swagger-ui:
-    container_name: petstore-swagger-ui
-    hostname: petstore-swagger-ui
+    container_name: chubbyphp-petstore-swagger-ui
+    hostname: chubbyphp-petstore-swagger-ui
     image: swaggerapi/swagger-ui
     environment:
       BASE_URL: /swagger
       URLS: '[ { url: "/openapi" } ]'
   nginx:
-    container_name: petstore-nginx
-    hostname: petstore-nginx
+    container_name: chubbyphp-petstore-nginx
+    hostname: chubbyphp-petstore-nginx
     image: nginx
     environment:
       SERVER_PORT: '443'

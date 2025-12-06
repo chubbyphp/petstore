@@ -48,7 +48,7 @@ COPY docker/development/php/files /
 ARG USER_ID
 ARG GROUP_ID
 
-RUN groupadd -g ${GROUP_ID} php \
+RUN getent group ${GROUP_ID} >/dev/null || groupadd -g ${GROUP_ID} php \
     && useradd -u ${USER_ID} -g ${GROUP_ID} -s /bin/bash -M php \
     && chown -Rf php: /home/php \
     && echo 'php ALL=(ALL) NOPASSWD: ALL' > '/etc/sudoers.d/php'

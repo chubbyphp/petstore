@@ -18,7 +18,7 @@
         "chubbyphp/chubbyphp-clean-directories": "^1.5",
         "chubbyphp/chubbyphp-cors": "^1.7",
         "chubbyphp/chubbyphp-decode-encode": "^1.3",
-        "chubbyphp/chubbyphp-framework": "^5.3",
+        "chubbyphp/chubbyphp-framework": "^6.0",
         "chubbyphp/chubbyphp-framework-router-fastroute": "^2.3",
         "chubbyphp/chubbyphp-http-exception": "^1.3",
         "chubbyphp/chubbyphp-laminas-config": "^1.5",

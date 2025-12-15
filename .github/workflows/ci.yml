@@ -8,12 +8,19 @@ on:
 jobs:
   docker-compose:
     name: docker-compose (production container)
-    runs-on: ubuntu-24.04
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: blacksmith docker
+        uses: useblacksmith/setup-docker-builder@v1
       - name: docker build / start
-        run: docker compose -f docker-compose.ci.yml up -d
+        env:
+          DOCKER_BUILDKIT: 1
+          COMPOSE_DOCKER_CLI_BUILD: 1
+        run: |
+          docker compose -f docker-compose.ci.yml build --build-arg BUILDKIT_INLINE_CACHE=1
+          docker compose -f docker-compose.ci.yml up -d --wait --wait-timeout 30
       - name: wait for nginx
         run: while ! nc -z localhost 443; do sleep 0.1; done
       - name: ping
@@ -24,7 +31,7 @@ jobs:
         run: docker compose -f docker-compose.ci.yml stop
   php83:
     name: PHP 8.3
-    runs-on: ubuntu-24.04
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     services:
       mongo:
         image: mongo:8
@@ -48,7 +55,7 @@ jobs:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php84:
     name: PHP 8.4
-    runs-on: ubuntu-24.04
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     services:
       mongo:
         image: mongo:8
@@ -72,7 +79,7 @@ jobs:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php85:
     name: PHP 8.5
-    runs-on: ubuntu-24.04
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     services:
       mongo:
         image: mongo:8

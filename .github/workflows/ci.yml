@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: setup-docker-builder
+        uses: useblacksmith/setup-docker-builder@v1
       - name: docker build / start
         run: docker compose -f docker-compose.ci.yml up -d
       - name: wait for nginx
@@ -22,6 +24,8 @@ jobs:
         run: curl --insecure https://localhost/openapi -vvv
       - name: docker stop
         run: docker compose -f docker-compose.ci.yml stop
+      - name: build-push-action
+        uses: useblacksmith/build-push-action@v2
   php83:
     name: PHP 8.3
     runs-on: blacksmith-4vcpu-ubuntu-2404

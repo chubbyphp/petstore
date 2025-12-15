@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: Setup Blacksmith Docker Builder
+      - name: blacksmith docker
         uses: useblacksmith/setup-docker-builder@v1
       - name: docker build / start
         env:

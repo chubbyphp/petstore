@@ -8,9 +8,6 @@ final class AssertHelper
 {
     public static function readProperty(string $property, object $object): mixed
     {
-        $reflectionProperty = new \ReflectionProperty($object, $property);
-        $reflectionProperty->setAccessible(true);
-
-        return $reflectionProperty->getValue($object);
+        return (new \ReflectionProperty($object, $property))->getValue($object);
     }
 }

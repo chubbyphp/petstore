@@ -77,11 +77,11 @@
         ],
         "test": [
             "@test:lint",
+            "@test:static-analysis",
+            "@test:cs",
             "@test:unit",
             "@test:infection",
-            "@test:integration",
-            "@test:static-analysis",
-            "@test:cs"
+            "@test:integration"
         ],
         "test:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
         "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=99 --verbose --coverage=build/phpunit",

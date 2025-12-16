@@ -39,6 +39,11 @@ final class Vaccination implements \JsonSerializable
         $this->pet = $pet;
     }
 
+    public function getPet(): ?Pet
+    {
+        return $this->pet;
+    }
+
     /**
      * @return array{name: null|string}
      */

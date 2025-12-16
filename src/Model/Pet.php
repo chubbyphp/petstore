@@ -77,7 +77,11 @@ final class Pet implements ModelInterface
      */
     public function setVaccinations(array $vaccinations): void
     {
-        $this->vaccinations->clear();
+        foreach ($this->vaccinations as $i => $vaccination) {
+            $vaccination->setPet(null);
+            $this->vaccinations->remove($i);
+        }
+
         foreach ($vaccinations as $vaccination) {
             $vaccination->setPet($this);
             $this->vaccinations->add($vaccination);

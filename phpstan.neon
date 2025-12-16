@@ -12,6 +12,3 @@ parameters:
         -
             message: '#Class Mezzio\\ApplicationPipeline not found\.#'
             path: %currentWorkingDirectory%/src/web.php
-        -
-            message: '#Property App\\Model\\Vaccination\:\:\$pet is never read, only written\.#'
-            path: %currentWorkingDirectory%/src/Model/Vaccination.php

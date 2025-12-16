@@ -7,7 +7,6 @@ namespace App\Tests\Unit\Model;
 use App\Model\ModelInterface;
 use App\Model\Pet;
 use App\Model\Vaccination;
-use App\Tests\Helper\AssertHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,11 +36,23 @@ final class PetTest extends TestCase
         $vaccination2 = new Vaccination();
         $vaccination2->setName('Feline Acquired Immune Deficiency Syndrome');
 
+        $vaccination3 = new Vaccination();
+        $vaccination3->setName('Panleukopenia');
+
         $pet->setUpdatedAt($now);
         $pet->setName('Lucas');
         $pet->setTag('2018 OHIO DOG 87123 LUCAS');
-        $pet->setVaccinations([$vaccination2]);
+        $pet->setVaccinations([$vaccination2, $vaccination3]);
+
+        self::assertNull($vaccination1->getPet());
+        self::assertSame($pet, $vaccination2->getPet());
+        self::assertSame($pet, $vaccination3->getPet());
+
         $pet->setVaccinations([$vaccination1, $vaccination2]);
+
+        self::assertSame($pet, $vaccination1->getPet());
+        self::assertSame($pet, $vaccination2->getPet());
+        self::assertNull($vaccination3->getPet());
 
         self::assertSame($now, $pet->getUpdatedAt());
         self::assertSame('Lucas', $pet->getName());
@@ -54,14 +65,11 @@ final class PetTest extends TestCase
         self::assertSame($vaccination1, array_shift($vaccinations));
         self::assertSame($vaccination2, array_shift($vaccinations));
 
-        self::assertSame('Rabies', AssertHelper::readProperty('name', $vaccination1));
-        self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination1));
+        self::assertSame('Rabies', $vaccination1->getName());
+        self::assertSame($pet, $vaccination1->getPet());
 
-        self::assertSame(
-            'Feline Acquired Immune Deficiency Syndrome',
-            AssertHelper::readProperty('name', $vaccination2)
-        );
-        self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination2));
+        self::assertSame('Feline Acquired Immune Deficiency Syndrome', $vaccination2->getName());
+        self::assertSame($pet, $vaccination2->getPet());
 
         self::assertSame([
             'id' => $pet->getId(),

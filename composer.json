@@ -64,7 +64,7 @@
         "clean-directories": "bin/console clean-directories cache log",
         "database:create": "bin/console dbal:database:create --if-not-exists",
         "database:drop": "bin/console dbal:database:drop --if-exists --force",
-        "database:schema:update": "bin/console orm:schema-tool:update --complete --force --dump-sql",
+        "database:schema:update": "bin/console orm:schema-tool:update --force --dump-sql",
         "database:schema:validate": "bin/console orm:validate-schema",
         "fix:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --cache-file=build/phpcs.cache",
         "setup:dev": [

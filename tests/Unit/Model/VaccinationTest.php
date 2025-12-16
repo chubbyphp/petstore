@@ -6,7 +6,6 @@ namespace App\Tests\Unit\Model;
 
 use App\Model\Pet;
 use App\Model\Vaccination;
-use App\Tests\Helper\AssertHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,13 +23,14 @@ final class VaccinationTest extends TestCase
 
         $pet = new Pet();
 
-        self::assertNull(AssertHelper::readProperty('pet', $vaccination));
+        self::assertNull($vaccination->getPet());
 
         $vaccination->setName('Rabies');
         $vaccination->setPet($pet);
 
         self::assertSame('Rabies', $vaccination->getName());
-        self::assertSame($pet, AssertHelper::readProperty('pet', $vaccination));
+
+        self::assertSame($pet, $vaccination->getPet());
 
         self::assertSame(['name' => $vaccination->getName()], $vaccination->jsonSerialize());
     }

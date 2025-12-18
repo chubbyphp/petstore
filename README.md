@@ -26,7 +26,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [monolog/monolog][14]: ^3.9
  * [ramsey/uuid][15]: ^4.9.1
  * [slim/psr7][16]: ^1.8
- * [symfony/console][17]: ^7.4.0
+ * [symfony/console][17]: ^7.4.1|^8.0.1
 
 ## Environment
 

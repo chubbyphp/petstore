@@ -25,7 +25,7 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [ramsey/uuid][13]: ^4.9.1
  * [slim/psr7][14]: ^1.8
  * [slim/slim][15]: ^4.15.1
- * [symfony/console][16]: ^7.4.0
+ * [symfony/console][16]: ^7.4.1|^8.0.1
  * [symfony/var-exporter][17]: ^7.4.0
 
 ## Environment

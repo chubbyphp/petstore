@@ -19,11 +19,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class CreateRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private DecoderInterface $decoder,
-        private ParsingInterface $parsing,
-        private RepositoryInterface $repository,
-        private EncoderInterface $encoder,
-        private ResponseFactoryInterface $responseFactory,
+        private readonly DecoderInterface $decoder,
+        private readonly ParsingInterface $parsing,
+        private readonly RepositoryInterface $repository,
+        private readonly EncoderInterface $encoder,
+        private readonly ResponseFactoryInterface $responseFactory,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface

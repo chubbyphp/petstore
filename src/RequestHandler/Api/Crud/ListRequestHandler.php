@@ -18,10 +18,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class ListRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private ParsingInterface $parsing,
-        private RepositoryInterface $repository,
-        private EncoderInterface $encoder,
-        private ResponseFactoryInterface $responseFactory,
+        private readonly ParsingInterface $parsing,
+        private readonly RepositoryInterface $repository,
+        private readonly EncoderInterface $encoder,
+        private readonly ResponseFactoryInterface $responseFactory,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface

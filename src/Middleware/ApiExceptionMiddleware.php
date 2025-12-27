@@ -18,10 +18,10 @@ use Psr\Log\NullLogger;
 final class ApiExceptionMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private EncoderInterface $encoder,
-        private ResponseFactoryInterface $responseFactory,
-        private bool $debug = false,
-        private LoggerInterface $logger = new NullLogger()
+        private readonly EncoderInterface $encoder,
+        private readonly ResponseFactoryInterface $responseFactory,
+        private readonly bool $debug = false,
+        private readonly LoggerInterface $logger = new NullLogger()
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

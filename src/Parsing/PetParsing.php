@@ -29,8 +29,8 @@ final class PetParsing implements ParsingInterface
     private ?ObjectSchemaInterface $modelResponseSchema = null;
 
     public function __construct(
-        private ParserInterface $parser,
-        private RouterInterface $router,
+        private readonly ParserInterface $parser,
+        private readonly RouterInterface $router,
     ) {}
 
     public function getCollectionRequestSchema(ServerRequestInterface $request): ObjectSchemaInterface

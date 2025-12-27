@@ -13,8 +13,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class OpenapiRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private ResponseFactoryInterface $responseFactory,
-        private StreamFactoryInterface $streamFactory
+        private readonly ResponseFactoryInterface $responseFactory,
+        private readonly StreamFactoryInterface $streamFactory
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface

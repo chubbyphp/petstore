@@ -30,11 +30,28 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 
 ## Environment
 
-Add the following environment variable to your system, for example within `~/.bash_aliases`:
+Add the following environment variable to your system, for example within `~/.bashrc` or  `~/.zshrc`:
 
 ```sh
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
+```
+
+Make sure all the mount points are given
+
+```sh
+touch ~/.bash_docker
+touch ~/.bash_history
+```
+
+```sh
+touch ~/.gitconfig
+touch ~/.gitignore
+```
+
+```sh
+touch ~/.zsh_docker
+touch ~/.zsh_history
 ```
 
 ### Docker

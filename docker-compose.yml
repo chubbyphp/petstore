@@ -22,7 +22,6 @@ services:
       - ~/.bash_history:/home/php/.bash_history
       - ~/.gitconfig:/home/php/.gitconfig
       - ~/.gitignore:/home/php/.gitignore
-      - ~/.ssh/github.pub:/home/php/.ssh/github.pub
       - ~/.zsh_docker:/home/php/.zsh_docker
       - ~/.zsh_history:/home/php/.zsh_history
       - $SSH_AUTH_SOCK:/ssh-agent

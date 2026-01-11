@@ -1,3 +1,6 @@
+# opencode
+export PATH=$HOME/.opencode/bin:$PATH
+
 export HISTSIZE=5000
 export SAVEHIST=100000
 

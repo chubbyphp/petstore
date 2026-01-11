@@ -55,6 +55,10 @@ RUN getent group ${GROUP_ID} >/dev/null || groupadd -g ${GROUP_ID} php \
 
 USER php
 
+WORKDIR /home/php
+
+RUN curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path && mkdir -p "$HOME/.local/share/opencode"
+
 WORKDIR /app
 
 CMD /usr/bin/supervisord

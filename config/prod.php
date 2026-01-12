@@ -187,7 +187,7 @@ return [
     ],
     'monolog' => [
         'name' => 'petstore',
-        'path' => $logDir . '/' . $env . '.log',
+        'path' => $logDir . '/application.log',
         'level' => Level::Notice,
     ],
 ];

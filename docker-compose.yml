@@ -10,11 +10,7 @@ services:
         GROUP_ID: ${GROUP_ID:-1000}
     environment:
       APP_ENV: dev
-      DATABASE_USER: root
-      DATABASE_PASS: 4aAUfBjDACcdZxNwJgJ6
-      DATABASE_HOST: postgres
-      DATABASE_NAME: petstore
-      DATABASE_PORT: 5432
+      POSTGRES_URI: 'pgsql://petstore:4aAUfBjDACcdZxNwJgJ6@postgres:5432/petstore?charset=utf8'
       SSH_AUTH_SOCK: /ssh-agent
     volumes:
       - ${PWD}:/app
@@ -73,8 +69,9 @@ services:
     image: postgres:17
     command: -c log_statement=all -c log_error_verbosity=VERBOSE
     environment:
-      POSTGRES_USER: root
+      POSTGRES_DB: petstore
       POSTGRES_PASSWORD: 4aAUfBjDACcdZxNwJgJ6
+      POSTGRES_USER: petstore
     ports:
       - '5432:5432'
     volumes:

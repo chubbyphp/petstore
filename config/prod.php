@@ -153,7 +153,7 @@ return [
         ],
         'mongodb' => [
             'client' => [
-                'uri' => getenv('DATABASE_URI'),
+                'uri' => getenv('MONGO_URI'),
                 'driverOptions' => [
                     'typeMap' => DocumentManager::CLIENT_TYPEMAP,
                     'driver' => [

@@ -10,7 +10,7 @@ services:
         GROUP_ID: ${GROUP_ID:-1000}
     environment:
       APP_ENV: dev
-      DATABASE_URI: mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@mongo:27017
+      MONGO_URI: mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@mongo:27017
       SSH_AUTH_SOCK: /ssh-agent
     volumes:
       - ${PWD}:/app

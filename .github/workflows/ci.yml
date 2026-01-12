@@ -50,7 +50,7 @@ jobs:
         uses: docker://ghcr.io/chubbyphp/ci-php83:latest
         env:
           APP_ENV: phpunit
-          DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
+          MONGO_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php84:
@@ -74,7 +74,7 @@ jobs:
         uses: docker://ghcr.io/chubbyphp/ci-php84:latest
         env:
           APP_ENV: phpunit
-          DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
+          MONGO_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php85:
@@ -98,7 +98,7 @@ jobs:
         uses: docker://ghcr.io/chubbyphp/ci-php85:latest
         env:
           APP_ENV: phpunit
-          DATABASE_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
+          MONGO_URI: mongodb://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:27017
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
       - name: sonarcloud.io

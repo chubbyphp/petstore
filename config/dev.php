@@ -11,6 +11,6 @@ $config['chubbyphp']['cors']['allowOrigins']['^https?\:\/\/(localhost|127\.\d+.\
 $config['debug'] = true;
 $config['doctrine']['cache'] = ['array' => []];
 $config['fastroute']['cache'] = null;
-$config['monolog']['level'] = Level::Notice;
+$config['monolog']['level'] = Level::Debug;
 
 return $config;

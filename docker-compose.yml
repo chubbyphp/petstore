@@ -32,25 +32,23 @@ services:
       - "host.docker.internal:host-gateway"
     ports:
       - '9003:9003'
-  postgres:
-    container_name: chubbyphp-petstore-postgres
-    hostname: chubbyphp-petstore-postgres
-    image: postgres:17
-    command: -c log_statement=all -c log_error_verbosity=VERBOSE
+  php-fluentd:
+    container_name: chubbyphp-petstore-php-fluentd
+    hostname: chubbyphp-petstore-php-fluentd
+    build:
+      dockerfile: ./docker/production/php-fluentd/Dockerfile
+      context: ./
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 4aAUfBjDACcdZxNwJgJ6
-    ports:
-      - '5432:5432'
+      STACK: 'local'
+      OPENSEARCH_HOSTS: 'opensearch:9200'
+      OPENSEARCH_USER: 'admin'
+      OPENSEARCH_PASSWORD: '98T722Eqw99oqFCSJCnB'
+      OPENSEARCH_SSL_VERIFY: 'false'
     volumes:
-      - postgres:/var/lib/postgresql/data
-  swagger-ui:
-    container_name: chubbyphp-petstore-swagger-ui
-    hostname: chubbyphp-petstore-swagger-ui
-    image: swaggerapi/swagger-ui
-    environment:
-      BASE_URL: /swagger
-      URLS: '[ { url: "/openapi" } ]'
+      - ${PWD}/var/log:/app/var/log
+    depends_on:
+      - opensearch
   nginx:
     container_name: chubbyphp-petstore-nginx
     hostname: chubbyphp-petstore-nginx
@@ -69,5 +67,55 @@ services:
     depends_on:
       - php
       - swagger-ui
+  postgres:
+    container_name: chubbyphp-petstore-postgres
+    hostname: chubbyphp-petstore-postgres
+    image: postgres:17
+    command: -c log_statement=all -c log_error_verbosity=VERBOSE
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 4aAUfBjDACcdZxNwJgJ6
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  opensearch:
+    container_name: chubbyphp-petstore-opensearch
+    hostname: chubbyphp-petstore-opensearch
+    image: opensearchproject/opensearch:2
+    environment:
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: '98T722Eqw99oqFCSJCnB'
+      discovery.type: 'single-node'
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -sk https://localhost:9200 | grep -q 'Unauthorized'"
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+  opensearch-dashboard:
+    container_name: chubbyphp-petstore-opensearch-dashboard
+    hostname: chubbyphp-petstore-opensearch-dashboard
+    image: opensearchproject/opensearch-dashboards:2
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+    ports:
+      - 5601:5601
+  swagger-ui:
+    container_name: chubbyphp-petstore-swagger-ui
+    hostname: chubbyphp-petstore-swagger-ui
+    image: swaggerapi/swagger-ui
+    environment:
+      BASE_URL: /swagger
+      URLS: '[ { url: "/openapi" } ]'
 volumes:
   postgres:

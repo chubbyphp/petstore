@@ -100,6 +100,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
+use Doctrine\DBAL\Tools\DsnParser;
 
 $rootDir = \realpath(__DIR__ . '/..');
 $cacheDir = $rootDir . '/var/cache/' . $env;
@@ -183,15 +184,7 @@ return [
             ],
         ],
         'dbal' => [
-            'connection' => [
-                'driver' => 'pdo_pgsql',
-                'charset' => 'utf8',
-                'user' => getenv('DATABASE_USER'),
-                'password' => getenv('DATABASE_PASS'),
-                'host' => getenv('DATABASE_HOST'),
-                'port' => getenv('DATABASE_PORT'),
-                'dbname' => getenv('DATABASE_NAME'),
-            ],
+            'connection' => (new DsnParser(['pgsql' => 'pdo_pgsql']))->parse(getenv('POSTGRES_URI')),
         ],
         'driver' => [
             'classMap' => [

@@ -27,7 +27,24 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - '9003:9003'
+      - "9003:9003"
+  php-fluentd:
+    container_name: chubbyphp-petstore-php-fluentd
+    hostname: chubbyphp-petstore-php-fluentd
+    build:
+      dockerfile: ./docker/production/php-fluentd/Dockerfile
+      context: ./
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    environment:
+      STACK: "local"
+      OPENSEARCH_HOSTS: "opensearch:9200"
+      OPENSEARCH_USER: "admin"
+      OPENSEARCH_PASSWORD: "98T722Eqw99oqFCSJCnB"
+      OPENSEARCH_SSL_VERIFY: "false"
+    volumes:
+      - ${PWD}/var/log:/app/var/log
+    depends_on:
+      - opensearch
   mongo:
     container_name: chubbyphp-petstore-mongo
     hostname: chubbyphp-petstore-mongo
@@ -36,9 +53,58 @@ services:
       MONGO_INITDB_ROOT_USERNAME: petstore
       MONGO_INITDB_ROOT_PASSWORD: 4aAUfBjDACcdZxNwJgJ6
     ports:
-      - '27017:27017'
+      - "27017:27017"
     volumes:
       - mongo:/data/db
+  nginx:
+    container_name: chubbyphp-petstore-nginx
+    hostname: chubbyphp-petstore-nginx
+    image: nginx
+    environment:
+      SERVER_PORT: "443"
+      PHP_FPM_SERVER_HOST: "php"
+      PHP_FPM_SERVER_PORT: "9000"
+      SWAGGER_SERVER_HOST: "swagger-ui"
+      SWAGGER_SERVER_PORT: "8080"
+    ports:
+      - "443:443"
+    volumes:
+      - ./docker/development/nginx:/etc/nginx/templates
+      - ${PWD}/public:/app/public:ro
+    depends_on:
+      - php
+      - swagger-ui
+  opensearch:
+    container_name: chubbyphp-petstore-opensearch
+    hostname: chubbyphp-petstore-opensearch
+    image: opensearchproject/opensearch:2
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "98T722Eqw99oqFCSJCnB"
+      discovery.type: "single-node"
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -sk https://localhost:9200 | grep -q 'Unauthorized'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+  opensearch-dashboard:
+    container_name: chubbyphp-petstore-opensearch-dashboard
+    hostname: chubbyphp-petstore-opensearch-dashboard
+    image: opensearchproject/opensearch-dashboards:2
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+    ports:
+      - 5601:5601
   swagger-ui:
     container_name: chubbyphp-petstore-swagger-ui
     hostname: chubbyphp-petstore-swagger-ui
@@ -46,23 +112,5 @@ services:
     environment:
       BASE_URL: /swagger
       URLS: '[ { url: "/openapi" } ]'
-  nginx:
-    container_name: chubbyphp-petstore-nginx
-    hostname: chubbyphp-petstore-nginx
-    image: nginx
-    environment:
-      SERVER_PORT: '443'
-      PHP_FPM_SERVER_HOST: 'php'
-      PHP_FPM_SERVER_PORT: '9000'
-      SWAGGER_SERVER_HOST: 'swagger-ui'
-      SWAGGER_SERVER_PORT: '8080'
-    ports:
-      - '443:443'
-    volumes:
-      - ./docker/development/nginx:/etc/nginx/templates
-      - ${PWD}/public:/app/public:ro
-    depends_on:
-      - php
-      - swagger-ui
 volumes:
   mongo:

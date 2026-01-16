@@ -30,16 +30,28 @@ return static function (string $env) {
     /** @var ContainerInterface $container */
     $container = (require __DIR__.'/container.php')($env);
 
+    /** @var ResponseFactoryInterface $responseFactory */
+    $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+    /** @var CallableResolverInterface $callableResolver */
+    $callableResolver = $container->get(CallableResolverInterface::class);
+
+    /** @var RouteCollectorInterface $routeCollector */
+    $routeCollector = $container->get(RouteCollectorInterface::class);
+
+    /** @var array{debug: bool} $config */
+    $config = $container->get('config');
+
     $web = new App(
-        $container->get(ResponseFactoryInterface::class),
+        $responseFactory,
         $container,
-        $container->get(CallableResolverInterface::class),
-        $container->get(RouteCollectorInterface::class)
+        $callableResolver,
+        $routeCollector
     );
 
     $web->add(CorsMiddleware::class);
     $web->add(ConvertHttpExceptionMiddleware::class);
-    $web->addErrorMiddleware($container->get('config')['debug'], true, true);
+    $web->addErrorMiddleware($config['debug'], true, true);
 
     $web->get('/openapi', OpenapiRequestHandler::class)->setName('openapi');
     $web->get('/ping', PingRequestHandler::class)->setName('ping');

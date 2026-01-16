@@ -13,9 +13,15 @@ final class PetParsingFactory
 {
     public function __invoke(ContainerInterface $container): PetParsing
     {
+        /** @var ParserInterface $parser */
+        $parser = $container->get(ParserInterface::class);
+
+        /** @var RouteParserInterface $routeParser */
+        $routeParser = $container->get(RouteParserInterface::class);
+
         return new PetParsing(
-            $container->get(ParserInterface::class),
-            $container->get(RouteParserInterface::class),
+            $parser,
+            $routeParser,
         );
     }
 }

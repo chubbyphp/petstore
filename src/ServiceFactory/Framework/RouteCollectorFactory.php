@@ -15,13 +15,25 @@ final class RouteCollectorFactory
 {
     public function __invoke(ContainerInterface $container): RouteCollectorInterface
     {
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        /** @var CallableResolverInterface $callableResolver */
+        $callableResolver = $container->get(CallableResolverInterface::class);
+
+        /** @var InvocationStrategyInterface $invocationStrategy */
+        $invocationStrategy = $container->get(InvocationStrategyInterface::class);
+
+        /** @var array{fastroute: array{cache: null|string}} $config */
+        $config = $container->get('config');
+
         return new RouteCollector(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get(CallableResolverInterface::class),
+            $responseFactory,
+            $callableResolver,
             $container,
-            $container->get(InvocationStrategyInterface::class),
+            $invocationStrategy,
             null,
-            $container->get('config')['fastroute']['cache']
+            $config['fastroute']['cache']
         );
     }
 }

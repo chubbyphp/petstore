@@ -21,7 +21,10 @@ final class DeleteRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var string $id */
         $id = $request->getAttribute('id');
+
+        /** @var string $accept */
         $accept = $request->getAttribute('accept');
 
         if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {

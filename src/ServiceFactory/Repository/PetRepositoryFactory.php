@@ -12,6 +12,9 @@ final class PetRepositoryFactory
 {
     public function __invoke(ContainerInterface $container): PetRepository
     {
-        return new PetRepository($container->get(EntityManager::class));
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        return new PetRepository($entityManager);
     }
 }

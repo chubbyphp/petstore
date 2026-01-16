@@ -12,6 +12,9 @@ final class RouteParserFactory
 {
     public function __invoke(ContainerInterface $container): RouteParserInterface
     {
-        return $container->get(RouteCollectorInterface::class)->getRouteParser();
+        /** @var RouteCollectorInterface $routeCollector */
+        $routeCollector = $container->get(RouteCollectorInterface::class);
+
+        return $routeCollector->getRouteParser();
     }
 }

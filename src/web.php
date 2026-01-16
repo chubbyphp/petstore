@@ -18,8 +18,8 @@ use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
 use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
 use Laminas\HttpHandlerRunner\RequestHandlerRunner;
 use Laminas\Stratigility\Middleware\ErrorHandler;
+use Laminas\Stratigility\MiddlewarePipeInterface;
 use Mezzio\Application;
-use Mezzio\ApplicationPipeline;
 use Mezzio\Handler\NotFoundHandler;
 use Mezzio\MiddlewareFactory;
 use Mezzio\Router\Middleware\DispatchMiddleware;
@@ -34,11 +34,23 @@ return static function (string $env) {
     /** @var ContainerInterface $container */
     $container = (require __DIR__.'/container.php')($env);
 
+    /** @var MiddlewareFactory $middlewareFactory */
+    $middlewareFactory = $container->get(MiddlewareFactory::class);
+
+    /** @var MiddlewarePipeInterface $middlewarePipeline */
+    $middlewarePipeline = $container->get('Mezzio\ApplicationPipeline');
+
+    /** @var RouteCollector $routeCollector */
+    $routeCollector = $container->get(RouteCollector::class);
+
+    /** @var RequestHandlerRunner $requestHandlerRunner */
+    $requestHandlerRunner = $container->get(RequestHandlerRunner::class);
+
     $web = new Application(
-        $container->get(MiddlewareFactory::class),
-        $container->get(ApplicationPipeline::class),
-        $container->get(RouteCollector::class),
-        $container->get(RequestHandlerRunner::class)
+        $middlewareFactory,
+        $middlewarePipeline,
+        $routeCollector,
+        $requestHandlerRunner
     );
 
     $web->pipe(ErrorHandler::class);

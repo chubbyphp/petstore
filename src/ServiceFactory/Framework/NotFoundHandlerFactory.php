@@ -6,12 +6,15 @@ namespace App\ServiceFactory\Framework;
 
 use Mezzio\Handler\NotFoundHandler;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 final class NotFoundHandlerFactory
 {
     public function __invoke(ContainerInterface $container): NotFoundHandler
     {
-        return new NotFoundHandler($container->get(ResponseInterface::class));
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        return new NotFoundHandler($responseFactory);
     }
 }

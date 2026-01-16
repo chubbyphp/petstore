@@ -31,7 +31,7 @@ final class PetRepository implements RepositoryInterface
             );
         }
 
-        /** @var EntityRepository $entityRepository */
+        /** @var EntityRepository<Pet> $entityRepository */
         $entityRepository = $this->entityManager->getRepository(Pet::class);
 
         $queryBuilder = $entityRepository->createQueryBuilder('p');
@@ -57,7 +57,9 @@ final class PetRepository implements RepositoryInterface
         $itemsQueryBuilder->setFirstResult($petCollection->getOffset());
         $itemsQueryBuilder->setMaxResults($petCollection->getLimit());
 
-        $petCollection->setItems($itemsQueryBuilder->getQuery()->getResult());
+        /** @var array<Pet> $items */
+        $items = $itemsQueryBuilder->getQuery()->getResult();
+        $petCollection->setItems($items);
     }
 
     public function findById(string $id): ?Pet

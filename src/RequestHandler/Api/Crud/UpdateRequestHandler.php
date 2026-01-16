@@ -29,8 +29,13 @@ final class UpdateRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var string $id */
         $id = $request->getAttribute('id');
+
+        /** @var string $accept */
         $accept = $request->getAttribute('accept');
+
+        /** @var string $contentType */
         $contentType = $request->getAttribute('contentType');
 
         if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
@@ -53,7 +58,10 @@ final class UpdateRequestHandler implements RequestHandlerInterface
         $this->repository->persist($model);
         $this->repository->flush();
 
-        $output = $this->encoder->encode($this->parsing->getModelResponseSchema($request)->parse($model), $accept);
+        /** @var array<string, mixed> $responseData */
+        $responseData = $this->parsing->getModelResponseSchema($request)->parse($model);
+
+        $output = $this->encoder->encode($responseData, $accept);
 
         $response = $this->responseFactory->createResponse(200)->withHeader('Content-Type', $accept);
         $response->getBody()->write($output);

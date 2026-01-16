@@ -11,13 +11,14 @@ final class FastRouteRouterFactory
 {
     public function __invoke(ContainerInterface $container): FastRouteRouter
     {
-        $config = $container->get('config')['fastroute'];
+        /** @var array{fastroute: array{cache: null|string}} */
+        $config = $container->get('config');
 
         $fastrouteConfig = [];
 
-        if (null !== $config['cache']) {
+        if (null !== $config['fastroute']['cache']) {
             $fastrouteConfig[FastRouteRouter::CONFIG_CACHE_ENABLED] = true;
-            $fastrouteConfig[FastRouteRouter::CONFIG_CACHE_FILE] = $config['cache'];
+            $fastrouteConfig[FastRouteRouter::CONFIG_CACHE_FILE] = $config['fastroute']['cache'];
         }
 
         return new FastRouteRouter(null, null, $fastrouteConfig);

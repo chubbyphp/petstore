@@ -13,9 +13,15 @@ final class ErrorHandlerFactory
 {
     public function __invoke(ContainerInterface $container): ErrorHandler
     {
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        /** @var array{debug: bool} $config */
+        $config = $container->get('config');
+
         return new ErrorHandler(
-            $container->get(ResponseFactoryInterface::class),
-            new ErrorResponseGenerator($container->get('config')['debug'])
+            $responseFactory,
+            new ErrorResponseGenerator($config['debug'])
         );
     }
 }

@@ -73,7 +73,6 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
 use Laminas\HttpHandlerRunner\RequestHandlerRunner;
 use Laminas\Stratigility\Middleware\ErrorHandler;
-use Mezzio\ApplicationPipeline;
 use Mezzio\Container\ApplicationPipelineFactory;
 use Mezzio\Container\EmitterFactory;
 use Mezzio\Container\MiddlewareContainerFactory;
@@ -123,11 +122,11 @@ return [
             EntityManager::class => EntityManagerInterface::class,
         ],
         'factories' => [
+            'Mezzio\ApplicationPipeline' => ApplicationPipelineFactory::class,
             AcceptMiddleware::class => AcceptMiddlewareFactory::class,
             AcceptNegotiatorInterface::class . 'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
-            ApplicationPipeline::class => ApplicationPipelineFactory::class,
             CacheItemPoolInterface::class => ApcuAdapterFactory::class,
             Command::class . '[]' => CommandsFactory::class,
             Connection::class => ConnectionFactory::class,
@@ -148,7 +147,6 @@ return [
             MethodNotAllowedMiddleware::class => MethodNotAllowedMiddlewareFactory::class,
             MiddlewareContainer::class => MiddlewareContainerFactory::class,
             MiddlewareFactory::class => MiddlewareFactoryFactory::class,
-            MiddlewareFactory::class => MiddlewareFactoryFactory::class,
             NotFoundHandler::class => NotFoundHandlerFactory::class,
             OpenapiRequestHandler::class => OpenapiRequestHandlerFactory::class,
             ParserInterface::class => ParserFactory::class,
@@ -162,7 +160,6 @@ return [
             PingRequestHandler::class => PingRequestHandlerFactory::class,
             RequestHandlerRunner::class => RequestHandlerRunnerFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
-            ResponseInterface::class => ResponseFactory::class,
             RouteCollector::class => RouteCollectorFactory::class,
             RouteMiddleware::class => RouteMiddlewareFactory::class,
             RouterInterface::class => FastRouteRouterFactory::class,

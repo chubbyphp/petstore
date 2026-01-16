@@ -26,6 +26,7 @@ final class ListRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var string $accept */
         $accept = $request->getAttribute('accept');
 
         $input = $request->getQueryParams();
@@ -43,10 +44,10 @@ final class ListRequestHandler implements RequestHandlerInterface
 
         $this->repository->resolveCollection($collection);
 
-        $output = $this->encoder->encode(
-            $this->parsing->getCollectionResponseSchema($request)->parse($collection),
-            $accept
-        );
+        /** @var array<string, mixed> $responseData */
+        $responseData = $this->parsing->getCollectionResponseSchema($request)->parse($collection);
+
+        $output = $this->encoder->encode($responseData, $accept);
 
         $response = $this->responseFactory->createResponse(200)->withHeader('Content-Type', $accept);
         $response->getBody()->write($output);

@@ -12,6 +12,9 @@ final class PingRequestHandlerFactory
 {
     public function __invoke(ContainerInterface $container): PingRequestHandler
     {
-        return new PingRequestHandler($container->get(ResponseFactoryInterface::class));
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        return new PingRequestHandler($responseFactory);
     }
 }

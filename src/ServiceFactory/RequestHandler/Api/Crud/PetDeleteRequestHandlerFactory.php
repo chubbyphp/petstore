@@ -13,9 +13,12 @@ final class PetDeleteRequestHandlerFactory
 {
     public function __invoke(ContainerInterface $container): DeleteRequestHandler
     {
-        return new DeleteRequestHandler(
-            $container->get(PetRepository::class),
-            $container->get(ResponseFactoryInterface::class)
-        );
+        /** @var PetRepository $repository */
+        $repository = $container->get(PetRepository::class);
+
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        return new DeleteRequestHandler($repository, $responseFactory);
     }
 }

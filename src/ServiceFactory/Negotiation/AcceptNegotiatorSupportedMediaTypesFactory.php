@@ -14,6 +14,9 @@ final class AcceptNegotiatorSupportedMediaTypesFactory
      */
     public function __invoke(ContainerInterface $container): array
     {
-        return $container->get(EncoderInterface::class)->getContentTypes();
+        /** @var EncoderInterface $encoder */
+        $encoder = $container->get(EncoderInterface::class);
+
+        return $encoder->getContentTypes();
     }
 }

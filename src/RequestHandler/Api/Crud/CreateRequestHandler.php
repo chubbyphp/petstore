@@ -28,7 +28,10 @@ final class CreateRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var string $accept */
         $accept = $request->getAttribute('accept');
+
+        /** @var string $contentType */
         $contentType = $request->getAttribute('contentType');
 
         $input = $this->decoder->decode((string) $request->getBody(), $contentType);
@@ -47,7 +50,10 @@ final class CreateRequestHandler implements RequestHandlerInterface
         $this->repository->persist($model);
         $this->repository->flush();
 
-        $output = $this->encoder->encode($this->parsing->getModelResponseSchema($request)->parse($model), $accept);
+        /** @var array<string, mixed> $responseData */
+        $responseData = $this->parsing->getModelResponseSchema($request)->parse($model);
+
+        $output = $this->encoder->encode($responseData, $accept);
 
         $response = $this->responseFactory->createResponse(201)->withHeader('Content-Type', $accept);
         $response->getBody()->write($output);

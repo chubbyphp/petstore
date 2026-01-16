@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Orm;
 
 use App\Model\Pet;
+use App\Model\Vaccination;
 use Chubbyphp\Laminas\Config\Doctrine\Persistence\Mapping\Driver\ClassMapMappingInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
@@ -14,10 +15,11 @@ use Doctrine\Persistence\Mapping\ClassMetadata;
 final class VaccinationMapping implements ClassMapMappingInterface
 {
     /**
-     * @param ORMClassMetadata $metadata
+     * @param ClassMetadata<Vaccination> $metadata
      */
     public function configureMapping(ClassMetadata $metadata): void
     {
+        /** @var ORMClassMetadata<Vaccination> $metadata */
         $builder = new ClassMetadataBuilder($metadata);
         $builder->setTable('vaccination');
         $builder->createField('id', Types::GUID)->makePrimaryKey()->build();

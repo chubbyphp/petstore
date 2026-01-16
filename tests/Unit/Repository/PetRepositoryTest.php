@@ -56,7 +56,6 @@ final class PetRepositoryTest extends TestCase
         $repository->resolveCollection($collection);
     }
 
-    #[DoesNotPerformAssertions]
     public function testResolveCollection(): void
     {
         $pet = new Pet();
@@ -121,6 +120,8 @@ final class PetRepositoryTest extends TestCase
 
         $repository = new PetRepository($entityManager);
         $repository->resolveCollection($collection);
+
+        self::assertSame($items, $collection->getItems());
     }
 
     public function testFindById(): void

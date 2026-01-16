@@ -11,23 +11,23 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 ## Requirements
 
  * php: ^8.3
- * [chubbyphp/chubbyphp-clean-directories][2]: ^1.5
- * [chubbyphp/chubbyphp-cors][3]: ^1.7
- * [chubbyphp/chubbyphp-decode-encode][4]: ^1.3
- * [chubbyphp/chubbyphp-framework][5]: ^6.0
- * [chubbyphp/chubbyphp-framework-router-fastroute][6]: ^2.3
- * [chubbyphp/chubbyphp-http-exception][7]: ^1.3
- * [chubbyphp/chubbyphp-laminas-config][8]: ^1.5
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^3.1
- * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.5
- * [chubbyphp/chubbyphp-negotiation][11]: ^2.3
- * [chubbyphp/chubbyphp-parsing][12]: ^2.1
- * [doctrine/orm][13]: ^3.5.8
- * [monolog/monolog][14]: ^3.9
- * [ramsey/uuid][15]: ^4.9.1
+ * [chubbyphp/chubbyphp-clean-directories][2]: ^1.5.1
+ * [chubbyphp/chubbyphp-cors][3]: ^1.7.1
+ * [chubbyphp/chubbyphp-decode-encode][4]: ^1.3.1
+ * [chubbyphp/chubbyphp-framework][5]: ^6.0.2
+ * [chubbyphp/chubbyphp-framework-router-fastroute][6]: ^2.3.3
+ * [chubbyphp/chubbyphp-http-exception][7]: ^1.3.2
+ * [chubbyphp/chubbyphp-laminas-config][8]: ^1.5.1
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^3.1.1
+ * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.5.1
+ * [chubbyphp/chubbyphp-negotiation][11]: ^2.3.1
+ * [chubbyphp/chubbyphp-parsing][12]: ^2.1.2
+ * [doctrine/orm][13]: ^3.6.1
+ * [monolog/monolog][14]: ^3.10
+ * [ramsey/uuid][15]: ^4.9.2
  * [slim/psr7][16]: ^1.8
- * [symfony/console][17]: ^7.4.1|^8.0.1
- * [symfony/var-exporter][18]: ^7.4.0
+ * [symfony/console][17]: ^7.4.3|^8.0.3
+ * [symfony/var-exporter][18]: ^7.4.0|^8.0.0
 
 ## Environment
 

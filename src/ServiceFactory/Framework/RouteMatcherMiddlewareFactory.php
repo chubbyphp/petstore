@@ -12,6 +12,9 @@ final class RouteMatcherMiddlewareFactory
 {
     public function __invoke(ContainerInterface $container): RouteMatcherMiddleware
     {
-        return new RouteMatcherMiddleware($container->get(RouteMatcherInterface::class));
+        /** @var RouteMatcherInterface $routeMatcher */
+        $routeMatcher = $container->get(RouteMatcherInterface::class);
+
+        return new RouteMatcherMiddleware($routeMatcher);
     }
 }

@@ -43,7 +43,10 @@ final class ApiExceptionMiddleware implements MiddlewareInterface
 
         $this->logger->{$logLevel}('Http Exception', ['backtrace' => $backtrace]);
 
-        if (null === $accept = $request->getAttribute('accept')) {
+        /** @var null|string $accept */
+        $accept = $request->getAttribute('accept');
+
+        if (null === $accept) {
             throw $exception;
         }
 

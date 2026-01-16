@@ -13,8 +13,9 @@ final class UrlGeneratorFactory
 {
     public function __invoke(ContainerInterface $container): UrlGeneratorInterface
     {
-        return new UrlGenerator(
-            $container->get(RoutesByNameInterface::class)
-        );
+        /** @var RoutesByNameInterface $routes */
+        $routes = $container->get(RoutesByNameInterface::class);
+
+        return new UrlGenerator($routes);
     }
 }

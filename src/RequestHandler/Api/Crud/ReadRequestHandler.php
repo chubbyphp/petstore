@@ -25,14 +25,20 @@ final class ReadRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var string $id */
         $id = $request->getAttribute('id');
+
+        /** @var string $accept */
         $accept = $request->getAttribute('accept');
 
         if (!Uuid::isValid($id) || null === $model = $this->repository->findById($id)) {
             throw HttpException::createNotFound();
         }
 
-        $output = $this->encoder->encode($this->parsing->getModelResponseSchema($request)->parse($model), $accept);
+        /** @var array<string, mixed> $responseData */
+        $responseData = $this->parsing->getModelResponseSchema($request)->parse($model);
+
+        $output = $this->encoder->encode($responseData, $accept);
 
         $response = $this->responseFactory->createResponse(200)->withHeader('Content-Type', $accept);
         $response->getBody()->write($output);

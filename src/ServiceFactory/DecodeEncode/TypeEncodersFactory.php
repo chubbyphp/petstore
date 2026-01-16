@@ -18,7 +18,10 @@ final class TypeEncodersFactory
      */
     public function __invoke(ContainerInterface $container): array
     {
-        $debug = $container->get('config')['debug'];
+        /** @var array{debug: bool} $config */
+        $config = $container->get('config');
+
+        $debug = $config['debug'];
 
         return [
             new JsonTypeEncoder($debug),

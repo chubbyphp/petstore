@@ -24,5 +24,8 @@ $console = new Application();
 $console->getDefinition()->addOption(
     new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev')
 );
-$console->addCommands($container->get(Command::class.'[]'));
+
+/** @var array<Command> $commands */
+$commands = $container->get(Command::class.'[]');
+$console->addCommands($commands);
 $console->run($input);

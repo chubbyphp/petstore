@@ -1,17 +1,1 @@
 parameters:
-    ignoreErrors:
-        -
-            message: '#Method App\\Odm\\PetMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ODM\\MongoDB\\Mapping\\ClassMetadata but does not specify its types\: T#'
-            path: %currentWorkingDirectory%/src/Odm/PetMapping.php
-        -
-            message: '#Method App\\Odm\\VaccinationMapping\:\:configureMapping\(\) has parameter \$metadata with generic class Doctrine\\ODM\\MongoDB\\Mapping\\ClassMetadata but does not specify its types\: T#'
-            path: %currentWorkingDirectory%/src/Odm/VaccinationMapping.php
-        -
-            message: '#PHPDoc tag @var for variable \$documentRepository contains generic class Doctrine\\ODM\\MongoDB\\Repository\\DocumentRepository but does not specify its types\: T#'
-            path: %currentWorkingDirectory%/src/Repository/PetRepository.php
-        -
-            message: '#Parameter \#1 \$count of method App\\Collection\\AbstractCollection\:\:setCount\(\) expects int, array<string, mixed>\|int\|object\|null given\.#'
-            path: %currentWorkingDirectory%/src/Repository/PetRepository.php
-        -
-            message: '#Cannot call method toArray\(\) on array<string, mixed>\|int\|object\|null\.#'
-            path: %currentWorkingDirectory%/src/Repository/PetRepository.php

@@ -110,6 +110,7 @@ final class PetParsing implements ParsingInterface
                     /** @var non-empty-string $json */
                     $json = json_encode($object);
 
+                    /** @var array<string, mixed> */
                     return json_decode($json, true);
                 })
             ;
@@ -179,6 +180,7 @@ final class PetParsing implements ParsingInterface
                     /** @var non-empty-string $json */
                     $json = json_encode($object);
 
+                    /** @var array<string, mixed> */
                     return json_decode($json, true);
                 })
             ;

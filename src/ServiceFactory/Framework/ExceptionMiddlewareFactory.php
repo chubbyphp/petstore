@@ -13,10 +13,19 @@ final class ExceptionMiddlewareFactory
 {
     public function __invoke(ContainerInterface $container): ExceptionMiddleware
     {
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        /** @var array{debug: bool} $config */
+        $config = $container->get('config');
+
+        /** @var LoggerInterface $logger */
+        $logger = $container->get(LoggerInterface::class);
+
         return new ExceptionMiddleware(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get('config')['debug'],
-            $container->get(LoggerInterface::class)
+            $responseFactory,
+            $config['debug'],
+            $logger
         );
     }
 }

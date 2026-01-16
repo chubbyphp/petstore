@@ -13,9 +13,15 @@ final class RouteMatcherFactory
 {
     public function __invoke(ContainerInterface $container): RouteMatcherInterface
     {
+        /** @var RoutesByNameInterface $routes */
+        $routes = $container->get(RoutesByNameInterface::class);
+
+        /** @var array{fastroute: array{cache: null|string}} $config */
+        $config = $container->get('config');
+
         return new RouteMatcher(
-            $container->get(RoutesByNameInterface::class),
-            $container->get('config')['fastroute']['cache']
+            $routes,
+            $config['fastroute']['cache']
         );
     }
 }

@@ -14,6 +14,9 @@ final class ContentTypeNegotiatorSupportedMediaTypesFactory
      */
     public function __invoke(ContainerInterface $container): array
     {
-        return $container->get(DecoderInterface::class)->getContentTypes();
+        /** @var DecoderInterface $decoder */
+        $decoder = $container->get(DecoderInterface::class);
+
+        return $decoder->getContentTypes();
     }
 }

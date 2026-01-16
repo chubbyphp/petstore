@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Odm;
 
+use App\Model\Pet;
 use App\Model\Vaccination;
 use Chubbyphp\Laminas\Config\Doctrine\Persistence\Mapping\Driver\ClassMapMappingInterface;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as MongodbODMClassMetadata;
@@ -13,7 +14,7 @@ use Doctrine\Persistence\Mapping\ClassMetadata;
 final class PetMapping implements ClassMapMappingInterface
 {
     /**
-     * @param MongodbODMClassMetadata $metadata
+     * @param MongodbODMClassMetadata<Pet> $metadata
      */
     public function configureMapping(ClassMetadata $metadata): void
     {

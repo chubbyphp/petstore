@@ -12,6 +12,9 @@ final class PetRepositoryFactory
 {
     public function __invoke(ContainerInterface $container): PetRepository
     {
-        return new PetRepository($container->get(DocumentManager::class));
+        /** @var DocumentManager $documentManager */
+        $documentManager = $container->get(DocumentManager::class);
+
+        return new PetRepository($documentManager);
     }
 }

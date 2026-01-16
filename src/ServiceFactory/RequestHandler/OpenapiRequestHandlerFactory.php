@@ -13,9 +13,12 @@ final class OpenapiRequestHandlerFactory
 {
     public function __invoke(ContainerInterface $container): OpenapiRequestHandler
     {
-        return new OpenapiRequestHandler(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get(StreamFactoryInterface::class)
-        );
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        /** @var StreamFactoryInterface $streamFactory */
+        $streamFactory = $container->get(StreamFactoryInterface::class);
+
+        return new OpenapiRequestHandler($responseFactory, $streamFactory);
     }
 }

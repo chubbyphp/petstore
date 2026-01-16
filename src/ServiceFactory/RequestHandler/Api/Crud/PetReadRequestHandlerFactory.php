@@ -15,11 +15,18 @@ final class PetReadRequestHandlerFactory
 {
     public function __invoke(ContainerInterface $container): ReadRequestHandler
     {
-        return new ReadRequestHandler(
-            $container->get(PetParsing::class),
-            $container->get(PetRepository::class),
-            $container->get(EncoderInterface::class),
-            $container->get(ResponseFactoryInterface::class),
-        );
+        /** @var PetParsing $parsing */
+        $parsing = $container->get(PetParsing::class);
+
+        /** @var PetRepository $repository */
+        $repository = $container->get(PetRepository::class);
+
+        /** @var EncoderInterface $encoder */
+        $encoder = $container->get(EncoderInterface::class);
+
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
+        return new ReadRequestHandler($parsing, $repository, $encoder, $responseFactory);
     }
 }

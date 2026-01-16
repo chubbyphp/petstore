@@ -14,5 +14,8 @@ return static function (string $env) {
     /** @var ContainerInterface $container */
     $container = (require __DIR__.'/container.php')($env);
 
-    return new Application($container->get(MiddlewareInterface::class.'[]'));
+    /** @var array<MiddlewareInterface> $middlewares */
+    $middlewares = $container->get(MiddlewareInterface::class.'[]');
+
+    return new Application($middlewares);
 };

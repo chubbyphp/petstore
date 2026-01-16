@@ -9,6 +9,7 @@ use App\Collection\PetCollection;
 use App\Model\ModelInterface;
 use App\Model\Pet;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Iterator\Iterator;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 final class PetRepository implements RepositoryInterface
@@ -31,7 +32,7 @@ final class PetRepository implements RepositoryInterface
             );
         }
 
-        /** @var DocumentRepository $documentRepository */
+        /** @var DocumentRepository<Pet> $documentRepository */
         $documentRepository = $this->documentManager->getRepository(Pet::class);
 
         $queryBuilder = $documentRepository->createQueryBuilder();
@@ -45,7 +46,9 @@ final class PetRepository implements RepositoryInterface
         $countQueryBuilder = clone $queryBuilder;
         $countQueryBuilder->count();
 
-        $petCollection->setCount($countQueryBuilder->getQuery()->execute());
+        /** @var int $count */
+        $count = $countQueryBuilder->getQuery()->execute();
+        $petCollection->setCount($count);
 
         $itemsQueryBuilder = clone $queryBuilder;
 
@@ -58,7 +61,9 @@ final class PetRepository implements RepositoryInterface
         $itemsQueryBuilder->skip($petCollection->getOffset());
         $itemsQueryBuilder->limit($petCollection->getLimit());
 
-        $petCollection->setItems($itemsQueryBuilder->getQuery()->execute()->toArray());
+        /** @var Iterator<Pet> $iterator */
+        $iterator = $itemsQueryBuilder->getQuery()->execute();
+        $petCollection->setItems($iterator->toArray());
     }
 
     public function findById(string $id): ?Pet

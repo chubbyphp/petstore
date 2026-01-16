@@ -62,7 +62,6 @@ namespace App\Tests\Unit\Repository {
             $repository->resolveCollection($collection);
         }
 
-        #[DoesNotPerformAssertions]
         public function testResolveCollection(): void
         {
             $pet = new Pet();
@@ -124,6 +123,9 @@ namespace App\Tests\Unit\Repository {
 
             $repository = new PetRepository($documentManager);
             $repository->resolveCollection($collection);
+
+            self::assertSame(\count($collection->getItems()), $collection->getCount());
+            self::assertSame($items, $collection->getItems());
         }
 
         public function testFindById(): void

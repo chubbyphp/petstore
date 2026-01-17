@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\RequestHandler\Api\Crud;
 
 use App\Dto\Model\ModelRequestInterface;
+use App\Dto\Model\ModelResponseInterface;
 use App\Model\ModelInterface;
 use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
@@ -160,9 +161,14 @@ final class CreateRequestHandlerTest extends TestCase
             new WithReturn('parse', [$inputAsArray], $modelRequest),
         ]);
 
+        /** @var ModelResponseInterface $modelResponse */
+        $modelResponse = $builder->create(ModelResponseInterface::class, [
+            new WithReturn('jsonSerialize', [], $inputAsArray),
+        ]);
+
         /** @var ObjectSchemaInterface $modelResponseSchema */
         $modelResponseSchema = $builder->create(ObjectSchemaInterface::class, [
-            new WithReturn('parse', [$model], $inputAsArray),
+            new WithReturn('parse', [$model], $modelResponse),
         ]);
 
         /** @var ParsingInterface $parsing */

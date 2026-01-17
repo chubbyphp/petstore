@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Parsing;
 
 use App\Dto\Collection\PetCollectionRequest;
+use App\Dto\Collection\PetCollectionResponse;
 use App\Dto\Model\PetRequest;
+use App\Dto\Model\PetResponse;
 use App\Parsing\PetParsing;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
@@ -134,6 +136,7 @@ final class PetParsingTest extends TestCase
 
         $petParsing = new PetParsing($parser, $router);
 
+        /** @var PetCollectionResponse $petCollectionMinimalResponse */
         $petCollectionMinimalResponse = $petParsing->getCollectionResponseSchema($request)->parse([
             'offset' => 10,
             'limit' => 10,
@@ -218,8 +221,9 @@ final class PetParsingTest extends TestCase
                     ],
                 ],
             ],
-        ], $petCollectionMinimalResponse);
+        ], $petCollectionMinimalResponse->jsonSerialize());
 
+        /** @var PetCollectionResponse $petCollectionMaximalResponse */
         $petCollectionMaximalResponse = $petParsing->getCollectionResponseSchema($request)->parse([
             'offset' => 10,
             'limit' => 10,
@@ -304,7 +308,7 @@ final class PetParsingTest extends TestCase
                     ],
                 ],
             ],
-        ], $petCollectionMaximalResponse);
+        ], $petCollectionMaximalResponse->jsonSerialize());
     }
 
     public function testGetModelRequestSchema(): void
@@ -433,7 +437,8 @@ final class PetParsingTest extends TestCase
 
         $petParsing = new PetParsing($parser, $router);
 
-        $data = $petParsing->getModelResponseSchema($request)->parse([
+        /** @var PetResponse $petResponse */
+        $petResponse = $petParsing->getModelResponseSchema($request)->parse([
             'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
             'createdAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
             'updatedAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
@@ -488,6 +493,6 @@ final class PetParsingTest extends TestCase
                     ],
                 ],
             ],
-        ], $data);
+        ], $petResponse->jsonSerialize());
     }
 }

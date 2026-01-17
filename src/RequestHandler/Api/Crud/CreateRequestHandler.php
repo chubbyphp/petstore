@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\RequestHandler\Api\Crud;
 
 use App\Dto\Model\ModelRequestInterface;
+use App\Dto\Model\ModelResponseInterface;
 use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
@@ -50,10 +51,10 @@ final class CreateRequestHandler implements RequestHandlerInterface
         $this->repository->persist($model);
         $this->repository->flush();
 
-        /** @var array<string, mixed> $responseData */
-        $responseData = $this->parsing->getModelResponseSchema($request)->parse($model);
+        /** @var ModelResponseInterface $modelResponse */
+        $modelResponse = $this->parsing->getModelResponseSchema($request)->parse($model);
 
-        $output = $this->encoder->encode($responseData, $accept);
+        $output = $this->encoder->encode($modelResponse->jsonSerialize(), $accept);
 
         $response = $this->responseFactory->createResponse(201)->withHeader('Content-Type', $accept);
         $response->getBody()->write($output);

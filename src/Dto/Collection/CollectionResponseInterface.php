@@ -26,7 +26,13 @@ interface CollectionResponseInterface extends \JsonSerializable
      *     ...
      *   }>,
      *   count: int,
-     *   _type: string
+     *   _links: array<string, array{
+     *     href: string,
+     *     templated: bool,
+     *     rel: array<string>,
+     *     attributes: array<string, string>
+     *   }>,
+     *   _type: string,
      * }
      */
     public function jsonSerialize(): array;

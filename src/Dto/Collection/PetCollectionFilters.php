@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dto\Collection;
 
-final class PetCollectionFilters implements \JsonSerializable
+final class PetCollectionFilters implements CollectionFiltersInterface
 {
     public ?string $name = null;
 

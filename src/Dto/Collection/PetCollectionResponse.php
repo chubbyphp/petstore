@@ -6,12 +6,45 @@ namespace App\Dto\Collection;
 
 use App\Dto\Model\PetResponse;
 
-final class PetCollectionResponse implements CollectionResponseInterface
+/**
+ * @phpstan-type JsonSerializedResult array{
+ *   offset: int,
+ *   limit: int,
+ *   filters: array{name: null|string},
+ *   sort: array{name: null|string},
+ *   items: array<array{
+ *     id: string,
+ *     createdAt: string,
+ *     updatedAt: null|string,
+ *     name: string,
+ *     tag: null|string,
+ *     vaccinations: array<array{
+ *       name: string,
+ *       _type: string
+ *     }>,
+ *     _type: string,
+ *     _links: array<string, array{
+ *       href: string,
+ *       templated: bool,
+ *       rel: array<string>,
+ *       attributes: array<string, string>
+ *     }>,
+ *     ...
+ *   }>,
+ *   count: int,
+ *   _links: array<string, array{
+ *     href: string,
+ *     templated: bool,
+ *     rel: array<string>,
+ *     attributes: array<string, string>
+ *   }>,
+ *   _type: string
+ * }
+ *
+ * @method JsonSerializedResult jsonSerialize()
+ */
+final class PetCollectionResponse extends AbstractCollectionResponse
 {
-    public int $offset;
-
-    public int $limit;
-
     public PetCollectionFilters $filters;
 
     public PetCollectionSort $sort;
@@ -21,60 +54,13 @@ final class PetCollectionResponse implements CollectionResponseInterface
      */
     public array $items;
 
-    public int $count;
-
-    public string $_type;
-
-    /**
-     * @var array<string, array{
-     *   href: string,
-     *   templated: bool,
-     *   rel: array<string>,
-     *   attributes: array<string, string>
-     * }>
-     */
-    public array $_links;
-
-    /**
-     * @return array{
-     *   offset: int,
-     *   limit: int,
-     *   filters: array{name: null|string},
-     *   sort: array{name: null|string},
-     *   items: array<array{
-     *     id: string,
-     *     createdAt: string,
-     *     updatedAt: null|string,
-     *     name: string, tag: null|string,
-     *     vaccinations: array<array{name: string, _type: string}>,
-     *     _type: string,
-     *     _links: array<string, array{
-     *       href: string,
-     *       templated: bool,
-     *       rel: array<string>,
-     *       attributes: array<string, string>
-     *     }>
-     *   }>,
-     *   count: int,
-     *   _type: string
-     * }
-     */
-    public function jsonSerialize(): array
+    protected function getFilters(): PetCollectionFilters
     {
-        $items = [];
-        foreach ($this->items as $item) {
-            $items[] = $item->jsonSerialize();
-        }
+        return $this->filters;
+    }
 
-        return [
-            'offset' => $this->offset,
-            'limit' => $this->limit,
-            'filters' => $this->filters->jsonSerialize(),
-            'sort' => $this->sort->jsonSerialize(),
-            'items' => $items,
-            'count' => $this->count,
-            '_type' => $this->_type,
-            '_links' => $this->_links,
-        ];
+    protected function getSort(): PetCollectionSort
+    {
+        return $this->sort;
     }
 }

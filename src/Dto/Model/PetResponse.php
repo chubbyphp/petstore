@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dto\Model;
 
-final class PetResponse implements \JsonSerializable
+final class PetResponse implements ModelResponseInterface
 {
     public string $id;
 
@@ -26,7 +26,7 @@ final class PetResponse implements \JsonSerializable
     /**
      * @var array<string, array{
      *   href: string,
-     *   templated:bool,
+     *   templated: bool,
      *   rel: array<string>,
      *   attributes: array<string, string>
      * }>
@@ -35,15 +35,15 @@ final class PetResponse implements \JsonSerializable
 
     /**
      * @return array{
-     *   id:string,
-     *   createdAt:string,
-     *   updatedAt:null|string,
-     *   name:string, tag:null|string,
-     *   vaccinations: array<array{name:string, _type: string}>,
+     *   id: string,
+     *   createdAt: string,
+     *   updatedAt: null|string,
+     *   name: string, tag: null|string,
+     *   vaccinations: array<array{name: string, _type: string}>,
      *   _type: string,
      *   _links: array<string, array{
      *     href: string,
-     *     templated:bool,
+     *     templated: bool,
      *     rel: array<string>,
      *     attributes: array<string, string>
      *   }>

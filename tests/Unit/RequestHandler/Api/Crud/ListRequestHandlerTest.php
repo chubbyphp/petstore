@@ -6,6 +6,7 @@ namespace App\Tests\Unit\RequestHandler\Api\Crud;
 
 use App\Collection\CollectionInterface;
 use App\Dto\Collection\CollectionRequestInterface;
+use App\Dto\Collection\CollectionResponseInterface;
 use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
 use App\RequestHandler\Api\Crud\ListRequestHandler;
@@ -135,9 +136,14 @@ final class ListRequestHandlerTest extends TestCase
             new WithReturn('parse', [$queryAsArray], $collectionRequest),
         ]);
 
+        /** @var CollectionResponseInterface $collectionResponse */
+        $collectionResponse = $builder->create(CollectionResponseInterface::class, [
+            new WithReturn('jsonSerialize', [], $queryAsArray),
+        ]);
+
         /** @var ObjectSchemaInterface $collectionResponseSchema */
         $collectionResponseSchema = $builder->create(ObjectSchemaInterface::class, [
-            new WithReturn('parse', [$collection], $queryAsArray),
+            new WithReturn('parse', [$collection], $collectionResponse),
         ]);
 
         /** @var ParsingInterface $parsing */

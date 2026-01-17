@@ -6,7 +6,7 @@ namespace App\Dto\Collection;
 
 use App\Dto\Model\PetResponse;
 
-final class PetCollectionResponse
+final class PetCollectionResponse implements CollectionResponseInterface
 {
     public int $offset;
 
@@ -28,7 +28,7 @@ final class PetCollectionResponse
     /**
      * @var array<string, array{
      *   href: string,
-     *   templated:bool,
+     *   templated: bool,
      *   rel: array<string>,
      *   attributes: array<string, string>
      * }>
@@ -37,20 +37,20 @@ final class PetCollectionResponse
 
     /**
      * @return array{
-     *   offset:int,
-     *   limit:int,
-     *   filters:array{name: null|string},
-     *   sort:array{name: null|string},
+     *   offset: int,
+     *   limit: int,
+     *   filters: array{name: null|string},
+     *   sort: array{name: null|string},
      *   items: array<array{
-     *     id:string,
-     *     createdAt:string,
-     *     updatedAt:null|string,
-     *     name:string, tag:null|string,
-     *     vaccinations: array<array{name:string, _type: string}>,
+     *     id: string,
+     *     createdAt: string,
+     *     updatedAt: null|string,
+     *     name: string, tag: null|string,
+     *     vaccinations: array<array{name: string, _type: string}>,
      *     _type: string,
      *     _links: array<string, array{
      *       href: string,
-     *       templated:bool,
+     *       templated: bool,
      *       rel: array<string>,
      *       attributes: array<string, string>
      *     }>

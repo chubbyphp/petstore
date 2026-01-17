@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\RequestHandler\Api\Crud;
 
 use App\Dto\Collection\CollectionRequestInterface;
+use App\Dto\Collection\CollectionResponseInterface;
 use App\Parsing\ParsingInterface;
 use App\Repository\RepositoryInterface;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
@@ -44,10 +45,10 @@ final class ListRequestHandler implements RequestHandlerInterface
 
         $this->repository->resolveCollection($collection);
 
-        /** @var array<string, mixed> $responseData */
-        $responseData = $this->parsing->getCollectionResponseSchema($request)->parse($collection);
+        /** @var CollectionResponseInterface $collectionResponse */
+        $collectionResponse = $this->parsing->getCollectionResponseSchema($request)->parse($collection);
 
-        $output = $this->encoder->encode($responseData, $accept);
+        $output = $this->encoder->encode($collectionResponse->jsonSerialize(), $accept);
 
         $response = $this->responseFactory->createResponse(200)->withHeader('Content-Type', $accept);
         $response->getBody()->write($output);

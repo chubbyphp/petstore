@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Pet\Dto\Collection;
 
-use App\Core\Dto\Collection\AbstractCollectionResponse;
 use App\Pet\Dto\Model\PetResponse;
+use Chubbyphp\Api\Dto\Collection\AbstractCollectionResponse;
 
 /**
  * @phpstan-type JsonSerializedResult array{

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Pet\ServiceFactory\RequestHandler\Api\Crud;
+namespace App\Tests\Unit\Pet\ServiceFactory\RequestHandler;
 
-use App\Core\Parsing\ParsingInterface;
-use App\Core\Repository\RepositoryInterface;
-use App\Core\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\Pet\Parsing\PetParsing;
 use App\Pet\Repository\PetRepository;
-use App\Pet\ServiceFactory\RequestHandler\Api\Crud\PetUpdateRequestHandlerFactory;
+use App\Pet\ServiceFactory\RequestHandler\PetUpdateRequestHandlerFactory;
+use Chubbyphp\Api\Parsing\ParsingInterface;
+use Chubbyphp\Api\Repository\RepositoryInterface;
+use Chubbyphp\Api\RequestHandler\UpdateRequestHandler;
 use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Chubbyphp\Mock\MockMethod\WithReturn;
@@ -19,7 +19,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 
 /**
- * @covers \App\Pet\ServiceFactory\RequestHandler\Api\Crud\PetUpdateRequestHandlerFactory
+ * @covers \App\Pet\ServiceFactory\RequestHandler\PetUpdateRequestHandlerFactory
  *
  * @internal
  */

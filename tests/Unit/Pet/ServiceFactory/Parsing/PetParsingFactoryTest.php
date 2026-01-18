@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Pet\ServiceFactory\Parsing;
+namespace App\Tests\Unit\ServiceFactory\Parsing;
 
 use App\Pet\Parsing\PetParsing;
 use App\Pet\ServiceFactory\Parsing\PetParsingFactory;
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Parsing\ParserInterface;
+use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -27,13 +27,13 @@ final class PetParsingFactoryTest extends TestCase
         /** @var ParserInterface $parser */
         $parser = $builder->create(ParserInterface::class, []);
 
-        /** @var UrlGeneratorInterface $urlGenerator */
-        $urlGenerator = $builder->create(UrlGeneratorInterface::class, []);
+        /** @var RouterInterface $router */
+        $router = $builder->create(RouterInterface::class, []);
 
         /** @var ContainerInterface $container */
         $container = $builder->create(ContainerInterface::class, [
             new WithReturn('get', [ParserInterface::class], $parser),
-            new WithReturn('get', [UrlGeneratorInterface::class], $urlGenerator),
+            new WithReturn('get', [RouterInterface::class], $router),
         ]);
 
         $factory = new PetParsingFactory();

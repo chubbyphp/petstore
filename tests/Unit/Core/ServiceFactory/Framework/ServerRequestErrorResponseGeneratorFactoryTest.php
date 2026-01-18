@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Core\ServiceFactory\Framework;
 
-use App\Core\ServiceFactory\Framework\ExceptionMiddlewareFactory;
-use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
+use App\Core\ServiceFactory\Framework\ServerRequestErrorResponseGeneratorFactory;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
+use Mezzio\Response\ServerRequestErrorResponseGenerator;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Log\LoggerInterface;
 
 /**
- * @covers \App\Core\ServiceFactory\Framework\ExceptionMiddlewareFactory
+ * @covers \App\ServiceFactory\Framework\ServerRequestErrorResponseGeneratorFactory
  *
  * @internal
  */
-final class ExceptionMiddlewareFactoryTest extends TestCase
+final class ServerRequestErrorResponseGeneratorFactoryTest extends TestCase
 {
     public function testInvoke(): void
     {
@@ -27,18 +26,18 @@ final class ExceptionMiddlewareFactoryTest extends TestCase
         /** @var ResponseFactoryInterface $responseFactory */
         $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
-        /** @var LoggerInterface $logger */
-        $logger = $builder->create(LoggerInterface::class, []);
-
         /** @var ContainerInterface $container */
         $container = $builder->create(ContainerInterface::class, [
-            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
+            new WithReturn(
+                'get',
+                [ResponseFactoryInterface::class],
+                static fn () => $responseFactory
+            ),
             new WithReturn('get', ['config'], ['debug' => true]),
-            new WithReturn('get', [LoggerInterface::class], $logger),
         ]);
 
-        $factory = new ExceptionMiddlewareFactory();
+        $factory = new ServerRequestErrorResponseGeneratorFactory();
 
-        self::assertInstanceOf(ExceptionMiddleware::class, $factory($container));
+        self::assertInstanceOf(ServerRequestErrorResponseGenerator::class, $factory($container));
     }
 }

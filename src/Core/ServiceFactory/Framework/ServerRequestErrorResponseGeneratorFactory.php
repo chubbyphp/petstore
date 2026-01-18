@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Core\ServiceFactory\Framework;
 
-use Chubbyphp\Framework\Middleware\ExceptionMiddleware;
+use Mezzio\Response\ServerRequestErrorResponseGenerator;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Log\LoggerInterface;
 
-final class ExceptionMiddlewareFactory
+final class ServerRequestErrorResponseGeneratorFactory
 {
-    public function __invoke(ContainerInterface $container): ExceptionMiddleware
+    public function __invoke(ContainerInterface $container): ServerRequestErrorResponseGenerator
     {
         /** @var ResponseFactoryInterface $responseFactory */
         $responseFactory = $container->get(ResponseFactoryInterface::class);
@@ -19,13 +18,9 @@ final class ExceptionMiddlewareFactory
         /** @var array{debug: bool} $config */
         $config = $container->get('config');
 
-        /** @var LoggerInterface $logger */
-        $logger = $container->get(LoggerInterface::class);
-
-        return new ExceptionMiddleware(
+        return new ServerRequestErrorResponseGenerator(
             $responseFactory,
-            $config['debug'],
-            $logger
+            $config['debug']
         );
     }
 }

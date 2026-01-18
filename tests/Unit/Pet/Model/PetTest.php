@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Pet\Model;
 
-use App\Core\Model\ModelInterface;
 use App\Pet\Model\Pet;
 use App\Pet\Model\Vaccination;
 use App\Tests\Helper\AssertHelper;
+use Chubbyphp\Api\Model\ModelInterface;
 use PHPUnit\Framework\TestCase;
 
 /**

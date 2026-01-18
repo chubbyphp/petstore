@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Pet\ServiceFactory\RequestHandler\Api\Crud;
+namespace App\Pet\ServiceFactory\RequestHandler;
 
-use App\Core\RequestHandler\Api\Crud\ListRequestHandler;
 use App\Pet\Parsing\PetParsing;
 use App\Pet\Repository\PetRepository;
+use Chubbyphp\Api\RequestHandler\ReadRequestHandler;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 
-final class PetListRequestHandlerFactory
+final class PetReadRequestHandlerFactory
 {
-    public function __invoke(ContainerInterface $container): ListRequestHandler
+    public function __invoke(ContainerInterface $container): ReadRequestHandler
     {
         /** @var PetParsing $parsing */
         $parsing = $container->get(PetParsing::class);
@@ -27,6 +27,6 @@ final class PetListRequestHandlerFactory
         /** @var ResponseFactoryInterface $responseFactory */
         $responseFactory = $container->get(ResponseFactoryInterface::class);
 
-        return new ListRequestHandler($parsing, $repository, $encoder, $responseFactory);
+        return new ReadRequestHandler($parsing, $repository, $encoder, $responseFactory);
     }
 }

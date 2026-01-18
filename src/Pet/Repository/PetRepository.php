@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Pet\Repository;
 
-use App\Core\Collection\CollectionInterface;
-use App\Core\Model\ModelInterface;
-use App\Core\Repository\RepositoryInterface;
 use App\Pet\Collection\PetCollection;
 use App\Pet\Model\Pet;
+use Chubbyphp\Api\Collection\CollectionInterface;
+use Chubbyphp\Api\Model\ModelInterface;
+use Chubbyphp\Api\Repository\RepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Iterator\Iterator;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;

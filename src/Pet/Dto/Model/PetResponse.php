@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Pet\Dto\Model;
 
-use App\Core\Dto\Model\ModelResponseInterface;
+use Chubbyphp\Api\Dto\Model\ModelResponseInterface;
 
 final class PetResponse implements ModelResponseInterface
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Pet\Model;
 
-use App\Core\Model\ModelInterface;
+use Chubbyphp\Api\Model\ModelInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;

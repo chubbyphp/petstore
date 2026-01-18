@@ -25,7 +25,7 @@ services:
     depends_on:
       - postgres
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'
     ports:
       - '9003:9003'
   php-fluentd:
@@ -93,8 +93,8 @@ services:
     healthcheck:
       test:
         [
-          "CMD-SHELL",
-          "curl -sk https://localhost:9200 | grep -q 'Unauthorized'"
+          'CMD-SHELL',
+          'curl -sk https://localhost:9200 | grep -q "Unauthorized"'
         ]
       interval: 10s
       timeout: 10s

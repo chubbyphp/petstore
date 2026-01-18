@@ -10,7 +10,7 @@ services:
         GROUP_ID: ${GROUP_ID:-1000}
     environment:
       APP_ENV: dev
-      POSTGRES_URI: 'pgsql://petstore:4aAUfBjDACcdZxNwJgJ6@postgres:5432/petstore?charset=utf8'
+      MONGO_URI: mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@mongo:27017
       SSH_AUTH_SOCK: /ssh-agent
     volumes:
       - ${PWD}:/app
@@ -23,7 +23,7 @@ services:
       - ~/.zsh_history:/home/php/.zsh_history
       - $SSH_AUTH_SOCK:/ssh-agent
     depends_on:
-      - postgres
+      - mongo
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     ports:
@@ -45,6 +45,17 @@ services:
       - ${PWD}/var/log:/app/var/log
     depends_on:
       - opensearch
+  mongo:
+    container_name: chubbyphp-petstore-mongo
+    hostname: chubbyphp-petstore-mongo
+    image: mongo:8
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: petstore
+      MONGO_INITDB_ROOT_PASSWORD: 4aAUfBjDACcdZxNwJgJ6
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo:/data/db
   nginx:
     container_name: chubbyphp-petstore-nginx
     hostname: chubbyphp-petstore-nginx
@@ -63,19 +74,6 @@ services:
     depends_on:
       - php
       - swagger-ui
-  postgres:
-    container_name: chubbyphp-petstore-postgres
-    hostname: chubbyphp-petstore-postgres
-    image: postgres:17
-    command: -c log_statement=all -c log_error_verbosity=VERBOSE
-    environment:
-      POSTGRES_DB: petstore
-      POSTGRES_PASSWORD: 4aAUfBjDACcdZxNwJgJ6
-      POSTGRES_USER: petstore
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres:/var/lib/postgresql/data
   opensearch:
     container_name: chubbyphp-petstore-opensearch
     hostname: chubbyphp-petstore-opensearch
@@ -115,4 +113,4 @@ services:
       BASE_URL: /swagger
       URLS: '[ { url: "/openapi" } ]'
 volumes:
-  postgres:
+  mongo:

@@ -1,8 +1,8 @@
 # petstore
 
-[![CI](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml/badge.svg?branch=chubbyphp)](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml)
-[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%2Fchubbyphp)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/chubbyphp)
+[![CI](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml/badge.svg?branch=chubbyphp-mongo)](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp-mongo)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp-mongo)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%2Fchubbyphp-mongo)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/chubbyphp-mongo)
 
 ## Description
 
@@ -22,12 +22,11 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.5.1
  * [chubbyphp/chubbyphp-negotiation][11]: ^2.3.1
  * [chubbyphp/chubbyphp-parsing][12]: ^2.1.2
- * [doctrine/orm][13]: ^3.6.1
+ * [doctrine/mongodb-odm][13]: ^2.15.3
  * [monolog/monolog][14]: ^3.10
  * [ramsey/uuid][15]: ^4.9.2
  * [slim/psr7][16]: ^1.8
  * [symfony/console][17]: ^7.4.3|^8.0.3
- * [symfony/var-exporter][18]: ^7.4.0|^8.0.0
 
 ## Environment
 
@@ -89,7 +88,7 @@ composer setup:dev
 
 ### DBs
 
- * jdbc:postgresql://localhost:5432/petstore?user=root&password=root
+ * jdbc:mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@localhost:27017/petstore
 
 ## Structure
 
@@ -121,11 +120,11 @@ Models, entities, documents what ever fits your purpose the best.
  * [App\Core\Model][90]
  * [App\Pet\Model][91]
 
-### ORM
+### ODM
 
-ORM Mapping definitions.
+ODM Mapping definitions.
 
- * [App\Pet\Orm][100]
+ * [App\Pet\Odm][100]
 
 ### Parsing
 
@@ -215,12 +214,11 @@ curl -XPUT 'https://admin:98T722Eqw99oqFCSJCnB@localhost:9200/_plugins/_ism/poli
 [10]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
 [11]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
 [12]: https://packagist.org/packages/chubbyphp/chubbyphp-parsing
-[13]: https://packagist.org/packages/doctrine/orm
+[13]: https://packagist.org/packages/doctrine/mongodb-odm
 [14]: https://packagist.org/packages/monolog/monolog
 [15]: https://packagist.org/packages/ramsey/uuid
 [16]: https://packagist.org/packages/slim/psr7
 [17]: https://packagist.org/packages/symfony/console
-[18]: https://packagist.org/packages/symfony/var-exporter
 
 [60]: src/Core/Collection
 [61]: src/Pet/Collection
@@ -233,7 +231,7 @@ curl -XPUT 'https://admin:98T722Eqw99oqFCSJCnB@localhost:9200/_plugins/_ism/poli
 [90]: src/Core/Model
 [91]: src/Pet/Model
 
-[100]: src/Pet/Orm
+[100]: src/Pet/Odm
 
 [110]: src/Core/Parsing
 [111]: src/Pet/Parsing

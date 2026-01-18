@@ -2,235 +2,244 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Pet\Repository;
-
-use App\Core\Collection\CollectionInterface;
-use App\Core\Model\ModelInterface;
-use App\Pet\Collection\PetCollection;
-use App\Pet\Model\Pet;
-use App\Pet\Repository\PetRepository;
-use Chubbyphp\Mock\MockMethod\WithoutReturn;
-use Chubbyphp\Mock\MockMethod\WithReturn;
-use Chubbyphp\Mock\MockMethod\WithReturnSelf;
-use Chubbyphp\Mock\MockObjectBuilder;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Query\Expr\Comparison;
-use Doctrine\ORM\Query\Expr\Func;
-use Doctrine\ORM\QueryBuilder;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\TestCase;
-
-/**
- * @covers \App\Pet\Repository\PetRepository
- *
- * @internal
- */
-final class PetRepositoryTest extends TestCase
-{
-    public function testResolveCollectionWithWrongCollection(): void
+namespace Doctrine\ODM\MongoDB\Query {
+    final class Query
     {
-        $builder = new MockObjectBuilder();
+        public const TYPE_FIND = 1;
 
-        /** @var CollectionInterface $collection */
-        $collection = $builder->create(CollectionInterface::class, []);
-
-        $collectionClass = $collection::class;
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            \sprintf(
-                'App\Pet\Repository\PetRepository::resolveCollection() expects parameter 1 to be'
-                    .' App\Pet\Collection\PetCollection, %s given',
-                $collectionClass
-            )
-        );
-
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, []);
-
-        $repository = new PetRepository($entityManager);
-        $repository->resolveCollection($collection);
+        public function execute(): mixed
+        {
+            return null;
+        }
     }
+}
 
-    public function testResolveCollection(): void
+namespace App\Tests\Unit\Pet\Repository {
+    use App\Core\Collection\CollectionInterface;
+    use App\Core\Model\ModelInterface;
+    use App\Pet\Collection\PetCollection;
+    use App\Pet\Model\Pet;
+    use App\Pet\Repository\PetRepository;
+    use Chubbyphp\Mock\MockMethod\WithoutReturn;
+    use Chubbyphp\Mock\MockMethod\WithReturn;
+    use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+    use Chubbyphp\Mock\MockObjectBuilder;
+    use Doctrine\ODM\MongoDB\DocumentManager;
+    use Doctrine\ODM\MongoDB\Iterator\IterableResult;
+    use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+    use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
+    use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+    use PHPUnit\Framework\TestCase;
+
+    /**
+     * @covers \App\Pet\Repository\PetRepository
+     *
+     * @internal
+     */
+    final class PetRepositoryTest extends TestCase
     {
-        $pet = new Pet();
+        public function testResolveCollectionWithWrongCollection(): void
+        {
+            $builder = new MockObjectBuilder();
 
-        $items = [$pet];
+            /** @var CollectionInterface $collection */
+            $collection = $builder->create(CollectionInterface::class, []);
+            $collectionClass = \get_class($collection);
 
-        $collection = new PetCollection();
-        $collection->setOffset(0);
-        $collection->setLimit(20);
-        $collection->setFilters(['name' => 'sample']);
-        $collection->setSort(['name' => 'asc']);
+            $this->expectException(\TypeError::class);
+            $this->expectExceptionMessage(
+                \sprintf(
+                    'App\Pet\Repository\PetRepository::resolveCollection() expects parameter 1 to be'
+                        .' App\Pet\Collection\PetCollection, %s given',
+                    $collectionClass
+                )
+            );
 
-        $builder = new MockObjectBuilder();
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, []);
 
-        /** @var Comparison $likeNameFunc */
-        $likeNameFunc = $builder->create(Comparison::class, []);
+            $repository = new PetRepository($documentManager);
+            $repository->resolveCollection($collection);
+        }
 
-        /** @var Func $countIdFunc */
-        $countIdFunc = $builder->create(Func::class, []);
+        public function testResolveCollection(): void
+        {
+            $pet = new Pet();
+            $items = [$pet];
 
-        /** @var Expr $expr */
-        $expr = $builder->create(Expr::class, [
-            new WithReturn('like', ['p.name', ':name'], $likeNameFunc),
-            new WithReturn('count', ['p.id'], $countIdFunc),
-        ]);
+            $collection = new PetCollection();
+            $collection->setOffset(0);
+            $collection->setLimit(20);
+            $collection->setFilters(['name' => 'sample']);
+            $collection->setSort(['name' => 'asc', 'unknown' => null]);
 
-        /** @var Query $countQuery */
-        $countQuery = $builder->create(Query::class, [
-            new WithReturn('getSingleScalarResult', [], (string) \count($items)),
-        ]);
+            $builder = new MockObjectBuilder();
 
-        /** @var Query $itemsQuery */
-        $itemsQuery = $builder->create(Query::class, [
-            new WithReturn('getResult', [AbstractQuery::HYDRATE_OBJECT], $items),
-        ]);
+            /** @var IterableResult $countQuery */
+            $countQuery = $builder->create(IterableResult::class, [
+                new WithReturn('execute', [], \count($items)),
+            ]);
 
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $builder->create(QueryBuilder::class, [
-            new WithReturn('expr', [], $expr),
-            new WithReturnSelf('andWhere', [[$likeNameFunc]]),
-            new WithReturnSelf('setParameter', ['name', '%sample%', null]),
-            new WithReturnSelf('__clone', []),
-            new WithReturn('expr', [], $expr),
-            new WithReturnSelf('select', [[$countIdFunc]]),
-            new WithReturn('getQuery', [], $countQuery),
-            new WithReturnSelf('__clone', []),
-            new WithReturnSelf('addOrderBy', ['p.name', 'asc']),
-            new WithReturnSelf('setFirstResult', [0]),
-            new WithReturnSelf('setMaxResults', [20]),
-            new WithReturn('getQuery', [], $itemsQuery),
-        ]);
+            /** @var IterableResult $itemsQuery */
+            $itemsQuery = $builder->create(IterableResult::class, [
+                new WithReturn('execute', [], new class($items) {
+                    private array $items;
 
-        /** @var EntityRepository $repository */
-        $repositoryMock = $builder->create(EntityRepository::class, [
-            new WithReturn('createQueryBuilder', ['p', null], $queryBuilder),
-        ]);
+                    public function __construct(array $items)
+                    {
+                        $this->items = $items;
+                    }
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, [
-            new WithReturn('getRepository', [Pet::class], $repositoryMock),
-        ]);
+                    public function toArray(): array
+                    {
+                        return $this->items;
+                    }
+                }),
+            ]);
 
-        $repository = new PetRepository($entityManager);
-        $repository->resolveCollection($collection);
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = $builder->create(QueryBuilder::class, [
+                new WithReturnSelf('field', ['name']),
+                new WithReturnSelf('text', ['sample']),
+                new WithReturnSelf('__clone', []),
+                new WithReturnSelf('count', []),
+                new WithReturn('getQuery', [[]], $countQuery),
+                new WithReturnSelf('__clone', []),
+                new WithReturnSelf('sort', ['name', 'asc']),
+                new WithReturnSelf('skip', [0]),
+                new WithReturnSelf('limit', [20]),
+                new WithReturn('getQuery', [[]], $itemsQuery),
+            ]);
 
-        self::assertSame($items, $collection->getItems());
-    }
+            /** @var DocumentRepository $documentRepository */
+            $documentRepository = $builder->create(DocumentRepository::class, [
+                new WithReturn('createQueryBuilder', [], $queryBuilder),
+            ]);
 
-    public function testFindById(): void
-    {
-        $pet = new Pet();
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithReturn('getRepository', [Pet::class], $documentRepository),
+            ]);
 
-        $builder = new MockObjectBuilder();
+            $repository = new PetRepository($documentManager);
+            $repository->resolveCollection($collection);
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, [
-            new WithReturn('find', [Pet::class, '86c78085-edaf-4df9-95d0-563e45acf618', null, null], $pet),
-        ]);
+            self::assertSame(\count($collection->getItems()), $collection->getCount());
+            self::assertSame($items, $collection->getItems());
+        }
 
-        $repository = new PetRepository($entityManager);
+        public function testFindById(): void
+        {
+            $pet = new Pet();
 
-        self::assertSame($pet, $repository->findById('86c78085-edaf-4df9-95d0-563e45acf618'));
-    }
+            $builder = new MockObjectBuilder();
 
-    public function testPersistWithWrongModel(): void
-    {
-        $builder = new MockObjectBuilder();
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithReturn(
+                    'find',
+                    [Pet::class, '86c78085-edaf-4df9-95d0-563e45acf618', 0, null],
+                    $pet
+                ),
+            ]);
 
-        /** @var ModelInterface $model */
-        $model = $builder->create(ModelInterface::class, []);
+            $repository = new PetRepository($documentManager);
+            self::assertSame($pet, $repository->findById('86c78085-edaf-4df9-95d0-563e45acf618'));
+        }
 
-        $modelClass = $model::class;
+        public function testPersistWithWrongModel(): void
+        {
+            $builder = new MockObjectBuilder();
 
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            \sprintf(
-                'App\Pet\Repository\PetRepository::persist() expects parameter 1 to be App\Pet\Model\Pet, %s given',
-                $modelClass
-            )
-        );
+            /** @var ModelInterface $model */
+            $model = $builder->create(ModelInterface::class, []);
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, []);
+            $modelClass = $model::class;
 
-        $repository = new PetRepository($entityManager);
-        $repository->persist($model);
-    }
+            $this->expectException(\TypeError::class);
+            $this->expectExceptionMessage(
+                \sprintf(
+                    'App\Pet\Repository\PetRepository::persist() expects parameter 1 to be'
+                        .' App\Pet\Model\Pet, %s given',
+                    $modelClass
+                )
+            );
 
-    #[DoesNotPerformAssertions]
-    public function testPersist(): void
-    {
-        $pet = new Pet();
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, []);
 
-        $builder = new MockObjectBuilder();
+            $repository = new PetRepository($documentManager);
+            $repository->persist($model);
+        }
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, [
-            new WithoutReturn('persist', [$pet]),
-        ]);
+        #[DoesNotPerformAssertions]
+        public function testPersist(): void
+        {
+            $pet = new Pet();
 
-        $repository = new PetRepository($entityManager);
-        $repository->persist($pet);
-    }
+            $builder = new MockObjectBuilder();
 
-    public function testRemoveWithWrongModel(): void
-    {
-        $builder = new MockObjectBuilder();
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithoutReturn('persist', [$pet]),
+            ]);
 
-        /** @var ModelInterface $model */
-        $model = $builder->create(ModelInterface::class, []);
+            $repository = new PetRepository($documentManager);
+            $repository->persist($pet);
+        }
 
-        $modelClass = $model::class;
+        public function testRemoveWithWrongModel(): void
+        {
+            $builder = new MockObjectBuilder();
 
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            \sprintf(
-                'App\Pet\Repository\PetRepository::remove() expects parameter 1 to be App\Pet\Model\Pet, %s given',
-                $modelClass
-            )
-        );
+            /** @var ModelInterface $model */
+            $model = $builder->create(ModelInterface::class, []);
+            $modelClass = $model::class;
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, []);
+            $this->expectException(\TypeError::class);
+            $this->expectExceptionMessage(
+                \sprintf(
+                    'App\Pet\Repository\PetRepository::remove() expects parameter 1 to be'
+                        .' App\Pet\Model\Pet, %s given',
+                    $modelClass
+                )
+            );
 
-        $repository = new PetRepository($entityManager);
-        $repository->remove($model);
-    }
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, []);
 
-    #[DoesNotPerformAssertions]
-    public function testRemove(): void
-    {
-        $pet = new Pet();
+            $repository = new PetRepository($documentManager);
+            $repository->remove($model);
+        }
 
-        $builder = new MockObjectBuilder();
+        #[DoesNotPerformAssertions]
+        public function testRemove(): void
+        {
+            $pet = new Pet();
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, [
-            new WithoutReturn('remove', [$pet]),
-        ]);
+            $builder = new MockObjectBuilder();
 
-        $repository = new PetRepository($entityManager);
-        $repository->remove($pet);
-    }
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithoutReturn('remove', [$pet]),
+            ]);
 
-    #[DoesNotPerformAssertions]
-    public function testFlush(): void
-    {
-        $builder = new MockObjectBuilder();
+            $repository = new PetRepository($documentManager);
+            $repository->remove($pet);
+        }
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $builder->create(EntityManager::class, [
-            new WithoutReturn('flush', []),
-        ]);
+        #[DoesNotPerformAssertions]
+        public function testFlush(): void
+        {
+            $builder = new MockObjectBuilder();
 
-        $repository = new PetRepository($entityManager);
-        $repository->flush();
+            /** @var DocumentManager $documentManager */
+            $documentManager = $builder->create(DocumentManager::class, [
+                new WithoutReturn('flush', [[]]),
+            ]);
+
+            $repository = new PetRepository($documentManager);
+            $repository->flush();
+        }
     }
 }

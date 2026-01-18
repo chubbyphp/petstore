@@ -5,25 +5,17 @@ declare(strict_types=1);
 namespace App\Core\ServiceFactory\Command;
 
 use Chubbyphp\CleanDirectories\ServiceFactory\CleanDirectoriesCommandFactory;
-use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
-use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
-use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
-use Doctrine\DBAL\Tools\Console\ConnectionProvider;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\EntityRegionCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryRegionCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\ResultCommand;
-use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
-use Doctrine\ORM\Tools\Console\Command\InfoCommand;
-use Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand;
-use Doctrine\ORM\Tools\Console\Command\RunDqlCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand as SchemaCreateCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand as SchemaDropCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as SchemaUpdateCommand;
-use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
-use Doctrine\ORM\Tools\Console\EntityManagerProvider;
+use Chubbyphp\Laminas\Config\Doctrine\ODM\MongoDB\Tools\Console\Command\DocumentManagerCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\ClearCache\MetadataCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateHydratorsCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GeneratePersistentCollectionsCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\QueryCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\CreateCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\DropCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\ShardCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\UpdateCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\ValidateCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 
@@ -34,31 +26,18 @@ final class CommandsFactory
      */
     public function __invoke(ContainerInterface $container): array
     {
-        /** @var ConnectionProvider $connectionProvider */
-        $connectionProvider = $container->get(ConnectionProvider::class);
-
-        /** @var EntityManagerProvider $entityManagerProvider */
-        $entityManagerProvider = $container->get(EntityManagerProvider::class);
-
         return [
             (new CleanDirectoriesCommandFactory())($container),
-            new DatabaseCreateCommand($connectionProvider),
-            new DatabaseDropCommand($connectionProvider),
-            new RunSqlCommand($connectionProvider),
-            new CollectionRegionCommand($entityManagerProvider),
-            new EntityRegionCommand($entityManagerProvider),
-            new MetadataCommand($entityManagerProvider),
-            new QueryCommand($entityManagerProvider),
-            new QueryRegionCommand($entityManagerProvider),
-            new ResultCommand($entityManagerProvider),
-            new SchemaCreateCommand($entityManagerProvider),
-            new SchemaDropCommand($entityManagerProvider),
-            new SchemaUpdateCommand($entityManagerProvider),
-            new GenerateProxiesCommand($entityManagerProvider),
-            new InfoCommand($entityManagerProvider),
-            new MappingDescribeCommand($entityManagerProvider),
-            new RunDqlCommand($entityManagerProvider),
-            new ValidateSchemaCommand($entityManagerProvider),
+            new DocumentManagerCommand(new GenerateHydratorsCommand(), $container),
+            new DocumentManagerCommand(new GeneratePersistentCollectionsCommand(), $container),
+            new DocumentManagerCommand(new GenerateProxiesCommand(), $container),
+            new DocumentManagerCommand(new QueryCommand(), $container),
+            new DocumentManagerCommand(new MetadataCommand(), $container),
+            new DocumentManagerCommand(new CreateCommand(), $container),
+            new DocumentManagerCommand(new DropCommand(), $container),
+            new DocumentManagerCommand(new ShardCommand(), $container),
+            new DocumentManagerCommand(new UpdateCommand(), $container),
+            new DocumentManagerCommand(new ValidateCommand(), $container),
         ];
     }
 }

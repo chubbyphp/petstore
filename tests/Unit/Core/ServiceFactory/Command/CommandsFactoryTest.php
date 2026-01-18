@@ -5,28 +5,21 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Core\ServiceFactory\Command;
 
 use App\Core\ServiceFactory\Command\CommandsFactory;
+use App\Tests\Helper\AssertHelper;
 use Chubbyphp\CleanDirectories\Command\CleanDirectoriesCommand;
-use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
-use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
+use Chubbyphp\Laminas\Config\Doctrine\ODM\MongoDB\Tools\Console\Command\DocumentManagerCommand;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
-use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
-use Doctrine\DBAL\Tools\Console\ConnectionProvider;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\EntityRegionCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryRegionCommand;
-use Doctrine\ORM\Tools\Console\Command\ClearCache\ResultCommand;
-use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
-use Doctrine\ORM\Tools\Console\Command\InfoCommand;
-use Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand;
-use Doctrine\ORM\Tools\Console\Command\RunDqlCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand as SchemaCreateCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand as SchemaDropCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as SchemaUpdateCommand;
-use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
-use Doctrine\ORM\Tools\Console\EntityManagerProvider;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\ClearCache\MetadataCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateHydratorsCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GeneratePersistentCollectionsCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\QueryCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\CreateCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\DropCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\ShardCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\UpdateCommand;
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\ValidateCommand;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -39,69 +32,55 @@ final class CommandsFactoryTest extends TestCase
 {
     public function testInvoke(): void
     {
-        $config = [
-            'directories' => [],
-        ];
-
         $builder = new MockObjectBuilder();
-
-        /** @var ConnectionProvider $connectionProvider */
-        $connectionProvider = $builder->create(ConnectionProvider::class, []);
-
-        /** @var EntityManagerProvider $entityManagerProvider */
-        $entityManagerProvider = $builder->create(EntityManagerProvider::class, []);
 
         /** @var ContainerInterface $container */
         $container = $builder->create(ContainerInterface::class, [
-            new WithReturn('get', [ConnectionProvider::class], $connectionProvider),
-            new WithReturn('get', [EntityManagerProvider::class], $entityManagerProvider),
-            new WithReturn('get', ['config'], $config),
+            new WithReturn('get', ['config'], ['directories' => []]),
         ]);
 
         $factory = new CommandsFactory();
-
         $commands = $factory($container);
 
         self::assertIsArray($commands);
+        self::assertCount(11, $commands);
 
         $cleanDirectoriesCommand = array_shift($commands);
-        $databaseCreateCommand = array_shift($commands);
-        $databaseDropCommand = array_shift($commands);
-        $runSqlCommand = array_shift($commands);
-        $collectionRegionCommand = array_shift($commands);
-        $entityRegionCommand = array_shift($commands);
-        $metadataCommand = array_shift($commands);
-        $queryCommand = array_shift($commands);
-        $queryRegionCommand = array_shift($commands);
-        $resultCommand = array_shift($commands);
-        $schemaCreateCommand = array_shift($commands);
-        $schemaDropCommand = array_shift($commands);
-        $schemaUpdateCommand = array_shift($commands);
-        $generateProxiesCommand = array_shift($commands);
-        $infoCommand = array_shift($commands);
-        $mappingDescribeCommand = array_shift($commands);
-        $runDqlCommand = array_shift($commands);
-        $validateSchemaCommand = array_shift($commands);
 
-        self::assertCount(0, $commands);
+        $generateHydratorsCommand = array_shift($commands);
+        $generatePersistentCollectionsCommand = array_shift($commands);
+        $generateProxiesCommand = array_shift($commands);
+        $queryCommand = array_shift($commands);
+        $metadataCommand = array_shift($commands);
+        $createCommand = array_shift($commands);
+        $dropCommand = array_shift($commands);
+        $shardCommand = array_shift($commands);
+        $updateCommand = array_shift($commands);
+        $validateCommand = array_shift($commands);
 
         self::assertInstanceOf(CleanDirectoriesCommand::class, $cleanDirectoriesCommand);
-        self::assertInstanceOf(DatabaseCreateCommand::class, $databaseCreateCommand);
-        self::assertInstanceOf(DatabaseDropCommand::class, $databaseDropCommand);
-        self::assertInstanceOf(RunSqlCommand::class, $runSqlCommand);
-        self::assertInstanceOf(CollectionRegionCommand::class, $collectionRegionCommand);
-        self::assertInstanceOf(EntityRegionCommand::class, $entityRegionCommand);
-        self::assertInstanceOf(MetadataCommand::class, $metadataCommand);
-        self::assertInstanceOf(QueryCommand::class, $queryCommand);
-        self::assertInstanceOf(QueryRegionCommand::class, $queryRegionCommand);
-        self::assertInstanceOf(ResultCommand::class, $resultCommand);
-        self::assertInstanceOf(SchemaCreateCommand::class, $schemaCreateCommand);
-        self::assertInstanceOf(SchemaDropCommand::class, $schemaDropCommand);
-        self::assertInstanceOf(SchemaUpdateCommand::class, $schemaUpdateCommand);
-        self::assertInstanceOf(GenerateProxiesCommand::class, $generateProxiesCommand);
-        self::assertInstanceOf(InfoCommand::class, $infoCommand);
-        self::assertInstanceOf(MappingDescribeCommand::class, $mappingDescribeCommand);
-        self::assertInstanceOf(RunDqlCommand::class, $runDqlCommand);
-        self::assertInstanceOf(ValidateSchemaCommand::class, $validateSchemaCommand);
+        self::assertDocumentCommand(GenerateHydratorsCommand::class, $generateHydratorsCommand);
+        self::assertDocumentCommand(GeneratePersistentCollectionsCommand::class, $generatePersistentCollectionsCommand);
+        self::assertDocumentCommand(GenerateProxiesCommand::class, $generateProxiesCommand);
+        self::assertDocumentCommand(QueryCommand::class, $queryCommand);
+        self::assertDocumentCommand(MetadataCommand::class, $metadataCommand);
+        self::assertDocumentCommand(CreateCommand::class, $createCommand);
+        self::assertDocumentCommand(DropCommand::class, $dropCommand);
+        self::assertDocumentCommand(ShardCommand::class, $shardCommand);
+        self::assertDocumentCommand(UpdateCommand::class, $updateCommand);
+        self::assertDocumentCommand(ValidateCommand::class, $validateCommand);
+    }
+
+    /**
+     * @param class-string $expectedCommand
+     */
+    private static function assertDocumentCommand(
+        string $expectedCommand,
+        DocumentManagerCommand $entityManagerCommand
+    ): void {
+        self::assertInstanceOf(
+            $expectedCommand,
+            AssertHelper::readProperty('command', $entityManagerCommand)
+        );
     }
 }

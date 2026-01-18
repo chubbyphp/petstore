@@ -32,8 +32,8 @@ use App\Core\ServiceFactory\RequestHandler\OpenapiRequestHandlerFactory;
 use App\Core\ServiceFactory\RequestHandler\PingRequestHandlerFactory;
 use App\Pet\Model\Pet;
 use App\Pet\Model\Vaccination;
-use App\Pet\Orm\PetMapping;
-use App\Pet\Orm\VaccinationMapping;
+use App\Pet\Odm\PetMapping;
+use App\Pet\Odm\VaccinationMapping;
 use App\Pet\Parsing\PetParsing;
 use App\Pet\Repository\PetRepository;
 use App\Pet\ServiceFactory\Framework\PetRoutesDelegator;
@@ -59,10 +59,7 @@ use Chubbyphp\Framework\Router\RouteMatcherInterface;
 use Chubbyphp\Framework\Router\RoutesByNameInterface;
 use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Common\Cache\ApcuAdapterFactory;
-use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\DBAL\ConnectionFactory;
-use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\DBAL\Tools\Console\ContainerConnectionProviderFactory;
-use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\EntityManagerFactory;
-use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ORM\Tools\Console\ContainerEntityManagerProviderFactory;
+use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\ODM\MongoDB\DocumentManagerFactory;
 use Chubbyphp\Laminas\Config\Doctrine\ServiceFactory\Persistence\Mapping\Driver\ClassMapDriverFactory;
 use Chubbyphp\Negotiation\AcceptNegotiatorInterface;
 use Chubbyphp\Negotiation\ContentTypeNegotiatorInterface;
@@ -73,12 +70,7 @@ use Chubbyphp\Negotiation\ServiceFactory\AcceptNegotiatorFactory;
 use Chubbyphp\Negotiation\ServiceFactory\ContentTypeMiddlewareFactory;
 use Chubbyphp\Negotiation\ServiceFactory\ContentTypeNegotiatorFactory;
 use Chubbyphp\Parsing\ParserInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Tools\Console\ConnectionProvider;
-use Doctrine\DBAL\Tools\DsnParser;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Console\EntityManagerProvider;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Monolog\Level;
 use Psr\Cache\CacheItemPoolInterface;
@@ -105,26 +97,21 @@ return [
     ],
     'debug' => false,
     'dependencies' => [
-        'aliases' => [
-            EntityManager::class => EntityManagerInterface::class,
-        ],
         'factories' => [
             AcceptMiddleware::class => AcceptMiddlewareFactory::class,
-            AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
             AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
+            AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
+            AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
             CacheItemPoolInterface::class => ApcuAdapterFactory::class,
             Command::class.'[]' => CommandsFactory::class,
-            Connection::class => ConnectionFactory::class,
-            ConnectionProvider::class => ContainerConnectionProviderFactory::class,
             ContentTypeMiddleware::class => ContentTypeMiddlewareFactory::class,
-            ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
             ContentTypeNegotiatorInterface::class.'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
+            ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
             CorsMiddleware::class => CorsMiddlewareFactory::class,
             DecoderInterface::class => DecoderFactory::class,
+            DocumentManager::class => DocumentManagerFactory::class,
             EncoderInterface::class => EncoderFactory::class,
-            EntityManagerInterface::class => EntityManagerFactory::class,
-            EntityManagerProvider::class => ContainerEntityManagerProviderFactory::class,
             ExceptionMiddleware::class => ExceptionMiddlewareFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
@@ -140,10 +127,10 @@ return [
             PetRepository::class => PetRepositoryFactory::class,
             PingRequestHandler::class => PingRequestHandlerFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
-            RouteInterface::class.'[]' => RoutesFactory::class,
             RouteMatcherInterface::class => RouteMatcherFactory::class,
             RouteMatcherMiddleware::class => RouteMatcherMiddlewareFactory::class,
             RoutesByNameInterface::class => RoutesByNameFactory::class,
+            RouteInterface::class.'[]' => RoutesFactory::class,
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             TypeDecoderInterface::class.'[]' => TypeDecodersFactory::class,
             TypeEncoderInterface::class.'[]' => TypeEncodersFactory::class,
@@ -166,9 +153,6 @@ return [
                 'namespace' => 'doctrine',
             ],
         ],
-        'dbal' => [
-            'connection' => (new DsnParser(['pgsql' => 'pdo_pgsql']))->parse(getenv('POSTGRES_URI')),
-        ],
         'driver' => [
             'classMap' => [
                 'map' => [
@@ -177,12 +161,26 @@ return [
                 ],
             ],
         ],
-        'orm' => [
+        'mongodb' => [
+            'client' => [
+                'uri' => getenv('MONGO_URI'),
+                'driverOptions' => [
+                    'typeMap' => DocumentManager::CLIENT_TYPEMAP,
+                    'driver' => [
+                        'name' => 'doctrine-odm',
+                    ],
+                ],
+            ],
+        ],
+        'mongodbOdm' => [
             'configuration' => [
                 'metadataDriverImpl' => MappingDriver::class,
-                'proxyDir' => $cacheDir.'/doctrine/orm/proxies',
-                'proxyNamespace' => 'DoctrineORMProxy',
+                'proxyDir' => $cacheDir.'/doctrine/mongodbOdm/proxies',
+                'proxyNamespace' => 'DoctrineMongoDBODMProxy',
+                'hydratorDir' => $cacheDir.'/doctrine/mongodbOdm/hydrators',
+                'hydratorNamespace' => 'DoctrineMongoDBODMHydrators',
                 'metadataCache' => CacheItemPoolInterface::class,
+                'defaultDB' => 'petstore',
             ],
         ],
     ],

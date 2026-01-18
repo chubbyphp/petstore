@@ -26,12 +26,11 @@
         "chubbyphp/chubbyphp-laminas-config-factory": "^1.5.1",
         "chubbyphp/chubbyphp-negotiation": "^2.3.1",
         "chubbyphp/chubbyphp-parsing": "^2.1.2",
-        "doctrine/orm": "^3.6.1",
+        "doctrine/mongodb-odm": "^2.15.3",
         "monolog/monolog": "^3.10",
         "ramsey/uuid": "^4.9.2",
         "slim/psr7": "^1.8",
-        "symfony/console": "^7.4.3|^8.0.3",
-        "symfony/var-exporter": "^7.4.0|^8.0.0"
+        "symfony/console": "^7.4.3|^8.0.3"
     },
     "require-dev": {
         "chubbyphp/chubbyphp-dev-helper": "dev-master",
@@ -62,23 +61,18 @@
     },
     "scripts": {
         "clean-directories": "bin/console clean-directories cache log",
-        "database:create": "bin/console dbal:database:create --if-not-exists",
-        "database:drop": "bin/console dbal:database:drop --if-exists --force",
-        "database:schema:update": "bin/console orm:schema-tool:update --force --dump-sql",
-        "database:schema:validate": "bin/console orm:validate-schema",
+        "database:schema:drop": "bin/console odm:schema:drop --db",
+        "database:schema:update": "bin/console odm:schema:update",
+        "database:schema:validate": "bin/console odm:schema:validate",
         "fix:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --cache-file=build/phpcs.cache",
         "setup:dev": [
-            "@database:drop --env=dev",
-            "@database:create --env=dev",
+            "@database:schema:drop --env=dev",
             "@database:schema:update --env=dev",
-            "@database:schema:validate --env=dev",
             "@clean-directories --env=dev"
         ],
         "setup:phpunit": [
-            "@database:drop --env=phpunit",
-            "@database:create --env=phpunit",
+            "@database:schema:drop --env=phpunit",
             "@database:schema:update --env=phpunit",
-            "@database:schema:validate --env=phpunit",
             "@clean-directories --env=phpunit"
         ],
         "test": [

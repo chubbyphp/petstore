@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Pet\Dto\Collection;
 
-use App\Core\Collection\CollectionInterface;
-use App\Core\Dto\Collection\CollectionRequestInterface;
 use App\Pet\Collection\PetCollection;
+use Chubbyphp\Api\Collection\CollectionInterface;
+use Chubbyphp\Api\Dto\Collection\CollectionRequestInterface;
 
 final class PetCollectionRequest implements CollectionRequestInterface
 {

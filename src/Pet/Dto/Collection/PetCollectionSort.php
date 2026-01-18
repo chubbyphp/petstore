@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Pet\Dto\Collection;
 
-use App\Core\Dto\Collection\CollectionSortInterface;
+use Chubbyphp\Api\Dto\Collection\CollectionSortInterface;
 
 final class PetCollectionSort implements CollectionSortInterface
 {

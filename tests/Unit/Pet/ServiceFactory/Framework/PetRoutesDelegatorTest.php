@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Pet\ServiceFactory\Framework;
 
-use App\Core\Middleware\ApiExceptionMiddleware as MiddlewareApiExceptionMiddleware;
-use App\Core\RequestHandler\Api\Crud\CreateRequestHandler;
-use App\Core\RequestHandler\Api\Crud\DeleteRequestHandler;
-use App\Core\RequestHandler\Api\Crud\ListRequestHandler;
-use App\Core\RequestHandler\Api\Crud\ReadRequestHandler;
-use App\Core\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\Pet\Model\Pet;
 use App\Pet\ServiceFactory\Framework\PetRoutesDelegator;
+use Chubbyphp\Api\Middleware\ApiExceptionMiddleware as MiddlewareApiExceptionMiddleware;
+use Chubbyphp\Api\RequestHandler\CreateRequestHandler;
+use Chubbyphp\Api\RequestHandler\DeleteRequestHandler;
+use Chubbyphp\Api\RequestHandler\ListRequestHandler;
+use Chubbyphp\Api\RequestHandler\ReadRequestHandler;
+use Chubbyphp\Api\RequestHandler\UpdateRequestHandler;
 use Chubbyphp\Framework\Middleware\LazyMiddleware;
 use Chubbyphp\Framework\RequestHandler\LazyRequestHandler;
 use Chubbyphp\Framework\Router\Route;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Pet\Parsing;
 
-use App\Core\Collection\CollectionInterface;
-use App\Core\Parsing\ParsingInterface;
 use App\Pet\Dto\Collection\PetCollectionFilters;
 use App\Pet\Dto\Collection\PetCollectionRequest;
 use App\Pet\Dto\Collection\PetCollectionResponse;
@@ -14,6 +12,8 @@ use App\Pet\Dto\Model\PetRequest;
 use App\Pet\Dto\Model\PetResponse;
 use App\Pet\Dto\Model\VaccinationRequest;
 use App\Pet\Dto\Model\VaccinationResponse;
+use Chubbyphp\Api\Collection\CollectionInterface;
+use Chubbyphp\Api\Parsing\ParsingInterface;
 use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Parsing\ParserInterface;
 use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;

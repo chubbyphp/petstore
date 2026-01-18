@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Pet\Repository;
 
-use App\Core\Collection\CollectionInterface;
-use App\Core\Model\ModelInterface;
 use App\Pet\Collection\PetCollection;
 use App\Pet\Model\Pet;
 use App\Pet\Repository\PetRepository;
+use Chubbyphp\Api\Collection\CollectionInterface;
+use Chubbyphp\Api\Model\ModelInterface;
 use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithReturnSelf;

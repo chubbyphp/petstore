@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Pet\ServiceFactory\RequestHandler\Api\Crud;
+namespace App\Pet\ServiceFactory\RequestHandler;
 
-use App\Core\RequestHandler\Api\Crud\UpdateRequestHandler;
 use App\Pet\Parsing\PetParsing;
 use App\Pet\Repository\PetRepository;
+use Chubbyphp\Api\RequestHandler\CreateRequestHandler;
 use Chubbyphp\DecodeEncode\Decoder\DecoderInterface;
 use Chubbyphp\DecodeEncode\Encoder\EncoderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 
-final class PetUpdateRequestHandlerFactory
+final class PetCreateRequestHandlerFactory
 {
-    public function __invoke(ContainerInterface $container): UpdateRequestHandler
+    public function __invoke(ContainerInterface $container): CreateRequestHandler
     {
         /** @var DecoderInterface $decoder */
         $decoder = $container->get(DecoderInterface::class);
@@ -31,7 +31,7 @@ final class PetUpdateRequestHandlerFactory
         /** @var ResponseFactoryInterface $responseFactory */
         $responseFactory = $container->get(ResponseFactoryInterface::class);
 
-        return new UpdateRequestHandler(
+        return new CreateRequestHandler(
             $decoder,
             $parsing,
             $repository,

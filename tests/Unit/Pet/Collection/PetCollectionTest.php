@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Pet\Collection;
 
-use App\Core\Collection\CollectionInterface;
 use App\Pet\Collection\PetCollection;
-use App\Tests\Unit\Core\Collection\CollectionTest;
+use Chubbyphp\Api\Collection\CollectionInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\Pet\Collection\PetCollection
  *
  * @internal
  */
-final class PetCollectionTest extends CollectionTest
+final class PetCollectionTest extends TestCase
 {
-    protected function getCollection(): CollectionInterface
+    public function testGetSet(): void
     {
-        return new PetCollection();
+        $collection = new PetCollection();
+
+        self::assertInstanceOf(CollectionInterface::class, $collection);
     }
 }

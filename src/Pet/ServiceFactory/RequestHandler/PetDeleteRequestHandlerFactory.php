@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Pet\ServiceFactory\RequestHandler\Api\Crud;
+namespace App\Pet\ServiceFactory\RequestHandler;
 
-use App\Core\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\Pet\Repository\PetRepository;
+use Chubbyphp\Api\RequestHandler\DeleteRequestHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 

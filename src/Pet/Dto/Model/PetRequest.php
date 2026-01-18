@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Pet\Dto\Model;
 
-use App\Core\Dto\Model\ModelRequestInterface;
-use App\Core\Model\ModelInterface;
 use App\Pet\Model\Pet;
 use App\Pet\Model\Vaccination;
+use Chubbyphp\Api\Dto\Model\ModelRequestInterface;
+use Chubbyphp\Api\Model\ModelInterface;
 
 final class PetRequest implements ModelRequestInterface
 {

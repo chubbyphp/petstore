@@ -11,23 +11,24 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
 ## Requirements
 
  * php: ^8.3
- * [chubbyphp/chubbyphp-clean-directories][2]: ^1.5.1
- * [chubbyphp/chubbyphp-cors][3]: ^1.7.1
- * [chubbyphp/chubbyphp-decode-encode][4]: ^1.3.1
- * [chubbyphp/chubbyphp-http-exception][5]: ^1.3.2
- * [chubbyphp/chubbyphp-laminas-config][6]: ^1.5.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^3.1
- * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.5
- * [chubbyphp/chubbyphp-negotiation][9]: ^2.3.1
- * [chubbyphp/chubbyphp-parsing][10]: ^2.1.2
- * [doctrine/orm][11]: ^3.6.1
- * [mezzio/mezzio-fastroute][12]: ^3.14
- * [mezzio/mezzio][13]: ^3.27
- * [monolog/monolog][14]: ^3.10
- * [ramsey/uuid][15]: ^4.9.2
- * [slim/psr7][16]: ^1.8
- * [symfony/console][17]: ^7.4.3|^8.0.3
- * [symfony/var-exporter][18]: ^7.4.0|^8.0.0
+ * [chubbyphp/chubbyphp-api][2]: ^1.0
+ * [chubbyphp/chubbyphp-clean-directories][3]: ^1.5.1
+ * [chubbyphp/chubbyphp-cors][4]: ^1.7.1
+ * [chubbyphp/chubbyphp-decode-encode][5]: ^1.3.1
+ * [chubbyphp/chubbyphp-http-exception][6]: ^1.3.2
+ * [chubbyphp/chubbyphp-laminas-config][7]: ^1.5.1
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][8]: ^3.1
+ * [chubbyphp/chubbyphp-laminas-config-factory][9]: ^1.5
+ * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.1
+ * [chubbyphp/chubbyphp-parsing][11]: ^2.1.2
+ * [doctrine/orm][12]: ^3.6.1
+ * [mezzio/mezzio-fastroute][13]: ^3.14
+ * [mezzio/mezzio][14]: ^3.27
+ * [monolog/monolog][15]: ^3.10
+ * [ramsey/uuid][16]: ^4.9.2
+ * [slim/psr7][17]: ^1.8
+ * [symfony/console][18]: ^7.4.3|^8.0.3
+ * [symfony/var-exporter][19]: ^7.4.0|^8.0.0
 
 ## Environment
 
@@ -97,29 +98,19 @@ composer setup:dev
 
 Collections are sortable, filterable paginated lists of models.
 
- * [App\Core\Collection][60]
- * [App\Pet\Collection][61]
+ * [App\Pet\Collection][60]
 
 ### Dto
 
 A DTO, or Data Transfer Object, is a simple object used to transport data between software application components.
 
- * [App\Core\Dto][70]
- * [App\Pet\Dto][71]
-
-### Middleware
-
-Middleware functions can execute code, make changes to the request and response objects.
-Middleware can generally be added globally or on a per-route basis.
-
- * [App\Core\Middleware][80]
+ * [App\Pet\Dto][70]
 
 ### Model
 
 Models, entities, documents what ever fits your purpose the best.
 
- * [App\Core\Model][90]
- * [App\Pet\Model][91]
+ * [App\Pet\Model][90]
 
 ### ORM
 
@@ -131,15 +122,13 @@ ORM Mapping definitions.
 
 Parses and validates data against predefined schemas, ensuring that incoming data conforms to expected structures and criteria.
 
- * [App\Core\Parsing][110]
- * [App\Pet\Parsing][111]
+ * [App\Pet\Parsing][110]
 
 ### Repository
 
 Repositories get data from storages like databases, elasticsearch, redis or whereever your models are stored or cached.
 
- * [App\Core\Repository][120]
- * [App\Pet\Repository][121]
+ * [App\Pet\Repository][120]
 
 ### RequestHandler
 
@@ -205,42 +194,36 @@ curl -XPUT 'https://admin:98T722Eqw99oqFCSJCnB@localhost:9200/_plugins/_ism/poli
 
 [1]: https://docs.mezzio.dev
 
-[2]: https://packagist.org/packages/chubbyphp/chubbyphp-clean-directories
-[3]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
-[4]: https://packagist.org/packages/chubbyphp/chubbyphp-decode-encode
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-http-exception
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-parsing
-[11]: https://packagist.org/packages/doctrine/orm
-[12]: https://packagist.org/packages/mezzio/mezzio-fastroute
-[13]: https://packagist.org/packages/mezzio/mezzio
-[14]: https://packagist.org/packages/monolog/monolog
-[15]: https://packagist.org/packages/ramsey/uuid
-[16]: https://packagist.org/packages/slim/psr7
-[17]: https://packagist.org/packages/symfony/console
-[18]: https://packagist.org/packages/symfony/var-exporter
+[2]: https://packagist.org/packages/chubbyphp/chubbyphp-api
+[3]: https://packagist.org/packages/chubbyphp/chubbyphp-clean-directories
+[4]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp-decode-encode
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-http-exception
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[11]: https://packagist.org/packages/chubbyphp/chubbyphp-parsing
+[12]: https://packagist.org/packages/doctrine/orm
+[13]: https://packagist.org/packages/mezzio/mezzio-fastroute
+[14]: https://packagist.org/packages/mezzio/mezzio
+[15]: https://packagist.org/packages/monolog/monolog
+[16]: https://packagist.org/packages/ramsey/uuid
+[17]: https://packagist.org/packages/slim/psr7
+[18]: https://packagist.org/packages/symfony/console
+[19]: https://packagist.org/packages/symfony/var-exporter
 
-[60]: src/Core/Collection
-[61]: src/Pet/Collection
+[60]: src/Pet/Collection
 
-[70]: src/Core/Dto
-[71]: src/Pet/Dto
+[70]: src/Pet/Dto
 
-[80]: src/Core/Middleware
-
-[90]: src/Core/Model
-[91]: src/Pet/Model
+[90]: src/Pet/Model
 
 [100]: src/Pet/Orm
 
-[110]: src/Core/Parsing
-[111]: src/Pet/Parsing
+[110]: src/Pet/Parsing
 
-[120]: src/Core/Repository
-[121]: src/Pet/Repository
+[120]: src/Pet/Repository
 
 [130]: src/Core/RequestHandler
 

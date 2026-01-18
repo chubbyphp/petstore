@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Pet\ServiceFactory\RequestHandler\Api\Crud;
+namespace App\Tests\Unit\Pet\ServiceFactory\RequestHandler;
 
-use App\Core\Repository\RepositoryInterface;
-use App\Core\RequestHandler\Api\Crud\DeleteRequestHandler;
 use App\Pet\Repository\PetRepository;
-use App\Pet\ServiceFactory\RequestHandler\Api\Crud\PetDeleteRequestHandlerFactory;
+use App\Pet\ServiceFactory\RequestHandler\PetDeleteRequestHandlerFactory;
+use Chubbyphp\Api\Repository\RepositoryInterface;
+use Chubbyphp\Api\RequestHandler\DeleteRequestHandler;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 
 /**
- * @covers \App\Pet\ServiceFactory\RequestHandler\Api\Crud\PetDeleteRequestHandlerFactory
+ * @covers \App\Pet\ServiceFactory\RequestHandler\PetDeleteRequestHandlerFactory
  *
  * @internal
  */

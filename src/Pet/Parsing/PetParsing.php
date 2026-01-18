@@ -14,10 +14,10 @@ use App\Pet\Dto\Model\PetRequest;
 use App\Pet\Dto\Model\PetResponse;
 use App\Pet\Dto\Model\VaccinationRequest;
 use App\Pet\Dto\Model\VaccinationResponse;
-use Chubbyphp\Framework\Router\UrlGeneratorInterface;
 use Chubbyphp\Parsing\ParserInterface;
 use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 final class PetParsing implements ParsingInterface
 {
@@ -31,7 +31,7 @@ final class PetParsing implements ParsingInterface
 
     public function __construct(
         private readonly ParserInterface $parser,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly RouteParserInterface $routeParser,
     ) {}
 
     public function getCollectionRequestSchema(ServerRequestInterface $request): ObjectSchemaInterface
@@ -83,6 +83,7 @@ final class PetParsing implements ParsingInterface
             ], PetCollectionResponse::class)
                 ->strict()
                 ->postParse(function (PetCollectionResponse $petCollectionResponse) {
+                    /** @var array<string, array<string>|string> $queryParams */
                     $queryParams = [
                         'offset' => $petCollectionResponse->offset,
                         'limit' => $petCollectionResponse->limit,
@@ -92,13 +93,13 @@ final class PetParsing implements ParsingInterface
 
                     $petCollectionResponse->_links = [
                         'list' => [
-                            'href' => $this->urlGenerator->generatePath('pet_list', [], $queryParams),
+                            'href' => $this->routeParser->urlFor('pet_list', [], $queryParams),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'GET'],
                         ],
                         'create' => [
-                            'href' => $this->urlGenerator->generatePath('pet_create'),
+                            'href' => $this->routeParser->urlFor('pet_create'),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'POST'],
@@ -150,19 +151,19 @@ final class PetParsing implements ParsingInterface
                 ->postParse(function (PetResponse $petResponse) {
                     $petResponse->_links = [
                         'read' => [
-                            'href' => $this->urlGenerator->generatePath('pet_read', ['id' => $petResponse->id]),
+                            'href' => $this->routeParser->urlFor('pet_read', ['id' => $petResponse->id]),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'GET'],
                         ],
                         'update' => [
-                            'href' => $this->urlGenerator->generatePath('pet_update', ['id' => $petResponse->id]),
+                            'href' => $this->routeParser->urlFor('pet_update', ['id' => $petResponse->id]),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'PUT'],
                         ],
                         'delete' => [
-                            'href' => $this->urlGenerator->generatePath('pet_delete', ['id' => $petResponse->id]),
+                            'href' => $this->routeParser->urlFor('pet_delete', ['id' => $petResponse->id]),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'DELETE'],

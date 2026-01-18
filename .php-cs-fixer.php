@@ -13,6 +13,8 @@ $finder = PhpCsFixer\Finder::create()
 /** @var array $config */
 $config = require __DIR__ . '/vendor/chubbyphp/chubbyphp-dev-helper/phpcs.php';
 
+$config['rules']['static_lambda'] = false;
+
 return (new PhpCsFixer\Config)
     ->setUnsupportedPhpVersionAllowed(true)
     ->setIndent($config['indent'])

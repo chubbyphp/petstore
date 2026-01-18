@@ -1,12 +1,12 @@
 # petstore
 
-[![CI](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml/badge.svg?branch=chubbyphp)](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml)
-[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=chubbyphp)](https://coveralls.io/github/chubbyphp/petstore?branch=chubbyphp)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%2Fchubbyphp)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/chubbyphp)
+[![CI](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml/badge.svg?branch=slim)](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=slim)](https://coveralls.io/github/chubbyphp/petstore?branch=slim)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%slim)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/slim)
 
 ## Description
 
-A simple skeleton to build api's based on the [chubbyphp-framework][1].
+A simple skeleton to build api's based on the [slim][1] framework.
 
 ## Requirements
 
@@ -14,20 +14,19 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-clean-directories][2]: ^1.5.1
  * [chubbyphp/chubbyphp-cors][3]: ^1.7.1
  * [chubbyphp/chubbyphp-decode-encode][4]: ^1.3.1
- * [chubbyphp/chubbyphp-framework][5]: ^6.0.2
- * [chubbyphp/chubbyphp-framework-router-fastroute][6]: ^2.3.3
- * [chubbyphp/chubbyphp-http-exception][7]: ^1.3.2
- * [chubbyphp/chubbyphp-laminas-config][8]: ^1.5.1
- * [chubbyphp/chubbyphp-laminas-config-doctrine][9]: ^3.1.1
- * [chubbyphp/chubbyphp-laminas-config-factory][10]: ^1.5.1
- * [chubbyphp/chubbyphp-negotiation][11]: ^2.3.1
- * [chubbyphp/chubbyphp-parsing][12]: ^2.1.2
- * [doctrine/orm][13]: ^3.6.1
- * [monolog/monolog][14]: ^3.10
- * [ramsey/uuid][15]: ^4.9.2
- * [slim/psr7][16]: ^1.8
- * [symfony/console][17]: ^7.4.3|^8.0.3
- * [symfony/var-exporter][18]: ^7.4.0|^8.0.0
+ * [chubbyphp/chubbyphp-http-exception][5]: ^1.3.2
+ * [chubbyphp/chubbyphp-laminas-config][6]: ^1.5.1
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][7]: ^3.1.1
+ * [chubbyphp/chubbyphp-laminas-config-factory][8]: ^1.5.1
+ * [chubbyphp/chubbyphp-negotiation][9]: ^2.3.1
+ * [chubbyphp/chubbyphp-parsing][10]: ^2.1.2
+ * [doctrine/orm][11]: ^3.6.1
+ * [monolog/monolog][12]: ^3.10
+ * [ramsey/uuid][13]: ^4.9.2
+ * [slim/psr7][14]: ^1.8
+ * [slim/slim][15]: ^4.15.1
+ * [symfony/console][16]: ^7.4.3|^8.0.3
+ * [symfony/var-exporter][17]: ^7.4.0|^8.0.0
 
 ## Environment
 
@@ -203,24 +202,24 @@ curl -XPUT 'https://admin:98T722Eqw99oqFCSJCnB@localhost:9200/_plugins/_ism/poli
 
 2026 Dominik Zogg
 
-[1]: https://github.com/chubbyphp/chubbyphp-framework
+[1]: https://github.com/slimphp/slim
+
 [2]: https://packagist.org/packages/chubbyphp/chubbyphp-clean-directories
 [3]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
 [4]: https://packagist.org/packages/chubbyphp/chubbyphp-decode-encode
-[5]: https://packagist.org/packages/chubbyphp/chubbyphp-framework
-[6]: https://packagist.org/packages/chubbyphp/chubbyphp-framework-router-fastroute
-[7]: https://packagist.org/packages/chubbyphp/chubbyphp-http-exception
-[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
-[9]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
-[10]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
-[11]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
-[12]: https://packagist.org/packages/chubbyphp/chubbyphp-parsing
-[13]: https://packagist.org/packages/doctrine/orm
-[14]: https://packagist.org/packages/monolog/monolog
-[15]: https://packagist.org/packages/ramsey/uuid
-[16]: https://packagist.org/packages/slim/psr7
-[17]: https://packagist.org/packages/symfony/console
-[18]: https://packagist.org/packages/symfony/var-exporter
+[5]: https://packagist.org/packages/chubbyphp/chubbyphp/chubbyphp-http-exception
+[6]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config
+[7]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-doctrine
+[8]: https://packagist.org/packages/chubbyphp/chubbyphp-laminas-config-factory
+[9]: https://packagist.org/packages/chubbyphp/chubbyphp-negotiation
+[10]: https://packagist.org/packages/chubbyphp/chubbyphp-parsing
+[11]: https://packagist.org/packages/doctrine/orm
+[12]: https://packagist.org/packages/monolog/monolog
+[13]: https://packagist.org/packages/ramsey/uuid
+[14]: https://packagist.org/packages/slim/psr7
+[15]: https://packagist.org/packages/slim/slim
+[16]: https://packagist.org/packages/symfony/console
+[17]: https://packagist.org/packages/symfony/var-exporter
 
 [60]: src/Core/Collection
 [61]: src/Pet/Collection

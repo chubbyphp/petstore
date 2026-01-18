@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Core\ServiceFactory\Framework;
 
-use App\Core\ServiceFactory\Framework\RoutesFactory;
+use App\Core\ServiceFactory\Framework\CallableResolverFactory;
 use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Slim\CallableResolver;
 
 /**
- * @covers \App\Core\ServiceFactory\Framework\RoutesFactory
+ * @covers \App\Core\ServiceFactory\Framework\CallableResolverFactory
  *
  * @internal
  */
-final class RoutesFactoryTest extends TestCase
+final class CallableResolverFactoryTest extends TestCase
 {
     public function testInvoke(): void
     {
@@ -23,8 +24,8 @@ final class RoutesFactoryTest extends TestCase
         /** @var ContainerInterface $container */
         $container = $builder->create(ContainerInterface::class, []);
 
-        $factory = new RoutesFactory();
+        $factory = new CallableResolverFactory();
 
-        self::assertEquals([], $factory($container));
+        self::assertInstanceOf(CallableResolver::class, $factory($container));
     }
 }

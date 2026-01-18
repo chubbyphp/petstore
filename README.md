@@ -97,44 +97,49 @@ composer setup:dev
 
 Collections are sortable, filterable paginated lists of models.
 
- * [App\Collection][60]
+ * [App\Core\Collection][60]
+ * [App\Pet\Collection][61]
 
 ### Dto
 
 A DTO, or Data Transfer Object, is a simple object used to transport data between software application components.
 
- * [App\Dto][70]
+ * [App\Core\Dto][70]
+ * [App\Pet\Dto][71]
 
 ### Middleware
 
 Middleware functions can execute code, make changes to the request and response objects.
 Middleware can generally be added globally or on a per-route basis.
 
- * [App\Middleware][80]
+ * [App\Core\Middleware][80]
 
 ### Model
 
 Models, entities, documents what ever fits your purpose the best.
 
- * [App\Model][90]
+ * [App\Core\Model][90]
+ * [App\Pet\Model][91]
 
 ### ORM
 
 ORM Mapping definitions.
 
- * [App\ORM][100]
+ * [App\Pet\Orm][100]
 
 ### Parsing
 
 Parses and validates data against predefined schemas, ensuring that incoming data conforms to expected structures and criteria.
 
- * [App\Parsing][110]
+ * [App\Core\Parsing][110]
+ * [App\Pet\Parsing][111]
 
 ### Repository
 
 Repositories get data from storages like databases, elasticsearch, redis or whereever your models are stored or cached.
 
- * [App\Repository][120]
+ * [App\Core\Repository][120]
+ * [App\Pet\Repository][121]
 
 ### RequestHandler
 
@@ -142,13 +147,14 @@ RequestHandler alias Controller, or Controller actions to be more precise.
 There is a directory with generic crud controllers. If you like the idea adapt them for your generic use case, if not drop them.
 I highly recommend to not extend them.
 
- * [App\RequestHandler][130]
+ * [App\Core\RequestHandler][130]
 
 ### ServiceFactory
 
 Service factories are the glue code of the dependeny injection container.
 
- * [App\ServiceFactory][140]
+ * [App\Core\ServiceFactory][140]
+ * [App\Pet\ServiceFactory][141]
 
 ## Opensearch
 
@@ -217,22 +223,26 @@ curl -XPUT 'https://admin:98T722Eqw99oqFCSJCnB@localhost:9200/_plugins/_ism/poli
 [17]: https://packagist.org/packages/symfony/console
 [18]: https://packagist.org/packages/symfony/var-exporter
 
-[40]: https://packagist.org/packages/chubbyphp/petstore
+[60]: src/Core/Collection
+[61]: src/Pet/Collection
 
-[60]: src/Collection
+[70]: src/Core/Dto
+[71]: src/Pet/Dto
 
-[70]: src/Dto
+[80]: src/Core/Middleware
 
-[80]: src/Middleware
+[90]: src/Core/Model
+[91]: src/Pet/Model
 
-[90]: src/Model
+[100]: src/Pet/Orm
 
-[100]: src/Orm
+[110]: src/Core/Parsing
+[111]: src/Pet/Parsing
 
-[110]: src/Parsing
+[120]: src/Core/Repository
+[121]: src/Pet/Repository
 
-[120]: src/Repository
+[130]: src/Core/RequestHandler
 
-[130]: src/RequestHandler
-
-[140]: src/ServiceFactory
+[140]: src/Core/ServiceFactory
+[141]: src/Pet/ServiceFactory

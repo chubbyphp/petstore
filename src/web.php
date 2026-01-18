@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Middleware\ApiExceptionMiddleware;
-use App\Model\Pet;
-use App\RequestHandler\Api\Crud\CreateRequestHandler;
-use App\RequestHandler\Api\Crud\DeleteRequestHandler;
-use App\RequestHandler\Api\Crud\ListRequestHandler;
-use App\RequestHandler\Api\Crud\ReadRequestHandler;
-use App\RequestHandler\Api\Crud\UpdateRequestHandler;
-use App\RequestHandler\OpenapiRequestHandler;
-use App\RequestHandler\PingRequestHandler;
+use App\Core\Middleware\ApiExceptionMiddleware;
+use App\Core\RequestHandler\Api\Crud\CreateRequestHandler;
+use App\Core\RequestHandler\Api\Crud\DeleteRequestHandler;
+use App\Core\RequestHandler\Api\Crud\ListRequestHandler;
+use App\Core\RequestHandler\Api\Crud\ReadRequestHandler;
+use App\Core\RequestHandler\Api\Crud\UpdateRequestHandler;
+use App\Core\RequestHandler\OpenapiRequestHandler;
+use App\Core\RequestHandler\PingRequestHandler;
+use App\Pet\Model\Pet;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
 use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;

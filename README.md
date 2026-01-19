@@ -87,9 +87,11 @@ composer setup:dev
 * PUT https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
 * DELETE https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
 
-### DBs
+### Database
 
- * jdbc:mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@localhost:27017/petstore
+```sh
+mongosh "mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@localhost:27017/petstore?authMechanism=DEFAULT&authSource=admin"
+```
 
 ## Structure
 

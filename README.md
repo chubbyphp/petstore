@@ -88,9 +88,11 @@ composer setup:dev
 * PUT https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
 * DELETE https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
 
-### DBs
+### Database
 
- * jdbc:postgresql://localhost:5432/petstore?user=root&password=root
+```sh
+psql "postgresql://petstore:4aAUfBjDACcdZxNwJgJ6@localhost:5432/petstore"
+```
 
 ## Structure
 

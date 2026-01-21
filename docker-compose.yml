@@ -60,7 +60,7 @@ services:
   nginx:
     container_name: chubbyphp-petstore-nginx
     hostname: chubbyphp-petstore-nginx
-    image: nginx
+    image: nginx:1
     environment:
       SERVER_PORT: '443'
       PHP_FPM_SERVER_HOST: 'php'

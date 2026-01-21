@@ -15,6 +15,8 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 final class PetRepository implements RepositoryInterface
 {
+    private const string TYPE_ERROR_PATTERN = '%s() expects parameter 1 to be %s, %s given';
+
     public function __construct(private readonly DocumentManager $documentManager) {}
 
     /**
@@ -25,7 +27,7 @@ final class PetRepository implements RepositoryInterface
         if (!$petCollection instanceof PetCollection) {
             throw new \TypeError(
                 \sprintf(
-                    '%s() expects parameter 1 to be %s, %s given',
+                    self::TYPE_ERROR_PATTERN,
                     __METHOD__,
                     PetCollection::class,
                     $petCollection::class
@@ -77,7 +79,7 @@ final class PetRepository implements RepositoryInterface
         if (!$pet instanceof Pet) {
             throw new \TypeError(
                 \sprintf(
-                    '%s() expects parameter 1 to be %s, %s given',
+                    self::TYPE_ERROR_PATTERN,
                     __METHOD__,
                     Pet::class,
                     $pet::class
@@ -93,7 +95,7 @@ final class PetRepository implements RepositoryInterface
         if (!$pet instanceof Pet) {
             throw new \TypeError(
                 \sprintf(
-                    '%s() expects parameter 1 to be %s, %s given',
+                    self::TYPE_ERROR_PATTERN,
                     __METHOD__,
                     Pet::class,
                     $pet::class

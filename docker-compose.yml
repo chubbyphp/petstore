@@ -1,3 +1,4 @@
+name: chubbyphp-petstore
 services:
   php:
     container_name: chubbyphp-petstore-php

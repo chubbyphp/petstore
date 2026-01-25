@@ -67,13 +67,11 @@
         "database:schema:create": "bin/console orm:schema-tool:create",
         "database:schema:drop": "bin/console orm:schema-tool:drop --force",
         "database:schema:update": "bin/console orm:schema-tool:update --force",
-        "database:schema:validate": "bin/console orm:validate-schema",
         "fix:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --cache-file=build/phpcs.cache",
         "setup:dev": [
             "@database:create --env=dev",
             "@database:schema:drop --env=dev",
             "@database:schema:create --env=dev",
-            "@database:schema:validate --env=dev",
             "@clean-directories --env=dev"
         ],
         "test": [

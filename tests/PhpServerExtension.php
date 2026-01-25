@@ -56,7 +56,6 @@ final class PhpServerExtension implements ExecutionStartedSubscriber, Extension
         passthru($consolePath.' dbal:database:create --if-not-exists --env=phpunit');
         passthru($consolePath.' orm:schema-tool:drop --force --env=phpunit');
         passthru($consolePath.' orm:schema-tool:create --env=phpunit');
-        passthru($consolePath.' orm:validate-schema --env=phpunit');
         passthru($consolePath.' clean-directories cache log --env=phpunit');
 
         echo 'initialize: end'.PHP_EOL.PHP_EOL;

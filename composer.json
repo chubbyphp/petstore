@@ -65,23 +65,17 @@
     "scripts": {
         "clean-directories": "bin/console clean-directories cache log",
         "database:create": "bin/console dbal:database:create --if-not-exists",
-        "database:drop": "bin/console dbal:database:drop --if-exists --force",
-        "database:schema:update": "bin/console orm:schema-tool:update --force --dump-sql",
+        "database:schema:create": "bin/console orm:schema-tool:create",
+        "database:schema:drop": "bin/console orm:schema-tool:drop --force",
+        "database:schema:update": "bin/console orm:schema-tool:update --force",
         "database:schema:validate": "bin/console orm:validate-schema",
         "fix:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --cache-file=build/phpcs.cache",
         "setup:dev": [
-            "@database:drop --env=dev",
             "@database:create --env=dev",
-            "@database:schema:update --env=dev",
+            "@database:schema:drop --env=dev",
+            "@database:schema:create --env=dev",
             "@database:schema:validate --env=dev",
             "@clean-directories --env=dev"
-        ],
-        "setup:phpunit": [
-            "@database:drop --env=phpunit",
-            "@database:create --env=phpunit",
-            "@database:schema:update --env=phpunit",
-            "@database:schema:validate --env=phpunit",
-            "@clean-directories --env=phpunit"
         ],
         "test": [
             "@test:lint",

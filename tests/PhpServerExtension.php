@@ -54,8 +54,7 @@ final class PhpServerExtension implements ExecutionStartedSubscriber, Extension
         echo 'initialize: start'.PHP_EOL;
 
         passthru($consolePath.' odm:schema:drop --db --env=phpunit');
-        passthru($consolePath.' odm:schema:update --env=phpunit');
-
+        passthru($consolePath.' odm:schema:create --env=phpunit');
         passthru($consolePath.' clean-directories cache log --env=phpunit');
 
         echo 'initialize: end'.PHP_EOL.PHP_EOL;

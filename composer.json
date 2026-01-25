@@ -62,19 +62,14 @@
     },
     "scripts": {
         "clean-directories": "bin/console clean-directories cache log",
+        "database:schema:create": "bin/console odm:schema:create",
         "database:schema:drop": "bin/console odm:schema:drop --db",
         "database:schema:update": "bin/console odm:schema:update",
-        "database:schema:validate": "bin/console odm:schema:validate",
         "fix:cs": "mkdir -p build && vendor/bin/php-cs-fixer fix --cache-file=build/phpcs.cache",
         "setup:dev": [
             "@database:schema:drop --env=dev",
-            "@database:schema:update --env=dev",
+            "@database:schema:create --env=dev",
             "@clean-directories --env=dev"
-        ],
-        "setup:phpunit": [
-            "@database:schema:drop --env=phpunit",
-            "@database:schema:update --env=phpunit",
-            "@clean-directories --env=phpunit"
         ],
         "test": [
             "@test:lint",

@@ -7,7 +7,6 @@ namespace App\Tests\Unit\Core\ServiceFactory\Command;
 use App\Core\ServiceFactory\Command\CommandsFactory;
 use Chubbyphp\CleanDirectories\Command\CleanDirectoriesCommand;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
-use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
@@ -66,7 +65,6 @@ final class CommandsFactoryTest extends TestCase
 
         $cleanDirectoriesCommand = array_shift($commands);
         $databaseCreateCommand = array_shift($commands);
-        $databaseDropCommand = array_shift($commands);
         $runSqlCommand = array_shift($commands);
         $collectionRegionCommand = array_shift($commands);
         $entityRegionCommand = array_shift($commands);
@@ -87,7 +85,6 @@ final class CommandsFactoryTest extends TestCase
 
         self::assertInstanceOf(CleanDirectoriesCommand::class, $cleanDirectoriesCommand);
         self::assertInstanceOf(DatabaseCreateCommand::class, $databaseCreateCommand);
-        self::assertInstanceOf(DatabaseDropCommand::class, $databaseDropCommand);
         self::assertInstanceOf(RunSqlCommand::class, $runSqlCommand);
         self::assertInstanceOf(CollectionRegionCommand::class, $collectionRegionCommand);
         self::assertInstanceOf(EntityRegionCommand::class, $entityRegionCommand);

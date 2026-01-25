@@ -6,7 +6,6 @@ namespace App\Core\ServiceFactory\Command;
 
 use Chubbyphp\CleanDirectories\ServiceFactory\CleanDirectoriesCommandFactory;
 use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\CreateCommand as DatabaseCreateCommand;
-use Chubbyphp\Laminas\Config\Doctrine\DBAL\Tools\Console\Command\Database\DropCommand as DatabaseDropCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\CollectionRegionCommand;
@@ -43,7 +42,6 @@ final class CommandsFactory
         return [
             (new CleanDirectoriesCommandFactory())($container),
             new DatabaseCreateCommand($connectionProvider),
-            new DatabaseDropCommand($connectionProvider),
             new RunSqlCommand($connectionProvider),
             new CollectionRegionCommand($entityManagerProvider),
             new EntityRegionCommand($entityManagerProvider),

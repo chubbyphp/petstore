@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Pet\Dto\Model;
 use App\Pet\Dto\Model\PetRequest;
 use App\Pet\Dto\Model\VaccinationRequest;
 use App\Pet\Model\Pet;
+use App\Tests\Helper\PatternHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,7 +35,7 @@ final class PetRequestTest extends TestCase
 
         $petData = $pet->jsonSerialize();
 
-        self::assertMatchesRegularExpression('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-(8|9|a|b)[0-9a-f]{3}-[0-9a-f]{12}$/i', $petData['id']);
+        self::assertMatchesRegularExpression(PatternHelper::UUID_PATTERN, $petData['id']);
         self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/', $petData['createdAt']->format('c'));
         self::assertNull($petData['updatedAt']);
         self::assertSame('jerry', $petData['name']);
@@ -65,7 +66,7 @@ final class PetRequestTest extends TestCase
 
         $petData = $pet->jsonSerialize();
 
-        self::assertMatchesRegularExpression('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-(8|9|a|b)[0-9a-f]{3}-[0-9a-f]{12}$/i', $petData['id']);
+        self::assertMatchesRegularExpression(PatternHelper::UUID_PATTERN, $petData['id']);
         self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/', $petData['createdAt']->format('c'));
         self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/', $petData['updatedAt']->format('c'));
         self::assertSame('jerry', $petData['name']);

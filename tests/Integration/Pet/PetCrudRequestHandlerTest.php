@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Pet;
 
+use App\Tests\Helper\PatternHelper;
 use App\Tests\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -569,11 +570,11 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
         self::assertArrayHasKey('delete', $pet['_links']);
         self::assertArrayHasKey('_type', $pet);
 
-        self::assertMatchesRegularExpression(self::UUID_PATTERN, $pet['id']);
-        self::assertMatchesRegularExpression(self::DATE_PATTERN, $pet['createdAt']);
+        self::assertMatchesRegularExpression(PatternHelper::UUID_PATTERN, $pet['id']);
+        self::assertMatchesRegularExpression(PatternHelper::DATE_PATTERN, $pet['createdAt']);
 
         if ($updated) {
-            self::assertMatchesRegularExpression(self::DATE_PATTERN, $pet['updatedAt']);
+            self::assertMatchesRegularExpression(PatternHelper::DATE_PATTERN, $pet['updatedAt']);
         } else {
             self::assertNull($pet['updatedAt']);
         }

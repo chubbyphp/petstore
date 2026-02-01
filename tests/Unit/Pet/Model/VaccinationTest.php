@@ -6,6 +6,7 @@ namespace App\Tests\Unit\Pet\Model;
 
 use App\Pet\Model\Pet;
 use App\Pet\Model\Vaccination;
+use App\Tests\Helper\PatternHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,7 +20,7 @@ final class VaccinationTest extends TestCase
     {
         $vaccination = new Vaccination();
 
-        self::assertMatchesRegularExpression('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $vaccination->getId());
+        self::assertMatchesRegularExpression(PatternHelper::UUID_PATTERN, $vaccination->getId());
 
         $pet = new Pet();
 

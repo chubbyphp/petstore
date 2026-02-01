@@ -28,7 +28,7 @@ final class Pet implements ModelInterface
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = Uuid::uuid7()->toString();
         $this->createdAt = new \DateTimeImmutable();
         $this->vaccinations = new ArrayCollection();
     }

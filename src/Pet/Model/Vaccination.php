@@ -16,7 +16,7 @@ final class Vaccination implements \JsonSerializable
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = Uuid::uuid7()->toString();
     }
 
     public function getId(): string

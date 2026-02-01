@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Pet\Model;
 use App\Pet\Model\Pet;
 use App\Pet\Model\Vaccination;
 use App\Tests\Helper\AssertHelper;
+use App\Tests\Helper\PatternHelper;
 use Chubbyphp\Api\Model\ModelInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,7 @@ final class PetTest extends TestCase
 
         self::assertInstanceOf(ModelInterface::class, $pet);
 
-        self::assertMatchesRegularExpression('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $pet->getId());
+        self::assertMatchesRegularExpression(PatternHelper::UUID_PATTERN, $pet->getId());
         self::assertInstanceOf(\DateTimeImmutable::class, $pet->getCreatedAt());
         self::assertNull($pet->getUpdatedAt());
         self::assertNull($pet->getTag());

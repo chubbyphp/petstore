@@ -34,7 +34,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-doctrine][10]: ^3.1.1
  * [chubbyphp/chubbyphp-laminas-config-factory][11]: ^1.5.1
  * [chubbyphp/chubbyphp-negotiation][12]: ^2.3.1
- * [chubbyphp/chubbyphp-parsing][13]: ^2.1.2
+ * [chubbyphp/chubbyphp-parsing][13]: ^2.4
  * [doctrine/orm][14]: ^3.6.1
  * [monolog/monolog][15]: ^3.10
  * [ramsey/uuid][16]: ^4.9.2
@@ -96,9 +96,9 @@ composer setup:dev
 
 * GET https://localhost/api/pets?sort[name]=asc
 * POST https://localhost/api/pets
-* GET https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
-* PUT https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
-* DELETE https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
+* GET https://localhost/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d
+* PUT https://localhost/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d
+* DELETE https://localhost/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d
 
 ### Database
 

@@ -15,6 +15,7 @@ use App\Pet\Dto\Model\VaccinationResponse;
 use Chubbyphp\Api\Collection\CollectionInterface;
 use Chubbyphp\Api\Parsing\ParsingInterface;
 use Chubbyphp\Framework\Router\UrlGeneratorInterface;
+use Chubbyphp\Parsing\Enum\Uuid;
 use Chubbyphp\Parsing\ParserInterface;
 use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -136,7 +137,7 @@ final class PetParsing implements ParsingInterface
             $p = $this->parser;
 
             $this->modelResponseSchema = $p->object([
-                'id' => $p->string(),
+                'id' => $p->string()->uuid(Uuid::v7),
                 'createdAt' => $p->dateTime()->toString(),
                 'updatedAt' => $p->dateTime()->nullable()->toString(),
                 'name' => $p->string(),

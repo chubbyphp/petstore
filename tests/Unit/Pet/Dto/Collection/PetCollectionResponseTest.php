@@ -33,11 +33,11 @@ final class PetCollectionResponseTest extends TestCase
         $vaccinationResponse->_type = 'vaccination';
 
         $petResponse = new PetResponse();
-        $petResponse->id = '93c75323-38a2-4c89-b500-7fc5d9f0c602';
+        $petResponse->id = '019c201f-6a83-7696-9899-50fbf7b2278d';
         $petResponse->createdAt = '2024-02-10T18:15:00+00:00';
         $petResponse->updatedAt = '2024-02-10T18:15:00+00:00';
         $petResponse->name = 'jerry';
-        $petResponse->tag = 'efd3c6a6-a12e-4551-bf89-62727fba0d92';
+        $petResponse->tag = 'tag';
         $petResponse->vaccinations = [$vaccinationResponse];
         $petResponse->_type = 'pet';
         $petResponse->_links = [];
@@ -63,11 +63,11 @@ final class PetCollectionResponseTest extends TestCase
             ],
             'items' => [
                 [
-                    'id' => '93c75323-38a2-4c89-b500-7fc5d9f0c602',
+                    'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
                     'createdAt' => '2024-02-10T18:15:00+00:00',
                     'updatedAt' => '2024-02-10T18:15:00+00:00',
                     'name' => 'jerry',
-                    'tag' => 'efd3c6a6-a12e-4551-bf89-62727fba0d92',
+                    'tag' => 'tag',
                     'vaccinations' => [
                         [
                             'name' => 'rabid',

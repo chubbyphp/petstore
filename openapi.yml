@@ -480,7 +480,7 @@ components:
             id:
               type: string
               format: uuid
-              example: c9b6657d-3809-45cf-9bf1-a0ccb31e0158
+              example: 019c201f-6a83-7696-9899-50fbf7b2278d
             createdAt:
               type: string
               format: datetime
@@ -500,7 +500,7 @@ components:
                   properties:
                     href:
                       type: string
-                      example: '/pets/c9b6657d-3809-45cf-9bf1-a0ccb31e0158'
+                      example: '/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
                     templated:
                       type: boolean
                       example: false
@@ -517,7 +517,7 @@ components:
                   properties:
                     href:
                       type: string
-                      example: '/pets/c9b6657d-3809-45cf-9bf1-a0ccb31e0158'
+                      example: '/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
                     templated:
                       type: boolean
                       example: false
@@ -534,7 +534,7 @@ components:
                   properties:
                     href:
                       type: string
-                      example: '/pets/c9b6657d-3809-45cf-9bf1-a0ccb31e0158'
+                      example: '/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
                     templated:
                       type: boolean
                       example: false

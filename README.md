@@ -32,7 +32,7 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-laminas-config-doctrine][8]: ^3.1
  * [chubbyphp/chubbyphp-laminas-config-factory][9]: ^1.5
  * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.1
- * [chubbyphp/chubbyphp-parsing][11]: ^2.1.2
+ * [chubbyphp/chubbyphp-parsing][11]: ^2.4
  * [doctrine/orm][12]: ^3.6.1
  * [mezzio/mezzio-fastroute][13]: ^3.14
  * [mezzio/mezzio][14]: ^3.27
@@ -96,9 +96,9 @@ composer setup:dev
 
 * GET https://localhost/api/pets?sort[name]=asc
 * POST https://localhost/api/pets
-* GET https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
-* PUT https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
-* DELETE https://localhost/api/pets/8ba9661b-ba7f-436b-bd25-c0606f911f7d
+* GET https://localhost/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d
+* PUT https://localhost/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d
+* DELETE https://localhost/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d
 
 ### Database
 

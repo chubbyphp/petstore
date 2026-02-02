@@ -25,7 +25,7 @@ final class PetRequestTest extends TestCase
 
         $petRequest = new PetRequest();
         $petRequest->name = 'jerry';
-        $petRequest->tag = 'efd3c6a6-a12e-4551-bf89-62727fba0d92';
+        $petRequest->tag = '019c201f-6a83-7696-9899-50fbf7b2278d';
         $petRequest->vaccinations = [$vaccinationRequest];
 
         /** @var Pet $pet */
@@ -39,7 +39,7 @@ final class PetRequestTest extends TestCase
         self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/', $petData['createdAt']->format('c'));
         self::assertNull($petData['updatedAt']);
         self::assertSame('jerry', $petData['name']);
-        self::assertSame('efd3c6a6-a12e-4551-bf89-62727fba0d92', $petData['tag']);
+        self::assertSame('019c201f-6a83-7696-9899-50fbf7b2278d', $petData['tag']);
         self::assertSame([
             [
                 'name' => 'rabid',
@@ -54,7 +54,7 @@ final class PetRequestTest extends TestCase
 
         $petRequest = new PetRequest();
         $petRequest->name = 'jerry';
-        $petRequest->tag = 'efd3c6a6-a12e-4551-bf89-62727fba0d92';
+        $petRequest->tag = '019c201f-6a83-7696-9899-50fbf7b2278d';
         $petRequest->vaccinations = [$vaccinationRequest];
 
         $pet = new Pet();
@@ -70,7 +70,7 @@ final class PetRequestTest extends TestCase
         self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/', $petData['createdAt']->format('c'));
         self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/', $petData['updatedAt']->format('c'));
         self::assertSame('jerry', $petData['name']);
-        self::assertSame('efd3c6a6-a12e-4551-bf89-62727fba0d92', $petData['tag']);
+        self::assertSame('019c201f-6a83-7696-9899-50fbf7b2278d', $petData['tag']);
         self::assertSame([
             [
                 'name' => 'rabid',

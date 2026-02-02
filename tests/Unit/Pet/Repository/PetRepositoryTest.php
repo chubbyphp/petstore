@@ -132,12 +132,12 @@ final class PetRepositoryTest extends TestCase
 
         /** @var EntityManager $entityManager */
         $entityManager = $builder->create(EntityManager::class, [
-            new WithReturn('find', [Pet::class, '86c78085-edaf-4df9-95d0-563e45acf618', null, null], $pet),
+            new WithReturn('find', [Pet::class, '019c201f-6a83-7696-9899-50fbf7b2278d', null, null], $pet),
         ]);
 
         $repository = new PetRepository($entityManager);
 
-        self::assertSame($pet, $repository->findById('86c78085-edaf-4df9-95d0-563e45acf618'));
+        self::assertSame($pet, $repository->findById('019c201f-6a83-7696-9899-50fbf7b2278d'));
     }
 
     public function testPersistWithWrongModel(): void

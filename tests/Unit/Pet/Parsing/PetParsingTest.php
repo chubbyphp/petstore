@@ -83,18 +83,18 @@ final class PetParsingTest extends TestCase
         $router = $builder->create(RouterInterface::class, [
             new WithReturn(
                 'generateUri',
-                ['pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
-                ['pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
-                ['pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
@@ -109,18 +109,18 @@ final class PetParsingTest extends TestCase
             // Duplicate calls as in the original test
             new WithReturn(
                 'generateUri',
-                ['pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
-                ['pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
-                ['pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
@@ -144,7 +144,7 @@ final class PetParsingTest extends TestCase
             'sort' => [],
             'items' => [
                 [
-                    'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+                    'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
                     'createdAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
                     'updatedAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
                     'name' => 'jerry',
@@ -166,7 +166,7 @@ final class PetParsingTest extends TestCase
             ],
             'items' => [
                 0 => [
-                    'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+                    'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
                     'createdAt' => '2024-01-20T09:15:00+00:00',
                     'updatedAt' => '2024-01-20T09:15:00+00:00',
                     'name' => 'jerry',
@@ -175,7 +175,7 @@ final class PetParsingTest extends TestCase
                     '_type' => 'pet',
                     '_links' => [
                         'read' => [
-                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                             'templated' => false,
                             'rel' => [],
                             'attributes' => [
@@ -183,7 +183,7 @@ final class PetParsingTest extends TestCase
                             ],
                         ],
                         'update' => [
-                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                             'templated' => false,
                             'rel' => [],
                             'attributes' => [
@@ -191,7 +191,7 @@ final class PetParsingTest extends TestCase
                             ],
                         ],
                         'delete' => [
-                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                             'templated' => false,
                             'rel' => [],
                             'attributes' => [
@@ -231,7 +231,7 @@ final class PetParsingTest extends TestCase
             'sort' => ['name' => 'asc'],
             'items' => [
                 [
-                    'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+                    'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
                     'createdAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
                     'updatedAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
                     'name' => 'jerry',
@@ -253,7 +253,7 @@ final class PetParsingTest extends TestCase
             ],
             'items' => [
                 0 => [
-                    'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+                    'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
                     'createdAt' => '2024-01-20T09:15:00+00:00',
                     'updatedAt' => '2024-01-20T09:15:00+00:00',
                     'name' => 'jerry',
@@ -262,7 +262,7 @@ final class PetParsingTest extends TestCase
                     '_type' => 'pet',
                     '_links' => [
                         'read' => [
-                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                             'templated' => false,
                             'rel' => [],
                             'attributes' => [
@@ -270,7 +270,7 @@ final class PetParsingTest extends TestCase
                             ],
                         ],
                         'update' => [
-                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                             'templated' => false,
                             'rel' => [],
                             'attributes' => [
@@ -278,7 +278,7 @@ final class PetParsingTest extends TestCase
                             ],
                         ],
                         'delete' => [
-                            'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                            'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                             'templated' => false,
                             'rel' => [],
                             'attributes' => [
@@ -336,7 +336,7 @@ final class PetParsingTest extends TestCase
         ], json_decode(json_encode($petRequestMinimal), true));
 
         $petRequestMaximal = $petParsing->getModelRequestSchema($request)->parse([
-            'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+            'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
             'createdAt' => '2024-01-20T09:15:00+00:00',
             'updatedAt' => '2024-01-20T09:15:00+00:00',
             'name' => 'jerry',
@@ -420,18 +420,18 @@ final class PetParsingTest extends TestCase
         $router = $builder->create(RouterInterface::class, [
             new WithReturn(
                 'generateUri',
-                ['pet_read', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
-                ['pet_update', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
                 'generateUri',
-                ['pet_delete', ['id' => 'f8b51629-d105-401e-8872-bebd9911709a'], []],
-                '/api/pets/f8b51629-d105-401e-8872-bebd9911709a'
+                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
         ]);
 
@@ -439,7 +439,7 @@ final class PetParsingTest extends TestCase
 
         /** @var PetResponse $petResponse */
         $petResponse = $petParsing->getModelResponseSchema($request)->parse([
-            'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+            'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
             'createdAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
             'updatedAt' => new \DateTimeImmutable('2024-01-20T09:15:00+00:00'),
             'name' => 'jerry',
@@ -451,7 +451,7 @@ final class PetParsingTest extends TestCase
         ]);
 
         self::assertSame([
-            'id' => 'f8b51629-d105-401e-8872-bebd9911709a',
+            'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
             'createdAt' => '2024-01-20T09:15:00+00:00',
             'updatedAt' => '2024-01-20T09:15:00+00:00',
             'name' => 'jerry',
@@ -469,7 +469,7 @@ final class PetParsingTest extends TestCase
             '_type' => 'pet',
             '_links' => [
                 'read' => [
-                    'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                    'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                     'templated' => false,
                     'rel' => [],
                     'attributes' => [
@@ -477,7 +477,7 @@ final class PetParsingTest extends TestCase
                     ],
                 ],
                 'update' => [
-                    'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                    'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                     'templated' => false,
                     'rel' => [],
                     'attributes' => [
@@ -485,7 +485,7 @@ final class PetParsingTest extends TestCase
                     ],
                 ],
                 'delete' => [
-                    'href' => '/api/pets/f8b51629-d105-401e-8872-bebd9911709a',
+                    'href' => '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
                     'templated' => false,
                     'rel' => [],
                     'attributes' => [

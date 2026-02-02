@@ -252,7 +252,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
+            '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
                 'Accept' => 'text/html',
             ]
@@ -265,7 +265,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
     {
         $response = $this->httpRequest(
             'GET',
-            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
+            '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
                 'Accept' => 'application/json',
             ]
@@ -316,7 +316,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
     {
         $response = $this->httpRequest(
             'PUT',
-            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
+            '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
                 'Accept' => 'text/html',
             ]
@@ -329,7 +329,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
     {
         $response = $this->httpRequest(
             'PUT',
-            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
+            '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'text/html',
@@ -363,7 +363,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
     {
         $response = $this->httpRequest(
             'PUT',
-            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
+            '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -483,7 +483,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
     {
         $response = $this->httpRequest(
             'DELETE',
-            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
+            '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
                 'Accept' => 'text/html',
             ]
@@ -496,7 +496,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
     {
         $response = $this->httpRequest(
             'DELETE',
-            '/api/pets/e19a00b4-241e-4241-a641-bac2a4a65f64',
+            '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
                 'Accept' => 'application/json',
             ]

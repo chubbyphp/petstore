@@ -74,7 +74,7 @@ final class Pet implements ModelInterface
     }
 
     /**
-     * @param array<int, Vaccination> $vaccinations
+     * @param list<Vaccination> $vaccinations
      */
     public function setVaccinations(array $vaccinations): void
     {
@@ -90,7 +90,7 @@ final class Pet implements ModelInterface
     }
 
     /**
-     * @return array<int, Vaccination>
+     * @return list<Vaccination>
      */
     public function getVaccinations(): array
     {

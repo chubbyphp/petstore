@@ -14,7 +14,7 @@ use Psr\Http\Server\MiddlewareInterface;
 final class MiddlewaresFactory
 {
     /**
-     * @return array<int, MiddlewareInterface>
+     * @return list<MiddlewareInterface>
      */
     public function __invoke(ContainerInterface $container): array
     {

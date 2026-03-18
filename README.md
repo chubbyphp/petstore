@@ -32,14 +32,14 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [chubbyphp/chubbyphp-laminas-config-doctrine][8]: ^3.1.1
  * [chubbyphp/chubbyphp-laminas-config-factory][9]: ^1.5.1
  * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.1
- * [chubbyphp/chubbyphp-parsing][11]: ^2.4
- * [doctrine/orm][12]: ^3.6.1
+ * [chubbyphp/chubbyphp-parsing][11]: ^2.5
+ * [doctrine/orm][12]: ^3.6.2
  * [monolog/monolog][13]: ^3.10
  * [ramsey/uuid][14]: ^4.9.2
  * [slim/psr7][15]: ^1.8
  * [slim/slim][16]: ^4.15.1
- * [symfony/console][17]: ^7.4.3|^8.0.3
- * [symfony/var-exporter][18]: ^7.4.0|^8.0.0
+ * [symfony/console][17]: ^7.4.7|^8.0.7
+ * [symfony/var-exporter][18]: ^7.4|^8.0
 
 ## Environment
 

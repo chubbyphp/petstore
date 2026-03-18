@@ -51,8 +51,8 @@ final class PetParsing implements ParsingInterface
                 ], PetCollectionFilters::class)->strict()->default([]),
                 'sort' => $p->object([
                     'name' => $p->union([
-                        $p->literal('asc'),
-                        $p->literal('desc'),
+                        $p->const('asc'),
+                        $p->const('desc'),
                     ])->nullable()->default(null),
                 ], PetCollectionSort::class)->strict()->default([]),
             ], PetCollectionRequest::class)->strict();
@@ -74,13 +74,13 @@ final class PetParsing implements ParsingInterface
                 ], PetCollectionFilters::class)->strict(),
                 'sort' => $p->object([
                     'name' => $p->union([
-                        $p->literal('asc'),
-                        $p->literal('desc'),
+                        $p->const('asc'),
+                        $p->const('desc'),
                     ])->nullable()->default(null),
                 ], PetCollectionSort::class)->strict(),
                 'items' => $p->array($this->getModelResponseSchema($request)),
                 'count' => $p->int(),
-                '_type' => $p->literal('petCollection')->default('petCollection'),
+                '_type' => $p->const('petCollection')->default('petCollection'),
             ], PetCollectionResponse::class)
                 ->strict()
                 ->postParse(function (PetCollectionResponse $petCollectionResponse) {
@@ -145,9 +145,9 @@ final class PetParsing implements ParsingInterface
                 'tag' => $p->string()->nullable(),
                 'vaccinations' => $p->array($p->object([
                     'name' => $p->string(),
-                    '_type' => $p->literal('vaccination')->default('vaccination'),
+                    '_type' => $p->const('vaccination')->default('vaccination'),
                 ], VaccinationResponse::class)->strict()),
-                '_type' => $p->literal('pet')->default('pet'),
+                '_type' => $p->const('pet')->default('pet'),
             ], PetResponse::class)->strict()
                 ->postParse(function (PetResponse $petResponse) {
                     $petResponse->_links = [

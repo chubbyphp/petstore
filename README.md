@@ -34,13 +34,13 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-doctrine][10]: ^3.1.1
  * [chubbyphp/chubbyphp-laminas-config-factory][11]: ^1.5.1
  * [chubbyphp/chubbyphp-negotiation][12]: ^2.3.1
- * [chubbyphp/chubbyphp-parsing][13]: ^2.4
- * [doctrine/orm][14]: ^3.6.1
+ * [chubbyphp/chubbyphp-parsing][13]: ^2.5
+ * [doctrine/orm][14]: ^3.6.2
  * [monolog/monolog][15]: ^3.10
  * [ramsey/uuid][16]: ^4.9.2
  * [slim/psr7][17]: ^1.8
- * [symfony/console][18]: ^7.4.3|^8.0.3
- * [symfony/var-exporter][19]: ^7.4.0|^8.0.0
+ * [symfony/console][18]: ^7.4.7|^8.0.7
+ * [symfony/var-exporter][19]: ^7.4|^8.0
 
 ## Environment
 

@@ -6,10 +6,7 @@ namespace App\Pet\Dto\Model;
 
 use Chubbyphp\Api\Dto\Model\ModelResponseInterface;
 
-/**
- * @implements \IteratorAggregate<string, mixed>
- */
-final readonly class PetResponse implements \IteratorAggregate, ModelResponseInterface
+final readonly class PetResponse implements ModelResponseInterface
 {
     /**
      * @param array<VaccinationResponse> $vaccinations
@@ -64,10 +61,5 @@ final readonly class PetResponse implements \IteratorAggregate, ModelResponseInt
             '_type' => $this->_type,
             '_links' => $this->_links,
         ];
-    }
-
-    public function getIterator(): \Traversable
-    {
-        return new \ArrayIterator(get_object_vars($this));
     }
 }

@@ -12,6 +12,12 @@ use Chubbyphp\Api\Dto\Collection\AbstractReadonlyCollectionResponse;
  * @property PetCollectionSort    $sort
  * @property array<PetResponse>   $items
  *
+ * @phpstan-type Links array<string, array{
+ *   href: string,
+ *   templated: bool,
+ *   rel: array<string>,
+ *   attributes: array<string, string>
+ * }>
  * @phpstan-type JsonSerializedResult array{
  *   offset: int,
  *   limit: int,
@@ -28,21 +34,11 @@ use Chubbyphp\Api\Dto\Collection\AbstractReadonlyCollectionResponse;
  *       _type: string
  *     }>,
  *     _type: string,
- *     _links: array<string, array{
- *       href: string,
- *       templated: bool,
- *       rel: array<string>,
- *       attributes: array<string, string>
- *     }>,
+ *     _links: Links,
  *     ...
  *   }>,
  *   count: int,
- *   _links: array<string, array{
- *     href: string,
- *     templated: bool,
- *     rel: array<string>,
- *     attributes: array<string, string>
- *   }>,
+ *   _links: Links,
  *   _type: string
  * }
  *
@@ -69,6 +65,23 @@ final readonly class PetCollectionResponse extends AbstractReadonlyCollectionRes
             $count,
             $_type,
             $_links,
+        );
+    }
+
+    /**
+     * @param Links $_links
+     */
+    public function withLinks(array $_links): self
+    {
+        return new self(
+            $this->offset,
+            $this->limit,
+            $this->filters,
+            $this->sort,
+            $this->items,
+            $this->count,
+            $this->_type,
+            $_links
         );
     }
 }

@@ -20,13 +20,13 @@ final class PetRequestTest extends TestCase
 {
     public function testCreateModel(): void
     {
-        $vaccinationRequest = new VaccinationRequest();
-        $vaccinationRequest->name = 'rabid';
+        $vaccinationRequest = new VaccinationRequest('rabies');
 
-        $petRequest = new PetRequest();
-        $petRequest->name = 'jerry';
-        $petRequest->tag = '019c201f-6a83-7696-9899-50fbf7b2278d';
-        $petRequest->vaccinations = [$vaccinationRequest];
+        $petRequest = new PetRequest(
+            'jerry',
+            '019c201f-6a83-7696-9899-50fbf7b2278d',
+            [$vaccinationRequest]
+        );
 
         /** @var Pet $pet */
         $pet = $petRequest->createModel();
@@ -42,20 +42,20 @@ final class PetRequestTest extends TestCase
         self::assertSame('019c201f-6a83-7696-9899-50fbf7b2278d', $petData['tag']);
         self::assertSame([
             [
-                'name' => 'rabid',
+                'name' => 'rabies',
             ],
         ], $petData['vaccinations']);
     }
 
     public function testUpdateModel(): void
     {
-        $vaccinationRequest = new VaccinationRequest();
-        $vaccinationRequest->name = 'rabid';
+        $vaccinationRequest = new VaccinationRequest('rabies');
 
-        $petRequest = new PetRequest();
-        $petRequest->name = 'jerry';
-        $petRequest->tag = '019c201f-6a83-7696-9899-50fbf7b2278d';
-        $petRequest->vaccinations = [$vaccinationRequest];
+        $petRequest = new PetRequest(
+            'jerry',
+            '019c201f-6a83-7696-9899-50fbf7b2278d',
+            [$vaccinationRequest],
+        );
 
         $pet = new Pet();
 
@@ -73,7 +73,7 @@ final class PetRequestTest extends TestCase
         self::assertSame('019c201f-6a83-7696-9899-50fbf7b2278d', $petData['tag']);
         self::assertSame([
             [
-                'name' => 'rabid',
+                'name' => 'rabies',
             ],
         ], $petData['vaccinations']);
     }

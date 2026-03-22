@@ -18,19 +18,18 @@ final class PetResponseTest extends TestCase
 {
     public function testCreateCollection(): void
     {
-        $vaccinationResponse = new VaccinationResponse();
-        $vaccinationResponse->name = 'rabid';
-        $vaccinationResponse->_type = 'vaccination';
+        $vaccinationResponse = new VaccinationResponse('rabies', 'vaccination');
 
-        $petResponse = new PetResponse();
-        $petResponse->id = '019c201f-6a83-7696-9899-50fbf7b2278d';
-        $petResponse->createdAt = '2024-02-10T18:15:00+00:00';
-        $petResponse->updatedAt = '2024-02-10T18:15:00+00:00';
-        $petResponse->name = 'jerry';
-        $petResponse->tag = 'tag';
-        $petResponse->vaccinations = [$vaccinationResponse];
-        $petResponse->_type = 'pet';
-        $petResponse->_links = [];
+        $petResponse = new PetResponse(
+            '019c201f-6a83-7696-9899-50fbf7b2278d',
+            '2024-02-10T18:15:00+00:00',
+            '2024-02-10T18:15:00+00:00',
+            'jerry',
+            'tag',
+            [$vaccinationResponse],
+            'pet',
+            []
+        );
 
         self::assertSame([
             'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
@@ -40,12 +39,23 @@ final class PetResponseTest extends TestCase
             'tag' => 'tag',
             'vaccinations' => [
                 [
-                    'name' => 'rabid',
+                    'name' => 'rabies',
                     '_type' => 'vaccination',
                 ],
             ],
             '_type' => 'pet',
             '_links' => [],
         ], $petResponse->jsonSerialize());
+
+        self::assertSame([
+            'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
+            'createdAt' => '2024-02-10T18:15:00+00:00',
+            'updatedAt' => '2024-02-10T18:15:00+00:00',
+            'name' => 'jerry',
+            'tag' => 'tag',
+            'vaccinations' => [$vaccinationResponse],
+            '_type' => 'pet',
+            '_links' => [],
+        ], [...$petResponse]);
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Pet\Dto\Model;
 
-final class VaccinationRequest
+final readonly class VaccinationRequest
 {
-    public string $name;
+    public function __construct(
+        public string $name,
+    ) {}
 }

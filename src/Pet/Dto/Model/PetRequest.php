@@ -9,16 +9,16 @@ use App\Pet\Model\Vaccination;
 use Chubbyphp\Api\Dto\Model\ModelRequestInterface;
 use Chubbyphp\Api\Model\ModelInterface;
 
-final class PetRequest implements ModelRequestInterface
+final readonly class PetRequest implements ModelRequestInterface
 {
-    public string $name;
-
-    public ?string $tag = null;
-
     /**
-     * @var array<VaccinationRequest>
+     * @param array<VaccinationRequest> $vaccinations
      */
-    public array $vaccinations;
+    public function __construct(
+        public string $name,
+        public ?string $tag,
+        public array $vaccinations,
+    ) {}
 
     public function createModel(): ModelInterface
     {

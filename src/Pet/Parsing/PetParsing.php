@@ -92,29 +92,20 @@ final class PetParsing implements ParsingInterface
                         'sort' => $petCollectionResponse->sort->jsonSerialize(),
                     ];
 
-                    return new PetCollectionResponse(
-                        $petCollectionResponse->offset,
-                        $petCollectionResponse->limit,
-                        $petCollectionResponse->filters,
-                        $petCollectionResponse->sort,
-                        $petCollectionResponse->items,
-                        $petCollectionResponse->count,
-                        $petCollectionResponse->_type,
-                        [
-                            'list' => [
-                                'href' => $this->routeParser->urlFor('pet_list', [], $queryParams),
-                                'templated' => false,
-                                'rel' => [],
-                                'attributes' => ['method' => 'GET'],
-                            ],
-                            'create' => [
-                                'href' => $this->routeParser->urlFor('pet_create'),
-                                'templated' => false,
-                                'rel' => [],
-                                'attributes' => ['method' => 'POST'],
-                            ],
-                        ]
-                    );
+                    return $petCollectionResponse->withLinks([
+                        'list' => [
+                            'href' => $this->routeParser->urlFor('pet_list', [], $queryParams),
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => ['method' => 'GET'],
+                        ],
+                        'create' => [
+                            'href' => $this->routeParser->urlFor('pet_create'),
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => ['method' => 'POST'],
+                        ],
+                    ]);
                 })
             ;
         }
@@ -157,35 +148,26 @@ final class PetParsing implements ParsingInterface
                 '_type' => $p->const('pet')->default('pet'),
             ], PetResponse::class, true)->strict()
                 ->postParse(
-                    fn (PetResponse $petResponse) => new PetResponse(
-                        $petResponse->id,
-                        $petResponse->createdAt,
-                        $petResponse->updatedAt,
-                        $petResponse->name,
-                        $petResponse->tag,
-                        $petResponse->vaccinations,
-                        $petResponse->_type,
-                        [
-                            'read' => [
-                                'href' => $this->routeParser->urlFor('pet_read', ['id' => $petResponse->id]),
-                                'templated' => false,
-                                'rel' => [],
-                                'attributes' => ['method' => 'GET'],
-                            ],
-                            'update' => [
-                                'href' => $this->routeParser->urlFor('pet_update', ['id' => $petResponse->id]),
-                                'templated' => false,
-                                'rel' => [],
-                                'attributes' => ['method' => 'PUT'],
-                            ],
-                            'delete' => [
-                                'href' => $this->routeParser->urlFor('pet_delete', ['id' => $petResponse->id]),
-                                'templated' => false,
-                                'rel' => [],
-                                'attributes' => ['method' => 'DELETE'],
-                            ],
-                        ]
-                    )
+                    fn (PetResponse $petResponse) => $petResponse->withLinks([
+                        'read' => [
+                            'href' => $this->routeParser->urlFor('pet_read', ['id' => $petResponse->id]),
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => ['method' => 'GET'],
+                        ],
+                        'update' => [
+                            'href' => $this->routeParser->urlFor('pet_update', ['id' => $petResponse->id]),
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => ['method' => 'PUT'],
+                        ],
+                        'delete' => [
+                            'href' => $this->routeParser->urlFor('pet_delete', ['id' => $petResponse->id]),
+                            'templated' => false,
+                            'rel' => [],
+                            'attributes' => ['method' => 'DELETE'],
+                        ],
+                    ]),
                 )
             ;
         }

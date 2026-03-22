@@ -48,14 +48,14 @@ final class PetParsing implements ParsingInterface
                 ]),
                 'filters' => $p->object([
                     'name' => $p->string()->nullable()->default(null),
-                ], PetCollectionFilters::class)->strict()->default([]),
+                ], PetCollectionFilters::class, true)->strict()->default([]),
                 'sort' => $p->object([
                     'name' => $p->union([
                         $p->const('asc'),
                         $p->const('desc'),
                     ])->nullable()->default(null),
-                ], PetCollectionSort::class)->strict()->default([]),
-            ], PetCollectionRequest::class)->strict();
+                ], PetCollectionSort::class, true)->strict()->default([]),
+            ], PetCollectionRequest::class, true)->strict();
         }
 
         return $this->collectionRequestSchema;
@@ -71,17 +71,17 @@ final class PetParsing implements ParsingInterface
                 'limit' => $p->int(),
                 'filters' => $p->object([
                     'name' => $p->string()->nullable(),
-                ], PetCollectionFilters::class)->strict(),
+                ], PetCollectionFilters::class, true)->strict(),
                 'sort' => $p->object([
                     'name' => $p->union([
                         $p->const('asc'),
                         $p->const('desc'),
                     ])->nullable()->default(null),
-                ], PetCollectionSort::class)->strict(),
+                ], PetCollectionSort::class, true)->strict(),
                 'items' => $p->array($this->getModelResponseSchema($request)),
                 'count' => $p->int(),
                 '_type' => $p->const('petCollection')->default('petCollection'),
-            ], PetCollectionResponse::class)
+            ], PetCollectionResponse::class, true)
                 ->strict()
                 ->postParse(function (PetCollectionResponse $petCollectionResponse) {
                     /** @var array<string, array<string>|string> $queryParams */
@@ -92,22 +92,29 @@ final class PetParsing implements ParsingInterface
                         'sort' => $petCollectionResponse->sort->jsonSerialize(),
                     ];
 
-                    $petCollectionResponse->_links = [
-                        'list' => [
-                            'href' => $this->routeParser->urlFor('pet_list', [], $queryParams),
-                            'templated' => false,
-                            'rel' => [],
-                            'attributes' => ['method' => 'GET'],
-                        ],
-                        'create' => [
-                            'href' => $this->routeParser->urlFor('pet_create'),
-                            'templated' => false,
-                            'rel' => [],
-                            'attributes' => ['method' => 'POST'],
-                        ],
-                    ];
-
-                    return $petCollectionResponse;
+                    return new PetCollectionResponse(
+                        $petCollectionResponse->offset,
+                        $petCollectionResponse->limit,
+                        $petCollectionResponse->filters,
+                        $petCollectionResponse->sort,
+                        $petCollectionResponse->items,
+                        $petCollectionResponse->count,
+                        $petCollectionResponse->_type,
+                        [
+                            'list' => [
+                                'href' => $this->routeParser->urlFor('pet_list', [], $queryParams),
+                                'templated' => false,
+                                'rel' => [],
+                                'attributes' => ['method' => 'GET'],
+                            ],
+                            'create' => [
+                                'href' => $this->routeParser->urlFor('pet_create'),
+                                'templated' => false,
+                                'rel' => [],
+                                'attributes' => ['method' => 'POST'],
+                            ],
+                        ]
+                    );
                 })
             ;
         }
@@ -125,8 +132,8 @@ final class PetParsing implements ParsingInterface
                 'tag' => $p->string()->minLength(1)->nullable(),
                 'vaccinations' => $p->array($p->object([
                     'name' => $p->string()->minLength(1),
-                ], VaccinationRequest::class)->strict(['_type']))->default([]),
-            ], PetRequest::class)->strict(['id', 'createdAt', 'updatedAt', '_type', '_links']);
+                ], VaccinationRequest::class, true)->strict(['_type']))->default([]),
+            ], PetRequest::class, true)->strict(['id', 'createdAt', 'updatedAt', '_type', '_links']);
         }
 
         return $this->modelRequestSchema;
@@ -146,33 +153,40 @@ final class PetParsing implements ParsingInterface
                 'vaccinations' => $p->array($p->object([
                     'name' => $p->string(),
                     '_type' => $p->const('vaccination')->default('vaccination'),
-                ], VaccinationResponse::class)->strict()),
+                ], VaccinationResponse::class, true)->strict()),
                 '_type' => $p->const('pet')->default('pet'),
-            ], PetResponse::class)->strict()
-                ->postParse(function (PetResponse $petResponse) {
-                    $petResponse->_links = [
-                        'read' => [
-                            'href' => $this->routeParser->urlFor('pet_read', ['id' => $petResponse->id]),
-                            'templated' => false,
-                            'rel' => [],
-                            'attributes' => ['method' => 'GET'],
-                        ],
-                        'update' => [
-                            'href' => $this->routeParser->urlFor('pet_update', ['id' => $petResponse->id]),
-                            'templated' => false,
-                            'rel' => [],
-                            'attributes' => ['method' => 'PUT'],
-                        ],
-                        'delete' => [
-                            'href' => $this->routeParser->urlFor('pet_delete', ['id' => $petResponse->id]),
-                            'templated' => false,
-                            'rel' => [],
-                            'attributes' => ['method' => 'DELETE'],
-                        ],
-                    ];
-
-                    return $petResponse;
-                })
+            ], PetResponse::class, true)->strict()
+                ->postParse(
+                    fn (PetResponse $petResponse) => new PetResponse(
+                        $petResponse->id,
+                        $petResponse->createdAt,
+                        $petResponse->updatedAt,
+                        $petResponse->name,
+                        $petResponse->tag,
+                        $petResponse->vaccinations,
+                        $petResponse->_type,
+                        [
+                            'read' => [
+                                'href' => $this->routeParser->urlFor('pet_read', ['id' => $petResponse->id]),
+                                'templated' => false,
+                                'rel' => [],
+                                'attributes' => ['method' => 'GET'],
+                            ],
+                            'update' => [
+                                'href' => $this->routeParser->urlFor('pet_update', ['id' => $petResponse->id]),
+                                'templated' => false,
+                                'rel' => [],
+                                'attributes' => ['method' => 'PUT'],
+                            ],
+                            'delete' => [
+                                'href' => $this->routeParser->urlFor('pet_delete', ['id' => $petResponse->id]),
+                                'templated' => false,
+                                'rel' => [],
+                                'attributes' => ['method' => 'DELETE'],
+                            ],
+                        ]
+                    )
+                )
             ;
         }
 

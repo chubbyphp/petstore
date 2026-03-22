@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Pet\Dto\Model;
 
-final class VaccinationResponse implements \JsonSerializable
+final readonly class VaccinationResponse implements \JsonSerializable
 {
-    public string $name;
-
-    public string $_type;
+    public function __construct(
+        public string $name,
+        public string $_type,
+    ) {}
 
     /**
      * @return array{

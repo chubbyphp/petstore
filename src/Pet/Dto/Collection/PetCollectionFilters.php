@@ -6,9 +6,9 @@ namespace App\Pet\Dto\Collection;
 
 use Chubbyphp\Api\Dto\Collection\CollectionFiltersInterface;
 
-final class PetCollectionFilters implements CollectionFiltersInterface
+final readonly class PetCollectionFilters implements CollectionFiltersInterface
 {
-    public ?string $name = null;
+    public function __construct(public ?string $name = null) {}
 
     /**
      * @return array{name: null|string}

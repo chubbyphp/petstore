@@ -6,9 +6,9 @@ namespace App\Pet\Dto\Collection;
 
 use Chubbyphp\Api\Dto\Collection\CollectionSortInterface;
 
-final class PetCollectionSort implements CollectionSortInterface
+final readonly class PetCollectionSort implements CollectionSortInterface
 {
-    public ?string $name = null;
+    public function __construct(public ?string $name = null) {}
 
     /**
      * @return array{name: null|string}

@@ -21,17 +21,16 @@ final class PetCollectionRequestTest extends TestCase
 {
     public function testCreateCollection(): void
     {
-        $petCollectionFilters = new PetCollectionFilters();
-        $petCollectionFilters->name = 'jerry';
+        $petCollectionFilters = new PetCollectionFilters('jerry');
 
-        $petCollectionSort = new PetCollectionSort();
-        $petCollectionSort->name = 'asc';
+        $petCollectionSort = new PetCollectionSort('asc');
 
-        $petCollectionRequest = new PetCollectionRequest();
-        $petCollectionRequest->offset = 5;
-        $petCollectionRequest->limit = 10;
-        $petCollectionRequest->filters = $petCollectionFilters;
-        $petCollectionRequest->sort = $petCollectionSort;
+        $petCollectionRequest = new PetCollectionRequest(
+            5,
+            10,
+            $petCollectionFilters,
+            $petCollectionSort
+        );
 
         $petCollection = $petCollectionRequest->createCollection();
 

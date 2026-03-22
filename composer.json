@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "chubbyphp/chubbyphp-api": "^1.0",
+        "chubbyphp/chubbyphp-api": "^1.1",
         "chubbyphp/chubbyphp-clean-directories": "^1.5.1",
         "chubbyphp/chubbyphp-cors": "^1.7.1",
         "chubbyphp/chubbyphp-decode-encode": "^1.4",
@@ -26,7 +26,7 @@
         "chubbyphp/chubbyphp-laminas-config-doctrine": "^3.1.1",
         "chubbyphp/chubbyphp-laminas-config-factory": "^1.5.1",
         "chubbyphp/chubbyphp-negotiation": "^2.3.1",
-        "chubbyphp/chubbyphp-parsing": "^2.5",
+        "chubbyphp/chubbyphp-parsing": "^2.5.2",
         "doctrine/orm": "^3.6.2",
         "monolog/monolog": "^3.10",
         "ramsey/uuid": "^4.9.2",

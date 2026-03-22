@@ -8,15 +8,14 @@ use App\Pet\Collection\PetCollection;
 use Chubbyphp\Api\Collection\CollectionInterface;
 use Chubbyphp\Api\Dto\Collection\CollectionRequestInterface;
 
-final class PetCollectionRequest implements CollectionRequestInterface
+final readonly class PetCollectionRequest implements CollectionRequestInterface
 {
-    public int $offset;
-
-    public int $limit;
-
-    public PetCollectionFilters $filters;
-
-    public PetCollectionSort $sort;
+    public function __construct(
+        public int $offset,
+        public int $limit,
+        public PetCollectionFilters $filters,
+        public PetCollectionSort $sort
+    ) {}
 
     public function createCollection(): CollectionInterface
     {

@@ -80,16 +80,5 @@ final class PetCollectionResponseTest extends TestCase
             '_type' => 'petCollection',
             '_links' => [],
         ], $petCollectionResponse->jsonSerialize());
-
-        self::assertSame([
-            'offset' => 5,
-            'limit' => 10,
-            'filters' => $petCollectionFilters,
-            'sort' => $petCollectionSort,
-            'items' => [$petResponse],
-            'count' => 1,
-            '_type' => 'petCollection',
-            '_links' => [],
-        ], [...$petCollectionResponse]);
     }
 }

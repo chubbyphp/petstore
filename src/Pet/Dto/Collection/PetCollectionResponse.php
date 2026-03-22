@@ -12,8 +12,6 @@ use Chubbyphp\Api\Dto\Collection\AbstractReadonlyCollectionResponse;
  * @property PetCollectionSort    $sort
  * @property array<PetResponse>   $items
  *
- * @implements \IteratorAggregate<string, mixed>
- *
  * @phpstan-type JsonSerializedResult array{
  *   offset: int,
  *   limit: int,
@@ -50,7 +48,7 @@ use Chubbyphp\Api\Dto\Collection\AbstractReadonlyCollectionResponse;
  *
  * @method JsonSerializedResult jsonSerialize()
  */
-final readonly class PetCollectionResponse extends AbstractReadonlyCollectionResponse implements \IteratorAggregate
+final readonly class PetCollectionResponse extends AbstractReadonlyCollectionResponse
 {
     public function __construct(
         int $offset,
@@ -72,10 +70,5 @@ final readonly class PetCollectionResponse extends AbstractReadonlyCollectionRes
             $_type,
             $_links,
         );
-    }
-
-    public function getIterator(): \Traversable
-    {
-        return new \ArrayIterator(get_object_vars($this));
     }
 }

@@ -23,7 +23,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
 ## Requirements
 
  * php: ^8.3
- * [chubbyphp/chubbyphp-api][2]: ^1.0
+ * [chubbyphp/chubbyphp-api][2]: ^1.1
  * [chubbyphp/chubbyphp-clean-directories][3]: ^1.5.1
  * [chubbyphp/chubbyphp-cors][4]: ^1.7.1
  * [chubbyphp/chubbyphp-decode-encode][5]: ^1.4
@@ -34,7 +34,7 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-doctrine][10]: ^3.1.1
  * [chubbyphp/chubbyphp-laminas-config-factory][11]: ^1.5.1
  * [chubbyphp/chubbyphp-negotiation][12]: ^2.3.1
- * [chubbyphp/chubbyphp-parsing][13]: ^2.5
+ * [chubbyphp/chubbyphp-parsing][13]: ^2.5.2
  * [doctrine/mongodb-odm][14]: ^2.15.3
  * [monolog/monolog][15]: ^3.10
  * [ramsey/uuid][16]: ^4.9.2

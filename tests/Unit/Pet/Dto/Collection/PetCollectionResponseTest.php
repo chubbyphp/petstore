@@ -22,35 +22,33 @@ final class PetCollectionResponseTest extends TestCase
 {
     public function testCreateCollection(): void
     {
-        $petCollectionFilters = new PetCollectionFilters();
-        $petCollectionFilters->name = 'jerry';
+        $petCollectionFilters = new PetCollectionFilters('jerry');
 
-        $petCollectionSort = new PetCollectionSort();
-        $petCollectionSort->name = 'asc';
+        $petCollectionSort = new PetCollectionSort('asc');
 
-        $vaccinationResponse = new VaccinationResponse();
-        $vaccinationResponse->name = 'rabid';
-        $vaccinationResponse->_type = 'vaccination';
+        $vaccinationResponse = new VaccinationResponse('rabid', 'vaccination');
 
-        $petResponse = new PetResponse();
-        $petResponse->id = '019c201f-6a83-7696-9899-50fbf7b2278d';
-        $petResponse->createdAt = '2024-02-10T18:15:00+00:00';
-        $petResponse->updatedAt = '2024-02-10T18:15:00+00:00';
-        $petResponse->name = 'jerry';
-        $petResponse->tag = 'tag';
-        $petResponse->vaccinations = [$vaccinationResponse];
-        $petResponse->_type = 'pet';
-        $petResponse->_links = [];
+        $petResponse = new PetResponse(
+            '019c201f-6a83-7696-9899-50fbf7b2278d',
+            '2024-02-10T18:15:00+00:00',
+            '2024-02-10T18:15:00+00:00',
+            'jerry',
+            'tag',
+            [$vaccinationResponse],
+            'pet',
+            [],
+        );
 
-        $petCollectionResponse = new PetCollectionResponse();
-        $petCollectionResponse->offset = 5;
-        $petCollectionResponse->limit = 10;
-        $petCollectionResponse->filters = $petCollectionFilters;
-        $petCollectionResponse->sort = $petCollectionSort;
-        $petCollectionResponse->items = [$petResponse];
-        $petCollectionResponse->count = 1;
-        $petCollectionResponse->_type = 'petCollection';
-        $petCollectionResponse->_links = [];
+        $petCollectionResponse = new PetCollectionResponse(
+            5,
+            10,
+            $petCollectionFilters,
+            $petCollectionSort,
+            [$petResponse],
+            1,
+            'petCollection',
+            []
+        );
 
         self::assertSame([
             'offset' => 5,
@@ -82,5 +80,16 @@ final class PetCollectionResponseTest extends TestCase
             '_type' => 'petCollection',
             '_links' => [],
         ], $petCollectionResponse->jsonSerialize());
+
+        self::assertSame([
+            'offset' => 5,
+            'limit' => 10,
+            'filters' => $petCollectionFilters,
+            'sort' => $petCollectionSort,
+            'items' => [$petResponse],
+            'count' => 1,
+            '_type' => 'petCollection',
+            '_links' => [],
+        ], [...$petCollectionResponse]);
     }
 }

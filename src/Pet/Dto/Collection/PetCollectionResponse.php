@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace App\Pet\Dto\Collection;
 
 use App\Pet\Dto\Model\PetResponse;
-use Chubbyphp\Api\Dto\Collection\AbstractCollectionResponse;
+use Chubbyphp\Api\Dto\Collection\AbstractReadonlyCollectionResponse;
 
 /**
+ * @property PetCollectionFilters $filters
+ * @property PetCollectionSort    $sort
+ * @property array<PetResponse>   $items
+ *
+ * @implements \IteratorAggregate<string, mixed>
+ *
  * @phpstan-type JsonSerializedResult array{
  *   offset: int,
  *   limit: int,
@@ -44,24 +50,32 @@ use Chubbyphp\Api\Dto\Collection\AbstractCollectionResponse;
  *
  * @method JsonSerializedResult jsonSerialize()
  */
-final class PetCollectionResponse extends AbstractCollectionResponse
+final readonly class PetCollectionResponse extends AbstractReadonlyCollectionResponse implements \IteratorAggregate
 {
-    public PetCollectionFilters $filters;
-
-    public PetCollectionSort $sort;
-
-    /**
-     * @var array<PetResponse>
-     */
-    public array $items;
-
-    protected function getFilters(): PetCollectionFilters
-    {
-        return $this->filters;
+    public function __construct(
+        int $offset,
+        int $limit,
+        PetCollectionFilters $filters,
+        PetCollectionSort $sort,
+        array $items,
+        int $count,
+        string $_type,
+        array $_links = [],
+    ) {
+        parent::__construct(
+            $offset,
+            $limit,
+            $filters,
+            $sort,
+            $items,
+            $count,
+            $_type,
+            $_links,
+        );
     }
 
-    protected function getSort(): PetCollectionSort
+    public function getIterator(): \Traversable
     {
-        return $this->sort;
+        return new \ArrayIterator(get_object_vars($this));
     }
 }

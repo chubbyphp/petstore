@@ -6,16 +6,19 @@ namespace App\Pet\Dto\Model;
 
 use Chubbyphp\Api\Dto\Model\ModelResponseInterface;
 
+/**
+ * @phpstan-type Links array<string, array{
+ *   href: string,
+ *   templated: bool,
+ *   rel: array<string>,
+ *   attributes: array<string, string>
+ * }>
+ */
 final readonly class PetResponse implements ModelResponseInterface
 {
     /**
      * @param array<VaccinationResponse> $vaccinations
-     * @param array<string, array{
-     *   href: string,
-     *   templated: bool,
-     *   rel: array<string>,
-     *   attributes: array<string, string>
-     * }> $_links
+     * @param Links                      $_links
      */
     public function __construct(
         public string $id,
@@ -37,12 +40,7 @@ final readonly class PetResponse implements ModelResponseInterface
      *   tag: null|string,
      *   vaccinations: array<array{name: string, _type: string}>,
      *   _type: string,
-     *   _links: array<string, array{
-     *     href: string,
-     *     templated: bool,
-     *     rel: array<string>,
-     *     attributes: array<string, string>
-     *   }>,
+     *   _links: Links,
      *   ...
      * }
      */
@@ -61,5 +59,22 @@ final readonly class PetResponse implements ModelResponseInterface
             '_type' => $this->_type,
             '_links' => $this->_links,
         ];
+    }
+
+    /**
+     * @param Links $_links
+     */
+    public function withLinks(array $_links): self
+    {
+        return new self(
+            $this->id,
+            $this->createdAt,
+            $this->updatedAt,
+            $this->name,
+            $this->tag,
+            $this->vaccinations,
+            $this->_type,
+            $_links
+        );
     }
 }

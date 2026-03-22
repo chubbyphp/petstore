@@ -104,18 +104,16 @@ final class Pet implements ModelInterface
      */
     public function jsonSerialize(): array
     {
-        $vaccinations = [];
-        foreach ($this->vaccinations as $vaccination) {
-            $vaccinations[] = $vaccination->jsonSerialize();
-        }
-
         return [
             'id' => $this->id,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
             'name' => $this->name,
             'tag' => $this->tag,
-            'vaccinations' => $vaccinations,
+            'vaccinations' => array_map(
+                static fn (Vaccination $model) => $model->jsonSerialize(),
+                $this->getVaccinations()
+            ),
         ];
     }
 }

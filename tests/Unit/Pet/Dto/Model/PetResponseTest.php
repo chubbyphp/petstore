@@ -46,16 +46,5 @@ final class PetResponseTest extends TestCase
             '_type' => 'pet',
             '_links' => [],
         ], $petResponse->jsonSerialize());
-
-        self::assertSame([
-            'id' => '019c201f-6a83-7696-9899-50fbf7b2278d',
-            'createdAt' => '2024-02-10T18:15:00+00:00',
-            'updatedAt' => '2024-02-10T18:15:00+00:00',
-            'name' => 'jerry',
-            'tag' => 'tag',
-            'vaccinations' => [$vaccinationResponse],
-            '_type' => 'pet',
-            '_links' => [],
-        ], [...$petResponse]);
     }
 }

@@ -11,14 +11,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
 
-require __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 $input = new ArgvInput();
 
 $env = $input->getParameterOption(['--env', '-e'], 'dev');
 
 /** @var ContainerInterface $container */
-$container = (require __DIR__.'/container.php')($env);
+$container = (require_once __DIR__.'/container.php')($env);
 
 $console = new Application();
 $console->getDefinition()->addOption(

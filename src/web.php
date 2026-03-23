@@ -24,11 +24,11 @@ use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Routing\RouteCollectorProxy;
 
-require __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 return static function (string $env) {
     /** @var ContainerInterface $container */
-    $container = (require __DIR__.'/container.php')($env);
+    $container = (require_once __DIR__.'/container.php')($env);
 
     /** @var ResponseFactoryInterface $responseFactory */
     $responseFactory = $container->get(ResponseFactoryInterface::class);

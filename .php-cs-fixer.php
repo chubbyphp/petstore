@@ -11,7 +11,7 @@ $finder = PhpCsFixer\Finder::create()
 ;
 
 /** @var array $config */
-$config = require __DIR__ . '/vendor/chubbyphp/chubbyphp-dev-helper/phpcs.php';
+$config = require_once __DIR__ . '/vendor/chubbyphp/chubbyphp-dev-helper/phpcs.php';
 
 return (new PhpCsFixer\Config)
     ->setUnsupportedPhpVersionAllowed(true)

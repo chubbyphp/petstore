@@ -28,11 +28,11 @@ use Mezzio\Router\Middleware\RouteMiddleware;
 use Mezzio\Router\RouteCollector;
 use Psr\Container\ContainerInterface;
 
-require __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 return static function (string $env) {
     /** @var ContainerInterface $container */
-    $container = (require __DIR__.'/container.php')($env);
+    $container = (require_once __DIR__.'/container.php')($env);
 
     /** @var MiddlewareFactory $middlewareFactory */
     $middlewareFactory = $container->get(MiddlewareFactory::class);

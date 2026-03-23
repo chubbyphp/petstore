@@ -8,7 +8,7 @@ use Chubbyphp\Laminas\Config\Config;
 use Chubbyphp\Laminas\Config\ContainerFactory;
 
 return static function (string $env) {
-    $config = require __DIR__.'/../config/'.$env.'.php';
+    $config = require_once __DIR__.'/../config/'.$env.'.php';
 
     foreach ($config['directories'] ?? [] as $directory) {
         if (!is_dir($directory)) {

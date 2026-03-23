@@ -47,9 +47,11 @@ final class PetRoutesDelegator
                     Group::create('/pets', [
                         Route::get('', 'pet_list', $petList),
                         Route::post('', 'pet_create', $petCreate, [$contentType]),
-                        Route::get('/{id}', 'pet_read', $petRead),
-                        Route::put('/{id}', 'pet_update', $petUpdate, [$contentType]),
-                        Route::delete('/{id}', 'pet_delete', $petDelete),
+                        Group::create('/{id}', [
+                            Route::get('', 'pet_read', $petRead),
+                            Route::put('', 'pet_update', $petUpdate, [$contentType]),
+                            Route::delete('', 'pet_delete', $petDelete),
+                        ]),
                     ]),
                 ], [$accept, $apiExceptionMiddleware]),
             ])->getRoutes(),

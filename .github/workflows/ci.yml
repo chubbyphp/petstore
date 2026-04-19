@@ -11,7 +11,7 @@ jobs:
     runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: blacksmith docker
         uses: useblacksmith/setup-docker-builder@v1
       - name: docker build / start
@@ -43,7 +43,7 @@ jobs:
           - 5432:5432
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
@@ -68,7 +68,7 @@ jobs:
           - 5432:5432
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
@@ -93,7 +93,7 @@ jobs:
           - 5432:5432
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
@@ -105,7 +105,7 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
       - name: sonarcloud.io
-        uses: sonarsource/sonarqube-scan-action@v6.0.0
+        uses: SonarSource/sonarqube-scan-action@v7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

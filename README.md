@@ -64,6 +64,8 @@ touch ~/.gitignore
 ```
 
 ```sh
+mkdir -p ~/.config/opencode
+[ ! -f ~/.local/share/opencode/auth.json ] && echo '{}' > ~/.config/opencode/tui.json
 mkdir -p ~/.local/share/opencode
 [ ! -f ~/.local/share/opencode/auth.json ] && echo '{}' > ~/.local/share/opencode/auth.json
 ```

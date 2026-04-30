@@ -50,8 +50,7 @@ services:
   mongo:
     container_name: chubbyphp-petstore-mongo
     hostname: chubbyphp-petstore-mongo
-    image: mongo:8
-    restart: always
+    image: mongo:8.0.4 # check before upgrade https://www.mongodb.com/community/forums/t/mongodb-8-x-and-linux-kernel-6-19/337547
     environment:
       MONGO_INITDB_ROOT_USERNAME: petstore
       MONGO_INITDB_ROOT_PASSWORD: 4aAUfBjDACcdZxNwJgJ6

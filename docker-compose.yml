@@ -9,6 +9,7 @@ services:
       args:
         USER_ID: ${USER_ID:-1000}
         GROUP_ID: ${GROUP_ID:-1000}
+    userns_mode: keep-id
     environment:
       APP_ENV: dev
       MONGO_URI: mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@mongo:27017

@@ -57,7 +57,9 @@ USER php
 
 WORKDIR /home/php
 
-RUN curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path && mkdir -p "$HOME/.local/share/opencode"
+RUN curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path \
+    && mkdir -p "$HOME/.config/opencode" \
+    && mkdir -p "$HOME/.local/share/opencode"
 
 WORKDIR /app
 

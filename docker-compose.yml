@@ -29,6 +29,8 @@ services:
       # opencode - coding agent
       - ~/.config/opencode/tui.json:/home/php/.config/opencode/tui.json
       - ~/.local/share/opencode/auth.json:/home/php/.local/share/opencode/auth.json
+      # pi
+      - ~/.pi/agent/auth.json:/home/php/.pi/agent/auth.json
     depends_on:
       - mongo
     extra_hosts:

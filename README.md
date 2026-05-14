@@ -89,6 +89,13 @@ mkdir -p ~/.local/share/opencode
 [ ! -f ~/.local/share/opencode/auth.json ] && echo '{}' > ~/.local/share/opencode/auth.json
 ```
 
+#### pi - coding agent
+
+```sh
+mkdir -p ~/.pi/agent
+[ ! -f ~/.pi/agent/auth.json ] && echo '{}' > ~/.pi/agent/auth.json
+```
+
 ### Docker
 
 ```sh

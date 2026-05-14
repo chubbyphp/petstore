@@ -16,15 +16,19 @@ services:
       SSH_AUTH_SOCK: /ssh-agent
     volumes:
       - ${PWD}:/app
+      - $SSH_AUTH_SOCK:/ssh-agent
+      # bash
       - ~/.bash_docker:/home/php/.bash_docker
       - ~/.bash_history:/home/php/.bash_history
-      - ~/.gitconfig:/home/php/.gitconfig
-      - ~/.gitignore:/home/php/.gitignore
-      - ~/.config/opencode/tui.json:/home/php/.config/opencode/tui.json
-      - ~/.local/share/opencode/auth.json:/home/php/.local/share/opencode/auth.json
+      # zsh
       - ~/.zsh_docker:/home/php/.zsh_docker
       - ~/.zsh_history:/home/php/.zsh_history
-      - $SSH_AUTH_SOCK:/ssh-agent
+      # git
+      - ~/.gitconfig:/home/php/.gitconfig
+      - ~/.gitignore:/home/php/.gitignore
+      # opencode - coding agent
+      - ~/.config/opencode/tui.json:/home/php/.config/opencode/tui.json
+      - ~/.local/share/opencode/auth.json:/home/php/.local/share/opencode/auth.json
     depends_on:
       - postgres
     extra_hosts:

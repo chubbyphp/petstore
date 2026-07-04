@@ -26,10 +26,14 @@ services:
       # git
       - ~/.gitconfig:/home/php/.gitconfig
       - ~/.gitignore:/home/php/.gitignore
+      # claude - coding agent
+      - ~/.claude.json:/home/php/.claude.json
+      - ~/.claude/.credentials.json:/home/php/.claude/.credentials.json
+      - ~/.claude/settings.json:/home/php/.claude/settings.json
       # opencode - coding agent
       - ~/.config/opencode/tui.json:/home/php/.config/opencode/tui.json
       - ~/.local/share/opencode/auth.json:/home/php/.local/share/opencode/auth.json
-      # pi
+      # pi - coding agent
       - ~/.pi/agent/auth.json:/home/php/.pi/agent/auth.json
     depends_on:
       - mongo

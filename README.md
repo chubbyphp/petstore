@@ -80,6 +80,15 @@ touch ~/.gitignore
 touch ~/.npmrc
 ```
 
+#### claude - coding agent
+
+```sh
+[ ! -f ~/.claude.json ] && echo '{}' > ~/.claude.json
+mkdir -p ~/.claude
+[ ! -f ~/.claude/.credentials.json ] && echo '{}' > ~/.claude/.credentials.json
+[ ! -f ~/.claude/settings.json ] && echo '{}' > ~/.claude/settings.json
+```
+
 #### opencode - coding agent
 
 ```sh

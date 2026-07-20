@@ -30,7 +30,11 @@ services:
       - ~/.claude.json:/home/php/.claude.json
       - ~/.claude/.credentials.json:/home/php/.claude/.credentials.json
       - ~/.claude/settings.json:/home/php/.claude/settings.json
+      # codex - coding agent
+      - ~/.codex/auth.json:/home/php/.codex/auth.json
+      - ~/.codex/config.toml:/home/php/.codex/config.toml
       # opencode - coding agent
+      - ~/.config/opencode/opencode.jsonc:/home/php/.config/opencode/opencode.jsonc
       - ~/.config/opencode/tui.json:/home/php/.config/opencode/tui.json
       - ~/.local/share/opencode/auth.json:/home/php/.local/share/opencode/auth.json
       # pi - coding agent

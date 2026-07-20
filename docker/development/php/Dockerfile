@@ -66,8 +66,12 @@ RUN curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/
     && npm install -g corepack@latest
 
 RUN source ~/.bashrc \
-    && npm install -g  @anthropic-ai/claude-code \
+    && npm install -g @anthropic-ai/claude-code \
     && mkdir -p "$HOME/.claude"
+
+RUN source ~/.bashrc \
+    && npm install -g @openai/codex \
+    && mkdir -p "$HOME/.codex"
 
 RUN source ~/.bashrc \
     && npm install -g opencode-ai@latest \

@@ -80,25 +80,112 @@ touch ~/.gitignore
 touch ~/.npmrc
 ```
 
-#### claude - coding agent
+#### Coding agents
+
+##### Claude
 
 ```sh
-[ ! -f ~/.claude.json ] && echo '{}' > ~/.claude.json
+if [ ! -f ~/.claude.json ]; then
+    cat > ~/.claude.json <<'EOF'
+{}
+EOF
+fi
+
 mkdir -p ~/.claude
-[ ! -f ~/.claude/.credentials.json ] && echo '{}' > ~/.claude/.credentials.json
-[ ! -f ~/.claude/settings.json ] && echo '{}' > ~/.claude/settings.json
+
+if [ ! -f ~/.claude/.credentials.json ]; then
+    cat > ~/.claude/.credentials.json <<'EOF'
+{}
+EOF
+fi
+
+if [ ! -f ~/.claude/settings.json ]; then
+    cat > ~/.claude/settings.json <<'EOF'
+{
+    "fileCheckpointingEnabled": false,
+    "permissions": {
+        "defaultMode": "bypassPermissions"
+    },
+    "skipDangerousModePermissionPrompt": true,
+    "spinnerTipsEnabled": false,
+    "switchModelsOnFlag": false,
+    "theme": "auto"
+}
+EOF
+fi
+
+chmod 600 \
+    ~/.claude/.credentials.json \
+    ~/.claude/settings.json
 ```
 
-#### opencode - coding agent
+##### Codex
 
 ```sh
-mkdir -p ~/.config/opencode
-[ ! -f ~/.local/share/opencode/auth.json ] && echo '{}' > ~/.config/opencode/tui.json
-mkdir -p ~/.local/share/opencode
-[ ! -f ~/.local/share/opencode/auth.json ] && echo '{}' > ~/.local/share/opencode/auth.json
+mkdir -p ~/.codex
+
+if [ ! -f ~/.codex/auth.json ]; then
+    cat > ~/.codex/auth.json <<'EOF'
+{}
+EOF
+fi
+
+if [ ! -f ~/.codex/config.toml ]; then
+    cat > ~/.codex/config.toml <<'EOF'
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+approvals_reviewer = "user"
+
+[projects."/app"]
+trust_level = "trusted"
+
+[notice]
+hide_full_access_warning = true
+EOF
+fi
+
+chmod 600 \
+    ~/.codex/auth.json
+    ~/.codex/config.toml
 ```
 
-#### pi - coding agent
+##### Opencode
+
+```sh
+mkdir -p ~/.config/opencode ~/.local/share/opencode
+
+if [ ! -f ~/.config/opencode/opencode.jsonc ]; then
+    cat > ~/.config/opencode/opencode.jsonc <<'EOF'
+{
+    "$schema": "https://opencode.ai/config.json",
+    "permission": {
+        "*": "allow"
+    }
+}
+EOF
+fi
+
+if [ ! -f ~/.config/opencode/tui.json ]; then
+    cat > ~/.config/opencode/tui.json <<'EOF'
+{
+    "$schema": "https://opencode.ai/tui.json",
+    "theme": "system",
+    "tips": false
+}
+EOF
+fi
+
+if [ ! -f ~/.local/share/opencode/auth.json ]; then
+    printf '{}\n' > ~/.local/share/opencode/auth.json
+fi
+
+chmod 600 \
+    ~/.config/opencode/opencode.jsonc \
+    ~/.config/opencode/tui.json \
+    ~/.local/share/opencode/auth.json
+```
+
+##### PI
 
 ```sh
 mkdir -p ~/.pi/agent

@@ -134,10 +134,6 @@ if [ ! -f ~/.codex/config.toml ]; then
     cat > ~/.codex/config.toml <<'EOF'
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-approvals_reviewer = "user"
-
-[projects."/app"]
-trust_level = "trusted"
 
 [notice]
 hide_full_access_warning = true

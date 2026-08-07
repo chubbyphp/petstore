@@ -23,7 +23,7 @@ A simple skeleton to build api's based on the [slim][1] framework.
 ## Requirements
 
  * php: ^8.3
- * [chubbyphp/chubbyphp-api][2]: ^1.1.2
+ * [chubbyphp/chubbyphp-api][2]: ^1.2
  * [chubbyphp/chubbyphp-clean-directories][3]: ^1.5.2
  * [chubbyphp/chubbyphp-cors][4]: ^1.7.2
  * [chubbyphp/chubbyphp-decode-encode][5]: ^1.4.1
@@ -32,14 +32,14 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [chubbyphp/chubbyphp-laminas-config-doctrine][8]: ^3.1.3
  * [chubbyphp/chubbyphp-laminas-config-factory][9]: ^1.5.2
  * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.2
- * [chubbyphp/chubbyphp-parsing][11]: ^2.6.1
- * [doctrine/orm][12]: ^3.6.7
+ * [chubbyphp/chubbyphp-parsing][11]: ^3.0
+ * [doctrine/orm][12]: ^3.6.8
  * [monolog/monolog][13]: ^3.10
  * [ramsey/uuid][14]: ^4.9.3
  * [slim/psr7][15]: ^1.8
  * [slim/slim][16]: ^4.15.2
- * [symfony/console][17]: ^7.4.14|^8.1.1
- * [symfony/var-exporter][18]: ^7.4.14|^8.0.14
+ * [symfony/console][17]: ^7.4.16|^8.1.4
+ * [symfony/var-exporter][18]: ^7.4.16|^8.1.4
 
 ## Environment
 

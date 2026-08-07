@@ -12,6 +12,7 @@ RUN dnf install -y --nobest \
     langpacks-de \
     nmap-ncat \
     php85-php-ast \
+    php85-php-bcmath \
     php85-php-cli \
     php85-php-devel \
     php85-php-fpm \

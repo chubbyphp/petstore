@@ -187,6 +187,18 @@ mkdir -p ~/.pi/agent
 [ ! -f ~/.pi/agent/auth.json ] && echo '{}' > ~/.pi/agent/auth.json
 ```
 
+###### llama.cpp
+
+```sh
+llama-server \
+    -hf lmstudio-community/Qwen3.6-35B-A3B-GGUF:Q4_K_M \
+    -c 32768 \
+    -ngl 999 \
+    --flash-attn on \
+    --host 0.0.0.0 \
+    --port 9931
+```
+
 ### Docker
 
 ```sh

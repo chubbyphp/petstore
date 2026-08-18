@@ -34,8 +34,10 @@ A simple skeleton to build api's based on the [chubbyphp-framework][1].
  * [chubbyphp/chubbyphp-laminas-config-doctrine][10]: ^3.1.3
  * [chubbyphp/chubbyphp-laminas-config-factory][11]: ^1.5.2
  * [chubbyphp/chubbyphp-negotiation][12]: ^2.3.2
+ * [chubbyphp/chubbyphp-oidc][20]: ^1.0
  * [chubbyphp/chubbyphp-parsing][13]: ^3.0
  * [doctrine/orm][14]: ^3.6.8
+ * [guzzlehttp/guzzle][21]: ^7.10
  * [monolog/monolog][15]: ^3.10
  * [ramsey/uuid][16]: ^4.9.3
  * [slim/psr7][17]: ^1.8
@@ -219,7 +221,7 @@ composer setup:dev
 * GET https://localhost/ping
 * GET https://localhost/swagger (https://localhost/openapi)
 
-### Pet
+### Pet (oidc protected)
 
 * GET https://localhost/api/pets?sort[name]=asc
 * POST https://localhost/api/pets
@@ -232,6 +234,50 @@ composer setup:dev
 ```sh
 psql "postgresql://petstore:4aAUfBjDACcdZxNwJgJ6@localhost:5432/petstore"
 ```
+
+## Oidc (keycloak)
+
+All routes below `/api` are protected by [chubbyphp/chubbyphp-oidc][20], only `/ping` and `/openapi` are public.
+The keycloak container acts as the identity provider,
+the realm `petstore` gets imported from `docker/development/keycloak/import/petstore-realm.json` on startup
+(delete and recreate the keycloak container to reimport after changes) and contains two users:
+
+* `john.doe` (password: `johndoe1234`): a regular end user, meant to log in via the browser based frontend
+  (`petstore-frontend` client, see below).
+* `petstore` (password: `GBanBPatEBRZ7hf7cAxKn8Ptt`): a technical user for requesting tokens via password grant
+  while testing (see the curl example below).
+
+and two clients:
+
+* `petstore-frontend`: public client for a separate (browser based) frontend codebase, which authenticates against
+  keycloak via authorization code flow + PKCE (S256) and sends the resulting access token as
+  `Authorization: Bearer <token>` header to this api. The cors setup allows the `Authorization` header for
+  localhost origins in development.
+* `petstore` (secret: `5FbFAgTAWyVAWSQtDPqCLZzY`): confidential client for backend integrations and for requesting
+  tokens via password grant while testing.
+
+Both clients use an audience mapper, so that the access token contains `aud: petstore`, which this api requires.
+
+Admin console: http://keycloak:8080 (admin / TCUJyCbLtLbBc4eXYYzD9ecm). Keycloak is configured with the fixed
+hostname `keycloak`, so that the issuer claim is always `http://keycloak:8080/realms/petstore`; requests via
+`http://localhost:8080` get redirected to that hostname. Add `127.0.0.1 keycloak` to `/etc/hosts` on the host to use
+the admin console or to request tokens from the host:
+
+```sh
+ACCESS_TOKEN=$(curl -s http://keycloak:8080/realms/petstore/protocol/openid-connect/token \
+  -d 'grant_type=password' \
+  -d 'client_id=petstore' \
+  -d 'client_secret=5FbFAgTAWyVAWSQtDPqCLZzY' \
+  -d 'username=petstore' \
+  -d 'password=GBanBPatEBRZ7hf7cAxKn8Ptt' | sed -E 's/.*"access_token":"([^"]+)".*/\1/')
+
+curl --insecure -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' https://localhost/api/pets
+```
+
+The integration tests run against keycloak as well (no auth mocking): `tests/Helper/AuthHelper.php` waits for the
+discovery endpoint of `OIDC_ISSUER` to be reachable and requests tokens via password grant with the `petstore`
+client and user. Within the php container keycloak is reachable as `keycloak`, in ci a keycloak container gets
+started and published on the docker bridge gateway (see `.github/workflows/ci.yml`).
 
 ## Structure
 
@@ -367,6 +413,8 @@ Before you start, produce at least one error, [produce a 404](https://localhost/
 [17]: https://packagist.org/packages/slim/psr7
 [18]: https://packagist.org/packages/symfony/console
 [19]: https://packagist.org/packages/symfony/var-exporter
+[20]: https://packagist.org/packages/chubbyphp/chubbyphp-oidc
+[21]: https://packagist.org/packages/guzzlehttp/guzzle
 
 [60]: src/Pet/Collection
 

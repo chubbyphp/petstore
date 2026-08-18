@@ -18,6 +18,7 @@ use Chubbyphp\Framework\Router\Route;
 use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
 use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
+use Chubbyphp\Oidc\Middleware\OidcAuthenticationMiddleware;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -39,6 +40,7 @@ final class PetRoutesDelegatorTest extends TestCase
         /** @var ContainerInterface $container */
         $container = $builder->create(ContainerInterface::class, []);
 
+        $oidcAuthentication = new LazyMiddleware($container, OidcAuthenticationMiddleware::class);
         $accept = new LazyMiddleware($container, AcceptMiddleware::class);
         $contentType = new LazyMiddleware($container, ContentTypeMiddleware::class);
         $apiExceptionMiddleware = new LazyMiddleware($container, MiddlewareApiExceptionMiddleware::class);
@@ -54,11 +56,11 @@ final class PetRoutesDelegatorTest extends TestCase
         self::assertEquals([
             Route::get('/dummy1', 'dummy1', $dummyHandler, []),
             Route::get('/dummy2', 'dummy2', $dummyHandler, []),
-            Route::get('/api/pets', 'pet_list', $petList, [$accept, $apiExceptionMiddleware]),
-            Route::post('/api/pets', 'pet_create', $petCreate, [$accept, $apiExceptionMiddleware, $contentType]),
-            Route::get('/api/pets/{id}', 'pet_read', $petRead, [$accept, $apiExceptionMiddleware]),
-            Route::put('/api/pets/{id}', 'pet_update', $petUpdate, [$accept, $apiExceptionMiddleware, $contentType]),
-            Route::delete('/api/pets/{id}', 'pet_delete', $petDelete, [$accept, $apiExceptionMiddleware]),
+            Route::get('/api/pets', 'pet_list', $petList, [$accept, $apiExceptionMiddleware, $oidcAuthentication]),
+            Route::post('/api/pets', 'pet_create', $petCreate, [$accept, $apiExceptionMiddleware, $oidcAuthentication, $contentType]),
+            Route::get('/api/pets/{id}', 'pet_read', $petRead, [$accept, $apiExceptionMiddleware, $oidcAuthentication]),
+            Route::put('/api/pets/{id}', 'pet_update', $petUpdate, [$accept, $apiExceptionMiddleware, $oidcAuthentication, $contentType]),
+            Route::delete('/api/pets/{id}', 'pet_delete', $petDelete, [$accept, $apiExceptionMiddleware, $oidcAuthentication]),
         ], $factory($container, '', static fn () => [
             Route::get('/dummy1', 'dummy1', $dummyHandler, []),
             Route::get('/dummy2', 'dummy2', $dummyHandler, []),

@@ -13,6 +13,8 @@ use App\Core\ServiceFactory\Framework\RoutesByNameFactory;
 use App\Core\ServiceFactory\Framework\RoutesDelegator;
 use App\Core\ServiceFactory\Framework\RoutesFactory;
 use App\Core\ServiceFactory\Framework\UrlGeneratorFactory;
+use App\Core\ServiceFactory\Http\HttpClientFactory;
+use App\Core\ServiceFactory\Http\RequestFactoryFactory;
 use App\Core\ServiceFactory\Http\ResponseFactoryFactory;
 use App\Core\ServiceFactory\Http\StreamFactoryFactory;
 use App\Core\ServiceFactory\Logger\LoggerFactory;
@@ -72,6 +74,8 @@ use Chubbyphp\Negotiation\ServiceFactory\AcceptMiddlewareFactory;
 use Chubbyphp\Negotiation\ServiceFactory\AcceptNegotiatorFactory;
 use Chubbyphp\Negotiation\ServiceFactory\ContentTypeMiddlewareFactory;
 use Chubbyphp\Negotiation\ServiceFactory\ContentTypeNegotiatorFactory;
+use Chubbyphp\Oidc\Middleware\OidcAuthenticationMiddleware;
+use Chubbyphp\Oidc\ServiceFactory\OidcAuthenticationMiddlewareFactory;
 use Chubbyphp\Parsing\ParserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
@@ -82,6 +86,8 @@ use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Monolog\Level;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -96,11 +102,23 @@ return [
     'chubbyphp' => [
         'cors' => [
             'allowCredentials' => false,
-            'allowHeaders' => ['Accept', 'Content-Type'],
+            'allowHeaders' => ['Accept', 'Authorization', 'Content-Type'],
             'allowMethods' => ['DELETE', 'GET', 'POST', 'PUT'],
             'allowOrigins' => [],
-            'exposeHeaders' => [],
+            // let a browser based frontend read the bearer challenge, to distinguish a missing (no error) from an
+            // invalid, e.g. expired, token (error="invalid_token"), the concrete reason intentionally does not get
+            // reflected
+            'exposeHeaders' => ['WWW-Authenticate'],
             'maxAge' => 7200,
+        ],
+        'oidc' => [
+            'issuer' => getenv('OIDC_ISSUER'),
+            'audience' => getenv('OIDC_AUDIENCE'),
+            'realm' => 'petstore',
+            // keycloak signs access tokens with RS256 by default
+            'algorithms' => ['RS256'],
+            // a plain http issuer (local development, ci) has to be a deliberate decision
+            'allowInsecureIssuer' => 'true' === getenv('OIDC_ALLOW_INSECURE_ISSUER'),
         ],
     ],
     'debug' => false,
@@ -114,6 +132,7 @@ return [
             AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
             CacheItemPoolInterface::class => ApcuAdapterFactory::class,
+            ClientInterface::class => HttpClientFactory::class,
             Command::class.'[]' => CommandsFactory::class,
             Connection::class => ConnectionFactory::class,
             ConnectionProvider::class => ContainerConnectionProviderFactory::class,
@@ -129,6 +148,7 @@ return [
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
             MiddlewareInterface::class.'[]' => MiddlewaresFactory::class,
+            OidcAuthenticationMiddleware::class => OidcAuthenticationMiddlewareFactory::class,
             OpenapiRequestHandler::class => OpenapiRequestHandlerFactory::class,
             ParserInterface::class => ParserFactory::class,
             Pet::class.CreateRequestHandler::class => PetCreateRequestHandlerFactory::class,
@@ -139,6 +159,7 @@ return [
             PetParsing::class => PetParsingFactory::class,
             PetRepository::class => PetRepositoryFactory::class,
             PingRequestHandler::class => PingRequestHandlerFactory::class,
+            RequestFactoryInterface::class => RequestFactoryFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
             RouteInterface::class.'[]' => RoutesFactory::class,
             RouteMatcherInterface::class => RouteMatcherFactory::class,

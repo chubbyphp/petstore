@@ -44,6 +44,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v6
+      # started as early as possible (and not as a job service, which cannot mount the checked out realm import nor
+      # pass the "start-dev --import-realm" command), so it is up by the time the integration tests run; the issuer
+      # claim is fixed via KC_HOSTNAME to the docker bridge gateway (172.17.0.1), which is reachable from within the
+      # ci container
+      - name: keycloak start
+        run: docker container run -d --name keycloak -p 8080:8080 -v ${GITHUB_WORKSPACE}/docker/development/keycloak/import:/opt/keycloak/data/import -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=TCUJyCbLtLbBc4eXYYzD9ecm -e KC_HOSTNAME=http://172.17.0.1:8080 quay.io/keycloak/keycloak:26.7 start-dev --import-realm
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
@@ -52,6 +58,8 @@ jobs:
         env:
           APP_ENV: phpunit
           POSTGRES_URI: 'pgsql://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:5432/petstore?charset=utf8'
+          OIDC_ISSUER: 'http://172.17.0.1:8080/realms/petstore'
+          OIDC_AUDIENCE: 'petstore'
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php84:
@@ -69,6 +77,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v6
+      # started as early as possible (and not as a job service, which cannot mount the checked out realm import nor
+      # pass the "start-dev --import-realm" command), so it is up by the time the integration tests run; the issuer
+      # claim is fixed via KC_HOSTNAME to the docker bridge gateway (172.17.0.1), which is reachable from within the
+      # ci container
+      - name: keycloak start
+        run: docker container run -d --name keycloak -p 8080:8080 -v ${GITHUB_WORKSPACE}/docker/development/keycloak/import:/opt/keycloak/data/import -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=TCUJyCbLtLbBc4eXYYzD9ecm -e KC_HOSTNAME=http://172.17.0.1:8080 quay.io/keycloak/keycloak:26.7 start-dev --import-realm
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
@@ -77,6 +91,8 @@ jobs:
         env:
           APP_ENV: phpunit
           POSTGRES_URI: 'pgsql://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:5432/petstore?charset=utf8'
+          OIDC_ISSUER: 'http://172.17.0.1:8080/realms/petstore'
+          OIDC_AUDIENCE: 'petstore'
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
   php85:
@@ -94,6 +110,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v6
+      # started as early as possible (and not as a job service, which cannot mount the checked out realm import nor
+      # pass the "start-dev --import-realm" command), so it is up by the time the integration tests run; the issuer
+      # claim is fixed via KC_HOSTNAME to the docker bridge gateway (172.17.0.1), which is reachable from within the
+      # ci container
+      - name: keycloak start
+        run: docker container run -d --name keycloak -p 8080:8080 -v ${GITHUB_WORKSPACE}/docker/development/keycloak/import:/opt/keycloak/data/import -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=TCUJyCbLtLbBc4eXYYzD9ecm -e KC_HOSTNAME=http://172.17.0.1:8080 quay.io/keycloak/keycloak:26.7 start-dev --import-realm
       - name: wait for databases
         run: |
           while ! nc -z localhost 5432; do sleep 0.1; done
@@ -102,6 +124,8 @@ jobs:
         env:
           APP_ENV: phpunit
           POSTGRES_URI: 'pgsql://petstore:KVKtkrTHhKuTJTor8pCP@172.17.0.1:5432/petstore?charset=utf8'
+          OIDC_ISSUER: 'http://172.17.0.1:8080/realms/petstore'
+          OIDC_AUDIENCE: 'petstore'
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
       - name: sonarcloud.io

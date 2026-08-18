@@ -28,7 +28,7 @@ final class CorsControllerTest extends AbstractIntegrationTestCase
 
         self::assertSame('http://localhost:3000', $response['headers']['access-control-allow-origin'][0]);
         self::assertSame('false', $response['headers']['access-control-allow-credentials'][0]);
-        self::assertArrayNotHasKey('access-control-expose-headers', $response['headers']);
+        self::assertSame('WWW-Authenticate', $response['headers']['access-control-expose-headers'][0]);
     }
 
     public function testCorsHeaderWithNotMatchingOrigin(): void
@@ -58,7 +58,7 @@ final class CorsControllerTest extends AbstractIntegrationTestCase
                 'Accept' => 'application/json',
                 'Origin' => 'https://localhost:3000',
                 'Access-Control-Request-Method' => 'POST',
-                'Access-Control-Request-Headers' => 'Accept, Content-Type',
+                'Access-Control-Request-Headers' => 'Accept, Authorization, Content-Type',
             ]
         );
 
@@ -66,9 +66,9 @@ final class CorsControllerTest extends AbstractIntegrationTestCase
 
         self::assertSame('https://localhost:3000', $response['headers']['access-control-allow-origin'][0]);
         self::assertSame('false', $response['headers']['access-control-allow-credentials'][0]);
-        self::assertArrayNotHasKey('access-control-expose-headers', $response['headers']);
+        self::assertSame('WWW-Authenticate', $response['headers']['access-control-expose-headers'][0]);
         self::assertSame('DELETE, GET, POST, PUT', $response['headers']['access-control-allow-methods'][0]);
-        self::assertSame('Accept, Content-Type', $response['headers']['access-control-allow-headers'][0]);
+        self::assertSame('Accept, Authorization, Content-Type', $response['headers']['access-control-allow-headers'][0]);
 
         self::assertSame('7200', $response['headers']['access-control-max-age'][0]);
     }

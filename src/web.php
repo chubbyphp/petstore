@@ -17,6 +17,7 @@ use Chubbyphp\Api\RequestHandler\UpdateRequestHandler;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
 use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
+use Chubbyphp\Oidc\Middleware\OidcAuthenticationMiddleware;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\App;
@@ -67,7 +68,7 @@ return static function (string $env) {
             ;
             $group->delete('/{id}', Pet::class.DeleteRequestHandler::class)->setName('pet_delete');
         });
-    })->add(ApiExceptionMiddleware::class)->add(AcceptMiddleware::class);
+    })->add(OidcAuthenticationMiddleware::class)->add(ApiExceptionMiddleware::class)->add(AcceptMiddleware::class);
 
     return $web;
 };

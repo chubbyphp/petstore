@@ -18,6 +18,7 @@ use Chubbyphp\Framework\Router\Route;
 use Chubbyphp\Framework\Router\RouteInterface;
 use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
 use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
+use Chubbyphp\Oidc\Middleware\OidcAuthenticationMiddleware;
 use Psr\Container\ContainerInterface;
 
 final class PetRoutesDelegator
@@ -30,6 +31,7 @@ final class PetRoutesDelegator
         /** @var array<RouteInterface> $routes */
         $routes = $callback();
 
+        $oidcAuthentication = new LazyMiddleware($container, OidcAuthenticationMiddleware::class);
         $accept = new LazyMiddleware($container, AcceptMiddleware::class);
         $contentType = new LazyMiddleware($container, ContentTypeMiddleware::class);
         $apiExceptionMiddleware = new LazyMiddleware($container, ApiExceptionMiddleware::class);
@@ -53,7 +55,7 @@ final class PetRoutesDelegator
                             Route::delete('', 'pet_delete', $petDelete),
                         ]),
                     ]),
-                ], [$accept, $apiExceptionMiddleware]),
+                ], [$accept, $apiExceptionMiddleware, $oidcAuthentication]),
             ])->getRoutes(),
         ];
     }

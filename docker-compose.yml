@@ -13,6 +13,8 @@ services:
     environment:
       APP_ENV: dev
       MONGO_URI: mongodb://petstore:4aAUfBjDACcdZxNwJgJ6@mongo:27017
+      OIDC_ISSUER: 'http://keycloak:8080/realms/petstore'
+      OIDC_AUDIENCE: 'petstore'
       SSH_AUTH_SOCK: /ssh-agent
       LLAMA_BASE_URL: http://host.docker.internal:9931/v1
     volumes:
@@ -41,6 +43,7 @@ services:
       # pi - coding agent
       - ~/.pi/agent/auth.json:/home/php/.pi/agent/auth.json
     depends_on:
+      - keycloak
       - mongo
     extra_hosts:
       - 'host.docker.internal:host-gateway'
@@ -74,6 +77,21 @@ services:
       - '27017:27017'
     volumes:
       - mongo:/data/db
+  keycloak:
+    container_name: chubbyphp-petstore-keycloak
+    hostname: chubbyphp-petstore-keycloak
+    image: quay.io/keycloak/keycloak:26.7
+    command: ['start-dev', '--import-realm']
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: TCUJyCbLtLbBc4eXYYzD9ecm
+      # fixed hostname, so the issuer claim is "http://keycloak:8080/realms/petstore" no matter where the token
+      # gets requested from: add "127.0.0.1 keycloak" to /etc/hosts on the host to request tokens from there
+      KC_HOSTNAME: 'http://keycloak:8080'
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./docker/development/keycloak/import:/opt/keycloak/data/import
   nginx:
     container_name: chubbyphp-petstore-nginx
     hostname: chubbyphp-petstore-nginx

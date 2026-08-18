@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Pet;
 
+use App\Tests\Helper\AuthHelper;
 use App\Tests\Helper\PatternHelper;
 use App\Tests\Integration\AbstractIntegrationTestCase;
 
@@ -14,12 +15,47 @@ use App\Tests\Integration\AbstractIntegrationTestCase;
  */
 final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
 {
+    public function testListWithoutToken(): void
+    {
+        $response = $this->httpRequest(
+            'GET',
+            '/api/pets',
+            [
+                'Accept' => 'application/json',
+            ]
+        );
+
+        self::assertSame(401, $response['status']['code'], $response['body'] ?? '');
+
+        self::assertSame('Bearer realm="petstore"', $response['headers']['www-authenticate'][0]);
+    }
+
+    public function testListWithInvalidToken(): void
+    {
+        $response = $this->httpRequest(
+            'GET',
+            '/api/pets',
+            [
+                'Authorization' => 'Bearer invalid',
+                'Accept' => 'application/json',
+            ]
+        );
+
+        self::assertSame(401, $response['status']['code'], $response['body'] ?? '');
+
+        self::assertSame(
+            'Bearer realm="petstore", error="invalid_token", error_description="The access token is invalid or expired"',
+            $response['headers']['www-authenticate'][0]
+        );
+    }
+
     public function testCreateWithUnsupportedAccept(): void
     {
         $response = $this->httpRequest(
             'POST',
             '/api/pets',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'text/html',
             ]
         );
@@ -33,6 +69,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'POST',
             '/api/pets',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'text/html',
             ]
@@ -67,6 +104,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'POST',
             '/api/pets',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -117,6 +155,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'GET',
             '/api/pets',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'text/html',
             ]
         );
@@ -130,6 +169,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'GET',
             '/api/pets?filters[name2]=test&sort[name]=test',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
             ]
         );
@@ -186,6 +226,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'GET',
             '/api/pets?sort[name]=desc',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
             ]
         );
@@ -254,6 +295,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'GET',
             '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'text/html',
             ]
         );
@@ -267,6 +309,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'GET',
             '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
             ]
         );
@@ -295,6 +338,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'GET',
             \sprintf('/api/pets/%s', $existingPet['id']),
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
             ]
         );
@@ -318,6 +362,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'PUT',
             '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'text/html',
             ]
         );
@@ -331,6 +376,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'PUT',
             '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'text/html',
             ]
@@ -365,6 +411,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'PUT',
             '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ]
@@ -394,6 +441,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'PUT',
             \sprintf('/api/pets/%s', $existingPet['id']),
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -435,6 +483,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'PUT',
             \sprintf('/api/pets/%s', $existingPet['id']),
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -462,6 +511,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'PUT',
             \sprintf('/api/pets/%s', $existingPet['id']),
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -485,6 +535,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'DELETE',
             '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'text/html',
             ]
         );
@@ -498,6 +549,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'DELETE',
             '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
             ]
         );
@@ -526,6 +578,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'DELETE',
             \sprintf('/api/pets/%s', $existingPet['id']),
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
             ]
         );
@@ -539,6 +592,7 @@ final class PetCrudRequestHandlerTest extends AbstractIntegrationTestCase
             'POST',
             '/api/pets',
             [
+                'Authorization' => AuthHelper::getAuthorizationHeader(),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],

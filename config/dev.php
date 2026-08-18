@@ -8,6 +8,7 @@ use Monolog\Level;
 $config = require_once __DIR__.'/prod.php';
 
 $config['chubbyphp']['cors']['allowOrigins']['^https?\:\/\/(localhost|127\.\d+.\d+.\d+)(\:\d+)?$'] = AllowOriginRegex::class;
+$config['chubbyphp']['oidc']['allowInsecureIssuer'] = true;
 $config['debug'] = true;
 $config['doctrine']['cache'] = ['array' => []];
 $config['fastroute']['cache'] = null;

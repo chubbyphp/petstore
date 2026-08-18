@@ -25,6 +25,7 @@ RUN dnf install -y --nobest \
     php85-php-pecl-xdebug3 \
     php85-php-pecl-zip \
     php85-php-pgsql \
+    php85-php-sodium \
     php85-php-xml \
     procps-ng \
     sudo \

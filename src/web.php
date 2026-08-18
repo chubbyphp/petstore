@@ -16,6 +16,7 @@ use Chubbyphp\Api\RequestHandler\UpdateRequestHandler;
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Negotiation\Middleware\AcceptMiddleware;
 use Chubbyphp\Negotiation\Middleware\ContentTypeMiddleware;
+use Chubbyphp\Oidc\Middleware\OidcAuthenticationMiddleware;
 use Laminas\HttpHandlerRunner\RequestHandlerRunner;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Laminas\Stratigility\MiddlewarePipeInterface;
@@ -63,6 +64,7 @@ return static function (string $env) {
     $apiMiddlewares = [
         AcceptMiddleware::class,
         ApiExceptionMiddleware::class,
+        OidcAuthenticationMiddleware::class,
     ];
 
     $web->get('/openapi', OpenapiRequestHandler::class, 'openapi');

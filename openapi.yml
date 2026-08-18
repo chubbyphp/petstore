@@ -26,6 +26,8 @@ paths:
       operationId: listPets
       tags:
         - pets
+      security:
+        - bearerAuth: []
       parameters:
         - name: Accept
           in: header
@@ -74,6 +76,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestApiProblem'
+        '401':
+          description: Missing or invalid token
         '406':
           description: Missing or not supported accept header
           content:
@@ -93,6 +97,8 @@ paths:
       operationId: createPet
       tags:
         - pets
+      security:
+        - bearerAuth: []
       parameters:
         - name: Accept
           in: header
@@ -122,6 +128,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PetResponse'
+        '401':
+          description: Missing or invalid token
         '406':
           description: Missing or not supported accept header
           content:
@@ -148,6 +156,8 @@ paths:
       operationId: readPet
       tags:
         - pets
+      security:
+        - bearerAuth: []
       parameters:
         - name: Accept
           in: header
@@ -170,6 +180,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PetResponse"
+        '401':
+          description: Missing or invalid token
         '404':
           description: Resource not found
           content:
@@ -195,6 +207,8 @@ paths:
       operationId: updatePet
       tags:
         - pets
+      security:
+        - bearerAuth: []
       parameters:
         - name: Accept
           in: header
@@ -231,6 +245,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PetResponse'
+        '401':
+          description: Missing or invalid token
         '404':
           description: Resource not found
           content:
@@ -262,6 +278,8 @@ paths:
       operationId: deletePet
       tags:
         - pets
+      security:
+        - bearerAuth: []
       parameters:
         - name: Accept
           in: header
@@ -280,6 +298,8 @@ paths:
       responses:
         '204':
           description: Empty response
+        '401':
+          description: Missing or invalid token
         '404':
           description: Resource not found
           content:
@@ -295,6 +315,11 @@ paths:
         '500':
           description: Server error
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     BadRequestApiProblem:
       type: object

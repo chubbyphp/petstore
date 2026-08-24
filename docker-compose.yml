@@ -29,6 +29,8 @@ services:
       # git
       - ~/.gitconfig:/home/php/.gitconfig
       - ~/.gitignore:/home/php/.gitignore
+      # ssh
+      - ~/.ssh/github.pub:/home/node/.ssh/github.pub
       # claude - coding agent
       - ~/.claude.json:/home/php/.claude.json
       - ~/.claude/.credentials.json:/home/php/.claude/.credentials.json

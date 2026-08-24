@@ -76,6 +76,13 @@ touch ~/.gitconfig
 touch ~/.gitignore
 ```
 
+#### ssh
+
+```sh
+mkdir -p ~/.ssh
+touch github.pub
+```
+
 #### npm
 
 ```sh

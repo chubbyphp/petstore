@@ -54,149 +54,28 @@ export GROUP_ID=$(id -g)
 
 ### Mount points
 
-#### bash
+Creates every file which gets mounted into the php container (shell rc/history, git, ssh, npm and the coding
+agent auth/settings files) without overwriting existing ones. Adjust the seeded settings files afterwards to your
+liking, they stay on the host and get mounted.
 
 ```sh
-touch ~/.bash_docker
-touch ~/.bash_history
+./setup-mount-points.sh
 ```
 
-#### zsh
+### Coding agents
 
-```sh
-touch ~/.zsh_docker
-touch ~/.zsh_history
-```
+The following coding agents (harnesses) are preinstalled within the php container, their auth and settings files
+get mounted from the host (see `docker-compose.yml`):
 
-#### git
+ * [Claude Code](https://www.npmjs.com/package/@anthropic-ai/claude-code): `~/.claude.json`, `~/.claude/.credentials.json`, `~/.claude/settings.json`
+ * [Codex](https://www.npmjs.com/package/@openai/codex): `~/.codex/auth.json`, `~/.codex/config.toml`
+ * [Opencode](https://www.npmjs.com/package/opencode-ai): `~/.config/opencode/opencode.jsonc`, `~/.config/opencode/tui.json`, `~/.local/share/opencode/auth.json`
+ * [PI](https://www.npmjs.com/package/@earendil-works/pi-coding-agent) incl. [pi-llama](https://github.com/huggingface/pi-llama): `~/.pi/agent/auth.json`
 
-```sh
-touch ~/.gitconfig
-touch ~/.gitignore
-```
+#### llama.cpp
 
-#### ssh
-
-```sh
-mkdir -p ~/.ssh
-touch github.pub
-```
-
-#### npm
-
-```sh
-touch ~/.npmrc
-```
-
-#### Coding agents
-
-##### Claude
-
-```sh
-if [ ! -f ~/.claude.json ]; then
-    cat > ~/.claude.json <<'EOF'
-{}
-EOF
-fi
-
-mkdir -p ~/.claude
-
-if [ ! -f ~/.claude/.credentials.json ]; then
-    cat > ~/.claude/.credentials.json <<'EOF'
-{}
-EOF
-fi
-
-if [ ! -f ~/.claude/settings.json ]; then
-    cat > ~/.claude/settings.json <<'EOF'
-{
-    "fileCheckpointingEnabled": false,
-    "permissions": {
-        "defaultMode": "bypassPermissions"
-    },
-    "skipDangerousModePermissionPrompt": true,
-    "spinnerTipsEnabled": false,
-    "switchModelsOnFlag": false,
-    "theme": "auto"
-}
-EOF
-fi
-
-chmod 600 \
-    ~/.claude/.credentials.json \
-    ~/.claude/settings.json
-```
-
-##### Codex
-
-```sh
-mkdir -p ~/.codex
-
-if [ ! -f ~/.codex/auth.json ]; then
-    cat > ~/.codex/auth.json <<'EOF'
-{}
-EOF
-fi
-
-if [ ! -f ~/.codex/config.toml ]; then
-    cat > ~/.codex/config.toml <<'EOF'
-approval_policy = "never"
-sandbox_mode = "danger-full-access"
-
-[notice]
-hide_full_access_warning = true
-EOF
-fi
-
-chmod 600 \
-    ~/.codex/auth.json
-    ~/.codex/config.toml
-```
-
-##### Opencode
-
-```sh
-mkdir -p ~/.config/opencode ~/.local/share/opencode
-
-if [ ! -f ~/.config/opencode/opencode.jsonc ]; then
-    cat > ~/.config/opencode/opencode.jsonc <<'EOF'
-{
-    "$schema": "https://opencode.ai/config.json",
-    "permission": {
-        "*": "allow"
-    }
-}
-EOF
-fi
-
-if [ ! -f ~/.config/opencode/tui.json ]; then
-    cat > ~/.config/opencode/tui.json <<'EOF'
-{
-    "$schema": "https://opencode.ai/tui.json",
-    "theme": "system",
-    "tips": false
-}
-EOF
-fi
-
-if [ ! -f ~/.local/share/opencode/auth.json ]; then
-    printf '{}\n' > ~/.local/share/opencode/auth.json
-fi
-
-chmod 600 \
-    ~/.config/opencode/opencode.jsonc \
-    ~/.config/opencode/tui.json \
-    ~/.local/share/opencode/auth.json
-```
-
-##### PI
-
-```sh
-mkdir -p ~/.pi/agent
-[ ! -f ~/.pi/agent/auth.json ] && echo '{}' > ~/.pi/agent/auth.json
-```
-
-###### llama.cpp
+PI can run against a local model via [pi-llama](https://github.com/huggingface/pi-llama), start a
+[llama.cpp](https://llama.app/) server on the host, for example:
 
 ```sh
 llama-server \
@@ -211,8 +90,8 @@ llama-server \
 ### Docker
 
 ```sh
-docker-compose up -d
-docker-compose exec php bash
+docker compose up -d
+docker compose exec php bash
 ```
 
 ## Setup

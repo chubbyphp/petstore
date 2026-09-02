@@ -68,7 +68,7 @@ RUN curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/
     && npm install -g corepack@latest
 
 RUN source ~/.bashrc \
-    && npm install -g @anthropic-ai/claude-code \
+    && npm install -g @anthropic-ai/claude-code --allow-scripts=@anthropic-ai/claude-code \
     && mkdir -p "$HOME/.claude"
 
 RUN source ~/.bashrc \
@@ -76,12 +76,12 @@ RUN source ~/.bashrc \
     && mkdir -p "$HOME/.codex"
 
 RUN source ~/.bashrc \
-    && npm install -g opencode-ai@latest \
+    && npm install -g opencode-ai@latest --allow-scripts=opencode-ai \
     && mkdir -p "$HOME/.config/opencode" \
     && mkdir -p "$HOME/.local/share/opencode"
 
 RUN source ~/.bashrc \
-    && npm install -g @earendil-works/pi-coding-agent \
+    && npm install -g @earendil-works/pi-coding-agent --allow-scripts=@google/genai,protobufjs \
     && mkdir -p "$HOME/.pi/agent" \
     && pi install git:github.com/huggingface/pi-llama
 

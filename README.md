@@ -23,26 +23,26 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
 ## Requirements
 
  * php: ^8.3
- * [chubbyphp/chubbyphp-api][2]: ^1.2
- * [chubbyphp/chubbyphp-clean-directories][3]: ^1.5.2
- * [chubbyphp/chubbyphp-cors][4]: ^1.7.2
- * [chubbyphp/chubbyphp-decode-encode][5]: ^1.4.1
- * [chubbyphp/chubbyphp-http-exception][6]: ^1.3.3
- * [chubbyphp/chubbyphp-laminas-config][7]: ^1.5.2
- * [chubbyphp/chubbyphp-laminas-config-doctrine][8]: ^3.1.3
- * [chubbyphp/chubbyphp-laminas-config-factory][9]: ^1.5.2
- * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.2
- * [chubbyphp/chubbyphp-oidc][20]: ^1.0
- * [chubbyphp/chubbyphp-parsing][11]: ^3.0
+ * [chubbyphp/chubbyphp-api][2]: ^1.2.1
+ * [chubbyphp/chubbyphp-clean-directories][3]: ^1.5.3
+ * [chubbyphp/chubbyphp-cors][4]: ^1.7.3
+ * [chubbyphp/chubbyphp-decode-encode][5]: ^1.4.2
+ * [chubbyphp/chubbyphp-http-exception][6]: ^1.3.4
+ * [chubbyphp/chubbyphp-laminas-config][7]: ^1.5.3
+ * [chubbyphp/chubbyphp-laminas-config-doctrine][8]: ^3.1.4
+ * [chubbyphp/chubbyphp-laminas-config-factory][9]: ^1.5.3
+ * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.3
+ * [chubbyphp/chubbyphp-oidc][20]: ^1.2.0
+ * [chubbyphp/chubbyphp-parsing][11]: ^3.0.2
  * [doctrine/orm][12]: ^3.6.8
- * [guzzlehttp/guzzle][21]: ^7.10
+ * [guzzlehttp/guzzle][21]: ^7.15.5
  * [mezzio/mezzio-fastroute][13]: ^3.14
  * [mezzio/mezzio][14]: ^3.28.1
- * [monolog/monolog][15]: ^3.10
+ * [monolog/monolog][15]: ^3.11.0
  * [ramsey/uuid][16]: ^4.9.3
  * [slim/psr7][17]: ^1.8
- * [symfony/console][18]: ^7.4.16|^8.1.4
- * [symfony/var-exporter][19]: ^7.4.16|^8.1.4
+ * [symfony/console][18]: ^7.4.18|^8.1.6
+ * [symfony/var-exporter][19]: ^7.4.18|^8.1.6
 
 ## Environment
 

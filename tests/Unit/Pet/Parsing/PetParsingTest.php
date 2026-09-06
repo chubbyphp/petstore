@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Parsing;
+namespace App\Tests\Unit\Pet\Parsing;
 
 use App\Pet\Dto\Collection\PetCollectionRequest;
 use App\Pet\Dto\Collection\PetCollectionResponse;
@@ -13,7 +13,7 @@ use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Parsing\ErrorsException;
 use Chubbyphp\Parsing\Parser;
-use Mezzio\Router\RouterInterface;
+use Mezzio\Helper\UrlHelperInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -33,10 +33,10 @@ final class PetParsingTest extends TestCase
 
         $parser = new Parser();
 
-        /** @var RouterInterface $router */
-        $router = $builder->create(RouterInterface::class, []);
+        /** @var UrlHelperInterface $urlHelper */
+        $urlHelper = $builder->create(UrlHelperInterface::class, []);
 
-        $petParsing = new PetParsing($parser, $router);
+        $petParsing = new PetParsing($parser, $urlHelper);
 
         $petCollectionMinimalRequest = $petParsing->getCollectionRequestSchema($request)->parse([]);
 
@@ -79,62 +79,61 @@ final class PetParsingTest extends TestCase
 
         $parser = new Parser();
 
-        /** @var RouterInterface $router */
-        $router = $builder->create(RouterInterface::class, [
+        /** @var UrlHelperInterface $urlHelper */
+        $urlHelper = $builder->create(UrlHelperInterface::class, [
             new WithReturn(
-                'generateUri',
-                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_list', [], []],
+                'generate',
+                ['pet_list', [], ['offset' => 10, 'limit' => 10, 'filters' => ['name' => null], 'sort' => ['name' => null]], null, []],
+                '/api/pets?offset=10&limit=10'
+            ),
+            new WithReturn(
+                'generate',
+                ['pet_create', [], [], null, []],
                 '/api/pets'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_create', [], []],
-                '/api/pets'
-            ),
-            // Duplicate calls as in the original test
-            new WithReturn(
-                'generateUri',
-                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_list', [], []],
-                '/api/pets'
+                'generate',
+                ['pet_list', [], ['offset' => 10, 'limit' => 10, 'filters' => ['name' => 'jerry'], 'sort' => ['name' => 'asc']], null, []],
+                '/api/pets?offset=10&limit=10&filters%5Bname%5D=jerry&sort%5Bname%5D=asc'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_create', [], []],
+                'generate',
+                ['pet_create', [], [], null, []],
                 '/api/pets'
             ),
         ]);
 
-        $petParsing = new PetParsing($parser, $router);
+        $petParsing = new PetParsing($parser, $urlHelper);
 
         /** @var PetCollectionResponse $petCollectionMinimalResponse */
         $petCollectionMinimalResponse = $petParsing->getCollectionResponseSchema($request)->parse([
@@ -320,10 +319,10 @@ final class PetParsingTest extends TestCase
 
         $parser = new Parser();
 
-        /** @var RouterInterface $router */
-        $router = $builder->create(RouterInterface::class, []);
+        /** @var UrlHelperInterface $urlHelper */
+        $urlHelper = $builder->create(UrlHelperInterface::class, []);
 
-        $petParsing = new PetParsing($parser, $router);
+        $petParsing = new PetParsing($parser, $urlHelper);
 
         $petRequestMinimal = $petParsing->getModelRequestSchema($request)->parse(['name' => 'jerry']);
 
@@ -416,26 +415,26 @@ final class PetParsingTest extends TestCase
 
         $parser = new Parser();
 
-        /** @var RouterInterface $router */
-        $router = $builder->create(RouterInterface::class, [
+        /** @var UrlHelperInterface $urlHelper */
+        $urlHelper = $builder->create(UrlHelperInterface::class, [
             new WithReturn(
-                'generateUri',
-                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_read', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_update', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
             new WithReturn(
-                'generateUri',
-                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], []],
+                'generate',
+                ['pet_delete', ['id' => '019c201f-6a83-7696-9899-50fbf7b2278d'], [], null, []],
                 '/api/pets/019c201f-6a83-7696-9899-50fbf7b2278d'
             ),
         ]);
 
-        $petParsing = new PetParsing($parser, $router);
+        $petParsing = new PetParsing($parser, $urlHelper);
 
         /** @var PetResponse $petResponse */
         $petResponse = $petParsing->getModelResponseSchema($request)->parse([

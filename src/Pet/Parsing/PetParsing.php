@@ -17,7 +17,7 @@ use Chubbyphp\Api\Parsing\ParsingInterface;
 use Chubbyphp\Parsing\Enum\Uuid;
 use Chubbyphp\Parsing\ParserInterface;
 use Chubbyphp\Parsing\Schema\ObjectSchemaInterface;
-use Mezzio\Router\RouterInterface;
+use Mezzio\Helper\UrlHelperInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class PetParsing implements ParsingInterface
@@ -32,7 +32,7 @@ final class PetParsing implements ParsingInterface
 
     public function __construct(
         private readonly ParserInterface $parser,
-        private readonly RouterInterface $router,
+        private readonly UrlHelperInterface $urlHelper,
     ) {}
 
     public function getCollectionRequestSchema(ServerRequestInterface $request): ObjectSchemaInterface
@@ -93,13 +93,13 @@ final class PetParsing implements ParsingInterface
 
                     return $petCollectionResponse->withLinks([
                         'list' => [
-                            'href' => $this->router->generateUri('pet_list', []).'?'.http_build_query($queryParams),
+                            'href' => $this->urlHelper->generate('pet_list', [], $queryParams),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'GET'],
                         ],
                         'create' => [
-                            'href' => $this->router->generateUri('pet_create'),
+                            'href' => $this->urlHelper->generate('pet_create'),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'POST'],
@@ -149,19 +149,19 @@ final class PetParsing implements ParsingInterface
                 ->postParse(
                     fn (PetResponse $petResponse) => $petResponse->withLinks([
                         'read' => [
-                            'href' => $this->router->generateUri('pet_read', ['id' => $petResponse->id]),
+                            'href' => $this->urlHelper->generate('pet_read', ['id' => $petResponse->id]),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'GET'],
                         ],
                         'update' => [
-                            'href' => $this->router->generateUri('pet_update', ['id' => $petResponse->id]),
+                            'href' => $this->urlHelper->generate('pet_update', ['id' => $petResponse->id]),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'PUT'],
                         ],
                         'delete' => [
-                            'href' => $this->router->generateUri('pet_delete', ['id' => $petResponse->id]),
+                            'href' => $this->urlHelper->generate('pet_delete', ['id' => $petResponse->id]),
                             'templated' => false,
                             'rel' => [],
                             'attributes' => ['method' => 'DELETE'],

@@ -6,7 +6,7 @@ namespace App\Pet\ServiceFactory\Parsing;
 
 use App\Pet\Parsing\PetParsing;
 use Chubbyphp\Parsing\ParserInterface;
-use Mezzio\Router\RouterInterface;
+use Mezzio\Helper\UrlHelperInterface;
 use Psr\Container\ContainerInterface;
 
 final class PetParsingFactory
@@ -16,12 +16,9 @@ final class PetParsingFactory
         /** @var ParserInterface $parser */
         $parser = $container->get(ParserInterface::class);
 
-        /** @var RouterInterface $router */
-        $router = $container->get(RouterInterface::class);
+        /** @var UrlHelperInterface $urlHelper */
+        $urlHelper = $container->get(UrlHelperInterface::class);
 
-        return new PetParsing(
-            $parser,
-            $router,
-        );
+        return new PetParsing($parser, $urlHelper);
     }
 }

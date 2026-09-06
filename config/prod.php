@@ -5,9 +5,14 @@ declare(strict_types=1);
 use App\Core\RequestHandler\OpenapiRequestHandler;
 use App\Core\RequestHandler\PingRequestHandler;
 use App\Core\ServiceFactory\Command\CommandsFactory;
+use App\Core\ServiceFactory\Framework\ApplicationPipelineFactory;
 use App\Core\ServiceFactory\Framework\ErrorHandlerFactory;
 use App\Core\ServiceFactory\Framework\FastRouteRouterFactory;
+use App\Core\ServiceFactory\Framework\MiddlewaresFactory;
 use App\Core\ServiceFactory\Framework\NotFoundHandlerFactory;
+use App\Core\ServiceFactory\Framework\RouteCollectorFactory;
+use App\Core\ServiceFactory\Framework\RoutesDelegator;
+use App\Core\ServiceFactory\Framework\RoutesFactory;
 use App\Core\ServiceFactory\Framework\ServerRequestErrorResponseGeneratorFactory;
 use App\Core\ServiceFactory\Framework\ServerRequestFactory;
 use App\Core\ServiceFactory\Http\HttpClientFactory;
@@ -23,6 +28,7 @@ use App\Pet\Orm\PetMapping;
 use App\Pet\Orm\VaccinationMapping;
 use App\Pet\Parsing\PetParsing;
 use App\Pet\Repository\PetRepository;
+use App\Pet\ServiceFactory\Framework\PetRoutesDelegator;
 use App\Pet\ServiceFactory\Parsing\PetParsingFactory;
 use App\Pet\ServiceFactory\Repository\PetRepositoryFactory;
 use App\Pet\ServiceFactory\RequestHandler\PetCreateRequestHandlerFactory;
@@ -75,16 +81,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
-use Laminas\HttpHandlerRunner\RequestHandlerRunner;
+use Laminas\HttpHandlerRunner\RequestHandlerRunnerInterface;
 use Laminas\Stratigility\Middleware\ErrorHandler;
-use Mezzio\Container\ApplicationPipelineFactory;
+use Mezzio\Application;
+use Mezzio\Container\ApplicationFactory;
 use Mezzio\Container\EmitterFactory;
 use Mezzio\Container\MiddlewareContainerFactory;
 use Mezzio\Container\MiddlewareFactoryFactory;
 use Mezzio\Container\RequestHandlerRunnerFactory;
 use Mezzio\Handler\NotFoundHandler;
+use Mezzio\Helper\UrlHelperFactory;
+use Mezzio\Helper\UrlHelperInterface;
 use Mezzio\MiddlewareContainer;
-use Mezzio\MiddlewareFactory;
+use Mezzio\MiddlewareFactoryInterface;
 use Mezzio\Response\ServerRequestErrorResponseGenerator;
 use Mezzio\Router\Middleware\DispatchMiddleware;
 use Mezzio\Router\Middleware\DispatchMiddlewareFactory;
@@ -92,8 +101,8 @@ use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddlewareFactory;
 use Mezzio\Router\Middleware\RouteMiddleware;
 use Mezzio\Router\Middleware\RouteMiddlewareFactory;
-use Mezzio\Router\RouteCollector;
-use Mezzio\Router\RouteCollectorFactory;
+use Mezzio\Router\Route;
+use Mezzio\Router\RouteCollectorInterface;
 use Mezzio\Router\RouterInterface;
 use Monolog\Level;
 use Psr\Cache\CacheItemPoolInterface;
@@ -102,6 +111,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 
@@ -140,17 +150,18 @@ return [
         'factories' => [
             'Mezzio\ApplicationPipeline' => ApplicationPipelineFactory::class,
             AcceptMiddleware::class => AcceptMiddlewareFactory::class,
-            AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
+            AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
+            Application::class => ApplicationFactory::class,
             CacheItemPoolInterface::class => ApcuAdapterFactory::class,
             ClientInterface::class => HttpClientFactory::class,
             Command::class.'[]' => CommandsFactory::class,
             Connection::class => ConnectionFactory::class,
             ConnectionProvider::class => ContainerConnectionProviderFactory::class,
             ContentTypeMiddleware::class => ContentTypeMiddlewareFactory::class,
-            ContentTypeNegotiatorInterface::class.'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
             ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
+            ContentTypeNegotiatorInterface::class.'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
             CorsMiddleware::class => CorsMiddlewareFactory::class,
             DecoderInterface::class => DecoderFactory::class,
             DispatchMiddleware::class => DispatchMiddlewareFactory::class,
@@ -163,7 +174,8 @@ return [
             MappingDriver::class => ClassMapDriverFactory::class,
             MethodNotAllowedMiddleware::class => MethodNotAllowedMiddlewareFactory::class,
             MiddlewareContainer::class => MiddlewareContainerFactory::class,
-            MiddlewareFactory::class => MiddlewareFactoryFactory::class,
+            MiddlewareFactoryInterface::class => MiddlewareFactoryFactory::class,
+            MiddlewareInterface::class.'[]' => MiddlewaresFactory::class,
             NotFoundHandler::class => NotFoundHandlerFactory::class,
             OidcAuthenticationMiddleware::class => OidcAuthenticationMiddlewareFactory::class,
             OpenapiRequestHandler::class => OpenapiRequestHandlerFactory::class,
@@ -177,9 +189,10 @@ return [
             PetRepository::class => PetRepositoryFactory::class,
             PingRequestHandler::class => PingRequestHandlerFactory::class,
             RequestFactoryInterface::class => RequestFactoryFactory::class,
-            RequestHandlerRunner::class => RequestHandlerRunnerFactory::class,
+            RequestHandlerRunnerInterface::class => RequestHandlerRunnerFactory::class,
             ResponseFactoryInterface::class => ResponseFactoryFactory::class,
-            RouteCollector::class => RouteCollectorFactory::class,
+            Route::class.'[]' => RoutesFactory::class,
+            RouteCollectorInterface::class => RouteCollectorFactory::class,
             RouteMiddleware::class => RouteMiddlewareFactory::class,
             RouterInterface::class => FastRouteRouterFactory::class,
             ServerRequestErrorResponseGenerator::class => ServerRequestErrorResponseGeneratorFactory::class,
@@ -187,6 +200,13 @@ return [
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             TypeDecoderInterface::class.'[]' => TypeDecodersFactory::class,
             TypeEncoderInterface::class.'[]' => TypeEncodersFactory::class,
+            UrlHelperInterface::class => UrlHelperFactory::class,
+        ],
+        'delegators' => [
+            Route::class.'[]' => [
+                PetRoutesDelegator::class,
+                RoutesDelegator::class,
+            ],
         ],
     ],
     'directories' => [

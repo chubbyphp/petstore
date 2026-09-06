@@ -31,6 +31,7 @@
         "guzzlehttp/guzzle": "^7.15.5",
         "mezzio/mezzio": "^3.28.1",
         "mezzio/mezzio-fastroute": "^3.14",
+        "mezzio/mezzio-helpers": "^5.17",
         "monolog/monolog": "^3.11.0",
         "ramsey/uuid": "^4.9.3",
         "slim/psr7": "^1.8",

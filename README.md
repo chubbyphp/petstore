@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml/badge.svg?branch=mezzio)](https://github.com/chubbyphp/petstore/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/petstore/badge.svg?branch=mezzio)](https://coveralls.io/github/chubbyphp/petstore?branch=mezzio)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%mezzio)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/mezzio)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fpetstore%2Fmezzio)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/petstore/mezzio)
 
 [![bugs](https://sonarcloud.io/api/project_badges/measure?project=chubbyphp_chubbyphp-petstore&metric=bugs)](https://sonarcloud.io/dashboard?id=chubbyphp_chubbyphp-petstore)
 [![code_smells](https://sonarcloud.io/api/project_badges/measure?project=chubbyphp_chubbyphp-petstore&metric=code_smells)](https://sonarcloud.io/dashboard?id=chubbyphp_chubbyphp-petstore)
@@ -37,6 +37,7 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [doctrine/orm][12]: ^3.6.8
  * [guzzlehttp/guzzle][21]: ^7.15.5
  * [mezzio/mezzio-fastroute][13]: ^3.14
+ * [mezzio/mezzio-helpers][22]: ^5.17
  * [mezzio/mezzio][14]: ^3.28.1
  * [monolog/monolog][15]: ^3.11.0
  * [ramsey/uuid][16]: ^4.9.3
@@ -302,6 +303,7 @@ Before you start, produce at least one error, [produce a 404](https://localhost/
 [19]: https://packagist.org/packages/symfony/var-exporter
 [20]: https://packagist.org/packages/chubbyphp/chubbyphp-oidc
 [21]: https://packagist.org/packages/guzzlehttp/guzzle
+[22]: https://packagist.org/packages/mezzio/mezzio-helpers
 
 [60]: src/Pet/Collection
 

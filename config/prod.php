@@ -6,10 +6,14 @@ use App\Core\Middleware\ConvertHttpExceptionMiddleware;
 use App\Core\RequestHandler\OpenapiRequestHandler;
 use App\Core\RequestHandler\PingRequestHandler;
 use App\Core\ServiceFactory\Command\CommandsFactory;
+use App\Core\ServiceFactory\Framework\AppFactory;
 use App\Core\ServiceFactory\Framework\CallableResolverFactory;
+use App\Core\ServiceFactory\Framework\ErrorMiddlewareFactory;
 use App\Core\ServiceFactory\Framework\InvocationStrategyFactory;
+use App\Core\ServiceFactory\Framework\MiddlewaresFactory;
 use App\Core\ServiceFactory\Framework\RouteCollectorFactory;
 use App\Core\ServiceFactory\Framework\RouteParserFactory;
+use App\Core\ServiceFactory\Framework\RoutesDelegator;
 use App\Core\ServiceFactory\Http\HttpClientFactory;
 use App\Core\ServiceFactory\Http\RequestFactoryFactory;
 use App\Core\ServiceFactory\Http\ResponseFactoryFactory;
@@ -24,6 +28,7 @@ use App\Pet\Orm\PetMapping;
 use App\Pet\Orm\VaccinationMapping;
 use App\Pet\Parsing\PetParsing;
 use App\Pet\Repository\PetRepository;
+use App\Pet\ServiceFactory\Framework\PetRoutesDelegator;
 use App\Pet\ServiceFactory\Parsing\PetParsingFactory;
 use App\Pet\ServiceFactory\Repository\PetRepositoryFactory;
 use App\Pet\ServiceFactory\RequestHandler\PetCreateRequestHandlerFactory;
@@ -81,11 +86,14 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
+use Slim\App;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\InvocationStrategyInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteParserInterface;
+use Slim\Middleware\ErrorMiddleware;
 use Symfony\Component\Console\Command\Command;
 
 $rootDir = realpath(__DIR__.'/..');
@@ -122,9 +130,10 @@ return [
         ],
         'factories' => [
             AcceptMiddleware::class => AcceptMiddlewareFactory::class,
-            AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             AcceptNegotiatorInterface::class => AcceptNegotiatorFactory::class,
+            AcceptNegotiatorInterface::class.'supportedMediaTypes[]' => AcceptNegotiatorSupportedMediaTypesFactory::class,
             ApiExceptionMiddleware::class => ApiExceptionMiddlewareFactory::class,
+            App::class => AppFactory::class,
             CacheItemPoolInterface::class => ApcuAdapterFactory::class,
             CallableResolverInterface::class => CallableResolverFactory::class,
             ClientInterface::class => HttpClientFactory::class,
@@ -132,17 +141,19 @@ return [
             Connection::class => ConnectionFactory::class,
             ConnectionProvider::class => ContainerConnectionProviderFactory::class,
             ContentTypeMiddleware::class => ContentTypeMiddlewareFactory::class,
-            ContentTypeNegotiatorInterface::class.'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
             ContentTypeNegotiatorInterface::class => ContentTypeNegotiatorFactory::class,
+            ContentTypeNegotiatorInterface::class.'supportedMediaTypes[]' => ContentTypeNegotiatorSupportedMediaTypesFactory::class,
             ConvertHttpExceptionMiddleware::class => ConvertHttpExceptionMiddlewareFactory::class,
             CorsMiddleware::class => CorsMiddlewareFactory::class,
             DecoderInterface::class => DecoderFactory::class,
             EncoderInterface::class => EncoderFactory::class,
             EntityManagerInterface::class => EntityManagerFactory::class,
             EntityManagerProvider::class => ContainerEntityManagerProviderFactory::class,
+            ErrorMiddleware::class => ErrorMiddlewareFactory::class,
             InvocationStrategyInterface::class => InvocationStrategyFactory::class,
             LoggerInterface::class => LoggerFactory::class,
             MappingDriver::class => ClassMapDriverFactory::class,
+            MiddlewareInterface::class.'[]' => MiddlewaresFactory::class,
             OidcAuthenticationMiddleware::class => OidcAuthenticationMiddlewareFactory::class,
             OpenapiRequestHandler::class => OpenapiRequestHandlerFactory::class,
             ParserInterface::class => ParserFactory::class,
@@ -161,6 +172,12 @@ return [
             StreamFactoryInterface::class => StreamFactoryFactory::class,
             TypeDecoderInterface::class.'[]' => TypeDecodersFactory::class,
             TypeEncoderInterface::class.'[]' => TypeEncodersFactory::class,
+        ],
+        'delegators' => [
+            RouteCollectorInterface::class => [
+                PetRoutesDelegator::class,
+                RoutesDelegator::class,
+            ],
         ],
     ],
     'directories' => [

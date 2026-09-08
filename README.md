@@ -34,7 +34,7 @@ A simple skeleton to build api's based on the [slim][1] framework.
  * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.3
  * [chubbyphp/chubbyphp-oidc][19]: ^1.2.0
  * [chubbyphp/chubbyphp-parsing][11]: ^3.0.2
- * [doctrine/orm][12]: ^3.6.8
+ * [doctrine/orm][12]: ^3.7.0
  * [guzzlehttp/guzzle][20]: ^7.15.5
  * [monolog/monolog][13]: ^3.11.0
  * [ramsey/uuid][14]: ^4.9.3

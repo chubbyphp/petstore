@@ -13,6 +13,7 @@ use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -132,7 +133,7 @@ final class PetRepositoryTest extends TestCase
 
         /** @var EntityManager $entityManager */
         $entityManager = $builder->create(EntityManager::class, [
-            new WithReturn('find', [Pet::class, '019c201f-6a83-7696-9899-50fbf7b2278d', null, null], $pet),
+            new WithReturn('find', [Pet::class, '019c201f-6a83-7696-9899-50fbf7b2278d', LockMode::NONE, null], $pet),
         ]);
 
         $repository = new PetRepository($entityManager);

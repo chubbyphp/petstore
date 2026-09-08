@@ -28,7 +28,7 @@
         "chubbyphp/chubbyphp-negotiation": "^2.3.3",
         "chubbyphp/chubbyphp-oidc": "^1.2.0",
         "chubbyphp/chubbyphp-parsing": "^3.0.2",
-        "doctrine/orm": "^3.6.8",
+        "doctrine/orm": "^3.7.0",
         "guzzlehttp/guzzle": "^7.15.5",
         "monolog/monolog": "^3.11.0",
         "ramsey/uuid": "^4.9.3",

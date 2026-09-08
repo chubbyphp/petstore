@@ -27,7 +27,7 @@
         "chubbyphp/chubbyphp-negotiation": "^2.3.3",
         "chubbyphp/chubbyphp-oidc": "^1.2.0",
         "chubbyphp/chubbyphp-parsing": "^3.0.2",
-        "doctrine/orm": "^3.6.8",
+        "doctrine/orm": "^3.7.0",
         "guzzlehttp/guzzle": "^7.15.5",
         "mezzio/mezzio": "^3.28.1",
         "mezzio/mezzio-fastroute": "^3.14",

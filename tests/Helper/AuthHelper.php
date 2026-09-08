@@ -141,8 +141,6 @@ final class AuthHelper
         $responseBody = curl_exec($curl);
         $status = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
 
-        curl_close($curl);
-
         if (false === $responseBody || !\is_string($responseBody)) {
             return null;
         }

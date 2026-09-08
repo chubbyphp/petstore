@@ -34,7 +34,7 @@ A simple skeleton to build api's based on the [mezzio][1] framework.
  * [chubbyphp/chubbyphp-negotiation][10]: ^2.3.3
  * [chubbyphp/chubbyphp-oidc][20]: ^1.2.0
  * [chubbyphp/chubbyphp-parsing][11]: ^3.0.2
- * [doctrine/orm][12]: ^3.6.8
+ * [doctrine/orm][12]: ^3.7.0
  * [guzzlehttp/guzzle][21]: ^7.15.5
  * [mezzio/mezzio-fastroute][13]: ^3.14
  * [mezzio/mezzio-helpers][22]: ^5.17
